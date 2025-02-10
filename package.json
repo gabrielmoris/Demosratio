@@ -1,0 +1,16 @@
+{
+  "name": "demosratio",
+  "version": "1.0.0",
+  "description": "Demos Ratio: Veritas et Iustitia. Civis curiosus et vigilans iura sua novit. Demos Ratio, fons veritatis, ubi promissio et factum, lex et iustitia, sub oculis populi monstrantur.",
+  "main": "/client",
+  "scripts": {
+    "dev": "docker-compose -f docker-compose.dev.yaml up",
+    "prod": "docker-compose -f docker-compose.prod.yaml up -d"
+  },
+  "keywords": [
+    "demos",
+    "ratio"
+  ],
+  "author": "",
+  "license": "ISC"
+}

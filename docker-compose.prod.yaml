@@ -1,0 +1,40 @@
+version: "3.9"
+
+services:
+  nextjs-app:
+    build:
+      context: ./client
+      dockerfile: Dockerfile.prod
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+    environment:
+      - DATABASE_URL=postgresql://postgres:password@postgres:5432/demosratio
+      - NODE_ENV=production
+      # - NEXT_PUBLIC_API_URL=http://localhost:3000/api # Example
+    volumes:
+      - ./client:/app
+      - /app/.next
+    restart: unless-stopped
+    networks:
+      - app-network
+
+  postgres:
+    image: postgres:15
+    ports:
+      - "5432:5432" # Remove for production.
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=demosratio
+    volumes:
+      - postgres_data:/var/lib/postgresql/data # Persist data across container restarts
+    networks:
+      - app-network
+
+volumes:
+  postgres_data:
+
+networks:
+  app-network:
