@@ -1,7 +1,7 @@
 {
   "workbench.colorCustomizations": {
-    "activityBar.background": "#c64702",
-    "titleBar.activeBackground": "#c64702",
+    "activityBar.background": "#000a18",
+    "titleBar.activeBackground": "#001c1d",
     "titleBar.activeForeground": "#cedbe1"
   },
   "i18n-ally.localesPaths": ["messages"],
