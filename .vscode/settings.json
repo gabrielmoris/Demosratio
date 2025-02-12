@@ -1,0 +1,9 @@
+{
+  "workbench.colorCustomizations": {
+    "activityBar.background": "#c64702",
+    "titleBar.activeBackground": "#c64702",
+    "titleBar.activeForeground": "#cedbe1"
+  },
+  "i18n-ally.localesPaths": ["messages"],
+  "i18n-ally.keystyle": "nested"
+}

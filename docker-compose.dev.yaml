@@ -3,7 +3,7 @@ version: "3.9"
 services:
   nextjs-app:
     build:
-      context: ./client
+      context: .
       dockerfile: Dockerfile.dev
     ports:
       - "3000:3000"
@@ -13,8 +13,8 @@ services:
       - DATABASE_URL=postgresql://postgres:password@postgres:5432/demosratio
       - NODE_ENV=development
     volumes:
-      - ./client:/app
-      - ./client/.next:/app/.next
+      - .:/app
+      - .next:/app/.next
     restart: unless-stopped
     networks:
       - app-network

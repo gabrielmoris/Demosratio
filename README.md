@@ -1,79 +1,36 @@
-# Demosratio
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-[Read in English](README.en.md)
+## Getting Started
 
-Una herramienta online para verificar el cumplimiento de promesas y decisiones políticas, fomentando la transparencia y la participación ciudadana.
+First, run the development server:
 
-## ¿Qué problema soluciona?
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+```
 
-Demosratio busca resolver la falta de transparencia en la política, permitiendo a los ciudadanos informarse de manera clara y objetiva sobre las promesas de los políticos y las decisiones que toman. La plataforma evita los filtros políticos de la prensa actual, brindando acceso directo a la información y facilitando la participación ciudadana.
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-## ¿Cómo funciona?
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-Demosratio recopila y organiza información sobre las promesas electorales de los políticos y las decisiones que toman en el gobierno. Los usuarios pueden acceder a esta información de forma sencilla, verificar las fuentes oficiales y participar en simulacros de votación.
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## Funcionalidades
+## Learn More
 
-- **Información clara y accesible**: Base de datos con promesas y decisiones, enlazadas a fuentes oficiales.
-- **Seguimiento fácil**: Estado de las promesas (cumplidas, no cumplidas, en curso) y resultados de las decisiones (aprobadas, rechazadas, en curso).
-- **Participación ciudadana**: Aportación de información verificable, denuncias de manipulación y simulacros de votación.
-- **Visualización de datos**: Gráficos y tablas interactivas para analizar la información.
-- **Secciones de la web**:
-  - Página principal: Resumen de promesas y decisiones recientes.
-  - Cronología: Promesas y decisiones ordenadas por fecha.
-  - Categorías: Promesas y decisiones agrupadas por temas.
-  - Visualización de datos: Gráficos y tablas interactivas.
-  - Simulacros de votación: Votaciones simuladas sobre temas de actualidad.
-  - Aportación de información: Formulario para añadir promesas y decisiones.
-  - Denuncias de manipulación: Formulario para denunciar información falsa.
-  - Acerca de: Información sobre el proyecto y sus creadores.
-  - Contacto: Formulario de contacto.
+To learn more about Next.js, take a look at the following resources:
 
-## Tecnologías
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-- **Frontend**: Next.js, Typescript
-- **Backend**: Express (o Next.js), Bun.js, Docker
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## Instalación
+## Deploy on Vercel
 
-1.  Clona el repositorio: `git clone git@github.com:gabrielmoris/Demosratio.git`
-2.  Navega al directorio del proyecto: `cd Demosratio`
-3.  Instala las dependencias: `bun install`
-4.  Inicia el servidor de desarrollo: `bun run next dev`
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-## Contribución
-
-¡Las contribuciones son bienvenidas! Si deseas contribuir al proyecto, por favor, sigue estos pasos:
-
-1.  Haz un fork del repositorio.
-2.  Crea una nueva rama para tu contribución: `git checkout -b mi-contribucion`
-3.  Realiza tus cambios y asegúrate de que las pruebas pasen.
-4.  Envía un pull request con una descripción clara de tus cambios.
-
-## Licencia
-
-Este proyecto está bajo la Licencia Pública General de GNU v3.0.
-
-## Creadores
-
-- Gabriel Moris
-
-## Contacto
-
-Puedes contactarnos a través de nuestro perfil de GitHub: <https://github.com/gabrielmoris>
-
-## Convención de branching
-
-Utilizaremos la siguiente convención de branching:
-
-- `main`: Rama principal con el código en producción.
-- `develop`: Rama de desarrollo donde se integran los cambios.
-- `feature/nombre-de-la-funcionalidad`: Ramas para desarrollar nuevas funcionalidades.
-- `bugfix/nombre-del-error`: Ramas para corregir errores.
-
-## Próximos pasos
-
-- Definir la estructura del código y los principales directorios del repositorio.
-- Establecer reglas de estilo de código con ESLint y Prettier.
-- Implementar pruebas unitarias y de integración.
-- Configurar el proceso de despliegue.
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
