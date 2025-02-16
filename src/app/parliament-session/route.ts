@@ -1,7 +1,7 @@
-import { ParlamentData } from "@/types/parliament.types";
+import { ParliamentData } from "@/types/parliament.types";
 import JSZip from "jszip";
 
-const extractPArlamentJson = async (): Promise<ParlamentData[]> => {
+const extractPArlamentJson = async (): Promise<ParliamentData[]> => {
   return new Promise(async (resolve, reject) => {
     try {
       const response = await fetch(
@@ -27,7 +27,7 @@ const extractPArlamentJson = async (): Promise<ParlamentData[]> => {
         return;
       }
 
-      const votationJson: ParlamentData[] = await extractData(zipLinkMatch[1]);
+      const votationJson: ParliamentData[] = await extractData(zipLinkMatch[1]);
 
       resolve(votationJson);
     } catch (error) {
@@ -37,7 +37,7 @@ const extractPArlamentJson = async (): Promise<ParlamentData[]> => {
   });
 };
 
-const extractData = async (link: string): Promise<ParlamentData[]> => {
+const extractData = async (link: string): Promise<ParliamentData[]> => {
   try {
     const zipResponse = await fetch("https://www.congreso.es" + link);
 
@@ -55,12 +55,12 @@ const extractData = async (link: string): Promise<ParlamentData[]> => {
     const zipArrayBuffer = await zipResponse.arrayBuffer();
     const zip = await JSZip.loadAsync(zipArrayBuffer);
 
-    const jsonFiles: ParlamentData[] = [];
+    const jsonFiles: ParliamentData[] = [];
 
     for (const [filename, file] of Object.entries(zip.files)) {
       if (filename.endsWith(".json")) {
         const content = await file.async("text");
-        jsonFiles.push(JSON.parse(content) as ParlamentData);
+        jsonFiles.push(JSON.parse(content) as ParliamentData);
       }
     }
 
@@ -79,13 +79,13 @@ export async function GET() {
   const extractedData = await extractPArlamentJson();
 
   if (!extractedData) {
-    return new Response(JSON.stringify({ parlamentData: null }), {
+    return new Response(JSON.stringify({ ParliamentData: null }), {
       status: 200,
     });
   }
 
   const responseData = {
-    parlamentData: extractedData,
+    ParliamentData: extractedData,
   };
 
   return new Response(JSON.stringify(responseData), {
