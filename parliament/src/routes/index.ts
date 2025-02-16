@@ -1,7 +1,10 @@
-import { ParliamentData } from "@/types/parliament.types";
+import express, { Request, Response } from "express";
 import JSZip from "jszip";
+import { ParliamentData } from "../../../types/parliament.types";
 
-const extractPArlamentJson = async (): Promise<ParliamentData[]> => {
+const router = express.Router();
+
+const extractParliamentJson = async (): Promise<ParliamentData[]> => {
   return new Promise(async (resolve, reject) => {
     try {
       const response = await fetch(
@@ -16,14 +19,16 @@ const extractPArlamentJson = async (): Promise<ParliamentData[]> => {
       const html = (await response.text()).replaceAll("\n", "").replaceAll("\t", "");
 
       if (html.includes("No hay votaciones")) {
-        reject(`No Votes`);
+        console.log(`No Votes`);
+        resolve([]);
         return;
       }
 
       const zipLinkMatch = html.match(/href="([^"]+\.zip)"/);
 
       if (zipLinkMatch == null) {
-        reject(`no Link`);
+        console.log(`no Link`);
+        resolve([]);
         return;
       }
 
@@ -75,20 +80,19 @@ const extractData = async (link: string): Promise<ParliamentData[]> => {
   }
 };
 
-export async function GET() {
-  const extractedData = await extractPArlamentJson();
+router.get("/api/parliament-data", async (req: Request, res: Response) => {
+  const extractedData = await extractParliamentJson();
 
   if (!extractedData) {
-    return new Response(JSON.stringify({ ParliamentData: null }), {
-      status: 200,
-    });
+    res.status(200).send([]);
+    return;
   }
 
   const responseData = {
     ParliamentData: extractedData,
   };
 
-  return new Response(JSON.stringify(responseData), {
-    status: 200,
-  });
-}
+  res.status(200).send(responseData);
+});
+
+export { router as indexParliamentRouter };
