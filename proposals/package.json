@@ -15,7 +15,6 @@
     "cors": "^2.8.5",
     "express": "^4.21.2",
     "express-async-errors": "^3.1.1",
-    "jszip": "^3.10.1",
     "pg": "^8.13.3",
     "ts-node-dev": "^2.0.0",
     "tslog": "^4.9.3"
