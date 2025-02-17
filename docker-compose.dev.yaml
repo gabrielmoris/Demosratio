@@ -3,7 +3,7 @@ version: "3.9"
 services:
   nextjs-app:
     build:
-      context: .
+      context: ./client
       dockerfile: Dockerfile.dev
     ports:
       - "3000:3000"
@@ -13,8 +13,22 @@ services:
       - DATABASE_URL=postgresql://postgres:password@postgres:5432/demosratio
       - NODE_ENV=development
     volumes:
-      - .:/app
-      - .next:/app/.next
+      - ./client:/app
+      - ./client/.next:/app/.next
+    restart: unless-stopped
+    networks:
+      - app-network
+
+  proposals:
+    build:
+      context: ./proposals
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    depends_on:
+      - postgres
+    volumes:
+      - ./proposals:/app
     restart: unless-stopped
     networks:
       - app-network
@@ -29,6 +43,18 @@ services:
       - POSTGRES_DB=demosratio
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    ports:
+      - "8081:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: email@email.com
+      PGADMIN_DEFAULT_PASSWORD: password
+    depends_on:
+      - postgres
     networks:
       - app-network
 

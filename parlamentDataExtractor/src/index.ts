@@ -1,7 +1,7 @@
-import { ParliamentData } from "@/types/parliament.types";
 import JSZip from "jszip";
+import { ProposalData } from "../types/proposal.types";
 
-const extractPArlamentJson = async (): Promise<ParliamentData[]> => {
+const extractParliamentJson = async (): Promise<ProposalData[]> => {
   return new Promise(async (resolve, reject) => {
     try {
       const response = await fetch(
@@ -13,21 +13,25 @@ const extractPArlamentJson = async (): Promise<ParliamentData[]> => {
         return;
       }
 
-      const html = (await response.text()).replaceAll("\n", "").replaceAll("\t", "");
+      const html = (await response.text())
+        .replaceAll("\n", "")
+        .replaceAll("\t", "");
 
       if (html.includes("No hay votaciones")) {
-        reject(`No Votes`);
+        console.log(`No Votes`);
+        resolve([]);
         return;
       }
 
       const zipLinkMatch = html.match(/href="([^"]+\.zip)"/);
 
       if (zipLinkMatch == null) {
-        reject(`no Link`);
+        console.log(`no Link`);
+        resolve([]);
         return;
       }
 
-      const votationJson: ParliamentData[] = await extractData(zipLinkMatch[1]);
+      const votationJson: ProposalData[] = await extractData(zipLinkMatch[1]);
 
       resolve(votationJson);
     } catch (error) {
@@ -37,7 +41,7 @@ const extractPArlamentJson = async (): Promise<ParliamentData[]> => {
   });
 };
 
-const extractData = async (link: string): Promise<ParliamentData[]> => {
+const extractData = async (link: string): Promise<ProposalData[]> => {
   try {
     const zipResponse = await fetch("https://www.congreso.es" + link);
 
@@ -47,7 +51,10 @@ const extractData = async (link: string): Promise<ParliamentData[]> => {
 
     // Check the content type
     const contentType = zipResponse.headers.get("content-type");
-    if (contentType !== "application/zip" && contentType !== "application/x-zip-compressed") {
+    if (
+      contentType !== "application/zip" &&
+      contentType !== "application/x-zip-compressed"
+    ) {
       throw new Error(`Unexpected content type: ${contentType}`);
     }
 
@@ -55,12 +62,12 @@ const extractData = async (link: string): Promise<ParliamentData[]> => {
     const zipArrayBuffer = await zipResponse.arrayBuffer();
     const zip = await JSZip.loadAsync(zipArrayBuffer);
 
-    const jsonFiles: ParliamentData[] = [];
+    const jsonFiles: ProposalData[] = [];
 
     for (const [filename, file] of Object.entries(zip.files)) {
       if (filename.endsWith(".json")) {
         const content = await file.async("text");
-        jsonFiles.push(JSON.parse(content) as ParliamentData);
+        jsonFiles.push(JSON.parse(content) as ProposalData);
       }
     }
 
@@ -75,20 +82,7 @@ const extractData = async (link: string): Promise<ParliamentData[]> => {
   }
 };
 
-export async function GET() {
-  const extractedData = await extractPArlamentJson();
-
-  if (!extractedData) {
-    return new Response(JSON.stringify({ ParliamentData: null }), {
-      status: 200,
-    });
-  }
-
-  const responseData = {
-    ParliamentData: extractedData,
-  };
-
-  return new Response(JSON.stringify(responseData), {
-    status: 200,
-  });
-}
+const saveToDb = async () => {
+  const res = await extractParliamentJson();
+  console.log(res);
+};
