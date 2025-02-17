@@ -1,5 +1,5 @@
 // Define the types
-export interface ParliamentData {
+export interface ProposalData {
   informacion: Informacion;
   totales: Totales;
   votaciones: Votacion[];

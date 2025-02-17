@@ -7,8 +7,8 @@ const start = async () => {
   } catch {
     throw new Error("Error connecting to DB"); // Use https://tslog.js.org/#/?id=minlevel
   }
-  app.listen(3000, () => {
-    console.log("Listening on port 3000");
+  app.listen(3001, () => {
+    console.log("Listening proposals on port 3001");
   });
 };
 

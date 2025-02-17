@@ -3,7 +3,7 @@ version: "3.9"
 services:
   nextjs-app:
     build:
-      context: .
+      context: ./client
       dockerfile: Dockerfile.dev
     ports:
       - "3000:3000"
@@ -15,6 +15,20 @@ services:
     volumes:
       - ./client:/app
       - ./client/.next:/app/.next
+    restart: unless-stopped
+    networks:
+      - app-network
+
+  proposals:
+    build:
+      context: ./proposals
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    depends_on:
+      - postgres
+    volumes:
+      - ./proposals:/app
     restart: unless-stopped
     networks:
       - app-network

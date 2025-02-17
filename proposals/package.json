@@ -1,5 +1,5 @@
 {
-  "name": "parliament",
+  "name": "proposals",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -7,10 +7,12 @@
     "test": "jest --watchAll --no-cache"
   },
   "keywords": [],
+  "type": "commonjs",
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.21.2",
     "express-async-errors": "^3.1.1",
     "jszip": "^3.10.1",
@@ -19,6 +21,7 @@
     "tslog": "^4.9.3"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
     "@types/jest": "^29.5.14",
     "@types/node": "^22.13.4",

@@ -1,10 +1,14 @@
 import express from "express";
 import "express-async-errors"; // So I dont need to use next for async callbacks in the routes
 import { json } from "body-parser";
+import cors from "cors";
 import { indexParliamentRouter } from "./routes/index";
-import verifyConnections, { writePool, listenPool } from "./db";
+import { writePool } from "./db";
 
 const app = express();
+
+app.use(cors());
+
 app.use(json());
 app.set("trust proxy", true); // Trust the proxy from ingress-nginx
 
