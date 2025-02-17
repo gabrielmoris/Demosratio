@@ -13,9 +13,7 @@ const extractParliamentJson = async (): Promise<ProposalData[]> => {
         return;
       }
 
-      const html = (await response.text())
-        .replaceAll("\n", "")
-        .replaceAll("\t", "");
+      const html = (await response.text()).replaceAll("\n", "").replaceAll("\t", "");
 
       if (html.includes("No hay votaciones")) {
         console.log(`No Votes`);
@@ -51,10 +49,7 @@ const extractData = async (link: string): Promise<ProposalData[]> => {
 
     // Check the content type
     const contentType = zipResponse.headers.get("content-type");
-    if (
-      contentType !== "application/zip" &&
-      contentType !== "application/x-zip-compressed"
-    ) {
+    if (contentType !== "application/zip" && contentType !== "application/x-zip-compressed") {
       throw new Error(`Unexpected content type: ${contentType}`);
     }
 
@@ -86,3 +81,5 @@ const saveToDb = async () => {
   const res = await extractParliamentJson();
   console.log(res);
 };
+
+saveToDb();
