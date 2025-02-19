@@ -1,5 +1,20 @@
 import JSZip from "jszip";
 import { ProposalData } from "../types/proposal.types";
+import verifyConnections from "./database/db";
+import { createTables } from "./database/tables";
+import { Logger } from "tslog";
+
+const log = new Logger();
+
+async function initializeDatabase() {
+  try {
+    await verifyConnections();
+    await createTables();
+    log.info("Database initialization complete.");
+  } catch (error) {
+    log.error("Database initialization failed:", error);
+  }
+}
 
 const extractParliamentJson = async (): Promise<ProposalData[]> => {
   return new Promise(async (resolve, reject) => {
@@ -16,7 +31,7 @@ const extractParliamentJson = async (): Promise<ProposalData[]> => {
       const html = (await response.text()).replaceAll("\n", "").replaceAll("\t", "");
 
       if (html.includes("No hay votaciones")) {
-        console.log(`No Votes`);
+        log.info(`No Votes`);
         resolve([]);
         return;
       }
@@ -24,7 +39,7 @@ const extractParliamentJson = async (): Promise<ProposalData[]> => {
       const zipLinkMatch = html.match(/href="([^"]+\.zip)"/);
 
       if (zipLinkMatch == null) {
-        console.log(`no Link`);
+        log.info(`no Link`);
         resolve([]);
         return;
       }
@@ -33,7 +48,7 @@ const extractParliamentJson = async (): Promise<ProposalData[]> => {
 
       resolve(votationJson);
     } catch (error) {
-      console.error("Error extracting text from website:", error);
+      log.error("Error extracting text from website:", error);
       reject(error);
     }
   });
@@ -44,12 +59,14 @@ const extractData = async (link: string): Promise<ProposalData[]> => {
     const zipResponse = await fetch("https://www.congreso.es" + link);
 
     if (!zipResponse.ok) {
+      log.error(`HTTP error! status: ${zipResponse.status}`);
       throw new Error(`HTTP error! status: ${zipResponse.status}`);
     }
 
     // Check the content type
     const contentType = zipResponse.headers.get("content-type");
     if (contentType !== "application/zip" && contentType !== "application/x-zip-compressed") {
+      log.error(`Unexpected content type: ${contentType}`);
       throw new Error(`Unexpected content type: ${contentType}`);
     }
 
@@ -67,19 +84,26 @@ const extractData = async (link: string): Promise<ProposalData[]> => {
     }
 
     if (jsonFiles.length === 0) {
+      log.error("No data");
       throw new Error("No data");
     }
 
     return jsonFiles;
   } catch (error) {
-    console.error("Error extracting data from ZIP:", error);
+    log.error("Error extracting data from ZIP:", error);
     throw error;
   }
 };
 
 const saveToDb = async () => {
+  // await initializeDatabase();
   const res = await extractParliamentJson();
-  console.log(res);
+
+  res.forEach((votation) => {
+    const { sesion: session, fecha: date, titulo: title, textoExpediente: expedient_text } = votation.informacion;
+    const { presentes: parliament_presence, afavor: votes_for, enContra: votes_against, abstenciones: abstentions } = votation.totales;
+    console.log(session, date, title, expedient_text, parliament_presence, votes_for, votes_against, abstentions);
+  });
 };
 
 saveToDb();

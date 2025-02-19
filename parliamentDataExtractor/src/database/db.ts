@@ -5,7 +5,8 @@ const log = new Logger(); // Optional: tslog logger instance
 
 const dbConfig = {
   user: process.env.POSTGRES_USER || "postgres",
-  host: process.env.POSTGRES_HOST || "postgres",
+  // host: process.env.POSTGRES_HOST || "postgres",
+  host: process.env.POSTGRES_HOST || "localhost",
   database: process.env.POSTGRES_DB || "demosratio",
   password: process.env.POSTGRES_PASSWORD || "password",
   port: parseInt(process.env.POSTGRES_PORT || "5432", 10),
@@ -44,11 +45,11 @@ async function verifyConnections() {
 
 // Handle pool errors
 writePool.on("error", (err: Error) => {
-  console.error("Error on writePool: ", err);
+  log.error("Error on writePool: ", err);
 });
 
 listenPool.on("error", (err: Error) => {
-  console.error("Error on listenPool: ", err);
+  log.error("Error on listenPool: ", err);
 });
 
 export default verifyConnections;
