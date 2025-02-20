@@ -33,19 +33,17 @@ services:
     networks:
       - app-network
 
-  # parliament-data-extractor:
-  #   build:
-  #     context: ./parliamentDataExtractor
-  #     dockerfile: Dockerfile
-  #   ports:
-  #     - "3002:3002"
-  #   depends_on:
-  #     - postgres
-  #   volumes:
-  #     - ./parliamentDataExtractor:/app
-  #   restart: unless-stopped
-  #   networks:
-  #     - app-network
+  parliament-data-extractor:
+    build:
+      context: ./parliamentDataExtractor
+      dockerfile: Dockerfile
+    depends_on:
+      - postgres
+    volumes:
+      - ./parliamentDataExtractor:/app
+    restart: unless-stopped
+    networks:
+      - app-network
 
   postgres:
     image: postgres:15

@@ -5,6 +5,7 @@ import { mergeVotesByParty } from "./functions/votesPerParty";
 import { saveProposalToDb } from "./database/saveProposal";
 import { extractParliamentJson } from "./functions/getParliamentData";
 import { getDateString, normalizeWrongSpanishDate } from "./helpers/getSpanishDate";
+import cron from "node-cron";
 
 const log = new Logger();
 
@@ -55,4 +56,27 @@ const saveToDb = async () => {
   }
 };
 
+// Schedule everyday at 23:30
+const scheduledJob = cron.schedule("30 23 * * *", () => {
+  log.info("Running data extractor...");
+  saveToDb();
+});
+
+// I run the script Once and start the scheduledJob
+log.info("Starting scheduler...");
 saveToDb();
+scheduledJob.start();
+
+// Keep the process running
+process.stdin.resume();
+log.info("Scheduler started successfully.");
+
+// Graceful shutdown
+process.on("SIGINT", () => {
+  log.info("Shutting down gracefully...");
+  scheduledJob.stop();
+  writePool.end(() => {
+    log.info("Database connection closed.");
+    process.exit(0);
+  });
+});
