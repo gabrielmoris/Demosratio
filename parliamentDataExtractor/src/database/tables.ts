@@ -5,6 +5,13 @@ export async function createTables() {
   const client = await writePool.connect();
   const log = new Logger();
 
+  // await client.query(`DROP TABLE IF EXISTS proposal_votes;`);
+  // await client.query(`DROP TABLE IF EXISTS proposals;`);
+  // await client.query(`DROP TABLE IF EXISTS sources;`);
+  // await client.query(`DROP TABLE IF EXISTS promises;`);
+  // await client.query(`DROP TABLE IF EXISTS political_parties;`);
+  // await client.query(`DROP TABLE IF EXISTS "users";`);
+
   try {
     // USERS
     await client.query(`
@@ -34,7 +41,7 @@ export async function createTables() {
           id SERIAL PRIMARY KEY,
           url TEXT NOT NULL,
           date DATE NOT NULL DEFAULT CURRENT_DATE,
-          user_id INTEGER REFERENCES "user"(id),
+          user_id INTEGER REFERENCES "users"(id),
           source_type VARCHAR(255)
         );
       `);
@@ -54,7 +61,7 @@ export async function createTables() {
           votes_against INTEGER NOT NULL DEFAULT 0,
           likes INTEGER NOT NULL DEFAULT 0,
           dislikes INTEGER NOT NULL DEFAULT 0,
-          date DATE NOT NULL DEFAULT CURRENT_DATE
+          date TEXT NOT NULL
         );
       `);
     log.info('Table "proposals" created or already exists.');
@@ -65,24 +72,13 @@ export async function createTables() {
           id SERIAL PRIMARY KEY,
           text TEXT NOT NULL,
           url TEXT,
-          political_party_id INTEGER REFERENCES political_party(id) NOT NULL,
+          political_party_id INTEGER REFERENCES political_parties(id) NOT NULL,
           likes INTEGER NOT NULL DEFAULT 0,
           dislikes INTEGER NOT NULL DEFAULT 0,
           date DATE NOT NULL DEFAULT CURRENT_DATE
         );
       `);
     log.info('Table "promises" created or already exists.');
-
-    // PROPOSAL VOTES
-    await client.query(`
-        CREATE TABLE IF NOT EXISTS proposal_votes (
-          proposal_id INTEGER REFERENCES proposals(id),
-          party_id INTEGER REFERENCES political_party(id),
-          vote_type VARCHAR(255) CHECK (vote_type IN ('for', 'against')), -- 'for' or 'against'
-          PRIMARY KEY (proposal_id, party_id) -- Composite key to prevent duplicate votes
-        );
-      `);
-    log.info('Table "proposal_votes" created or already exists.');
   } catch (err) {
     log.error("Error creating tables:", err);
     throw err;
