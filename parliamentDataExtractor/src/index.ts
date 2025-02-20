@@ -1,85 +1,82 @@
-import JSZip from "jszip";
-import { ProposalData } from "../types/proposal.types";
+import verifyConnections, { writePool } from "./database/db";
+import { createTables } from "./database/tables";
+import { Logger } from "tslog";
+import { mergeVotesByParty } from "./functions/votesPerParty";
+import { saveProposalToDb } from "./database/saveProposal";
+import { extractParliamentJson } from "./functions/getParliamentData";
+import { getDateString, normalizeWrongSpanishDate } from "./helpers/getSpanishDate";
+import cron from "node-cron";
 
-const extractParliamentJson = async (): Promise<ProposalData[]> => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const response = await fetch(
-        "https://www.congreso.es/es/opendata/votaciones?p_p_id=votaciones&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&targetLegislatura=XV&targetDate=11/02/2025"
-      );
+const log = new Logger();
 
-      if (!response.ok) {
-        reject(`HTTP error! status: ${response.status}`);
-        return;
-      }
+// DB INIT
 
-      const html = (await response.text()).replaceAll("\n", "").replaceAll("\t", "");
-
-      if (html.includes("No hay votaciones")) {
-        console.log(`No Votes`);
-        resolve([]);
-        return;
-      }
-
-      const zipLinkMatch = html.match(/href="([^"]+\.zip)"/);
-
-      if (zipLinkMatch == null) {
-        console.log(`no Link`);
-        resolve([]);
-        return;
-      }
-
-      const votationJson: ProposalData[] = await extractData(zipLinkMatch[1]);
-
-      resolve(votationJson);
-    } catch (error) {
-      console.error("Error extracting text from website:", error);
-      reject(error);
-    }
-  });
-};
-
-const extractData = async (link: string): Promise<ProposalData[]> => {
+async function initializeDatabase() {
   try {
-    const zipResponse = await fetch("https://www.congreso.es" + link);
-
-    if (!zipResponse.ok) {
-      throw new Error(`HTTP error! status: ${zipResponse.status}`);
-    }
-
-    // Check the content type
-    const contentType = zipResponse.headers.get("content-type");
-    if (contentType !== "application/zip" && contentType !== "application/x-zip-compressed") {
-      throw new Error(`Unexpected content type: ${contentType}`);
-    }
-
-    // ArrayBuffer
-    const zipArrayBuffer = await zipResponse.arrayBuffer();
-    const zip = await JSZip.loadAsync(zipArrayBuffer);
-
-    const jsonFiles: ProposalData[] = [];
-
-    for (const [filename, file] of Object.entries(zip.files)) {
-      if (filename.endsWith(".json")) {
-        const content = await file.async("text");
-        jsonFiles.push(JSON.parse(content) as ProposalData);
-      }
-    }
-
-    if (jsonFiles.length === 0) {
-      throw new Error("No data");
-    }
-
-    return jsonFiles;
+    await verifyConnections();
+    await createTables();
+    log.info("Database initialization complete.");
   } catch (error) {
-    console.error("Error extracting data from ZIP:", error);
-    throw error;
+    log.error("Database initialization failed:", error);
+  }
+}
+
+const yesterday = getDateString(1);
+
+const saveToDb = async () => {
+  await initializeDatabase();
+  const extractedParliamentData = await extractParliamentJson(yesterday);
+
+  for (const votation of extractedParliamentData) {
+    // Get the important information
+    const { sesion: session, fecha: date, titulo: title, textoExpediente: expedient_text } = votation.informacion;
+    const { presentes: parliament_presence, afavor: votes_for, enContra: votes_against, abstenciones: abstentions } = votation.totales;
+    const votes_parties_json = mergeVotesByParty(votation.votaciones);
+
+    const proposalData = {
+      session,
+      date: normalizeWrongSpanishDate(date),
+      title,
+      expedient_text,
+      parliament_presence,
+      votes_for,
+      votes_against,
+      abstentions,
+      votes_parties_json,
+      likes: 0,
+      dislikes: 0,
+    };
+
+    // Then save it in DB
+    try {
+      await saveProposalToDb(writePool, proposalData);
+    } catch (error) {
+      log.error(`Failed to save proposal "${title}":`, error);
+    }
   }
 };
 
-const saveToDb = async () => {
-  const res = await extractParliamentJson();
-  console.log(res);
-};
+// Schedule everyday at 23:30
+const scheduledJob = cron.schedule("30 23 * * *", () => {
+  log.info("Running data extractor...");
+  saveToDb();
+});
 
+// I run the script Once and start the scheduledJob
+log.info("Starting scheduler...");
 saveToDb();
+scheduledJob.start();
+
+// Keep the process running
+process.stdin.resume();
+log.info("Scheduler started successfully.");
+
+// Graceful shutdown
+process.on("SIGINT", () => {
+  log.info("Shutting down gracefully...");
+  scheduledJob.stop();
+  writePool.end(() => {
+    log.info("Database connection closed.");
+    process.exit(0);
+  });
+});

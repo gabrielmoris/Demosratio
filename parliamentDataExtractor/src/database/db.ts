@@ -44,11 +44,11 @@ async function verifyConnections() {
 
 // Handle pool errors
 writePool.on("error", (err: Error) => {
-  console.error("Error on writePool: ", err);
+  log.error("Error on writePool: ", err);
 });
 
 listenPool.on("error", (err: Error) => {
-  console.error("Error on listenPool: ", err);
+  log.error("Error on listenPool: ", err);
 });
 
 export default verifyConnections;

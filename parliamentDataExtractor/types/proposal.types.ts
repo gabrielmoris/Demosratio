@@ -25,7 +25,7 @@ interface Totales {
   noVotan: number;
 }
 
-interface Votacion {
+export interface Votacion {
   asiento: string;
   diputado: string;
   grupo: string;

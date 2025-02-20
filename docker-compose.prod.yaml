@@ -3,7 +3,7 @@ version: "3.9"
 services:
   nextjs-app:
     build:
-      context: .
+      context: ./client
       dockerfile: Dockerfile.prod
     ports:
       - "3000:3000"
@@ -13,8 +13,31 @@ services:
       - DATABASE_URL=postgresql://postgres:password@postgres:5432/demosratio
       - NODE_ENV=production
       # - NEXT_PUBLIC_API_URL=http://localhost:3000/api # Example
+    restart: unless-stopped
+    networks:
+      - app-network
+  proposals:
+    build:
+      context: ./proposals
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    depends_on:
+      - postgres
     volumes:
-      - /app/.next
+      - ./proposals:/app
+    restart: unless-stopped
+    networks:
+      - app-network
+
+  parliament-data-extractor:
+    build:
+      context: ./parliamentDataExtractor
+      dockerfile: Dockerfile
+    depends_on:
+      - postgres
+    volumes:
+      - ./parliamentDataExtractor:/app
     restart: unless-stopped
     networks:
       - app-network
