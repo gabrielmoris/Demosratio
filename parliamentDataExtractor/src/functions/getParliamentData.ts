@@ -13,14 +13,14 @@ export const extractParliamentJson = async (date: String): Promise<ProposalData[
       );
 
       if (!response.ok) {
-        reject(`HTTP error! status: ${response.status}`);
+        reject(`HTTP error! status from www.congreso.e: ${response.status}`);
         return;
       }
 
       const html = (await response.text()).replaceAll("\n", "").replaceAll("\t", "");
 
       if (html.includes("No hay votaciones")) {
-        log.info(`No Votes`);
+        log.info(`No Votes for the day ${date}`);
         resolve([]);
         return;
       }

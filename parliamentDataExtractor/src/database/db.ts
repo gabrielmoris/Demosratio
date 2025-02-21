@@ -38,8 +38,12 @@ async function testConnection(pool: Pool, poolName: string) {
 
 // Verify Connections
 async function verifyConnections() {
-  await testConnection(writePool, "writePool");
-  await testConnection(listenPool, "listenPool");
+  try {
+    await testConnection(writePool, "writePool");
+    await testConnection(listenPool, "listenPool");
+  } catch (e) {
+    log.error("Error in testconnections, write-listen", e);
+  }
 }
 
 // Handle pool errors
