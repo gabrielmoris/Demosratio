@@ -9,28 +9,19 @@ import cron from "node-cron";
 
 const log = new Logger();
 
-// DB INIT
-
-async function initializeDatabase() {
-  try {
-    await verifyConnections();
-    await createTables();
-    log.info("Database initialization complete.");
-  } catch (error) {
-    log.error("Database initialization failed:", error);
-  }
-}
-
-const yesterday = getDateString(1);
-
-const saveToDb = async () => {
-  await initializeDatabase();
-  const extractedParliamentData = await extractParliamentJson(yesterday);
+const saveToDb = async (day: string) => {
+  const extractedParliamentData = await extractParliamentJson(day);
 
   for (const votation of extractedParliamentData) {
     // Get the important information
     const { sesion: session, fecha: date, titulo: title, textoExpediente: expedient_text } = votation.informacion;
-    const { presentes: parliament_presence, afavor: votes_for, enContra: votes_against, abstenciones: abstentions } = votation.totales;
+    const {
+      presentes: parliament_presence,
+      afavor: votes_for,
+      enContra: votes_against,
+      abstenciones: abstentions,
+      asentimiento: is_accepted,
+    } = votation.totales;
     const votes_parties_json = mergeVotesByParty(votation.votaciones);
 
     const proposalData = {
@@ -42,6 +33,7 @@ const saveToDb = async () => {
       votes_for,
       votes_against,
       abstentions,
+      is_accepted,
       votes_parties_json,
       likes: 0,
       dislikes: 0,
@@ -59,16 +51,42 @@ const saveToDb = async () => {
 // Schedule everyday at 23:30
 const scheduledJob = cron.schedule("30 23 * * *", () => {
   log.info("Running data extractor...");
-  saveToDb();
+  verifyConnections()
+    .then(() =>
+      createTables().then(() => {
+        const yesterday = getDateString(1);
+        saveToDb(yesterday).catch((e) => log.error("Error saving parliamentdata to DB", e));
+      })
+    )
+    .catch((error) => log.error("Error in cron job:", error))
+    .finally(() => log.info("Cron job finished."));
 });
 
 // I run the script Once and start the scheduledJob
 log.info("Starting scheduler...");
-saveToDb();
+
+// Uncomment this for the first time uploaded in prod.
+verifyConnections().then(() =>
+  createTables()
+    .then(async () => {
+      for (let i = 1000; i > 1; i--) {
+        const dateToCheck = getDateString(i);
+        await saveToDb(dateToCheck).catch((e) => log.error("Error saving parliamentdata to DB", e));
+      }
+    })
+    .finally(() => {
+      writePool.end(() => {
+        // Close connection only after the loop is done
+        log.info("Database connection closed after historical data load.");
+      });
+    })
+);
+
 scheduledJob.start();
 
 // Keep the process running
 process.stdin.resume();
+
 log.info("Scheduler started successfully.");
 
 // Graceful shutdown

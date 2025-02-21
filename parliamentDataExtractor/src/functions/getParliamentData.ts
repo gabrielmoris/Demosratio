@@ -20,7 +20,7 @@ export const extractParliamentJson = async (date: String): Promise<ProposalData[
       const html = (await response.text()).replaceAll("\n", "").replaceAll("\t", "");
 
       if (html.includes("No hay votaciones")) {
-        log.info(`No Votes`);
+        log.info(`No Votes for the day ${date}`);
         resolve([]);
         return;
       }
