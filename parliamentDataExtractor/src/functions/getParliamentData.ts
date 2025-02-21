@@ -13,7 +13,7 @@ export const extractParliamentJson = async (date: String): Promise<ProposalData[
       );
 
       if (!response.ok) {
-        reject(`HTTP error! status: ${response.status}`);
+        reject(`HTTP error! status from www.congreso.e: ${response.status}`);
         return;
       }
 

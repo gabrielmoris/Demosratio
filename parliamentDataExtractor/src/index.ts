@@ -15,13 +15,7 @@ const saveToDb = async (day: string) => {
   for (const votation of extractedParliamentData) {
     // Get the important information
     const { sesion: session, fecha: date, titulo: title, textoExpediente: expedient_text } = votation.informacion;
-    const {
-      presentes: parliament_presence,
-      afavor: votes_for,
-      enContra: votes_against,
-      abstenciones: abstentions,
-      asentimiento: is_accepted,
-    } = votation.totales;
+    const { presentes: parliament_presence, afavor: votes_for, enContra: votes_against, abstenciones: abstentions } = votation.totales;
     const votes_parties_json = mergeVotesByParty(votation.votaciones);
 
     const proposalData = {
@@ -33,7 +27,6 @@ const saveToDb = async (day: string) => {
       votes_for,
       votes_against,
       abstentions,
-      is_accepted,
       votes_parties_json,
       likes: 0,
       dislikes: 0,
@@ -65,11 +58,11 @@ const scheduledJob = cron.schedule("30 23 * * *", () => {
 // I run the script Once and start the scheduledJob
 log.info("Starting scheduler...");
 
-// Uncomment this for the first time uploaded in prod.
+// First time Will fetch the last X days from the parliament website
 verifyConnections().then(() =>
   createTables()
     .then(async () => {
-      for (let i = 1000; i > 1; i--) {
+      for (let i = 500; i > 1; i--) {
         const dateToCheck = getDateString(i);
         await saveToDb(dateToCheck).catch((e) => log.error("Error saving parliamentdata to DB", e));
       }

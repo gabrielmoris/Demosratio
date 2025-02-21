@@ -5,12 +5,12 @@ export async function createTables() {
   const client = await writePool.connect();
   const log = new Logger();
 
-  await client.query(`DROP TABLE IF EXISTS proposal_votes;`);
-  await client.query(`DROP TABLE IF EXISTS proposals;`);
-  await client.query(`DROP TABLE IF EXISTS sources;`);
-  await client.query(`DROP TABLE IF EXISTS promises;`);
-  await client.query(`DROP TABLE IF EXISTS political_parties;`);
-  await client.query(`DROP TABLE IF EXISTS "users";`);
+  // await client.query(`DROP TABLE IF EXISTS proposal_votes;`);
+  // await client.query(`DROP TABLE IF EXISTS proposals;`);
+  // await client.query(`DROP TABLE IF EXISTS sources;`);
+  // await client.query(`DROP TABLE IF EXISTS promises;`);
+  // await client.query(`DROP TABLE IF EXISTS political_parties;`);
+  // await client.query(`DROP TABLE IF EXISTS "users";`);
 
   try {
     // USERS
@@ -54,7 +54,6 @@ export async function createTables() {
           title TEXT NOT NULL,
           session INTEGER NOT NULL DEFAULT 0,
           expedient_text TEXT,
-          is_accepted TEXT,
           votes_parties_json JSONB,
           parliament_presence INTEGER NOT NULL DEFAULT 0,
           votes_for INTEGER NOT NULL DEFAULT 0,
