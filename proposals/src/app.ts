@@ -3,7 +3,7 @@ import "express-async-errors"; // So I dont need to use next for async callbacks
 import { json } from "body-parser";
 import cors from "cors";
 import { indexParliamentRouter } from "./routes/index";
-import { writePool } from "./db";
+import { writePool } from "./database/db";
 
 const app = express();
 

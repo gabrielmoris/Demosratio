@@ -60,10 +60,12 @@ const scheduledJob = cron.schedule("30 23 * * *", () => {
 log.info("Starting scheduler...");
 
 // First time Will fetch the last X days from the parliament website
+const daysToCheck = Number(process.env.DAYS_TO_CHECK_VOTATIONS);
+
 verifyConnections().then(() =>
   createTables()
     .then(async () => {
-      for (let i = 500; i > 1; i--) {
+      for (let i = daysToCheck; i > 1; i--) {
         const dateToCheck = getDateString(i);
         await saveToDb(dateToCheck).catch((e) => log.error("Error saving parliamentdata to DB", e));
       }

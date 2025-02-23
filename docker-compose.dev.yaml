@@ -39,6 +39,8 @@ services:
       dockerfile: Dockerfile
     depends_on:
       - postgres
+    environment:
+      - DAYS_TO_CHECK_VOTATIONS=10
     volumes:
       - ./parliamentDataExtractor:/app
     restart: unless-stopped
