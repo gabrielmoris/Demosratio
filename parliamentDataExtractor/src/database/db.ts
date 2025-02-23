@@ -19,11 +19,6 @@ export const writePool = new Pool({
   ...dbConfig,
 });
 
-// Listen Pool
-export const listenPool = new Pool({
-  ...dbConfig,
-});
-
 //Test connection
 async function testConnection(pool: Pool, poolName: string) {
   try {
@@ -40,7 +35,6 @@ async function testConnection(pool: Pool, poolName: string) {
 async function verifyConnections() {
   try {
     await testConnection(writePool, "writePool");
-    await testConnection(listenPool, "listenPool");
   } catch (e) {
     log.error("Error in testconnections, write-listen", e);
   }
@@ -49,10 +43,6 @@ async function verifyConnections() {
 // Handle pool errors
 writePool.on("error", (err: Error) => {
   log.error("Error on writePool: ", err);
-});
-
-listenPool.on("error", (err: Error) => {
-  log.error("Error on listenPool: ", err);
 });
 
 export default verifyConnections;

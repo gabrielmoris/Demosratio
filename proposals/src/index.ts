@@ -1,5 +1,5 @@
 import { app } from "./app";
-import verifyConnections from "./db";
+import verifyConnections from "./database/db";
 
 const start = async () => {
   try {

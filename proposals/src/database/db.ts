@@ -25,7 +25,7 @@ export const listenPool = new Pool({
 });
 
 //Test connection
-async function testConnection(pool: Pool, poolName: string) {
+const testConnection = async (pool: Pool, poolName: string) => {
   try {
     const client = await pool.connect();
     log.info(`Successfully connected to the ${poolName} database`);
@@ -34,13 +34,13 @@ async function testConnection(pool: Pool, poolName: string) {
     log.error(`Error connecting to the ${poolName} database:`, err);
     throw err;
   }
-}
+};
 
 // Verify Connections
-async function verifyConnections() {
+export const verifyConnections = async () => {
   await testConnection(writePool, "writePool");
   await testConnection(listenPool, "listenPool");
-}
+};
 
 // Handle pool errors
 writePool.on("error", (err: Error) => {
