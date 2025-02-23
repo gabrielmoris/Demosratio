@@ -27,7 +27,7 @@ export async function saveProposalToDb(pool: Pool, proposalData: any) {
 
     if (checkResult.rows.length > 0) {
       log.warn(`Proposal with expedient_text "${expedient_text}" already exists. Skipping.`);
-      return null; // Or return the existing ID if you need it
+      return null;
     }
 
     // Then save
