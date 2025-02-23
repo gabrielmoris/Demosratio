@@ -22,6 +22,7 @@ const saveToDb = async (day: string) => {
       session,
       date: normalizeWrongSpanishDate(date),
       title,
+      url: `https://www.congreso.es/es/opendata/votaciones?p_p_id=votaciones&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&targetLegislatura=XV&targetDate=${day}`,
       expedient_text,
       parliament_presence,
       votes_for,
