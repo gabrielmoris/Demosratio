@@ -35,7 +35,7 @@ export default async function RootLayout({ children, params }: { children: React
   const messages = await getMessages({ locale: locale });
   return (
     <html lang={locale}>
-      <body className={`${roboto.variable} ${robotoSerif.variable} antialiased`}>
+      <body className={`${roboto.variable} ${robotoSerif.variable} antialiased pl-14 flex flex-row items-start justify-center`}>
         <NextIntlClientProvider messages={messages}>
           <Navbar />
           {children}
