@@ -5,7 +5,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "../../i18n/routing";
-import Navbar from "@/src/components/navbar";
+import Navbar from "@/src/components/Navbar";
 
 const roboto = Roboto({
   variable: "--font-roboto",

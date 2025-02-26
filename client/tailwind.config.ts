@@ -12,6 +12,8 @@ export default {
       colors: {
         background: "var(--background)",
         contrast: "var(--foreground)",
+        drlight: "#E4E3FF",
+        drgray: "#737383",
       },
     },
   },

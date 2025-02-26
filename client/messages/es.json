@@ -3,6 +3,7 @@
     "title": "Demos Ratio: Veritas et Iustitia. Civis curiosus et vigilans iura sua novit. Demos Ratio, fons veritatis, ubi promissio et factum, lex et iustitia, sub oculis populi monstrantur."
   },
   "login": {
-    "form-title": "Inicia sesión en tu cuenta"
+    "form-title": "Inicia sesión en tu cuenta",
+    "btn-login": "Iniciar Sesión"
   }
 }
