@@ -24,7 +24,13 @@ export const metadata: Metadata = {
   description: "Created with love by gabrielcmoris",
 };
 
-export default async function RootLayout({ children, params }: { children: React.ReactNode; params: { locale: string } }) {
+export default async function RootLayout({
+  children,
+  params,
+}: {
+  children: React.ReactNode;
+  params: Promise<{ locale: string }>;
+}) {
   const { locale } = await Promise.resolve(params);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -35,7 +41,9 @@ export default async function RootLayout({ children, params }: { children: React
   const messages = await getMessages({ locale: locale });
   return (
     <html lang={locale}>
-      <body className={`${roboto.variable} ${robotoSerif.variable} antialiased pl-14 flex flex-row items-start justify-center`}>
+      <body
+        className={`${roboto.variable} ${robotoSerif.variable} antialiased pl-14 flex flex-row items-start justify-center`}
+      >
         <NextIntlClientProvider messages={messages}>
           <Navbar />
           {children}
