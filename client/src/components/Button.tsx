@@ -3,28 +3,28 @@ import Image from "next/image";
 interface ImputProps {
   label: string;
   isLoading?: boolean;
-  onClick?: () => void;
   isSecondary?: boolean;
   icn?: string;
   type?: "submit" | "button" | "reset";
   className?: string;
+  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 export default function Button({
   label,
   isSecondary,
   isLoading,
-  onClick,
   className,
   icn,
   type,
+  onClick,
 }: ImputProps) {
   return (
     <button
       type={type || "button"}
-      onClick={onclick ? onClick : () => {}}
       disabled={isLoading}
-      className={`py-2 px-5 min-w-36 flex flex-row gap-5 items-center justify-start rounded-sm font-[family-name:var(--font-roboto)] hover:opacity-85 ${
+      onClick={onClick}
+      className={`py-2 px-5 min-w-52 flex flex-row gap-5 items-center justify-center rounded-sm font-[family-name:var(--font-roboto)] hover:opacity-85 ${
         isSecondary ? "bg-drlight text-contrast" : "bg-contrast text-drlight"
       } ${className}`}
     >

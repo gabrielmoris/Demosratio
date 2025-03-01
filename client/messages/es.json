@@ -1,11 +1,17 @@
 {
   "landingpage": {
-    "title": "Demos Ratio: Veritas et Iustitia. Civis curiosus et vigilans iura sua novit. Demos Ratio, fons veritatis, ubi promissio et factum, lex et iustitia, sub oculis populi monstrantur."
+    "title": "Demos Ratio: Tu Voz, Tus Decisiones: Seguimiento Imparcial de la Política."
   },
   "login": {
     "form-title": "Inicia sesión en tu cuenta",
     "btn-login": "Iniciar Sesión",
     "btn-register": "Regístrate",
-    "btn-google": "Inicia sesión con Google"
+    "btn-google": "Inicia sesión con Google",
+    "or-email": "O usa el Email"
+  },
+  "register": {
+    "form-title": "Registra tu nueva cuenta",
+    "btn-login": "Atrás",
+    "btn-register": "Regístrate"
   }
 }

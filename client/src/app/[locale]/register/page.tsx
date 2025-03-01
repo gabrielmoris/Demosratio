@@ -5,11 +5,16 @@ import { useLocale, useTranslations } from "next-intl";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 
-export default function Login() {
-  const t = useTranslations("login");
-  const [form, setForm] = useState<{ name: string; password: string }>({
+export default function Register() {
+  const t = useTranslations("register");
+  const [form, setForm] = useState<{
+    name: string;
+    password: string;
+    repeatPassword: string;
+  }>({
     name: "",
     password: "",
+    repeatPassword: "",
   });
   const [error, setError] = useState<string>();
 
@@ -31,8 +36,8 @@ export default function Login() {
     console.log(form);
   };
 
-  const handleToRegister = () => {
-    router.push(`/${locale}/register`);
+  const handleToLogin = () => {
+    router.push(`/${locale}/login`);
   };
 
   return (
@@ -44,19 +49,6 @@ export default function Login() {
         <label className="font-[family-name:var(--font-roboto-serif)] font-bold w-full text-center text-lg">
           {t("form-title")}
         </label>
-
-        <Button
-          label={t("btn-google")}
-          type="button"
-          isSecondary
-          icn="/google-icn.svg"
-        />
-        <div className="w-full h-10 flex flex-col items-center justify-center relative">
-          <p className="bg-white p-2 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-            {t("or-email")}
-          </p>
-          <hr className="bg-drgray w-1/2" />
-        </div>
         <Input
           inputLabel="Nombre"
           inputObj={form}
@@ -76,14 +68,24 @@ export default function Login() {
           required
           password
         />
+        <Input
+          inputLabel="Repite la contraseña"
+          inputObj={form}
+          inputKey="repeat-password"
+          placeholder={form.repeatPassword}
+          setInput={onInputChange}
+          error={error || ""}
+          required
+          password
+        />
         <div className="flex flex-col gap-5 md:flex-row w-full justify-between items-betwen">
           <Button
-            label={t("btn-register")}
+            label={t("btn-login")}
             type="button"
             isSecondary
-            onClick={handleToRegister}
+            onClick={handleToLogin}
           />
-          <Button label={t("btn-login")} type="submit" />
+          <Button label={t("btn-register")} type="submit" />
         </div>
       </form>
     </div>

@@ -42,7 +42,7 @@ export default async function RootLayout({
   return (
     <html lang={locale}>
       <body
-        className={`${roboto.variable} ${robotoSerif.variable} antialiased pl-14 flex flex-row items-start justify-center`}
+        className={`${roboto.variable} ${robotoSerif.variable} antialiased md:pl-14 flex flex-row items-start justify-center`}
       >
         <NextIntlClientProvider messages={messages}>
           <Navbar />
