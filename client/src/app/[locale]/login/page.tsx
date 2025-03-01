@@ -35,9 +35,16 @@ export default function Login() {
         onSubmit={onFormSubmit}
         className="flex flex-col bg-white border border-drlight gap-8 rounded-md p-10 row-start-2 items-center justify-center sm:items-start min-w-96"
       >
-        <label className="font-[family-name:var(--font-roboto-serif)] font-bold">
+        <label className="font-[family-name:var(--font-roboto-serif)] font-bold text-center">
           {t("form-title")}
         </label>
+        <Button
+          label={t("btn-google")}
+          type="submit"
+          isSecondary
+          icn="/google-icn.svg"
+          className="w-full"
+        />
         <Input
           inputLabel="Nombre"
           inputObj={form}

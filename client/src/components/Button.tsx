@@ -24,11 +24,11 @@ export default function Button({
       type={type || "button"}
       onClick={onclick ? onClick : () => {}}
       disabled={isLoading}
-      className={`py-2 px-5 min-w-36 rounded-sm font-[family-name:var(--font-roboto)] hover:opacity-85 ${
+      className={`py-2 px-5 min-w-36 flex flex-row gap-5 items-center justify-start rounded-sm font-[family-name:var(--font-roboto)] hover:opacity-85 ${
         isSecondary ? "bg-drlight text-contrast" : "bg-contrast text-drlight"
       } ${className}`}
     >
-      {icn && <Image src={icn} alt="btn-icn" width={50} height={50} />}
+      {icn && <Image src={icn} alt="btn-icn" width={30} height={30} />}
       {label}
     </button>
   );

@@ -5,6 +5,7 @@
   "login": {
     "form-title": "Inicia sesión en tu cuenta",
     "btn-login": "Iniciar Sesión",
-    "btn-register": "Regístrate"
+    "btn-register": "Regístrate",
+    "btn-google": "Inicia sesión con Google"
   }
 }
