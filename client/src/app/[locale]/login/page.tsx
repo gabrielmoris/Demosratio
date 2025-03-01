@@ -57,7 +57,10 @@ export default function Login() {
           required
           password
         />
-        <Button label={t("btn-login")} type="submit" />
+        <div className="flex flex-row w-full justify-between items-betwen">
+          <Button label={t("btn-register")} type="submit" isSecondary />
+          <Button label={t("btn-login")} type="submit" />
+        </div>
       </form>
     </div>
   );

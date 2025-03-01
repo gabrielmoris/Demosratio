@@ -4,6 +4,7 @@
   },
   "login": {
     "form-title": "Inicia sesión en tu cuenta",
-    "btn-login": "Iniciar Sesión"
+    "btn-login": "Iniciar Sesión",
+    "btn-register": "Regístrate"
   }
 }
