@@ -24,7 +24,7 @@ export default function Button({
       type={type || "button"}
       disabled={isLoading}
       onClick={onClick}
-      className={`py-2 px-5 min-w-52 flex flex-row gap-5 items-center justify-center rounded-sm font-[family-name:var(--font-roboto)] hover:opacity-85 ${
+      className={`py-2 px-5 min-w-52 flex flex-row gap-5 items-center justify-center rounded-md font-[family-name:var(--font-roboto)] hover:opacity-80 duration-500 ${
         isSecondary ? "bg-drlight text-contrast" : "bg-contrast text-drlight"
       } ${className}`}
     >

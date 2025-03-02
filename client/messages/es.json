@@ -1,6 +1,11 @@
 {
   "landingpage": {
-    "title": "Demos Ratio: Tu Voz, Tus Decisiones: Seguimiento Imparcial de la Política."
+    "title": "Demos Ratio: Tu Voz, Tus Decisiones: Seguimiento Imparcial de la Política.",
+    "subtitle": "¿Cumplen lo que prometen? Descubre la verdad detrás de las promesas y decisiones políticas. Únete a una comunidad de ciudadanos comprometidos con la transparencia."
+  },
+  "landingpage-card": {
+    "promises": "Promesa selectorales.",
+    "parliament": "Últimos votos del congreso."
   },
   "login": {
     "form-title": "Inicia sesión en tu cuenta",
