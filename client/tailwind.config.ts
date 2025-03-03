@@ -11,7 +11,9 @@ export default {
     extend: {
       colors: {
         background: "var(--background)",
-        foreground: "var(--foreground)",
+        contrast: "var(--foreground)",
+        drlight: "#E4E3FF",
+        drgray: "#737383",
       },
     },
   },

@@ -3,7 +3,6 @@ import "express-async-errors"; // So I dont need to use next for async callbacks
 import { json } from "body-parser";
 import cors from "cors";
 import { indexParliamentRouter } from "./routes/index";
-import { writePool } from "./database/db";
 
 const app = express();
 
@@ -13,11 +12,6 @@ app.use(json());
 app.set("trust proxy", true); // Trust the proxy from ingress-nginx
 
 app.use(indexParliamentRouter);
-
-app.get("/write", async (req, res) => {
-  const result = await writePool.query("SELECT NOW()");
-  res.send(`Write pool time: ${result.rows[0].now}`);
-});
 
 app.all("*", (req, res) => {
   res.status(404).send("Not Found");

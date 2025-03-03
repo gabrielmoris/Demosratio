@@ -1,14 +1,22 @@
 import type { Metadata } from "next";
 import "../globals.css";
-import { Geist_Mono } from "next/font/google";
+import { Roboto, Roboto_Serif } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "../../i18n/routing";
+import Navbar from "@/src/components/Navbar";
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const roboto = Roboto({
+  variable: "--font-roboto",
   subsets: ["latin"],
+  weight: ["400", "700"], // Add the weights you need
+});
+
+const robotoSerif = Roboto_Serif({
+  variable: "--font-roboto-serif",
+  subsets: ["latin"],
+  weight: ["400", "700"], // Add the weights you need
 });
 
 export const metadata: Metadata = {
@@ -16,23 +24,30 @@ export const metadata: Metadata = {
   description: "Created with love by gabrielcmoris",
 };
 
-interface Props {
+export default async function RootLayout({
+  children,
+  params,
+}: {
   children: React.ReactNode;
-  params: Promise<{ locale: "es" }>;
-}
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await Promise.resolve(params);
 
-export default async function RootLayout({ children, params }: Props) {
-  const { locale } = await Promise.resolve(params); // Ensure locale is resolved from string
-
-  if (locale && !routing.locales.includes(locale)) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  if (!routing.locales.includes(locale as any)) {
     notFound();
   }
 
   const messages = await getMessages({ locale: locale });
   return (
     <html lang={locale}>
-      <body className={`${geistMono.variable} antialiased`}>
-        <NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>
+      <body
+        className={`${roboto.variable} ${robotoSerif.variable} antialiased md:pl-14 flex flex-row items-start justify-center`}
+      >
+        <NextIntlClientProvider messages={messages}>
+          <Navbar />
+          {children}
+        </NextIntlClientProvider>
       </body>
     </html>
   );
