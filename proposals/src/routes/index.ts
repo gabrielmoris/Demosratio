@@ -15,6 +15,7 @@ router.get("/api/proposals", async (req: Request, res: Response) => {
 
   await verifyConnections();
   const proposals = await getProposalsFromDb(writePool, page, pageSize);
+  console.log(proposals)
   res.status(200).send({ proposals });
 });
 
