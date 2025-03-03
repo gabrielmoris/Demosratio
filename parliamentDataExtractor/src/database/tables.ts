@@ -17,7 +17,8 @@ export async function createTables() {
     await client.query(`
         CREATE TABLE IF NOT EXISTS "users" (
           id SERIAL PRIMARY KEY,
-          name VARCHAR(255),
+          email VARCHAR(255),
+          password VARCHAR(255),
           register_date DATE NOT NULL DEFAULT CURRENT_DATE,
           identity_hash VARCHAR(255) UNIQUE
         );

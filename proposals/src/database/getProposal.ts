@@ -1,4 +1,4 @@
-import { Pool, QueryResult } from "pg";
+import { Pool } from "pg";
 import { Logger } from "tslog";
 
 const log = new Logger();

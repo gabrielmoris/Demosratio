@@ -19,6 +19,20 @@ services:
     networks:
       - app-network
 
+  auth:
+    build:
+      context: ./auth
+      dockerfile: Dockerfile
+    ports:
+      - "3002:3002"
+    depends_on:
+      - postgres
+    volumes:
+      - ./auth:/app
+    restart: unless-stopped
+    networks:
+      - app-network
+
   proposals:
     build:
       context: ./proposals
