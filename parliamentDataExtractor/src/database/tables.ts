@@ -20,7 +20,7 @@ export async function createTables() {
           email VARCHAR(255),
           password VARCHAR(255),
           register_date DATE NOT NULL DEFAULT CURRENT_DATE,
-          identity_hash VARCHAR(255) UNIQUE
+          identity_hash VARCHAR(255)
         );
       `);
     log.info('Table "users" created or already exists.');

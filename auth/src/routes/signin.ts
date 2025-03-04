@@ -3,6 +3,8 @@ import { body } from "express-validator";
 import jwt from "jsonwebtoken";
 import { validateRequest } from "../helpers/validate-request";
 import { Password } from "../helpers/password";
+import { listenPool } from "../database/db";
+import { findUser } from "../database/find-user";
 
 const router = express.Router();
 
@@ -15,31 +17,33 @@ router.post(
 
     // Get user HERE
 
-    // if (!existingUser) {
-    //   throw new Error("Invalid credentials");
-    // }
+    const existingUser = await findUser(listenPool, email);
 
-    // const passwordsMatch = await Password.compare(existingUser.password, password);
+    if (!existingUser || existingUser == null) {
+      throw new Error("Invalid credentials");
+    }
 
-    // if (!passwordsMatch) {
-    //   throw new Error("Invalid credentials");
-    // }
+    const passwordsMatch = await Password.compare(existingUser!.password, password);
 
-    // // Generate JWT
-    // const userJwt = jwt.sign(
-    //   {
-    //     id: existingUser.id,
-    //     email: existingUser.email,
-    //   },
-    //   process.env.JWT_KEY!
-    // );
+    if (!passwordsMatch) {
+      throw new Error("Invalid credentials");
+    }
 
-    // // Store it on session object
-    // req.session = {
-    //   jwt: userJwt,
-    // };
+    // Generate JWT
+    const userJwt = jwt.sign(
+      {
+        id: existingUser.id,
+        email: existingUser.email,
+      },
+      process.env.JWT_KEY!
+    );
 
-    // res.status(200).send(existingUser);
+    // Store it on session object
+    req.session = {
+      jwt: userJwt,
+    };
+
+    res.status(200).send(existingUser);
   }
 );
 

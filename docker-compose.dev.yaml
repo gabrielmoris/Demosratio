@@ -25,6 +25,9 @@ services:
       dockerfile: Dockerfile
     ports:
       - "3002:3002"
+    environment:
+      - JWT_KEY=demosratio_Key
+      - NODE_ENV=test
     depends_on:
       - postgres
     volumes:

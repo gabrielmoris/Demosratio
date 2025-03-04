@@ -16,6 +16,22 @@ services:
     restart: unless-stopped
     networks:
       - app-network
+  auth:
+    build:
+      context: ./auth
+      dockerfile: Dockerfile
+    ports:
+      - "3002:3002"
+    environment:
+      - JWT_KEY=demosratio_Key
+      - NODE_ENV=prod
+    depends_on:
+      - postgres
+    volumes:
+      - ./auth:/app
+    restart: unless-stopped
+    networks:
+      - app-network
   proposals:
     build:
       context: ./proposals
