@@ -6,6 +6,8 @@ import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "../../i18n/routing";
 import Navbar from "@/src/components/Navbar";
+import { UiProvider } from "@/src/context/uiContext";
+import { AuthProvider } from "@/src/context/authContext";
 
 const roboto = Roboto({
   variable: "--font-roboto",
@@ -24,13 +26,7 @@ export const metadata: Metadata = {
   description: "Created with love by gabrielcmoris",
 };
 
-export default async function RootLayout({
-  children,
-  params,
-}: {
-  children: React.ReactNode;
-  params: Promise<{ locale: string }>;
-}) {
+export default async function RootLayout({ children, params }: { children: React.ReactNode; params: Promise<{ locale: string }> }) {
   const { locale } = await Promise.resolve(params);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -41,13 +37,15 @@ export default async function RootLayout({
   const messages = await getMessages({ locale: locale });
   return (
     <html lang={locale}>
-      <body
-        className={`${roboto.variable} ${robotoSerif.variable} antialiased md:pl-14 flex flex-row items-start justify-center`}
-      >
-        <NextIntlClientProvider messages={messages}>
-          <Navbar />
-          {children}
-        </NextIntlClientProvider>
+      <body className={`${roboto.variable} ${robotoSerif.variable} antialiased md:pl-14 flex flex-row items-start justify-center`}>
+        <AuthProvider>
+          <UiProvider>
+            <NextIntlClientProvider messages={messages}>
+              <Navbar />
+              {children}
+            </NextIntlClientProvider>
+          </UiProvider>
+        </AuthProvider>
       </body>
     </html>
   );

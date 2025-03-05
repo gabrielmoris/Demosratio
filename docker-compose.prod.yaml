@@ -24,7 +24,7 @@ services:
       - "3002:3002"
     environment:
       - JWT_KEY=demosratio_Key
-      - NODE_ENV=prod
+      - NODE_ENV=production
     depends_on:
       - postgres
     volumes:
@@ -38,6 +38,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - "3001:3001"
+    environment:
+      - NODE_ENV=production
     depends_on:
       - postgres
     volumes:
