@@ -6,7 +6,7 @@ import { useState } from "react";
 import { useRequest } from "@/hooks/use-request";
 
 export default function Navbar() {
-  const { currentUser } = useAuth();
+  const { currentUser, updateCurrentUser } = useAuth();
   const [openUser, setOpenUser] = useState(false);
 
   const { doRequest } = useRequest({
@@ -14,7 +14,7 @@ export default function Navbar() {
     method: "post",
     body: {},
     onSuccess: () => {
-      console.log("bye");
+      updateCurrentUser();
     },
   });
 

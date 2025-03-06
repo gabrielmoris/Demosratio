@@ -5,6 +5,7 @@ import { useLocale, useTranslations } from "next-intl";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useRequest } from "@/hooks/use-request";
+import { useAuth } from "@/src/context/authContext";
 
 export default function Register() {
   const t = useTranslations("register");
@@ -20,12 +21,16 @@ export default function Register() {
 
   const router = useRouter();
   const locale = useLocale();
+  const { updateCurrentUser } = useAuth();
 
   const { doRequest } = useRequest({
     url: "http://localhost:3002/api/users/signup",
     method: "post",
     body: { email: form.email, password: form.password },
-    onSuccess: () => router.push(`/${locale}/login`),
+    onSuccess: () => {
+      updateCurrentUser();
+      router.push(`/${locale}/login`);
+    },
   });
 
   const onInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, inputKey: string) => {

@@ -5,9 +5,11 @@ import { useLocale, useTranslations } from "next-intl";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useRequest } from "@/hooks/use-request";
+import { useAuth } from "@/src/context/authContext";
 
 export default function Login() {
   const t = useTranslations("login");
+  const { updateCurrentUser } = useAuth();
   const [form, setForm] = useState<{ email: string; password: string }>({
     email: "",
     password: "",
@@ -18,6 +20,7 @@ export default function Login() {
     method: "post",
     body: { email: form.email, password: form.password },
     onSuccess: () => {
+      updateCurrentUser();
       router.push(`/${locale}`);
     },
   });
