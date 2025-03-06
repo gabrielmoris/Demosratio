@@ -20,13 +20,15 @@ router.post(
     const existingUser = await findUser(listenPool, email);
 
     if (!existingUser || existingUser == null) {
-      throw new Error("Invalid credentials");
+      res.status(401).send({ message: "Invalid Credentials" });
+      return;
     }
 
     const passwordsMatch = await Password.compare(existingUser!.password, password);
 
     if (!passwordsMatch) {
-      throw new Error("Invalid credentials");
+      res.status(401).send({ message: "Invalid Credentials" });
+      return;
     }
 
     // Generate JWT

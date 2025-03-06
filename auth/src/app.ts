@@ -6,11 +6,18 @@ import { signinRouter } from "./routes/signin";
 import { signupRouter } from "./routes/signup";
 import { signoutRouter } from "./routes/signout";
 import cookieSession from "cookie-session";
+import cors from "cors";
 
 const app = express();
+app.set("trust proxy", true);
 app.use(json());
-app.set("trust proxy", true); // Trust the proxy from ingress-nginx
-app.use(cookieSession({ signed: false, secure: process.env.NODE_ENV !== "test" }));
+app.use(
+  cors({
+    origin: process.env.NODE_ENV === "development" ? "http://localhost:3000" : "ADD_URL_PROD",
+    credentials: true,
+  })
+);
+app.use(cookieSession({ signed: false, secure: process.env.NODE_ENV !== "development" }));
 
 app.use(currentUserRouter);
 app.use(signinRouter);

@@ -27,7 +27,7 @@ services:
       - "3002:3002"
     environment:
       - JWT_KEY=demosratio_Key
-      - NODE_ENV=test
+      - NODE_ENV=development
     depends_on:
       - postgres
     volumes:
@@ -44,6 +44,8 @@ services:
       - "3001:3001"
     depends_on:
       - postgres
+    environment:
+      - NODE_ENV=development
     volumes:
       - ./proposals:/app
     restart: unless-stopped

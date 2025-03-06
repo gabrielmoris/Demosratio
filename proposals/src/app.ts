@@ -7,6 +7,12 @@ import { indexParliamentRouter } from "./routes/index";
 const app = express();
 
 app.use(cors());
+app.use(
+  cors({
+    origin: process.env.NODE_ENV === "development" ? "http://localhost:3000" : "ADD_URL_PROD",
+    credentials: true,
+  })
+);
 
 app.use(json());
 app.set("trust proxy", true); // Trust the proxy from ingress-nginx
