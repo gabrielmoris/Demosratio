@@ -66,14 +66,14 @@ export default function Navbar() {
         </Link>
       )}
 
-      <Link className="w-7 h-7 lg:w-10 lg:h-10 rounded-full flex flex-col items-center justify-center hover:opacity-60 duration-500" href="/promises">
-        <Image src="/promis-icn.svg" alt="promises-icn" width={50} height={50} />
-      </Link>
       <Link
         className="w-7 h-7 lg:w-10 lg:h-10 rounded-full flex flex-col items-center justify-center hover:opacity-60 duration-500"
         href="/parliament"
       >
         <Image src="/proposals-icn.svg" alt="proposals-icn" width={50} height={50} />
+      </Link>
+      <Link className="w-7 h-7 lg:w-10 lg:h-10 rounded-full flex flex-col items-center justify-center hover:opacity-60 duration-500" href="/promises">
+        <Image src="/promis-icn.svg" alt="promises-icn" width={50} height={50} />
       </Link>
       <Link className="w-7 h-7 lg:w-10 lg:h-10 rounded-full flex flex-col items-center justify-center hover:opacity-60 duration-500" href="/manifest">
         <Image src="/what-icn.svg" alt="what-icn" width={50} height={50} />

@@ -1,7 +1,7 @@
 version: "3.9"
 
 services:
-  nextjs-app:
+  nextjs-app-prod:
     build:
       context: ./client
       dockerfile: Dockerfile.prod
@@ -12,7 +12,6 @@ services:
     environment:
       - DATABASE_URL=postgresql://postgres:password@postgres:5432/demosratio
       - NODE_ENV=production
-      # - NEXT_PUBLIC_API_URL=http://localhost:3000/api # Example
     restart: unless-stopped
     networks:
       - app-network
@@ -25,6 +24,7 @@ services:
     environment:
       - JWT_KEY=demosratio_Key
       - NODE_ENV=production
+      - CLIENT_URL=http://localhost:3000 # Change it for prod
     depends_on:
       - postgres
     volumes:
@@ -40,6 +40,7 @@ services:
       - "3001:3001"
     environment:
       - NODE_ENV=production
+      - CLIENT_URL=http://localhost:3000 # Change it for prod
     depends_on:
       - postgres
     volumes:
@@ -64,8 +65,8 @@ services:
 
   postgres:
     image: postgres:15
-    ports:
-      - "5432:5432" # Remove for production.
+    # ports:
+    #   - "5432:5432"
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=password
