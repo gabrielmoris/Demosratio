@@ -29,8 +29,6 @@ const saveToDb = async (day: string) => {
       votes_against,
       abstentions,
       votes_parties_json,
-      likes: 0,
-      dislikes: 0,
     };
 
     // Then save it in DB

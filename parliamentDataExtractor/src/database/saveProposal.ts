@@ -5,20 +5,8 @@ const log = new Logger();
 
 export async function saveProposalToDb(pool: Pool, proposalData: any) {
   try {
-    const {
-      session,
-      date,
-      title,
-      url,
-      expedient_text,
-      parliament_presence,
-      votes_for,
-      votes_against,
-      abstentions,
-      votes_parties_json,
-      likes,
-      dislikes,
-    } = proposalData;
+    const { session, date, title, url, expedient_text, parliament_presence, votes_for, votes_against, abstentions, votes_parties_json } =
+      proposalData;
 
     // First I check if the expedient_text is already saved (It seems they upload a lot of redundant files)
     const checkQuery = `SELECT id FROM proposals WHERE expedient_text = $1`;
@@ -32,25 +20,12 @@ export async function saveProposalToDb(pool: Pool, proposalData: any) {
 
     // Then save
     const query = `
-        INSERT INTO proposals (title, url, session, expedient_text, parliament_presence, votes_for, abstentions, votes_against, date,votes_parties_json, likes,dislikes)
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11,$12)
+        INSERT INTO proposals (title, url, session, expedient_text, parliament_presence, votes_for, abstentions, votes_against, date,votes_parties_json)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
         RETURNING id;  -- Return the inserted ID if needed
       `;
 
-    const values = [
-      title,
-      url,
-      session,
-      expedient_text,
-      parliament_presence,
-      votes_for,
-      abstentions,
-      votes_against,
-      date,
-      votes_parties_json,
-      likes,
-      dislikes,
-    ];
+    const values = [title, url, session, expedient_text, parliament_presence, votes_for, abstentions, votes_against, date, votes_parties_json];
 
     const result = await pool.query(query, values);
 
