@@ -17,7 +17,7 @@ router.post(
   ],
   validateRequest,
   async (req: Request, res: Response): Promise<void> => {
-    const { email, password } = req.body;
+    const { email, password, fingerprint } = req.body;
 
     const existingUser = await findUser(listenPool, email);
 
@@ -32,6 +32,7 @@ router.post(
     const userToSave = {
       email,
       password: hashed,
+      hash: fingerprint,
     };
 
     const user = await saveUserToDb(writePool, userToSave);
