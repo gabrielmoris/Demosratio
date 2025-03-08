@@ -10,14 +10,17 @@
   },
   "dependencies": {
     "axios": "^1.8.1",
+    "crypto-js": "^4.2.0",
     "js-cookie": "^3.0.5",
     "next": "15.1.7",
     "next-intl": "^3.26.3",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "tslog": "^4.9.3"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@types/crypto-js": "^4.2.2",
     "@types/js-cookie": "^3.0.6",
     "@types/node": "^20",
     "@types/react": "^19",

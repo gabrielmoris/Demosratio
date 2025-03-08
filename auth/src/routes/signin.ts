@@ -3,8 +3,10 @@ import { body } from "express-validator";
 import jwt from "jsonwebtoken";
 import { validateRequest } from "../helpers/validate-request";
 import { Password } from "../helpers/password";
-import { listenPool } from "../database/db";
+import { listenPool, writePool } from "../database/db";
 import { findUser } from "../database/find-user";
+import { findFingerprint } from "../database/find-fingerprint";
+import { saveFingerprintToDb } from "../database/save-fingerprint";
 
 const router = express.Router();
 
@@ -13,21 +15,35 @@ router.post(
   [body("email").isEmail().withMessage("Email must be valid."), body("password").trim().notEmpty().withMessage("You must apply a password.")],
   validateRequest,
   async (req: Request, res: Response) => {
-    const { email, password } = req.body;
-
-    // Get user HERE
+    const { email, password, fingerprint } = req.body;
 
     const existingUser = await findUser(listenPool, email);
 
     if (!existingUser || existingUser == null) {
-      res.status(401).send({ message: "Invalid Credentials" });
+      res.status(401).send({ error: "Invalid Credentials" });
       return;
+    }
+
+    const fingerprintFromUser = await findFingerprint(listenPool, fingerprint);
+
+    if (fingerprintFromUser.user_id !== existingUser.id) {
+      const existingFingerprint = await findFingerprint(listenPool, fingerprint);
+      if (existingFingerprint) {
+        res.status(401).send({ error: "Este dispositivo no está vinculado a tu usuario." });
+        return;
+      } else {
+        const fingerprintToSave = {
+          userId: Number(existingUser.id),
+          hash: String(fingerprint),
+        };
+        await saveFingerprintToDb(writePool, fingerprintToSave);
+      }
     }
 
     const passwordsMatch = await Password.compare(existingUser!.password, password);
 
     if (!passwordsMatch) {
-      res.status(401).send({ message: "Invalid Credentials" });
+      res.status(401).send({ error: "Invalid Credentials" });
       return;
     }
 

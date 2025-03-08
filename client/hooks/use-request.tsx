@@ -35,7 +35,7 @@ export const useRequest = ({ url, method, body, onSuccess }: RequestProps) => {
     } catch (err: any) {
       console.log(err);
       showToast({
-        message: err?.response?.data?.message || err?.message || "Error.",
+        message: err?.response?.data?.error || err?.message || "Error.",
         variant: "error",
         duration: 3000,
       });

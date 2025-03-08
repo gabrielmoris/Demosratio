@@ -19,6 +19,10 @@ export default {
         drgreen: "#22981D",
         drPurple: "#6E78C7",
       },
+      fontFamily: {
+        drserif: ["var(--font-roboto-serif)", "serif"],
+        drnote: ["var(--font-roboto)", "sans-serif"],
+      },
     },
   },
   plugins: [],
