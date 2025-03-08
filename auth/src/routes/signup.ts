@@ -9,6 +9,9 @@ import { Password } from "../helpers/password";
 import { findFingerprint } from "../database/find-fingerprint";
 import { saveFingerprintToDb } from "../database/save-fingerprint";
 import { deleteUser } from "../database/delete-user";
+import { Logger } from "tslog";
+
+const log = new Logger();
 
 const router = express.Router();
 
@@ -26,13 +29,14 @@ router.post(
     const existingFingerprint = await findFingerprint(listenPool, fingerprint);
 
     if (existingUser) {
-      console.log("Email in use.");
-      throw new Error("Email in use");
+      res.status(401).send({ error: "No ha sido posible registrarse." });
+      return;
     }
 
     if (existingFingerprint) {
-      console.log("This device has already a user.");
-      throw new Error("Device in use");
+      await deleteUser(writePool, email);
+      res.status(401).send({ error: "Este dispositivo ya está vinculado en otro usuario." });
+      return;
     }
 
     // IF NOT SAVE USER HERE
@@ -50,7 +54,7 @@ router.post(
         userId: user.id,
         hash: fingerprint,
       };
-      const hash = await saveFingerprintToDb(writePool, fingerprintToSave);
+      await saveFingerprintToDb(writePool, fingerprintToSave);
       // Generate JWT
       const userJwt = jwt.sign(
         {
@@ -67,8 +71,8 @@ router.post(
 
       res.status(201).send(user);
     } catch {
-      deleteUser(writePool, email);
-      res.status(500).send("Error.");
+      await deleteUser(writePool, email);
+      res.status(500).send({ error: "No ha sido posible registrarse." });
     }
   }
 );

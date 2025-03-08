@@ -31,7 +31,7 @@ export default function Register() {
     body: { email: form.email, password: form.password, fingerprint },
     onSuccess: () => {
       updateCurrentUser();
-      router.push(`/${locale}/login`);
+      router.push(`/${locale}`);
     },
   });
 

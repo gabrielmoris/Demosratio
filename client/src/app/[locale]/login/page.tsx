@@ -6,6 +6,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useRequest } from "@/hooks/use-request";
 import { useAuth } from "@/src/context/authContext";
+import { useFingerprint } from "@/hooks/fingerprint-gen";
 
 export default function Login() {
   const t = useTranslations("login");
@@ -14,11 +15,12 @@ export default function Login() {
     email: "",
     password: "",
   });
+  const { fingerprint } = useFingerprint();
 
   const { doRequest } = useRequest({
     url: "http://localhost:3002/api/users/signin",
     method: "post",
-    body: { email: form.email, password: form.password },
+    body: { email: form.email, password: form.password, fingerprint },
     onSuccess: () => {
       updateCurrentUser();
       router.push(`/${locale}`);

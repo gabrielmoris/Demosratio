@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import sha256 from "crypto-js/sha256";
 import { useUiContext } from "@/src/context/uiContext";
+import { Logger } from "tslog";
+
+const log = new Logger();
 
 function generateCanvasFingerprint(): string | undefined {
   const canvas = document.createElement("canvas");
@@ -31,7 +34,8 @@ function generateWebglFingerprint(): string {
     return renderer;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (e: any) {
-    return "webgl error" + e;
+    log.error(e);
+    return "Error";
   }
 }
 
