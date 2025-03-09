@@ -15,7 +15,7 @@ router.get("/api/proposals", async (req: Request, res: Response) => {
 
   await verifyConnections();
   const proposals = await getProposalsFromDb(writePool, page, pageSize);
-  res.status(200).send({ proposals });
+  res.status(200).send(proposals);
 });
 
 export { router as indexParliamentRouter };
