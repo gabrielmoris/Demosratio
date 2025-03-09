@@ -17,7 +17,6 @@ const saveToDb = async (day: string) => {
     const { sesion: session, fecha: date, titulo: title, textoExpediente: expedient_text } = votation.informacion;
     const { presentes: parliament_presence, afavor: votes_for, enContra: votes_against, abstenciones: abstentions } = votation.totales;
     const votes_parties_json = mergeVotesByParty(votation.votaciones);
-
     const proposalData = {
       session,
       date: normalizeWrongSpanishDate(date),

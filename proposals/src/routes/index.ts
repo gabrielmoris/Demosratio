@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import { writePool, verifyConnections } from "../database/db";
+import { writePool } from "../database/db";
 import { getProposalsFromDb } from "../database/getProposal";
 
 const router = express.Router();
@@ -13,7 +13,6 @@ router.get("/api/proposals", async (req: Request, res: Response) => {
     return;
   }
 
-  await verifyConnections();
   const proposals = await getProposalsFromDb(writePool, page, pageSize);
   res.status(200).send(proposals);
 });

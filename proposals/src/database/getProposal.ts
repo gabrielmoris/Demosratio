@@ -34,6 +34,11 @@ export const getProposalsFromDb = async (pool: Pool, page: number, pageSize: num
     const [proposalResult, countResult] = await Promise.all([pool.query(proposalQuery, [pageSize, offset]), pool.query(countQuery)]);
 
     const proposals: Proposal[] = proposalResult.rows;
+
+    proposalResult.rows.map((vote) => {
+      vote.votes_parties_json = vote.votes_parties_json.votes;
+    });
+
     const totalCount = parseInt(countResult.rows[0].count, 10);
 
     return { proposals, totalCount };
