@@ -23,5 +23,8 @@
     "form-title": "Borra tu cuenta",
     "btn-del": "Borrar ahora",
     "delete-advice": "Advertencia: Al confirmar esta acción, procederá a la eliminación definitiva de su perfil y todos los datos relacionados. Esta operación no puede ser revertida."
+  },
+  "loading-component": {
+    "loading-text": "Cargando..."
   }
 }
