@@ -23,6 +23,11 @@ export default {
         drserif: ["var(--font-roboto-serif)", "serif"],
         drnote: ["var(--font-roboto)", "sans-serif"],
       },
+      screens: {
+        "3xl": "1920px",
+        "4xl": "2560px",
+        "5xl": "3840px",
+      },
     },
   },
   plugins: [],

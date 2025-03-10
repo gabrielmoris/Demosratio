@@ -31,7 +31,7 @@ export async function saveProposalToDb(pool: Pool, proposalData: any) {
 
     if (result.rows.length > 0) {
       log.info(`Proposal "${title}" saved with ID: ${result.rows[0].id}`);
-      return result.rows[0].id; // Return the ID if you need it
+      return result.rows[0].id; // Return the ID if needed
     } else {
       log.warn(`Proposal "${title}" was not saved.`);
       return null;

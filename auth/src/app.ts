@@ -14,7 +14,7 @@ app.set("trust proxy", true);
 app.use(json());
 app.use(
   cors({
-    origin: process.env.NODE_ENV === "development" ? "http://localhost:3000" : "ADD_URL_PROD",
+    origin: process.env.NODE_ENV === "development" ? "http://localhost:3000" : process.env.CLIENT_URL,
     credentials: true,
   })
 );

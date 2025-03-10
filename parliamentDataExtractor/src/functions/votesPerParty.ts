@@ -40,5 +40,10 @@ export const mergeVotesByParty = (votes: Votacion[]) => {
     }
   }
 
-  return Object.fromEntries(mergedVotes);
+  return {
+    votes: Array.from(mergedVotes.entries()).map(([party, counts]) => ({
+      party,
+      ...counts,
+    })),
+  };
 };

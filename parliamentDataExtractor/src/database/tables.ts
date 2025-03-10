@@ -74,7 +74,7 @@ export async function createTables() {
           votes_for INTEGER NOT NULL DEFAULT 0,
           abstentions INTEGER NOT NULL DEFAULT 0,
           votes_against INTEGER NOT NULL DEFAULT 0,
-          date TEXT NOT NULL
+          date DATE NOT NULL DEFAULT CURRENT_DATE
         );
       `);
     log.info('Table "proposals" created or already exists.');

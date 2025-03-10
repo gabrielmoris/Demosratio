@@ -1,10 +1,10 @@
 {
   "landingpage": {
-    "title": "Demos Ratio: Tu Voz, Tus Decisiones: Seguimiento Imparcial de la Política.",
+    "title": "Demos Ratio. Tu Voz, Tus Decisiones: Seguimiento Imparcial de la Política.",
     "subtitle": "¿Cumplen lo que prometen? Descubre la verdad detrás de las promesas y decisiones políticas. Únete a una comunidad de ciudadanos comprometidos con la transparencia."
   },
   "landingpage-card": {
-    "promises": "Promesa selectorales.",
+    "promises": "Promesas electorales.",
     "parliament": "Últimos votos del congreso."
   },
   "login": {
@@ -23,5 +23,15 @@
     "form-title": "Borra tu cuenta",
     "btn-del": "Borrar ahora",
     "delete-advice": "Advertencia: Al confirmar esta acción, procederá a la eliminación definitiva de su perfil y todos los datos relacionados. Esta operación no puede ser revertida."
+  },
+  "loading-component": {
+    "loading-text": "Cargando..."
+  },
+  "general-chart-component": {
+    "votes_for": "A favor",
+    "abstentions": "Abstenciones",
+    "votes_against": "En contra",
+    "number_of_votes": "Número de votos",
+    "no_votes": "No voto"
   }
 }
