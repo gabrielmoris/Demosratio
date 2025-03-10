@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "axios": "^1.8.1",
+    "chart.js": "^4.4.8",
     "crypto-js": "^4.2.0",
     "js-cookie": "^3.0.5",
     "next": "15.1.7",
