@@ -17,4 +17,4 @@ router.get("/api/proposals", async (req: Request, res: Response) => {
   res.status(200).send(proposals);
 });
 
-export { router as indexParliamentRouter };
+export { router as getProposalsRouter };

@@ -1,5 +1,6 @@
 import { Pool } from "pg";
 import { Logger } from "tslog";
+import { dataToSpanishFormat } from "../helpers/dateFormatter";
 
 const log = new Logger();
 
@@ -24,6 +25,7 @@ export const getProposalsFromDb = async (pool: Pool, page: number, pageSize: num
 
     const proposalQuery = `
       SELECT * FROM proposals
+      ORDER BY date DESC, id DESC 
       LIMIT $1 OFFSET $2
     `;
 
@@ -36,7 +38,12 @@ export const getProposalsFromDb = async (pool: Pool, page: number, pageSize: num
     const proposals: Proposal[] = proposalResult.rows;
 
     proposalResult.rows.map((vote) => {
-      vote.votes_parties_json = vote.votes_parties_json.votes;
+      if (vote.votes_parties_json && vote.votes_parties_json.votes) {
+        vote.votes_parties_json = vote.votes_parties_json.votes;
+      }
+      if (vote.date) {
+        vote.date = dataToSpanishFormat(vote.date);
+      }
     });
 
     const totalCount = parseInt(countResult.rows[0].count, 10);

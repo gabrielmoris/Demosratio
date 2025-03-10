@@ -56,7 +56,7 @@ services:
     depends_on:
       - postgres
     environment:
-      - DAYS_TO_CHECK_VOTATIONS=500
+      - DAYS_TO_CHECK_VOTATIONS=400
     volumes:
       - ./parliamentDataExtractor:/app
     restart: unless-stopped
