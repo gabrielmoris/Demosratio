@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Chart } from "chart.js/auto"; // Import Chart.js/auto
 import { useTranslations } from "next-intl";
 import { useEffect, useRef } from "react";
@@ -13,13 +14,15 @@ interface ImputProps {
   width?: number;
   height?: number;
   className?: string;
+  logo?: string;
 }
 
 export default function ChartVotes({
   proposals,
   className,
   width = 280,
-  height = 100,
+  height = width / 2,
+  logo,
 }: ImputProps) {
   const t = useTranslations("general-chart-component");
   const chartRef = useRef<Chart | null>(null); // Use useRef to store the chart instance
@@ -29,6 +32,33 @@ export default function ChartVotes({
     proposals.votes_against +
     proposals.votes_for -
     proposals.parliament_presence;
+
+  const centerImagePlugin = {
+    id: "centerImage",
+    afterDraw: (chart: any) => {
+      if (chart) {
+        const {
+          ctx,
+          chartArea: { top, bottom, left, right },
+        } = chart;
+        const centerX = (left + right) / 2;
+        const centerY = (top + bottom) / 2;
+
+        const image = new Image();
+        image.src = logo || "";
+        image.onload = () => {
+          const imageSize = width / 6;
+          ctx.drawImage(
+            image,
+            centerX - imageSize / 2,
+            centerY - imageSize / 2,
+            imageSize,
+            imageSize
+          );
+        };
+      }
+    },
+  };
 
   useEffect(() => {
     const ctx = document.getElementById(
@@ -77,6 +107,7 @@ export default function ChartVotes({
           },
         },
       },
+      plugins: logo ? [centerImagePlugin] : [],
     });
 
     return () => {
