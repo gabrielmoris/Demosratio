@@ -15,14 +15,25 @@ interface ImputProps {
   className?: string;
 }
 
-export default function ChartGeneralVotes({ proposals, className, width = 280, height = 100 }: ImputProps) {
+export default function ChartVotes({
+  proposals,
+  className,
+  width = 280,
+  height = 100,
+}: ImputProps) {
   const t = useTranslations("general-chart-component");
   const chartRef = useRef<Chart | null>(null); // Use useRef to store the chart instance
 
-  const noVotes = proposals.abstentions + proposals.votes_against + proposals.votes_for - proposals.parliament_presence;
+  const noVotes =
+    proposals.abstentions +
+    proposals.votes_against +
+    proposals.votes_for -
+    proposals.parliament_presence;
 
   useEffect(() => {
-    const ctx = document.getElementById("generalVotes" + proposals.proposal_id) as HTMLCanvasElement | null;
+    const ctx = document.getElementById(
+      "generalVotes" + proposals.proposal_id
+    ) as HTMLCanvasElement | null;
     if (!ctx) return;
     ctx.width = width;
     ctx.height = height;
@@ -34,11 +45,21 @@ export default function ChartGeneralVotes({ proposals, className, width = 280, h
     chartRef.current = new Chart(ctx, {
       type: "doughnut",
       data: {
-        labels: [t("votes_for"), t("abstentions"), t("votes_against"), t("no_votes")],
+        labels: [
+          t("votes_for"),
+          t("abstentions"),
+          t("votes_against"),
+          t("no_votes"),
+        ],
         datasets: [
           {
             label: t("number_of_votes"),
-            data: [proposals.votes_for, proposals.abstentions, proposals.votes_against, noVotes],
+            data: [
+              proposals.votes_for,
+              proposals.abstentions,
+              proposals.votes_against,
+              noVotes,
+            ],
             borderWidth: 0,
             backgroundColor: ["#22981D", "#737383", "#B21D20", "#262835"],
             hoverOffset: 4,
@@ -68,8 +89,9 @@ export default function ChartGeneralVotes({ proposals, className, width = 280, h
   }, []);
 
   return (
-    <canvas className={className} id={"generalVotes" + proposals.proposal_id}>
-      aa
-    </canvas>
+    <canvas
+      className={className}
+      id={"generalVotes" + proposals.proposal_id}
+    ></canvas>
   );
 }

@@ -4,8 +4,9 @@ import { Logger } from "tslog";
 import { mergeVotesByParty } from "./functions/votesPerParty";
 import { saveProposalToDb } from "./database/saveProposal";
 import { extractParliamentJson } from "./functions/getParliamentData";
-import { getDateString, getFormattedDateForDB, normalizeWrongSpanishDate } from "./helpers/dateFormatters";
+import { getDateString, getFormattedDateForDB } from "./helpers/dateFormatters";
 import cron from "node-cron";
+import { VotingData } from "../types/proposal.types";
 
 const log = new Logger();
 
@@ -14,11 +15,24 @@ const saveToDb = async (day: string) => {
 
   for (const votation of extractedParliamentData) {
     // Get the important information
-    const { sesion: session, fecha: date, titulo: title, textoExpediente: expedient_text } = votation.informacion;
-    const { presentes: parliament_presence, afavor: votes_for, enContra: votes_against, abstenciones: abstentions } = votation.totales;
+    const {
+      sesion: session,
+      fecha: date,
+      titulo: title,
+      textoExpediente: expedient_text,
+    } = votation.informacion;
+
+    const {
+      presentes: parliament_presence,
+      afavor: votes_for,
+      enContra: votes_against,
+      abstenciones: abstentions,
+      noVotan: no_vote,
+    } = votation.totales;
+    
     const votes_parties_json = mergeVotesByParty(votation.votaciones);
-    console.log("THIS I AM SAVING =>", getFormattedDateForDB(date));
-    const proposalData = {
+
+    const proposalData: VotingData = {
       session,
       date: getFormattedDateForDB(date),
       title,
@@ -28,6 +42,7 @@ const saveToDb = async (day: string) => {
       votes_for,
       votes_against,
       abstentions,
+      no_vote,
       votes_parties_json,
     };
 

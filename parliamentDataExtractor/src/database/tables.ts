@@ -74,6 +74,7 @@ export async function createTables() {
           votes_for INTEGER NOT NULL DEFAULT 0,
           abstentions INTEGER NOT NULL DEFAULT 0,
           votes_against INTEGER NOT NULL DEFAULT 0,
+          no_vote INTEGER NOT NULL DEFAULT 0,
           date DATE NOT NULL DEFAULT CURRENT_DATE
         );
       `);
