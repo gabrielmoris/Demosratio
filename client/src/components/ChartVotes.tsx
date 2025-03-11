@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Chart } from "chart.js/auto"; // Import Chart.js/auto
 import { useTranslations } from "next-intl";
 import { useEffect, useRef } from "react";
@@ -6,6 +7,7 @@ interface ImputProps {
   proposals: {
     parliament_presence: number;
     votes_for: number;
+    no_vote: number;
     abstentions: number;
     votes_against: number;
     proposal_id: number;
@@ -13,13 +15,33 @@ interface ImputProps {
   width?: number;
   height?: number;
   className?: string;
+  logo?: string;
 }
 
-export default function ChartGeneralVotes({ proposals, className, width = 280, height = 100 }: ImputProps) {
+export default function ChartVotes({ proposals, className, width = 280, height = width / 2, logo }: ImputProps) {
   const t = useTranslations("general-chart-component");
   const chartRef = useRef<Chart | null>(null); // Use useRef to store the chart instance
 
-  const noVotes = proposals.abstentions + proposals.votes_against + proposals.votes_for - proposals.parliament_presence;
+  const centerImagePlugin = {
+    id: "centerImage",
+    afterDraw: (chart: any) => {
+      if (chart) {
+        const {
+          ctx,
+          chartArea: { top, bottom, left, right },
+        } = chart;
+        const centerX = (left + right) / 2;
+        const centerY = (top + bottom) / 2;
+
+        const image = new Image();
+        image.src = logo || "";
+        image.onload = () => {
+          const imageSize = width / 6;
+          ctx.drawImage(image, centerX - imageSize / 2, centerY - imageSize / 2, imageSize, imageSize);
+        };
+      }
+    },
+  };
 
   useEffect(() => {
     const ctx = document.getElementById("generalVotes" + proposals.proposal_id) as HTMLCanvasElement | null;
@@ -38,7 +60,7 @@ export default function ChartGeneralVotes({ proposals, className, width = 280, h
         datasets: [
           {
             label: t("number_of_votes"),
-            data: [proposals.votes_for, proposals.abstentions, proposals.votes_against, noVotes],
+            data: [proposals.votes_for, proposals.abstentions, proposals.votes_against, proposals.no_vote],
             borderWidth: 0,
             backgroundColor: ["#22981D", "#737383", "#B21D20", "#262835"],
             hoverOffset: 4,
@@ -56,6 +78,7 @@ export default function ChartGeneralVotes({ proposals, className, width = 280, h
           },
         },
       },
+      plugins: logo ? [centerImagePlugin] : [],
     });
 
     return () => {
@@ -67,9 +90,5 @@ export default function ChartGeneralVotes({ proposals, className, width = 280, h
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return (
-    <canvas className={className} id={"generalVotes" + proposals.proposal_id}>
-      aa
-    </canvas>
-  );
+  return <canvas className={className} id={"generalVotes" + proposals.proposal_id}></canvas>;
 }

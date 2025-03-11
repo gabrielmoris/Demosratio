@@ -31,3 +31,26 @@ export interface Votacion {
   grupo: string;
   voto: string;
 }
+
+export interface VotingData {
+  title: string;
+  url: string;
+  session: number;
+  expedient_text: string;
+  votes_parties_json: {
+    votes: {
+      against: number;
+      for: number;
+      abstain: number;
+      noVote: number;
+      party: string;
+    }[];
+  };
+  parliament_presence: number;
+  votes_for: number;
+  abstentions: number;
+  votes_against: number;
+  no_vote: number;
+  date: string;
+  assent: boolean;
+}

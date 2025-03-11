@@ -29,5 +29,7 @@ export interface VotingData {
   votes_for: number;
   abstentions: number;
   votes_against: number;
+  no_vote: number;
+  assent: boolean;
   date: string;
 }
