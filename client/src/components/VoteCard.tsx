@@ -25,20 +25,15 @@ const VoteCardComponent = ({ vote }: { vote: VotingData }) => {
   return (
     <div className=" flex flex-col gap-5 border bg-white border-drPurple border-opacity-30 p-8 md:px-20 rounded-md w-full cursor-pointer hover:shadow-drPurple hover:shadow-sm">
       <p className="font-drserif text-sm font-bold">{vote.title}</p>
-      <ExpandableText
-        className="font-drnote text-sm "
-        isExpandable={false}
-        key={vote.id}
-        maxLines={2}
-        text={vote.expedient_text}
-      ></ExpandableText>
-      <div className="w-full flex items-center justify-start py-2 md:px-28 md:py-5 bg-drlight rounded-md">
+      <ExpandableText className="font-drnote text-sm " isExpandable={false} key={vote.id} maxLines={2} text={vote.expedient_text}></ExpandableText>
+      <div className="w-full flex fllex-row items-center justify-start py-2 md:px-28 md:py-5 bg-drlight rounded-md">
         <ChartVotes
           proposals={{
             votes_against: vote.votes_against,
             votes_for: vote.votes_for,
             abstentions: vote.abstentions,
             parliament_presence: vote.parliament_presence,
+            no_vote: vote.no_vote,
             proposal_id: vote.id,
           }}
         />
@@ -46,25 +41,13 @@ const VoteCardComponent = ({ vote }: { vote: VotingData }) => {
 
       <div className="flex justify-between items-end w-full">
         <div className="flex flex-row gap-5">
-          <div className="flex flex-row justify-center items-center gap-2">
-            <Image
-              src="/dislike-icn.svg"
-              alt="profile-icn"
-              width={25}
-              height={25}
-              priority
-            />
-            {likesInfo?.dislikes}
-          </div>
           <div className="flex flex-row justify-center items-cente gap-2">
-            <Image
-              src="/like-icn.svg"
-              alt="profile-icn"
-              width={25}
-              height={25}
-              priority
-            />
+            <Image src="/like-icn.svg" alt="profile-icn" width={25} height={25} priority />
             {likesInfo?.likes}
+          </div>
+          <div className="flex flex-row justify-center items-center gap-2">
+            <Image src="/dislike-icn.svg" alt="profile-icn" width={25} height={25} priority />
+            {likesInfo?.dislikes}
           </div>
         </div>
         <p className="text-drgray text-xs">{vote.date}</p>

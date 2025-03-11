@@ -16,6 +16,7 @@ export async function saveProposalToDb(pool: Pool, proposalData: VotingData) {
       votes_for,
       votes_against,
       no_vote,
+      assent,
       abstentions,
       votes_parties_json,
     } = proposalData;
@@ -26,16 +27,14 @@ export async function saveProposalToDb(pool: Pool, proposalData: VotingData) {
     const checkResult = await pool.query(checkQuery, checkValues);
 
     if (checkResult.rows.length > 0) {
-      log.warn(
-        `Proposal with expedient_text "${expedient_text}" already exists. Skipping.`
-      );
+      log.warn(`Proposal with expedient_text "${expedient_text}" already exists. Skipping.`);
       return null;
     }
 
     // Then save
     const query = `
-        INSERT INTO proposals (title, url, session, expedient_text, parliament_presence, votes_for, abstentions, votes_against, no_vote, date ,votes_parties_json)
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+        INSERT INTO proposals (title, url, session, expedient_text, parliament_presence, votes_for, abstentions, votes_against, no_vote, assent, date, votes_parties_json)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
         RETURNING id;  -- Return the inserted ID if needed
       `;
 
@@ -49,6 +48,7 @@ export async function saveProposalToDb(pool: Pool, proposalData: VotingData) {
       abstentions,
       votes_against,
       no_vote,
+      assent,
       date,
       votes_parties_json,
     ];

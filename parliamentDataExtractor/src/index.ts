@@ -15,12 +15,7 @@ const saveToDb = async (day: string) => {
 
   for (const votation of extractedParliamentData) {
     // Get the important information
-    const {
-      sesion: session,
-      fecha: date,
-      titulo: title,
-      textoExpediente: expedient_text,
-    } = votation.informacion;
+    const { sesion: session, fecha: date, titulo: title, textoExpediente: expedient_text } = votation.informacion;
 
     const {
       presentes: parliament_presence,
@@ -28,9 +23,11 @@ const saveToDb = async (day: string) => {
       enContra: votes_against,
       abstenciones: abstentions,
       noVotan: no_vote,
+      asentimiento: assent,
     } = votation.totales;
-    
+
     const votes_parties_json = mergeVotesByParty(votation.votaciones);
+    const isAccepted = assent === "Sí" ? true : false;
 
     const proposalData: VotingData = {
       session,
@@ -44,6 +41,7 @@ const saveToDb = async (day: string) => {
       abstentions,
       no_vote,
       votes_parties_json,
+      assent: isAccepted,
     };
 
     // Then save it in DB

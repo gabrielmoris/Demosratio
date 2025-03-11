@@ -52,4 +52,5 @@ export interface VotingData {
   votes_against: number;
   no_vote: number;
   date: string;
+  assent: boolean;
 }

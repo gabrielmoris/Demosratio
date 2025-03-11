@@ -7,6 +7,7 @@ interface ImputProps {
   proposals: {
     parliament_presence: number;
     votes_for: number;
+    no_vote: number;
     abstentions: number;
     votes_against: number;
     proposal_id: number;
@@ -17,21 +18,9 @@ interface ImputProps {
   logo?: string;
 }
 
-export default function ChartVotes({
-  proposals,
-  className,
-  width = 280,
-  height = width / 2,
-  logo,
-}: ImputProps) {
+export default function ChartVotes({ proposals, className, width = 280, height = width / 2, logo }: ImputProps) {
   const t = useTranslations("general-chart-component");
   const chartRef = useRef<Chart | null>(null); // Use useRef to store the chart instance
-
-  const noVotes =
-    proposals.abstentions +
-    proposals.votes_against +
-    proposals.votes_for -
-    proposals.parliament_presence;
 
   const centerImagePlugin = {
     id: "centerImage",
@@ -48,22 +37,14 @@ export default function ChartVotes({
         image.src = logo || "";
         image.onload = () => {
           const imageSize = width / 6;
-          ctx.drawImage(
-            image,
-            centerX - imageSize / 2,
-            centerY - imageSize / 2,
-            imageSize,
-            imageSize
-          );
+          ctx.drawImage(image, centerX - imageSize / 2, centerY - imageSize / 2, imageSize, imageSize);
         };
       }
     },
   };
 
   useEffect(() => {
-    const ctx = document.getElementById(
-      "generalVotes" + proposals.proposal_id
-    ) as HTMLCanvasElement | null;
+    const ctx = document.getElementById("generalVotes" + proposals.proposal_id) as HTMLCanvasElement | null;
     if (!ctx) return;
     ctx.width = width;
     ctx.height = height;
@@ -75,21 +56,11 @@ export default function ChartVotes({
     chartRef.current = new Chart(ctx, {
       type: "doughnut",
       data: {
-        labels: [
-          t("votes_for"),
-          t("abstentions"),
-          t("votes_against"),
-          t("no_votes"),
-        ],
+        labels: [t("votes_for"), t("abstentions"), t("votes_against"), t("no_votes")],
         datasets: [
           {
             label: t("number_of_votes"),
-            data: [
-              proposals.votes_for,
-              proposals.abstentions,
-              proposals.votes_against,
-              noVotes,
-            ],
+            data: [proposals.votes_for, proposals.abstentions, proposals.votes_against, proposals.no_vote],
             borderWidth: 0,
             backgroundColor: ["#22981D", "#737383", "#B21D20", "#262835"],
             hoverOffset: 4,
@@ -119,10 +90,5 @@ export default function ChartVotes({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return (
-    <canvas
-      className={className}
-      id={"generalVotes" + proposals.proposal_id}
-    ></canvas>
-  );
+  return <canvas className={className} id={"generalVotes" + proposals.proposal_id}></canvas>;
 }
