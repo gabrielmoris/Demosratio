@@ -33,5 +33,13 @@
     "votes_against": "En contra",
     "number_of_votes": "Número de votos",
     "no_votes": "No voto"
-  }
+  },
+  "resizable-component": {
+    "show-less": "Ver menos",
+    "show-more": "Ver más"
+  },
+  "votecard-component": {
+    "button-cta": "Detalles"
+  },
+  "votepage": { "parliament-link": "Más información en la Web del Congreso.", "your-opinion": "Tu opinión cuenta:" }
 }

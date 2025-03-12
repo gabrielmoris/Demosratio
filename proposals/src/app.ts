@@ -4,6 +4,7 @@ import { json } from "body-parser";
 import cors from "cors";
 import { getProposalsRouter } from "./routes/proposals";
 import { getLikesAndDislikesRouter } from "./routes/likes";
+import { getProposalByIdRouter } from "./routes/getProposalByID";
 
 const app = express();
 
@@ -17,6 +18,7 @@ app.use(
 );
 
 app.use(getProposalsRouter);
+app.use(getProposalByIdRouter);
 app.use(getLikesAndDislikesRouter);
 
 app.all("*", (req, res) => {

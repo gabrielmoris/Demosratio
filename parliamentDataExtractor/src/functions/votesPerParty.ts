@@ -30,7 +30,7 @@ export const mergeVotesByParty = (votes: Votacion[]) => {
         mergedVotes.set(party, { ...currentCount, against: currentCount.against + 1 });
         break;
       case "No vota":
-        mergedVotes.set(party, { ...currentCount, abstain: currentCount.noVote + 1 });
+        mergedVotes.set(party, { ...currentCount, noVote: currentCount.noVote + 1 });
         break;
       case "Abstención":
         mergedVotes.set(party, { ...currentCount, abstain: currentCount.abstain + 1 });
