@@ -16,8 +16,6 @@ services:
       - ./client:/app
       - ./client/.next:/app/.next
     restart: unless-stopped
-    networks:
-      - app-network
 
   auth:
     build:
@@ -33,8 +31,6 @@ services:
     volumes:
       - ./auth:/app
     restart: unless-stopped
-    networks:
-      - app-network
 
   proposals:
     build:
@@ -46,11 +42,10 @@ services:
       - postgres
     environment:
       - NODE_ENV=development
+      - JWT_KEY=demosratio_Key
     volumes:
       - ./proposals:/app
     restart: unless-stopped
-    networks:
-      - app-network
 
   parliament-data-extractor:
     build:
@@ -63,8 +58,6 @@ services:
     volumes:
       - ./parliamentDataExtractor:/app
     restart: unless-stopped
-    networks:
-      - app-network
 
   postgres:
     image: postgres:15
@@ -76,8 +69,6 @@ services:
       - POSTGRES_DB=demosratio
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    networks:
-      - app-network
 
   pgadmin:
     image: dpage/pgadmin4:latest
@@ -88,8 +79,6 @@ services:
       PGADMIN_DEFAULT_PASSWORD: password
     depends_on:
       - postgres
-    networks:
-      - app-network
 
 volumes:
   postgres_data:

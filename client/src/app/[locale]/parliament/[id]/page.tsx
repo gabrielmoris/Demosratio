@@ -13,6 +13,7 @@ import { LiKesAndDislikes } from "@/src/types/likesAndDislikes";
 export default function VotePage() {
   const [voteResults, setVoteResults] = useState<Proposal>();
   const [likesInfo, setLikesInfo] = useState<LiKesAndDislikes>();
+  const [userLikes, setUserLikes] = useState<LiKesAndDislikes>();
 
   const t = useTranslations("votepage");
   const params = useParams();
@@ -35,14 +36,66 @@ export default function VotePage() {
     },
   });
 
+  const { doRequest: userLikeRequest } = useRequest({
+    url: "http://localhost:3001/api/likes/user",
+    method: "post",
+    body: { proposal_id: id },
+    onSuccess(data) {
+      setUserLikes(data);
+    },
+  });
+
+  const { doRequest: onLikeProposal } = useRequest({
+    url: "http://localhost:3001/api/likes/like",
+    method: "post",
+    body: { proposal_id: id },
+    onSuccess() {
+      console.log(userLikes);
+      setUserLikes({
+        ...userLikes,
+        likes: 1,
+        dislikes: userLikes?.dislikes || 0,
+        proposal_id: Number(id),
+      });
+    },
+  });
+
+  const { doRequest: onDisLikeProposal } = useRequest({
+    url: "http://localhost:3001/api/likes/dislike",
+    method: "post",
+    body: { proposal_id: id },
+    onSuccess() {
+      console.log(userLikes);
+      setUserLikes({
+        ...userLikes,
+        likes: 1,
+        dislikes: userLikes?.dislikes || 0,
+        proposal_id: Number(id),
+      });
+    },
+  });
+
   useEffect(() => {
     doRequest();
     likesRequest();
+    userLikeRequest();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const goBack = () => {
     window.history.back();
+  };
+
+  const handleUserLikes = (status: "like" | "dislike") => {
+    if (status === "like" && userLikes?.likes === 0) {
+      onLikeProposal();
+    } else if (status === "dislike" && userLikes?.dislikes === 0) {
+      onDisLikeProposal();
+    } else {
+      // Here I must Handle the like, dislike, I should do both requests at the same time In case the user already like/dislikes
+      // In the apo I have to check if it was before liked and then I should unlike or undislike if it was.
+      console.log("check here the logic");
+    }
   };
 
   if (voteResults) {
@@ -61,15 +114,24 @@ export default function VotePage() {
           <p className="text-xs text-drgray">{voteResults.date}</p>
         </div>
         <h1 className="text-xl font-bold font-drserif">{voteResults.title}</h1>
-        <h2 className="text-justify font-drnote text-drgray">{voteResults.expedient_text}</h2>
-        <Link className="w-full text-drPurple hover:opacity-60 duration-500" href={voteResults.url} target="_blank">
+        <h2 className="text-justify font-drnote text-drgray">
+          {voteResults.expedient_text}
+        </h2>
+        <Link
+          className="w-full text-drPurple hover:opacity-60 duration-500"
+          href={voteResults.url}
+          target="_blank"
+        >
           {t("parliament-link")}
         </Link>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 w-full">
           {voteResults.votes_parties_json.map((party) => {
             return (
-              <div key={party.party} className="flex justify-center items-center">
+              <div
+                key={party.party}
+                className="flex justify-center items-center"
+              >
                 <ChartVotes
                   proposals={{
                     votes_against: party.against,
@@ -85,14 +147,38 @@ export default function VotePage() {
           })}
         </div>
 
-        <div className="flex flex-row justify-start items-start w-full gap-5">
+        <div className="flex flex-row justify-start items-center w-full gap-5">
           <p className="font-bold text-xl">{t("your-opinion")}</p>
           <div className="flex flex-row justify-center items-cente gap-2">
-            <Image className="w-5 h-5" src="/like-icn.svg" alt="profile-icn" width={25} height={25} priority />
+            <Image
+              onClick={() => handleUserLikes("like")}
+              className="w-6 h-6 cursor-pointer"
+              src={
+                userLikes && userLikes?.likes > 0
+                  ? "/like-filled-icn.svg"
+                  : "/like-icn.svg"
+              }
+              alt="profile-icn"
+              width={25}
+              height={25}
+              priority
+            />
             {likesInfo?.likes}
           </div>
           <div className="flex flex-row justify-center items-center gap-2">
-            <Image className="w-5 h-5" src="/dislike-icn.svg" alt="profile-icn" width={25} height={25} priority />
+            <Image
+              onClick={() => handleUserLikes("dislike")}
+              className="w-6 h-6 cursor-pointer"
+              src={
+                userLikes && userLikes?.dislikes > 0
+                  ? "/dislike-filled-icn.svg"
+                  : "/dislike-icn.svg"
+              }
+              alt="profile-icn"
+              width={25}
+              height={25}
+              priority
+            />
             {likesInfo?.dislikes}
           </div>
         </div>

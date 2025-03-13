@@ -13,8 +13,7 @@ services:
       - DATABASE_URL=postgresql://postgres:password@postgres:5432/demosratio
       - NODE_ENV=production
     restart: unless-stopped
-    networks:
-      - app-network
+
   auth:
     build:
       context: ./auth
@@ -30,8 +29,7 @@ services:
     volumes:
       - ./auth:/app
     restart: unless-stopped
-    networks:
-      - app-network
+
   proposals:
     build:
       context: ./proposals
@@ -41,13 +39,12 @@ services:
     environment:
       - NODE_ENV=production
       - CLIENT_URL=http://localhost:3000 # Change it for prod
+      - JWT_KEY=demosratio_Key
     depends_on:
       - postgres
     volumes:
       - ./proposals:/app
     restart: unless-stopped
-    networks:
-      - app-network
 
   parliament-data-extractor:
     build:
@@ -60,8 +57,6 @@ services:
     volumes:
       - ./parliamentDataExtractor:/app
     restart: unless-stopped
-    networks:
-      - app-network
 
   postgres:
     image: postgres:15
@@ -73,8 +68,6 @@ services:
       - POSTGRES_DB=demosratio
     volumes:
       - postgres_data:/var/lib/postgresql/data # Persist data across container restarts
-    networks:
-      - app-network
 
 volumes:
   postgres_data:
