@@ -4,8 +4,8 @@ import { Logger } from "tslog";
 const log = new Logger();
 
 interface Dislikes {
-  proposal_id: string;
-  user_id: string;
+  proposal_id: number;
+  user_id: number;
 }
 
 export const addDislikesToDb = async (pool: Pool, likeData: Dislikes) => {
@@ -34,7 +34,9 @@ export const addDislikesToDb = async (pool: Pool, likeData: Dislikes) => {
     const result = await pool.query(query, values);
 
     if (result.rows.length > 0) {
-      log.info(`Proposal "${proposal_id}" disliked with ID: ${result.rows[0].id}`);
+      log.info(
+        `Proposal "${proposal_id}" disliked with ID: ${result.rows[0].id}`
+      );
       return result.rows[0].id; // Return the ID if needed
     } else {
       log.warn(`Proposal "${proposal_id}" was not disliked.`);
