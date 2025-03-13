@@ -9,6 +9,7 @@ import { getProposalByIdRouter } from "./routes/getProposalByID";
 import { currentUser } from "./middlewares/current-user";
 import { getUserLikesAndDislikes } from "./routes/getuserLike";
 import { useLike } from "./routes/userLike";
+import { userdisLike } from "./routes/userDislike";
 
 const app = express();
 
@@ -33,6 +34,7 @@ app.use(getProposalByIdRouter);
 app.use(getLikesAndDislikesRouter);
 app.use(getUserLikesAndDislikes);
 app.use(useLike);
+app.use(userdisLike);
 
 app.all("*", (req, res) => {
   res.status(404).send("Not Found");

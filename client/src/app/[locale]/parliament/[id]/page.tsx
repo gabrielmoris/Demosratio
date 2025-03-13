@@ -11,13 +11,22 @@ import { useEffect, useState } from "react";
 import { LiKesAndDislikes } from "@/src/types/likesAndDislikes";
 
 export default function VotePage() {
-  const [voteResults, setVoteResults] = useState<Proposal>();
-  const [likesInfo, setLikesInfo] = useState<LiKesAndDislikes>();
-  const [userLikes, setUserLikes] = useState<LiKesAndDislikes>();
-
   const t = useTranslations("votepage");
   const params = useParams();
   const id = params.id;
+
+  const [voteResults, setVoteResults] = useState<Proposal>();
+  const [likesInfo, setLikesInfo] = useState<LiKesAndDislikes>({
+    likes: 0,
+    dislikes: 0,
+    proposal_id: Number(params.id),
+  });
+
+  const [userLikes, setUserLikes] = useState<LiKesAndDislikes>({
+    likes: 0,
+    dislikes: 0,
+    proposal_id: Number(params.id),
+  });
 
   const { doRequest } = useRequest({
     url: "http://localhost:3001/api/proposals/" + id,
@@ -49,14 +58,19 @@ export default function VotePage() {
     url: "http://localhost:3001/api/likes/like",
     method: "post",
     body: { proposal_id: id },
-    onSuccess() {
-      console.log(userLikes);
-      setUserLikes({
-        ...userLikes,
-        likes: 1,
-        dislikes: userLikes?.dislikes || 0,
-        proposal_id: Number(id),
-      });
+    onSuccess(data) {
+      const newLikesInfo = { ...likesInfo };
+      if (userLikes.likes === 0 && userLikes.dislikes === 0) {
+        newLikesInfo.likes++;
+      } else if (userLikes.likes === 0 && userLikes.dislikes === 1) {
+        newLikesInfo.likes++;
+        newLikesInfo.dislikes--;
+      } else if (userLikes.likes === 1) {
+        newLikesInfo.likes--;
+      }
+
+      setLikesInfo(newLikesInfo);
+      setUserLikes(data);
     },
   });
 
@@ -64,14 +78,20 @@ export default function VotePage() {
     url: "http://localhost:3001/api/likes/dislike",
     method: "post",
     body: { proposal_id: id },
-    onSuccess() {
-      console.log(userLikes);
-      setUserLikes({
-        ...userLikes,
-        likes: 1,
-        dislikes: userLikes?.dislikes || 0,
-        proposal_id: Number(id),
-      });
+    onSuccess(data) {
+      const newLikesInfo = { ...likesInfo };
+
+      if (userLikes.likes === 0 && userLikes.dislikes === 0) {
+        newLikesInfo.dislikes++;
+      } else if (userLikes.likes === 1 && userLikes.dislikes === 0) {
+        newLikesInfo.dislikes++;
+        newLikesInfo.likes--;
+      } else if (userLikes.dislikes === 1) {
+        newLikesInfo.dislikes--;
+      }
+
+      setLikesInfo(newLikesInfo);
+      setUserLikes(data);
     },
   });
 
@@ -87,14 +107,10 @@ export default function VotePage() {
   };
 
   const handleUserLikes = (status: "like" | "dislike") => {
-    if (status === "like" && userLikes?.likes === 0) {
+    if (status === "like") {
       onLikeProposal();
-    } else if (status === "dislike" && userLikes?.dislikes === 0) {
+    } else if (status === "dislike") {
       onDisLikeProposal();
-    } else {
-      // Here I must Handle the like, dislike, I should do both requests at the same time In case the user already like/dislikes
-      // In the apo I have to check if it was before liked and then I should unlike or undislike if it was.
-      console.log("check here the logic");
     }
   };
 
@@ -163,7 +179,7 @@ export default function VotePage() {
               height={25}
               priority
             />
-            {likesInfo?.likes}
+            <span>{likesInfo?.likes}</span>
           </div>
           <div className="flex flex-row justify-center items-center gap-2">
             <Image
@@ -179,7 +195,7 @@ export default function VotePage() {
               height={25}
               priority
             />
-            {likesInfo?.dislikes}
+            <span>{likesInfo?.dislikes}</span>
           </div>
         </div>
       </div>
