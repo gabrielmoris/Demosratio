@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import React, { useRef, useState, memo, useEffect } from "react";
 
 interface ExpandableTextProps {
@@ -11,6 +12,7 @@ const ExpandableText = ({ text, maxLines, isExpandable = true, className }: Expa
   const containerRef = useRef<HTMLDivElement>(null);
   const [isExpanded, setIsExpanded] = useState(false);
   const [isOverflowing, setIsOverflowing] = useState(false);
+  const t = useTranslations("resizable-component");
 
   useEffect(() => {
     const checkOverflow = () => {
@@ -41,16 +43,16 @@ const ExpandableText = ({ text, maxLines, isExpandable = true, className }: Expa
 
   return (
     <section className={`relative ${className}`}>
-      <div ref={containerRef} className="text-justify transition-[max-height,opacity] duration-300 ease-out" style={textContainerStyle}>
+      <div ref={containerRef} className="text-justify text-drgray transition-[max-height,opacity] duration-300 ease-out" style={textContainerStyle}>
         {text}
       </div>
       {isExpandable && (isOverflowing || isExpanded) && (
         <button
           onClick={() => setIsExpanded(!isExpanded)}
-          className="w-full pt-2 text-right bg-transparent border-none cursor-pointer text-gray-400 hover:text-black transition-colors duration-200"
+          className="w-full pt-2 text-right bg-transparent border-none cursor-pointer text-drgray text-opacity-80 hover:text-contrast transition-colors duration-200"
           aria-expanded={isExpanded}
         >
-          {isExpanded ? "Show less" : "Show more"}
+          {isExpanded ? t("show-less") : t("show-more")}
         </button>
       )}
     </section>

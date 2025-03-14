@@ -5,12 +5,12 @@ import { useEffect, useRef } from "react";
 
 interface ImputProps {
   proposals: {
-    parliament_presence: number;
+    parliament_presence?: number;
     votes_for: number;
     no_vote: number;
     abstentions: number;
     votes_against: number;
-    proposal_id: number;
+    id: number | string;
   };
   width?: number;
   height?: number;
@@ -33,18 +33,43 @@ export default function ChartVotes({ proposals, className, width = 280, height =
         const centerX = (left + right) / 2;
         const centerY = (top + bottom) / 2;
 
-        const image = new Image();
-        image.src = logo || "";
-        image.onload = () => {
-          const imageSize = width / 6;
-          ctx.drawImage(image, centerX - imageSize / 2, centerY - imageSize / 2, imageSize, imageSize);
-        };
+        if (logo) {
+          const image = new Image();
+          image.src = logo || "";
+          image.onload = () => {
+            const imageWidth = image.naturalWidth;
+            const imageHeight = image.naturalHeight;
+
+            const targetSize = width / 6;
+
+            let scaledWidth, scaledHeight;
+
+            if (imageWidth > imageHeight) {
+              scaledWidth = targetSize;
+              scaledHeight = (imageHeight / imageWidth) * targetSize;
+            } else {
+              scaledHeight = targetSize;
+              scaledWidth = (imageWidth / imageHeight) * targetSize;
+            }
+
+            ctx.drawImage(image, centerX - scaledWidth / 2, centerY - scaledHeight / 2, scaledWidth, scaledHeight);
+          };
+        } else {
+          const p = document.createElement("p");
+          p.textContent = proposals.parliament_presence ? proposals.parliament_presence.toString() : "";
+          ctx.font = "900 20px Verdana";
+          ctx.fillStyle = "#00000050"; // Example text color
+          ctx.textAlign = "center"; // Center the text horizontally
+
+          // Draw the text onto the canvas
+          ctx.fillText(p.textContent, centerX, centerY + 8);
+        }
       }
     },
   };
 
   useEffect(() => {
-    const ctx = document.getElementById("generalVotes" + proposals.proposal_id) as HTMLCanvasElement | null;
+    const ctx = document.getElementById("generalVotes" + proposals.id) as HTMLCanvasElement | null;
     if (!ctx) return;
     ctx.width = width;
     ctx.height = height;
@@ -78,7 +103,7 @@ export default function ChartVotes({ proposals, className, width = 280, height =
           },
         },
       },
-      plugins: logo ? [centerImagePlugin] : [],
+      plugins: [centerImagePlugin],
     });
 
     return () => {
@@ -90,5 +115,5 @@ export default function ChartVotes({ proposals, className, width = 280, height =
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return <canvas className={className} id={"generalVotes" + proposals.proposal_id}></canvas>;
+  return <canvas className={className} id={"generalVotes" + proposals.id}></canvas>;
 }

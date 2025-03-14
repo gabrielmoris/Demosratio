@@ -1,21 +1,9 @@
-interface Votes {
+interface VotesParties {
   for: number;
+  party: string;
   noVote: number;
   abstain: number;
   against: number;
-}
-
-interface VotesParties {
-  GP?: Votes;
-  GR?: Votes;
-  GS?: Votes;
-  GMx?: Votes;
-  GVOX?: Votes;
-  GJxCAT?: Votes;
-  GSUMAR?: Votes;
-  "GEH Bildu"?: Votes;
-  "GV (EAJ-PNV)"?: Votes;
-  //   [key: string]: Votes;  If there is new parties in future
 }
 
 export interface VotingData {
@@ -32,4 +20,19 @@ export interface VotingData {
   no_vote: number;
   assent: boolean;
   date: string;
+}
+
+export interface Proposal {
+  session: string;
+  date: string;
+  title: string;
+  url: string;
+  expedient_text: string;
+  parliament_presence: string;
+  votes_for: number;
+  votes_against: number;
+  abstentions: number;
+  votes_parties_json: VotesParties[];
+  likes: number;
+  dislikes: number;
 }

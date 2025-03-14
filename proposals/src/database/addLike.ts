@@ -4,8 +4,8 @@ import { Logger } from "tslog";
 const log = new Logger();
 
 interface Likes {
-  proposal_id: string;
-  user_id: string;
+  proposal_id: number;
+  user_id: number;
 }
 
 export const addLikesToDb = async (pool: Pool, likeData: Likes) => {
