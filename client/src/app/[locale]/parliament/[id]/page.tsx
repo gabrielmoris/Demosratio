@@ -9,10 +9,14 @@ import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { LiKesAndDislikes } from "@/src/types/likesAndDislikes";
+import { useAuth } from "@/src/context/authContext";
+import { useUiContext } from "@/src/context/uiContext";
 
 export default function VotePage() {
   const t = useTranslations("votepage");
   const params = useParams();
+  const user = useAuth();
+  const { showToast } = useUiContext();
   const id = params.id;
 
   const [voteResults, setVoteResults] = useState<Proposal>();
@@ -81,16 +85,18 @@ export default function VotePage() {
       try {
         await doRequest();
         await likesRequest();
-        await userLikeRequest();
+
+        if (user.currentUser) await userLikeRequest();
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
         setIsFetching(false);
       }
     };
-    fetchData();
+
+    if (!user.loading) fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
+  }, [id, user.loading]);
 
   const goBack = () => {
     window.history.back();
@@ -98,6 +104,15 @@ export default function VotePage() {
 
   const handleUserLikes = async (status: "like" | "dislike") => {
     if (isFetching) return;
+    if (!user.currentUser) {
+      showToast({
+        message: t("no-logged-in"),
+        variant: "info",
+        duration: 3000,
+      });
+      return;
+    }
+
     setIsFetching(true);
     try {
       if (status === "like") {

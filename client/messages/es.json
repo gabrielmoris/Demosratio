@@ -41,5 +41,9 @@
   "votecard-component": {
     "button-cta": "Detalles"
   },
-  "votepage": { "parliament-link": "Más información en la Web del Congreso.", "your-opinion": "Tu opinión cuenta:" }
+  "votepage": {
+    "parliament-link": "Más información en la Web del Congreso.",
+    "your-opinion": "Tu opinión cuenta:",
+    "no-logged-in": "Necesitas una cuenta para dar tu opinión."
+  }
 }
