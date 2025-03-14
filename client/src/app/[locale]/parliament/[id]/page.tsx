@@ -9,15 +9,29 @@ import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { LiKesAndDislikes } from "@/src/types/likesAndDislikes";
+import { useAuth } from "@/src/context/authContext";
+import { useUiContext } from "@/src/context/uiContext";
 
 export default function VotePage() {
-  const [voteResults, setVoteResults] = useState<Proposal>();
-  const [likesInfo, setLikesInfo] = useState<LiKesAndDislikes>();
-  const [userLikes, setUserLikes] = useState<LiKesAndDislikes>();
-
   const t = useTranslations("votepage");
   const params = useParams();
+  const user = useAuth();
+  const { showToast } = useUiContext();
   const id = params.id;
+
+  const [voteResults, setVoteResults] = useState<Proposal>();
+  const [isFetching, setIsFetching] = useState<boolean>();
+  const [likesInfo, setLikesInfo] = useState<LiKesAndDislikes>({
+    likes: 0,
+    dislikes: 0,
+    proposal_id: Number(params.id),
+  });
+
+  const [userLikes, setUserLikes] = useState<LiKesAndDislikes>({
+    likes: 0,
+    dislikes: 0,
+    proposal_id: Number(params.id),
+  });
 
   const { doRequest } = useRequest({
     url: "http://localhost:3001/api/proposals/" + id,
@@ -48,53 +62,68 @@ export default function VotePage() {
   const { doRequest: onLikeProposal } = useRequest({
     url: "http://localhost:3001/api/likes/like",
     method: "post",
-    body: { proposal_id: id },
-    onSuccess() {
-      console.log(userLikes);
-      setUserLikes({
-        ...userLikes,
-        likes: 1,
-        dislikes: userLikes?.dislikes || 0,
-        proposal_id: Number(id),
-      });
+    body: { proposal_id: Number(id) },
+    onSuccess(data) {
+      setLikesInfo(data);
+      setUserLikes(data);
     },
   });
 
   const { doRequest: onDisLikeProposal } = useRequest({
     url: "http://localhost:3001/api/likes/dislike",
     method: "post",
-    body: { proposal_id: id },
-    onSuccess() {
-      console.log(userLikes);
-      setUserLikes({
-        ...userLikes,
-        likes: 1,
-        dislikes: userLikes?.dislikes || 0,
-        proposal_id: Number(id),
-      });
+    body: { proposal_id: Number(id) },
+    onSuccess(data) {
+      setLikesInfo(data);
+      setUserLikes(data);
     },
   });
 
   useEffect(() => {
-    doRequest();
-    likesRequest();
-    userLikeRequest();
+    const fetchData = async () => {
+      setIsFetching(true);
+      try {
+        await doRequest();
+        await likesRequest();
+
+        if (user.currentUser) await userLikeRequest();
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setIsFetching(false);
+      }
+    };
+
+    if (!user.loading) fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [id, user.loading]);
 
   const goBack = () => {
     window.history.back();
   };
 
-  const handleUserLikes = (status: "like" | "dislike") => {
-    if (status === "like" && userLikes?.likes === 0) {
-      onLikeProposal();
-    } else if (status === "dislike" && userLikes?.dislikes === 0) {
-      onDisLikeProposal();
-    } else {
-      // Here I must Handle the like, dislike, I should do both requests at the same time In case the user already like/dislikes
-      // In the apo I have to check if it was before liked and then I should unlike or undislike if it was.
-      console.log("check here the logic");
+  const handleUserLikes = async (status: "like" | "dislike") => {
+    if (isFetching) return;
+    if (!user.currentUser) {
+      showToast({
+        message: t("no-logged-in"),
+        variant: "info",
+        duration: 3000,
+      });
+      return;
+    }
+
+    setIsFetching(true);
+    try {
+      if (status === "like") {
+        await onLikeProposal();
+      } else if (status === "dislike") {
+        await onDisLikeProposal();
+      }
+    } catch (error) {
+      console.error("Error handling likes:", error);
+    } finally {
+      setIsFetching(false);
     }
   };
 
@@ -163,7 +192,7 @@ export default function VotePage() {
               height={25}
               priority
             />
-            {likesInfo?.likes}
+            <span>{likesInfo?.likes}</span>
           </div>
           <div className="flex flex-row justify-center items-center gap-2">
             <Image
@@ -179,14 +208,14 @@ export default function VotePage() {
               height={25}
               priority
             />
-            {likesInfo?.dislikes}
+            <span>{likesInfo?.dislikes}</span>
           </div>
         </div>
       </div>
     );
   } else {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen ">
+      <div className="flex flex-col items-center justify-center min-h-screen">
         <Loading />
       </div>
     );

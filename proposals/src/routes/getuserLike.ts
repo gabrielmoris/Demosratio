@@ -1,6 +1,5 @@
 import express, { Request, Response } from "express";
 import { writePool } from "../database/db";
-import { getLikesAndDislikesFromDb } from "../database/getLikesAndDislikes";
 import { getLikeandDislikeByUserId } from "../database/getLikeAndDislikeByUserId";
 
 const router = express.Router();

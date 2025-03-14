@@ -1,10 +1,28 @@
 import express, { Request, Response } from "express";
-import { writePool } from "../database/db";
+import { listenPool, writePool } from "../database/db";
 
-import { addLikesToDb } from "../database/addLike";
 import { addDislikesToDb } from "../database/addDislike";
+import { getLikeandDislikeByUserId } from "../database/getLikeAndDislikeByUserId";
+import { deleteUserLike } from "../database/deleteUserLike";
+import { deleteUserDislike } from "../database/deleteUserDislike";
+import { getLikesAndDislikesFromDb } from "../database/getLikesAndDislikes";
 
 const router = express.Router();
+
+interface UserPayload {
+  id: string;
+  email: string;
+}
+
+// This is a way to extend the Request object from express
+declare global {
+  namespace Express {
+    interface Request {
+      currentUser?: UserPayload;
+      session?: { jwt: string };
+    }
+  }
+}
 
 router.post("/api/likes/dislike", async (req: Request, res: Response) => {
   const proposal_id = Number(req.body.proposal_id);
@@ -14,14 +32,33 @@ router.post("/api/likes/dislike", async (req: Request, res: Response) => {
     return;
   }
 
-  // This is for the sake to save it only, later I will check if it is already liked and delete it from DB if it was already
-
-  const likeUser = await addDislikesToDb(writePool, {
+  const currentUserLikes = await getLikeandDislikeByUserId(
+    listenPool,
     proposal_id,
-    user_id: Number(req.currentUser.id),
-  });
+    Number(req.currentUser.id)
+  );
 
-  res.status(200).send({ liked: likeUser, proposal_id });
+  if (currentUserLikes.dislikes > 0) {
+    await deleteUserDislike(writePool, {
+      proposal_id,
+      user_id: Number(req.currentUser.id),
+    });
+  } else {
+    await addDislikesToDb(writePool, {
+      proposal_id,
+      user_id: Number(req.currentUser.id),
+    });
+  }
+
+  if (currentUserLikes.likes > 0) {
+    await deleteUserLike(writePool, {
+      proposal_id,
+      user_id: Number(req.currentUser.id),
+    });
+  }
+
+  const updatedLikes = await getLikesAndDislikesFromDb(writePool, proposal_id);
+  res.status(200).send(updatedLikes);
 });
 
-export { router as useLike };
+export { router as userdisLike };
