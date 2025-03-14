@@ -16,6 +16,7 @@ export default function VotePage() {
   const id = params.id;
 
   const [voteResults, setVoteResults] = useState<Proposal>();
+  const [isFetching, setIsFetching] = useState<boolean>();
   const [likesInfo, setLikesInfo] = useState<LiKesAndDislikes>({
     likes: 0,
     dislikes: 0,
@@ -57,19 +58,9 @@ export default function VotePage() {
   const { doRequest: onLikeProposal } = useRequest({
     url: "http://localhost:3001/api/likes/like",
     method: "post",
-    body: { proposal_id: id },
+    body: { proposal_id: Number(id) },
     onSuccess(data) {
-      const newLikesInfo = { ...likesInfo };
-      if (userLikes.likes === 0 && userLikes.dislikes === 0) {
-        newLikesInfo.likes++;
-      } else if (userLikes.likes === 0 && userLikes.dislikes === 1) {
-        newLikesInfo.likes++;
-        newLikesInfo.dislikes--;
-      } else if (userLikes.likes === 1) {
-        newLikesInfo.likes--;
-      }
-
-      setLikesInfo(newLikesInfo);
+      setLikesInfo(data);
       setUserLikes(data);
     },
   });
@@ -77,40 +68,47 @@ export default function VotePage() {
   const { doRequest: onDisLikeProposal } = useRequest({
     url: "http://localhost:3001/api/likes/dislike",
     method: "post",
-    body: { proposal_id: id },
+    body: { proposal_id: Number(id) },
     onSuccess(data) {
-      const newLikesInfo = { ...likesInfo };
-
-      if (userLikes.likes === 0 && userLikes.dislikes === 0) {
-        newLikesInfo.dislikes++;
-      } else if (userLikes.likes === 1 && userLikes.dislikes === 0) {
-        newLikesInfo.dislikes++;
-        newLikesInfo.likes--;
-      } else if (userLikes.dislikes === 1) {
-        newLikesInfo.dislikes--;
-      }
-
-      setLikesInfo(newLikesInfo);
+      setLikesInfo(data);
       setUserLikes(data);
     },
   });
 
   useEffect(() => {
-    doRequest();
-    likesRequest();
-    userLikeRequest();
+    const fetchData = async () => {
+      setIsFetching(true);
+      try {
+        await doRequest();
+        await likesRequest();
+        await userLikeRequest();
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setIsFetching(false);
+      }
+    };
+    fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [id]);
 
   const goBack = () => {
     window.history.back();
   };
 
-  const handleUserLikes = (status: "like" | "dislike") => {
-    if (status === "like") {
-      onLikeProposal();
-    } else if (status === "dislike") {
-      onDisLikeProposal();
+  const handleUserLikes = async (status: "like" | "dislike") => {
+    if (isFetching) return;
+    setIsFetching(true);
+    try {
+      if (status === "like") {
+        await onLikeProposal();
+      } else if (status === "dislike") {
+        await onDisLikeProposal();
+      }
+    } catch (error) {
+      console.error("Error handling likes:", error);
+    } finally {
+      setIsFetching(false);
     }
   };
 
@@ -202,7 +200,7 @@ export default function VotePage() {
     );
   } else {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen ">
+      <div className="flex flex-col items-center justify-center min-h-screen">
         <Loading />
       </div>
     );

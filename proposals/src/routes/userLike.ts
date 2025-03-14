@@ -5,6 +5,7 @@ import { addLikesToDb } from "../database/addLike";
 import { getLikeandDislikeByUserId } from "../database/getLikeAndDislikeByUserId";
 import { deleteUserLike } from "../database/deleteUserLike";
 import { deleteUserDislike } from "../database/deleteUserDislike";
+import { getLikesAndDislikesFromDb } from "../database/getLikesAndDislikes";
 
 interface UserPayload {
   id: string;
@@ -42,15 +43,11 @@ router.post("/api/likes/like", async (req: Request, res: Response) => {
       proposal_id,
       user_id: Number(req.currentUser.id),
     });
-    currentUserLikes.likes = 0;
-    currentUserLikes.dislikes = 0;
   } else {
     await addLikesToDb(writePool, {
       proposal_id,
       user_id: Number(req.currentUser.id),
     });
-    currentUserLikes.likes = 1;
-    currentUserLikes.dislikes = 0;
   }
 
   if (currentUserLikes.dislikes > 0) {
@@ -59,8 +56,8 @@ router.post("/api/likes/like", async (req: Request, res: Response) => {
       user_id: Number(req.currentUser.id),
     });
   }
-
-  res.status(200).send(currentUserLikes);
+  const updatedLikes = await getLikesAndDislikesFromDb(writePool, proposal_id);
+  res.status(200).send(updatedLikes);
 });
 
 export { router as useLike };
