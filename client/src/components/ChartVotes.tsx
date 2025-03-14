@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Chart } from "chart.js/auto"; // Import Chart.js/auto
+import { Chart } from "chart.js/auto";
 import { useTranslations } from "next-intl";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState, memo } from "react";
 
 interface ImputProps {
   proposals: {
@@ -18,13 +18,21 @@ interface ImputProps {
   logo?: string;
 }
 
-export default function ChartVotes({ proposals, className, width = 280, height = width / 2, logo }: ImputProps) {
+const ChartVotes = ({
+  proposals,
+  className,
+  width = 280,
+  height = width / 2,
+  logo,
+}: ImputProps) => {
   const t = useTranslations("general-chart-component");
-  const chartRef = useRef<Chart | null>(null); // Use useRef to store the chart instance
+  const chartRef = useRef<Chart | null>(null);
+  const imageRef = useRef<HTMLImageElement | null>(null); // Store the image
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   const centerImagePlugin = {
     id: "centerImage",
-    afterDraw: (chart: any) => {
+    beforeDatasetsDraw: (chart: any) => {
       if (chart) {
         const {
           ctx,
@@ -33,59 +41,87 @@ export default function ChartVotes({ proposals, className, width = 280, height =
         const centerX = (left + right) / 2;
         const centerY = (top + bottom) / 2;
 
-        if (logo) {
-          const image = new Image();
-          image.src = logo || "";
-          image.onload = () => {
-            const imageWidth = image.naturalWidth;
-            const imageHeight = image.naturalHeight;
+        if (logo && imageRef.current && imageLoaded) {
+          const image = imageRef.current;
+          const imageWidth = image.naturalWidth;
+          const imageHeight = image.naturalHeight;
 
-            const targetSize = width / 6;
+          const targetSize = width / 6;
 
-            let scaledWidth, scaledHeight;
+          let scaledWidth, scaledHeight;
 
-            if (imageWidth > imageHeight) {
-              scaledWidth = targetSize;
-              scaledHeight = (imageHeight / imageWidth) * targetSize;
-            } else {
-              scaledHeight = targetSize;
-              scaledWidth = (imageWidth / imageHeight) * targetSize;
-            }
+          if (imageWidth > imageHeight) {
+            scaledWidth = targetSize;
+            scaledHeight = (imageHeight / imageWidth) * targetSize;
+          } else {
+            scaledHeight = targetSize;
+            scaledWidth = (imageWidth / imageHeight) * targetSize;
+          }
 
-            ctx.drawImage(image, centerX - scaledWidth / 2, centerY - scaledHeight / 2, scaledWidth, scaledHeight);
-          };
-        } else {
-          const p = document.createElement("p");
-          p.textContent = proposals.parliament_presence ? proposals.parliament_presence.toString() : "";
+          ctx.drawImage(
+            image,
+            centerX - scaledWidth / 2,
+            centerY - scaledHeight / 2,
+            scaledWidth,
+            scaledHeight
+          );
+        } else if (proposals.parliament_presence) {
           ctx.font = "900 20px Verdana";
-          ctx.fillStyle = "#00000050"; // Example text color
-          ctx.textAlign = "center"; // Center the text horizontally
-
-          // Draw the text onto the canvas
-          ctx.fillText(p.textContent, centerX, centerY + 8);
+          ctx.fillStyle = "#00000050";
+          ctx.textAlign = "center";
+          ctx.fillText(
+            proposals.parliament_presence.toString(),
+            centerX,
+            centerY + 8
+          );
         }
       }
     },
   };
 
   useEffect(() => {
-    const ctx = document.getElementById("generalVotes" + proposals.id) as HTMLCanvasElement | null;
+    if (!proposals?.id) return;
+
+    const ctx = document.getElementById(
+      "generalVotes" + proposals.id
+    ) as HTMLCanvasElement | null;
+
     if (!ctx) return;
+
     ctx.width = width;
     ctx.height = height;
 
     if (chartRef.current) {
-      chartRef.current.destroy(); // Destroy previous chart
+      chartRef.current.destroy();
+    }
+
+    if (logo) {
+      const image = new Image();
+      image.src = logo;
+      image.onload = () => {
+        imageRef.current = image;
+        setImageLoaded(true);
+      };
     }
 
     chartRef.current = new Chart(ctx, {
       type: "doughnut",
       data: {
-        labels: [t("votes_for"), t("abstentions"), t("votes_against"), t("no_votes")],
+        labels: [
+          t("votes_for"),
+          t("abstentions"),
+          t("votes_against"),
+          t("no_votes"),
+        ],
         datasets: [
           {
             label: t("number_of_votes"),
-            data: [proposals.votes_for, proposals.abstentions, proposals.votes_against, proposals.no_vote],
+            data: [
+              proposals.votes_for,
+              proposals.abstentions,
+              proposals.votes_against,
+              proposals.no_vote,
+            ],
             borderWidth: 0,
             backgroundColor: ["#22981D", "#737383", "#B21D20", "#262835"],
             hoverOffset: 4,
@@ -94,9 +130,9 @@ export default function ChartVotes({ proposals, className, width = 280, height =
         ],
       },
       options: {
-        responsive: false, // Disable responsive resizing
-        maintainAspectRatio: true, // Allow custom dimensions
-        cutout: "50%", // Adjust the cutout percentage for the doughnut hole if needed
+        responsive: false,
+        maintainAspectRatio: true,
+        cutout: "50%",
         plugins: {
           legend: {
             position: "right",
@@ -113,7 +149,11 @@ export default function ChartVotes({ proposals, className, width = 280, height =
       }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [imageRef.current]);
 
-  return <canvas className={className} id={"generalVotes" + proposals.id}></canvas>;
-}
+  return (
+    <canvas className={className} id={"generalVotes" + proposals.id}></canvas>
+  );
+};
+
+export default memo(ChartVotes);
