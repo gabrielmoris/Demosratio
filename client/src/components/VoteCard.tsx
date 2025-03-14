@@ -1,4 +1,4 @@
-import { memo, useEffect, useState } from "react";
+import { memo, useEffect, useMemo, useState } from "react";
 import { VotingData } from "../types/proposal";
 import { ExpandableText } from "./ExpandableText";
 import { useRequest } from "@/hooks/use-request";
@@ -27,10 +27,23 @@ const VoteCardComponent = ({ vote }: { vote: VotingData }) => {
       setLikesInfo(data);
     },
   });
+
   useEffect(() => {
     doRequest();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const memoizedProposals = useMemo(
+    () => ({
+      votes_against: vote.votes_against,
+      votes_for: vote.votes_for,
+      abstentions: vote.abstentions,
+      parliament_presence: vote.parliament_presence,
+      no_vote: vote.no_vote,
+      id: vote.id,
+    }),
+    [vote]
+  );
 
   return (
     <div className=" flex flex-col gap-5 border bg-white border-drPurple border-opacity-30 p-8 md:px-20 rounded-md w-full hover:shadow-drPurple hover:shadow-sm">
@@ -42,16 +55,7 @@ const VoteCardComponent = ({ vote }: { vote: VotingData }) => {
         text={vote.expedient_text}
       ></ExpandableText>
       <div className="w-full flex fllex-row items-center justify-start py-2 md:px-28 md:py-5 bg-drlight rounded-md">
-        <ChartVotes
-          proposals={{
-            votes_against: vote.votes_against,
-            votes_for: vote.votes_for,
-            abstentions: vote.abstentions,
-            parliament_presence: vote.parliament_presence,
-            no_vote: vote.no_vote,
-            id: vote.id,
-          }}
-        />
+        <ChartVotes proposals={memoizedProposals} />
       </div>
       <div className="flex flex-row w-full items-end justify-end">
         <Button

@@ -19,25 +19,29 @@ export default function VotePage() {
   const { showToast } = useUiContext();
   const id = params.id;
 
-  const [voteResults, setVoteResults] = useState<Proposal>();
+  const [rawVoteResults, setRawVoteResults] = useState<Proposal>();
   const [isFetching, setIsFetching] = useState<boolean>();
-  const [likesInfo, setLikesInfo] = useState<LiKesAndDislikes>({
+  const [rawLikesInfo, setRawLikesInfo] = useState<LiKesAndDislikes>({
     likes: 0,
     dislikes: 0,
     proposal_id: Number(params.id),
   });
 
-  const [userLikes, setUserLikes] = useState<LiKesAndDislikes>({
+  const [rawUserLikes, setRawUserLikes] = useState<LiKesAndDislikes>({
     likes: 0,
     dislikes: 0,
     proposal_id: Number(params.id),
   });
+
+  const voteResults = useMemo(() => rawVoteResults, [rawVoteResults]);
+  const likesInfo = useMemo(() => rawLikesInfo, [rawLikesInfo]);
+  const userLikes = useMemo(() => rawUserLikes, [rawUserLikes]);
 
   const { doRequest } = useRequest({
     url: "http://localhost:3001/api/proposals/" + id,
     method: "get",
     onSuccess(data) {
-      setVoteResults(data);
+      setRawVoteResults(data);
     },
   });
 
@@ -46,7 +50,7 @@ export default function VotePage() {
     method: "post",
     body: { proposal_id: id },
     onSuccess(data) {
-      setLikesInfo(data);
+      setRawLikesInfo(data);
     },
   });
 
@@ -55,7 +59,7 @@ export default function VotePage() {
     method: "post",
     body: { proposal_id: id },
     onSuccess(data) {
-      setUserLikes(data);
+      setRawUserLikes(data);
     },
   });
 
@@ -64,8 +68,8 @@ export default function VotePage() {
     method: "post",
     body: { proposal_id: Number(id) },
     onSuccess(data) {
-      setLikesInfo(data);
-      setUserLikes(data);
+      setRawLikesInfo(data);
+      setRawUserLikes(data);
     },
   });
 
@@ -74,8 +78,8 @@ export default function VotePage() {
     method: "post",
     body: { proposal_id: Number(id) },
     onSuccess(data) {
-      setLikesInfo(data);
-      setUserLikes(data);
+      setRawLikesInfo(data);
+      setRawUserLikes(data);
     },
   });
 
