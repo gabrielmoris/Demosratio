@@ -7,7 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { LiKesAndDislikes } from "@/src/types/likesAndDislikes";
 import { useAuth } from "@/src/context/authContext";
 import { useUiContext } from "@/src/context/uiContext";
@@ -96,7 +96,7 @@ export default function VotePage() {
 
     if (!user.loading) fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id, user.loading]);
+  }, [user]);
 
   const goBack = () => {
     window.history.back();
@@ -127,6 +127,34 @@ export default function VotePage() {
     }
   };
 
+  const memoizedParties = useMemo(
+    () => voteResults?.votes_parties_json || [],
+    [voteResults?.votes_parties_json]
+  );
+
+  const memoizedChartVotes = useMemo(() => {
+    if (!memoizedParties) return null;
+
+    return memoizedParties.map((party) => {
+      const proposals = {
+        votes_against: party.against,
+        votes_for: party.for,
+        abstentions: party.abstain,
+        no_vote: party.noVote,
+        id: party.party,
+      };
+
+      return (
+        <div key={party.party} className="flex justify-center items-center">
+          <ChartVotes
+            proposals={proposals}
+            logo={`/parties/${proposals.id}.svg`}
+          />
+        </div>
+      );
+    });
+  }, [memoizedParties]);
+
   if (voteResults) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen pb-20 gap-16 p-5 md:p-20 font-drnote">
@@ -142,7 +170,9 @@ export default function VotePage() {
           />
           <p className="text-xs text-drgray">{voteResults.date}</p>
         </div>
-        <h1 className="text-xl font-bold font-drserif">{voteResults.title}</h1>
+        <h1 className="text-2xl font-bold font-drserif w-full">
+          {voteResults.title}
+        </h1>
         <h2 className="text-justify font-drnote text-drgray">
           {voteResults.expedient_text}
         </h2>
@@ -155,25 +185,7 @@ export default function VotePage() {
         </Link>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 w-full">
-          {voteResults.votes_parties_json.map((party) => {
-            return (
-              <div
-                key={party.party}
-                className="flex justify-center items-center"
-              >
-                <ChartVotes
-                  proposals={{
-                    votes_against: party.against,
-                    votes_for: party.for,
-                    abstentions: party.abstain,
-                    no_vote: party.noVote,
-                    id: party.party,
-                  }}
-                  logo={`/parties/${party.party}.svg`}
-                />
-              </div>
-            );
-          })}
+          {memoizedChartVotes}
         </div>
 
         <div className="flex flex-row justify-start items-center w-full gap-5">
