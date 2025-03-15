@@ -10,6 +10,7 @@ import { currentUser } from "./middlewares/current-user";
 import { getUserLikesAndDislikes } from "./routes/getuserLike";
 import { useLike } from "./routes/userLike";
 import { userdisLike } from "./routes/userDislike";
+import { getProposalsByExpedientRouter } from "./routes/proposalsByExpedient";
 
 const app = express();
 
@@ -30,6 +31,7 @@ app.use(
 );
 
 app.use(getProposalsRouter);
+app.use(getProposalsByExpedientRouter);
 app.use(getProposalByIdRouter);
 app.use(getLikesAndDislikesRouter);
 app.use(getUserLikesAndDislikes);
