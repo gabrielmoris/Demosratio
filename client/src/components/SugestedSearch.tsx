@@ -17,6 +17,9 @@ const options = [
   {
     name: "educación",
   },
+  {
+    name: "economía",
+  },
 ];
 
 interface Props {
