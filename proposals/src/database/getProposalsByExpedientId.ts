@@ -30,7 +30,7 @@ export const getProposalsByExpedientText = async (
 
     const proposalQuery = `
       SELECT * FROM proposals
-      WHERE expedient_text LIKE '%' || $1 || '%'
+      WHERE expedient_text ILIKE '%' || $1 || '%'
       ORDER BY date DESC, id DESC 
       LIMIT $2 OFFSET $3
     `;

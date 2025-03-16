@@ -45,5 +45,9 @@
     "parliament-link": "Más información en la Web del Congreso.",
     "your-opinion": "Tu opinión cuenta:",
     "no-logged-in": "Necesitas una cuenta para dar tu opinión."
+  },
+  "parliament": {
+    "search-input": "Búsqueda según texto de expediente",
+    "empty-search": "¿Necesitas ayuda para encontrar algo? Prueba nuestras búsquedas sugeridas"
   }
 }
