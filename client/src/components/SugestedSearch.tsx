@@ -28,11 +28,11 @@ interface Props {
 
 export default function SugestedSearch({ onClickFunction }: Props) {
   return (
-    <div className="flex flex-row gap-5 flex-wrap">
+    <div className="flex flex-row gap-5 w-full">
       {options.map((option) => {
         return (
           <span
-            className=" text-drlight bg-drPurple rounded-full cursor-pointer px-2"
+            className="text-drlight bg-drPurple rounded-full cursor-pointer px-2"
             onClick={() => onClickFunction(option.name)}
             key={option.name}
           >

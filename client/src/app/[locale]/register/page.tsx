@@ -35,7 +35,10 @@ export default function Register() {
     },
   });
 
-  const onInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, inputKey: string) => {
+  const onInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    inputKey: string
+  ) => {
     e.preventDefault();
 
     setForm({ ...form, [inputKey]: e.target.value });
@@ -51,38 +54,51 @@ export default function Register() {
   };
 
   return (
-    <div className="w-full flex flex-col items-center justify-center min-h-screen p-2 md:p-8 pb-20 gap-16 font-[family-name:var(--font-roboto)]">
-      <form
-        onSubmit={onFormSubmit}
-        className="flex flex-col bg-white border border-drlight gap-8 rounded-md p-10 row-start-2 items-center justify-center w-full md:w-1/2 md:min-w-96"
-      >
-        <label className="font-[family-name:var(--font-roboto-serif)] font-bold w-full text-center text-lg">{t("form-title")}</label>
-        <Input inputLabel="Email" type="email" inputObj={form} inputKey="email" placeholder={form.email} setInput={onInputChange} required />
-        <Input
-          inputLabel="Contraseña"
-          type="password"
-          inputObj={form}
-          inputKey="password"
-          placeholder={form.password}
-          setInput={onInputChange}
-          required
-          password
+    <form
+      onSubmit={onFormSubmit}
+      className="flex flex-col bg-white border border-drlight gap-8 rounded-md p-10 row-start-2 items-center justify-center w-full"
+    >
+      <label className="font-[family-name:var(--font-roboto-serif)] font-bold w-full text-center text-lg">
+        {t("form-title")}
+      </label>
+      <Input
+        inputLabel="Email"
+        type="email"
+        inputObj={form}
+        inputKey="email"
+        placeholder={form.email}
+        setInput={(e) => onInputChange(e, "email")}
+        required
+      />
+      <Input
+        inputLabel="Contraseña"
+        type="password"
+        inputObj={form}
+        inputKey="password"
+        placeholder={form.password}
+        setInput={(e) => onInputChange(e, "password")}
+        required
+        password
+      />
+      <Input
+        inputLabel="Repite la contraseña"
+        inputObj={form}
+        inputKey="repeatPassword"
+        type="password"
+        placeholder={form.repeatPassword}
+        setInput={(e) => onInputChange(e, "repeatPassword")}
+        required
+        password
+      />
+      <div className="flex flex-col gap-5 md:flex-row w-full justify-between items-betwen">
+        <Button
+          label={t("btn-login")}
+          type="button"
+          isSecondary
+          onClick={handleToLogin}
         />
-        <Input
-          inputLabel="Repite la contraseña"
-          inputObj={form}
-          inputKey="repeatPassword"
-          type="password"
-          placeholder={form.repeatPassword}
-          setInput={onInputChange}
-          required
-          password
-        />
-        <div className="flex flex-col gap-5 md:flex-row w-full justify-between items-betwen">
-          <Button label={t("btn-login")} type="button" isSecondary onClick={handleToLogin} />
-          <Button label={t("btn-register")} type="submit" />
-        </div>
-      </form>
-    </div>
+        <Button label={t("btn-register")} type="submit" />
+      </div>
+    </form>
   );
 }

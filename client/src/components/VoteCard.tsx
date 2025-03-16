@@ -46,10 +46,10 @@ const VoteCardComponent = ({ vote }: { vote: VotingData }) => {
   );
 
   return (
-    <div className=" flex flex-col gap-5 border bg-white border-drPurple border-opacity-30 p-8 md:px-20 rounded-md w-full hover:shadow-drPurple hover:shadow-sm">
+    <div className="flex flex-col gap-5 border bg-white border-drPurple border-opacity-30 p-8 md:px-20 rounded-md w-full hover:shadow-drPurple hover:shadow-sm">
       <p className="font-drserif text-sm font-bold">{vote.title}</p>
       <ExpandableText
-        className="font-drnote text-sm "
+        className="font-drnote text-sm"
         key={vote.id}
         maxLines={2}
         text={vote.expedient_text}

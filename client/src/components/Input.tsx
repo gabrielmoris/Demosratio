@@ -11,6 +11,7 @@ interface ImputProps {
   required?: boolean;
   password?: boolean;
   type?: "password" | "email" | "text" | "checkbox";
+  className?: string;
 }
 
 export default function Input({
@@ -23,9 +24,10 @@ export default function Input({
   required,
   password,
   type,
+  className,
 }: ImputProps) {
   return (
-    <div className="relative w-full">
+    <div className={`relative w-full ${className}`}>
       <input
         type={type ? type : "text"}
         name={inputKey}

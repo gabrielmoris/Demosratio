@@ -161,7 +161,7 @@ export default function VotePage() {
 
   if (voteResults) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen pb-20 gap-16 p-5 md:p-20 font-drnote">
+      <section className="flex flex-col items-center justify-center min-h-screen pb-20 gap-16 font-drnote">
         <div className="w-full flex flex-row items-end justify-between">
           <Image
             onClick={goBack}
@@ -227,7 +227,7 @@ export default function VotePage() {
             <span>{likesInfo?.dislikes}</span>
           </div>
         </div>
-      </div>
+      </section>
     );
   } else {
     return (

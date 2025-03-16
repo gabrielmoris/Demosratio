@@ -89,7 +89,7 @@ export default function Parliament() {
   };
 
   return (
-    <main className="flex flex-col w-full items-center justify-items-center min-h-screen pb-20 gap-16 p-5 md:p-20 font-[family-name:var(--font-geist-sans)]">
+    <main className="flex flex-col w-full items-center justify-items-center min-h-screen pb-20 gap-16 font-[family-name:var(--font-geist-sans)]">
       <section className="flex flex-col w-full gap-8 justify-center items-center">
         <Input
           inputLabel={t("search-input")}
@@ -102,7 +102,7 @@ export default function Parliament() {
         {votes.length ? (
           votes.map((vote) => <VoteCard key={vote.id} vote={vote} />)
         ) : (
-          <div className="flex flex-col items-center gap-10 justify-center">
+          <div className="flex flex-col items-center gap-10 justify-center w-full">
             {t("empty-search")}
             <SugestedSearch onClickFunction={sugestedSearch} />
           </div>
