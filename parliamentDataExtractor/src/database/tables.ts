@@ -110,12 +110,32 @@ export async function createTables() {
           text TEXT NOT NULL,
           url TEXT,
           political_party_id INTEGER REFERENCES political_parties(id) NOT NULL,
-          likes INTEGER NOT NULL DEFAULT 0,
-          dislikes INTEGER NOT NULL DEFAULT 0,
           date DATE NOT NULL DEFAULT CURRENT_DATE
         );
       `);
     log.info('Table "promises" created or already exists.');
+
+    // PROMISE REACHED
+    await client.query(`
+        CREATE TABLE IF NOT EXISTS promises_status_reached (
+            id SERIAL PRIMARY KEY,
+            promise_id INTEGER REFERENCES promises(id) ON DELETE CASCADE,
+            user_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+      `);
+    log.info('Table "promises_status_reached" created or already exists.');
+
+    // PROMISE NOT REACHED
+    await client.query(`
+        CREATE TABLE IF NOT EXISTS promises_status_not_reached (
+            id SERIAL PRIMARY KEY,
+            promise_id INTEGER REFERENCES promises(id) ON DELETE CASCADE,
+            user_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+      `);
+    log.info('Table "promises_status_not_reached" created or already exists.');
   } catch (err) {
     log.error("Error creating tables:", err);
     throw err;
