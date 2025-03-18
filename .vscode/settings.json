@@ -3,5 +3,7 @@
     "activityBar.background": "#000a18",
     "titleBar.activeBackground": "#001c1d",
     "titleBar.activeForeground": "#cedbe1"
-  }
+  },
+  "i18n-ally.localesPaths": ["messages", "src/i18n"],
+  "i18n-ally.keystyle": "nested"
 }
