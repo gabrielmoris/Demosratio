@@ -6,7 +6,6 @@ import { saveProposalToDb } from "@/lib/database/saveProposal";
 import { extractParliamentJson } from "@/lib/functions/getParliamentData";
 import { getDateString, getFormattedDateForDB } from "@/lib/helpers/dateFormatters";
 import { mergeVotesByParty } from "@/lib/functions/votesPerParty";
-import { createTables } from "@/lib/database/tables";
 import { VotingData } from "@/types/proposal.types";
 
 const log = new Logger();
@@ -16,10 +15,11 @@ export async function GET() {
   log.info("Running parliament data extractor...");
 
   try {
-    await createTables();
-    const yesterday = getDateString(1);
-
-    await saveToDb(yesterday);
+    // Save last 5 days in DB
+    for (let i = 5; i > 1; i--) {
+      const dateToCheck = getDateString(i);
+      await saveToDb(dateToCheck).catch((e) => log.error("Error saving parliamentdata to DB", dateToCheck, "=>", e));
+    }
 
     log.info("Parliament data extraction completed successfully");
     return NextResponse.json({ success: true, message: "Parliament data extraction completed" });
