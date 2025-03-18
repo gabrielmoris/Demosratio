@@ -49,5 +49,35 @@
   "parliament": {
     "search-input": "Búsqueda según texto de expediente",
     "empty-search": "¿Necesitas ayuda para encontrar algo? Prueba nuestras búsquedas sugeridas"
+  },
+  "manifest": {
+    "title": "Manifiesto de Demosratio",
+    "intro": "Demosratio es una herramienta en línea diseñada para verificar el cumplimiento de promesas y decisiones políticas, fomentando la transparencia y la participación ciudadana.",
+    "problemTitle": "¿Qué problema soluciona?",
+    "problemDescription": "Demosratio busca resolver la falta de transparencia en la política, permitiendo a los ciudadanos informarse de manera clara y objetiva sobre las promesas de los políticos y las decisiones que toman. La plataforma evita los filtros políticos de la prensa actual, brindando acceso directo a la información y facilitando la participación ciudadana.",
+    "problemExample": "Según un estudio de 2023 del  Ipsos Global Trustworthiness Index, España es uno de los países del mundo que menos se fía de sus políticos y políticas, y el cuarto de Europa por detrás de Polonia (75%), Rumanía (74%) y Hungría (73%).",
+    "howItWorksTitle": "¿Cómo funciona?",
+    "howItWorksDescription": "Demosratio recopila y organiza información sobre las promesas electorales de los políticos y las decisiones que toman en el gobierno. Los usuarios pueden acceder a esta información de forma sencilla, verificar las fuentes oficiales y participar en simulacros de votación.",
+    "featuresTitle": "Funcionalidades",
+    "feature1": "Información clara y accesible: Base de datos con promesas y decisiones, enlazadas a fuentes oficiales.",
+    "feature2": "Seguimiento fácil: Estado de las promesas (cumplidas, no cumplidas, en curso) y resultados de las decisiones (aprobadas, rechazadas, en curso).",
+    "feature3": "Participación ciudadana: Aportación de información verificable, denuncias de manipulación y simulacros de votación.",
+    "feature4": "Visualización de datos: Gráficos y tablas interactivas para analizar la información.",
+    "feature5": "Secciones de la web: Página principal, Votos en el congreso, Promesas electorales, Visualización de datos, Simulacros de votación, Aportación de información, Denuncias de manipulación, Manifiesto y Contacto.",
+    "personalStatementTitle": "Declaración Personal",
+    "personalStatement1": "Desde que tengo edad para votar, no siento que los políticos estén al servicio de la población. Sirven a sus propios intereses y manipulan datos para mantener sus posiciones.",
+    "quote1": "'El poder tiende a corromper, y el poder absoluto corrompe absolutamente.' --Lord Acton",
+    "personalStatement2": "Es común observar que las decisiones impopulares tienden a evitarse, especialmente si no generan beneficios directos para quienes las toman. Esto puede deberse al temor de perder apoyo. Esta dinámica puede llevar a que los problemas se pospongan en lugar de resolverse de manera efectiva. Un ejemplo histórico de esto es la implementación de leyes de transparencia, que a menudo enfrentan desafíos en su aplicación completa.",
+    "personalStatement3": "En el ámbito político, es frecuente que las propuestas, incluso aquellas que coinciden con las promesas de campaña de la oposición, sean rechazadas simplemente por venir del partido en el poder. Esta dinámica dificulta la búsqueda de soluciones conjuntas y puede generar polarización, como se ha visto en situaciones de crisis económica, donde las medidas necesarias se ven obstaculizadas por intereses partidistas.",
+    "personalStatement4": "Observo una creciente desconexión entre los representantes electos y las necesidades de la ciudadanía. Considero que la democracia representativa actual enfrenta desafíos debido a la prevalencia de estrategias de comunicación que priorizan la persuasión sobre la resolución efectiva de problemas. ",
+    "quote2": "'El lenguaje político está diseñado para que las mentiras parezcan verdades, el asesinato una acción respetable y para dar al viento apariencia de solidez'. --George Orwell",
+    "personalStatement5": "Observo una creciente tendencia en la sociedad a percibir la política como un mero juego de suma cero, donde la victoria de un bando se considera una derrota del otro. Esta mentalidad de 'nosotros contra ellos' obstaculiza la búsqueda de soluciones consensuadas y nos lleva a un estancamiento. La polarización extrema, alimentada por la desinformación y la propaganda, erosiona la confianza en las instituciones y socava la cohesión social.",
+    "personalStatement6": "Considero que es responsabilidad de la población tener educación política, entender que la política no es un juego y que los partidos tienen una responsabilidad con la gente.",
+    "quote3": "'El pueblo es el único con quien podemos contar para preservar nuestra libertad.' --Thomas Jefferson ",
+    "quote4": "'Ser de la izquierda es, como ser de la derecha, una de las infinitas maneras que el hombre puede elegir para ser un imbécil: ambas, en efecto, son formas de la hemiplejía moral.' --José Ortega y Gasset",
+    "personalStatement7": "El gobierno debe ser castigado cuando es mediocre, corrupto o incapaz, y la población debe entender que las ideologías políticas no son algo de lo que enorgullecerse, sino herramientas que tienen su razón de ser en cada momento de la historia. A veces la derecha puede resolver problemas que la izquierda no puede, y viceversa.",
+    "personalStatement8": "Es evidente que los discursos políticos a menudo apelan a las emociones para influir en el electorado, y el miedo se utiliza como una herramienta persuasiva más efectiva que la razón. Esta estrategia puede generar polarización y dificultar el debate racional. Un ejemplo de esto es la utilización de situaciones de crisis para exacerbar las divisiones y obtener rédito político.",
+    "goalTitle": "Objetivo",
+    "goalDescription": "El objetivo de Demosratio es fortalecer la democracia representativa mediante la provisión de información objetiva y transparente sobre la actividad política. Buscamos fomentar una ciudadanía informada y participativa, capaz de exigir rendición de cuentas a sus representantes y tomar decisiones basadas en datos verificables. Aspiramos a restaurar la confianza en las instituciones democráticas y promover un debate público fundamentado en la realidad."
   }
 }

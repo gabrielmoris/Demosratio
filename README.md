@@ -20,19 +20,117 @@ Demosratio recopila y organiza información sobre las promesas electorales de lo
 - **Visualización de datos**: Gráficos y tablas interactivas para analizar la información.
 - **Secciones de la web**:
   - Página principal: Resumen de promesas y decisiones recientes.
-  - Cronología: Promesas y decisiones ordenadas por fecha.
-  - Categorías: Promesas y decisiones agrupadas por temas.
-  - Visualización de datos: Gráficos y tablas interactivas.
+  - Votos en el congreso: Decisiones ordenadas por fecha. Con búsqueda por texto de expediente.
+  - Promesas electorales: Promesas y decisiones agrupadas por temas.
+  - Visualización de datos: Gráficos y tablas interactivas. cuando se clicka en los votos
   - Simulacros de votación: Votaciones simuladas sobre temas de actualidad.
-  - Aportación de información: Formulario para añadir promesas y decisiones.
-  - Denuncias de manipulación: Formulario para denunciar información falsa.
-  - Acerca de: Información sobre el proyecto y sus creadores.
+  - Aportación de información: Formulario para añadir promesas y decisiones. (NO MVP)
+  - Denuncias de manipulación: Formulario para denunciar información falsa. (NO MVP)
+  - Manifiesto: Información sobre el proyecto y sus creadores.
   - Contacto: Formulario de contacto.
 
 ## Tecnologías
 
 - **Frontend**: Next.js, Typescript
 - **Backend**: Express (o Next.js), Bun.js, Docker
+
+## Base de Datos
+
+```mermaid
+erDiagram
+    users {
+        int id PK
+        varchar email
+        varchar password
+        date register_date
+    }
+
+    user_devices {
+        int id PK
+        int user_id FK
+        varchar device_hash UNIQUE
+        timestamp added_at
+    }
+
+    political_parties {
+        int id PK
+        varchar name
+        text logo
+        varchar abbreviation UNIQUE
+    }
+
+    sources {
+        int id PK
+        text url
+        date date
+        int user_id FK
+        varchar source_type
+    }
+
+    proposals {
+        int id PK
+        text title
+        text url
+        int session
+        text expedient_text
+        jsonb votes_parties_json
+        int parliament_presence
+        int votes_for
+        int abstentions
+        int votes_against
+        int no_vote
+        boolean assent
+        date date
+    }
+
+    proposal_likes {
+        int id PK
+        int proposal_id FK
+        int user_id FK
+        timestamp created_at
+    }
+
+    proposal_dislikes {
+        int id PK
+        int proposal_id FK
+        int user_id FK
+        timestamp created_at
+    }
+
+    promises {
+        int id PK
+        text text
+        text url
+        int political_party_id FK
+        date date
+    }
+
+    promises_status_reached {
+        int id PK
+        int promise_id FK
+        int user_id FK
+        timestamp created_at
+    }
+
+    promises_status_not_reached {
+        int id PK
+        int promise_id FK
+        int user_id FK
+        timestamp created_at
+    }
+
+    users ||--o{ user_devices : "one-to-many"
+    users ||--o{ sources : "one-to-many"
+    users ||--o{ proposal_likes : "one-to-many"
+    users ||--o{ proposal_dislikes : "one-to-many"
+    users ||--o{ promises_status_reached : "one-to-many"
+    users ||--o{ promises_status_not_reached : "one-to-many"
+    political_parties ||--o{ promises : "one-to-many"
+    proposals ||--o{ proposal_likes : "one-to-many"
+    proposals ||--o{ proposal_dislikes : "one-to-many"
+    promises ||--o{ promises_status_reached : "one-to-many"
+    promises ||--o{ promises_status_not_reached : "one-to-many"
+```
 
 ## Instalación
 
@@ -73,7 +171,5 @@ Utilizaremos la siguiente convención de branching:
 
 ## Próximos pasos
 
-- Definir la estructura del código y los principales directorios del repositorio.
-- Establecer reglas de estilo de código con ESLint y Prettier.
 - Implementar pruebas unitarias y de integración.
 - Configurar el proceso de despliegue.
