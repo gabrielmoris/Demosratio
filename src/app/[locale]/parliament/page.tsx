@@ -22,9 +22,7 @@ export default function Parliament() {
   const t = useTranslations("parliament");
 
   const { doRequest, errors } = useRequest({
-    url: `http://localhost:3001/api/proposals${
-      search ? "/search" : ""
-    }?page=${page}${
+    url: `/api/spanish-proposals${search ? "/search" : ""}?page=${page}${
       search ? "&expedient_text=" + encodeURIComponent(search) : ""
     }`,
     method: "get",
@@ -33,10 +31,7 @@ export default function Parliament() {
         page === 1 ? data.proposals : [...prevVotes, ...data.proposals]
       );
       setNoMoreVotes(
-        data.proposals.length === 0 ||
-          (page === 1
-            ? data.proposals.length
-            : votes.length + data.proposals.length) === data.totalCount
+        data.proposals.length === 0 || data.pagination.totalPages === page
       );
       setIsLoading(false);
     },

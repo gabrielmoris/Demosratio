@@ -38,7 +38,7 @@ export default function VotePage() {
   const userLikes = useMemo(() => rawUserLikes, [rawUserLikes]);
 
   const { doRequest } = useRequest({
-    url: "http://localhost:3001/api/proposals/" + id,
+    url: "/api/spanish-proposals/" + id,
     method: "get",
     onSuccess(data) {
       setRawVoteResults(data);
