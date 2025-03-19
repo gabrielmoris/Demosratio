@@ -1,4 +1,3 @@
-// lib/helpers/dateFormatters.ts
 import { Temporal } from "@js-temporal/polyfill";
 
 export const getDateString = (daysLess: number = 0): string => {
@@ -41,4 +40,15 @@ export function getFormattedDateForDB(dateString: string): string {
   });
 
   return temporalDate.toString();
+}
+
+export function formatDate(date: string, locale: string = "es-ES"): string {
+  const dateToFormat = new Date(date)
+  const dateTemporal = Temporal.PlainDate.from(dateToFormat.toISOString().slice(0, 10)); // Extract YYYY-MM-DD
+
+  return dateTemporal.toLocaleString(locale, {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
 }

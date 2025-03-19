@@ -11,6 +11,7 @@ import { useEffect, useMemo, useState } from "react";
 import { LiKesAndDislikes } from "@/src/types/likesAndDislikes";
 import { useAuth } from "@/src/context/authContext";
 import { useUiContext } from "@/src/context/uiContext";
+import { formatDate } from "@/lib/helpers/dateFormatters";
 
 export default function VotePage() {
   const t = useTranslations("votepage");
@@ -46,7 +47,7 @@ export default function VotePage() {
   });
 
   const { doRequest: likesRequest } = useRequest({
-    url: "http://localhost:3001/api/likes",
+    url: "/api/spanish-proposals/likes",
     method: "post",
     body: { proposal_id: id },
     onSuccess(data) {
@@ -55,7 +56,7 @@ export default function VotePage() {
   });
 
   const { doRequest: userLikeRequest } = useRequest({
-    url: "http://localhost:3001/api/likes/user",
+    url: "/api/spanish-proposals/likes/user",
     method: "post",
     body: { proposal_id: id },
     onSuccess(data) {
@@ -64,7 +65,7 @@ export default function VotePage() {
   });
 
   const { doRequest: onLikeProposal } = useRequest({
-    url: "http://localhost:3001/api/likes/like",
+    url: "/api/spanish-proposals/likes/like",
     method: "post",
     body: { proposal_id: Number(id) },
     onSuccess(data) {
@@ -74,7 +75,7 @@ export default function VotePage() {
   });
 
   const { doRequest: onDisLikeProposal } = useRequest({
-    url: "http://localhost:3001/api/likes/dislike",
+    url: "/api/spanish-proposals/likes/dislike",
     method: "post",
     body: { proposal_id: Number(id) },
     onSuccess(data) {
@@ -131,10 +132,7 @@ export default function VotePage() {
     }
   };
 
-  const memoizedParties = useMemo(
-    () => voteResults?.votes_parties_json || [],
-    [voteResults?.votes_parties_json]
-  );
+  const memoizedParties = useMemo(() => voteResults?.votes_parties_json || [], [voteResults?.votes_parties_json]);
 
   const memoizedChartVotes = useMemo(() => {
     if (!memoizedParties) return null;
@@ -150,10 +148,7 @@ export default function VotePage() {
 
       return (
         <div key={party.party} className="flex justify-center items-center">
-          <ChartVotes
-            proposals={proposals}
-            logo={`/parties/${proposals.id}.svg`}
-          />
+          <ChartVotes proposals={proposals} logo={`/parties/${proposals.id}.svg`} />
         </div>
       );
     });
@@ -172,25 +167,15 @@ export default function VotePage() {
             height={30}
             priority
           />
-          <p className="text-xs text-drgray">{voteResults.date}</p>
+          <p className="text-xs text-drgray">{formatDate(voteResults.date)}</p>
         </div>
-        <h1 className="text-2xl font-bold font-drserif w-full">
-          {voteResults.title}
-        </h1>
-        <h2 className="text-justify font-drnote text-drgray">
-          {voteResults.expedient_text}
-        </h2>
-        <Link
-          className="w-full text-drPurple hover:opacity-60 duration-500"
-          href={voteResults.url}
-          target="_blank"
-        >
+        <h1 className="text-2xl font-bold font-drserif w-full">{voteResults.title}</h1>
+        <h2 className="text-justify font-drnote text-drgray">{voteResults.expedient_text}</h2>
+        <Link className="w-full text-drPurple hover:opacity-60 duration-500" href={voteResults.url} target="_blank">
           {t("parliament-link")}
         </Link>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 w-full">
-          {memoizedChartVotes}
-        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 w-full">{memoizedChartVotes}</div>
 
         <div className="flex flex-row justify-start items-center w-full gap-5">
           <p className="font-bold text-xl">{t("your-opinion")}</p>
@@ -198,11 +183,7 @@ export default function VotePage() {
             <Image
               onClick={() => handleUserLikes("like")}
               className="w-6 h-6 cursor-pointer"
-              src={
-                userLikes && userLikes?.likes > 0
-                  ? "/like-filled-icn.svg"
-                  : "/like-icn.svg"
-              }
+              src={userLikes && userLikes?.likes > 0 ? "/like-filled-icn.svg" : "/like-icn.svg"}
               alt="profile-icn"
               width={25}
               height={25}
@@ -214,11 +195,7 @@ export default function VotePage() {
             <Image
               onClick={() => handleUserLikes("dislike")}
               className="w-6 h-6 cursor-pointer"
-              src={
-                userLikes && userLikes?.dislikes > 0
-                  ? "/dislike-filled-icn.svg"
-                  : "/dislike-icn.svg"
-              }
+              src={userLikes && userLikes?.dislikes > 0 ? "/dislike-filled-icn.svg" : "/dislike-icn.svg"}
               alt="profile-icn"
               width={25}
               height={25}

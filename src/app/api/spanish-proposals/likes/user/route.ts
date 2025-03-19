@@ -1,4 +1,6 @@
+import { verifyJWT } from "@/lib/helpers/users/jwt";
 import { supabaseAdmin } from "@/lib/supabaseClient";
+import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 interface LikesAndDislikes {
@@ -9,17 +11,21 @@ interface LikesAndDislikes {
 
 export async function POST(request: Request) {
   const { proposal_id } = await request.json();
+  const session = (await cookies()).get("session")?.value;
+  if (!session) return NextResponse.json({ error: "Invalid User" }, { status: 400 });
+  const userPayload = verifyJWT(session);
+  if (!userPayload) return NextResponse.json({ error: "Invalid token" }, { status: 400 });
+  const { id: userId } = userPayload;
 
-  if (!proposal_id) {
-    return NextResponse.json({ error: "Invalid body" }, { status: 400 });
-  }
+  if (!proposal_id) return NextResponse.json({ error: "Invalid body" }, { status: 400 });
 
   try {
     // Count likes
     const { count: likesCount, error: likesError } = await supabaseAdmin
       .from("proposal_likes")
       .select("*", { count: "exact" })
-      .eq("proposal_id", proposal_id);
+      .eq("proposal_id", proposal_id)
+      .eq("user_id", userId);
 
     if (likesError) {
       console.error("Supabase error fetching likes:", likesError);
@@ -30,7 +36,8 @@ export async function POST(request: Request) {
     const { count: dislikesCount, error: dislikesError } = await supabaseAdmin
       .from("proposal_dislikes")
       .select("*", { count: "exact" })
-      .eq("proposal_id", proposal_id);
+      .eq("proposal_id", proposal_id)
+      .eq("user_id", userId);
 
     if (dislikesError) {
       console.error("Supabase error fetching dislikes:", dislikesError);

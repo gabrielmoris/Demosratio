@@ -8,6 +8,7 @@ import ChartVotes from "./ChartVotes";
 import Button from "./Button";
 import { useTranslations } from "next-intl";
 import { useRouter } from "../i18n/routing";
+import { formatDate } from "@/lib/helpers/dateFormatters";
 
 const VoteCardComponent = ({ vote }: { vote: VotingData }) => {
   const [likesInfo, setLikesInfo] = useState<LiKesAndDislikes>();
@@ -90,7 +91,7 @@ const VoteCardComponent = ({ vote }: { vote: VotingData }) => {
             {likesInfo?.dislikes}
           </div>
         </div>
-        <p className="text-drgray text-xs">{vote.date}</p>
+        <p className="text-drgray text-xs">{formatDate(vote.date)}</p>
       </div>
     </div>
   );
