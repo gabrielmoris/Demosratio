@@ -1,13 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+// src/app/api/spanish-proposals/[id]/route.ts
+
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabaseClient";
 
-interface Params {
-  params: {
-    id: string;
-  };
-}
-
-export async function GET(request: NextRequest, { params }: Params) {
+export async function GET(request: NextRequest, { params }: any) {
   const id = params.id;
 
   if (!id) {
