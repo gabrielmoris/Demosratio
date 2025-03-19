@@ -5,14 +5,17 @@ import JSZip from "jszip";
 
 const log = new Logger();
 
-export const extractParliamentJson = async (
-  date: string
-): Promise<ProposalData[]> => {
+export const extractParliamentJson = async (date: string): Promise<ProposalData[]> => {
   return new Promise(async (resolve, reject) => {
     try {
       const response = await fetch(
         "https://www.congreso.es/es/opendata/votaciones?p_p_id=votaciones&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&targetLegislatura=XV&targetDate=" +
-          date
+          date,
+        {
+          headers: {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+          },
+        }
       );
 
       if (!response.ok) {
@@ -20,9 +23,7 @@ export const extractParliamentJson = async (
         return;
       }
 
-      const html = (await response.text())
-        .replaceAll("\n", "")
-        .replaceAll("\t", "");
+      const html = (await response.text()).replaceAll("\n", "").replaceAll("\t", "");
 
       if (html.includes("No hay votaciones")) {
         log.info(`No Votes for the day ${date}`);
@@ -38,9 +39,7 @@ export const extractParliamentJson = async (
         return;
       }
 
-      const votationJson: ProposalData[] = await extractParliamentZip(
-        zipLinkMatch[1]
-      );
+      const votationJson: ProposalData[] = await extractParliamentZip(zipLinkMatch[1]);
 
       resolve(votationJson);
     } catch (error) {
@@ -51,9 +50,7 @@ export const extractParliamentJson = async (
 };
 
 // EXTRACT DATA FROM ZIP
-export const extractParliamentZip = async (
-  link: string
-): Promise<ProposalData[]> => {
+export const extractParliamentZip = async (link: string): Promise<ProposalData[]> => {
   try {
     const zipResponse = await fetch("https://www.congreso.es" + link);
 
@@ -64,10 +61,7 @@ export const extractParliamentZip = async (
 
     // Check the content type
     const contentType = zipResponse.headers.get("content-type");
-    if (
-      contentType !== "application/zip" &&
-      contentType !== "application/x-zip-compressed"
-    ) {
+    if (contentType !== "application/zip" && contentType !== "application/x-zip-compressed") {
       log.error(`Unexpected content type: ${contentType}`);
       throw new Error(`Unexpected content type: ${contentType}`);
     }

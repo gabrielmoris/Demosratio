@@ -1,10 +1,7 @@
 import { NextResponse } from "next/server";
 import { Logger } from "tslog";
 
-import {
-  getDateString,
-  getFormattedDateForDB,
-} from "@/lib/helpers/dateFormatters";
+import { getDateString, getFormattedDateForDB } from "@/lib/helpers/dateFormatters";
 import { mergeVotesByParty } from "@/lib/functions/spanishParliamentExtractor/votesPerParty";
 import { VotingData } from "@/types/proposal.types";
 import { extractParliamentJson } from "@/lib/functions/spanishParliamentExtractor/getParliamentData";
@@ -18,11 +15,9 @@ export async function GET() {
 
   try {
     // Save last 5 days in DB
-    for (let i = 5; i > 1; i--) {
+    for (let i = 5; i > 0; i--) {
       const dateToCheck = getDateString(i);
-      await saveToDb(dateToCheck).catch((e) =>
-        log.error("Error saving parliamentdata to DB", dateToCheck, "=>", e)
-      );
+      await saveToDb(dateToCheck).catch((e) => log.error("Error saving parliamentdata to DB", dateToCheck, "=>", e));
     }
 
     log.info("Parliament data extraction completed successfully");
@@ -48,12 +43,7 @@ async function saveToDb(day: string) {
 
   for (const votation of extractedParliamentData) {
     // Get the important information
-    const {
-      sesion: session,
-      fecha: date,
-      titulo: title,
-      textoExpediente: expedient_text,
-    } = votation.informacion;
+    const { sesion: session, fecha: date, titulo: title, textoExpediente: expedient_text } = votation.informacion;
 
     const {
       presentes: parliament_presence,
