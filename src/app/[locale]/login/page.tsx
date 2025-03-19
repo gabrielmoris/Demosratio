@@ -11,16 +11,16 @@ import { useFingerprint } from "@/hooks/fingerprint-gen";
 export default function Login() {
   const t = useTranslations("login");
   const { updateCurrentUser } = useAuth();
-  const [form, setForm] = useState<{ email: string; password: string }>({
-    email: "",
+  const [form, setForm] = useState<{ name: string; password: string }>({
+    name: "",
     password: "",
   });
   const { fingerprint } = useFingerprint();
 
   const { doRequest } = useRequest({
-    url: "http://localhost:3002/api/users/signin",
+    url: "/api/users/signin",
     method: "post",
-    body: { email: form.email, password: form.password, fingerprint },
+    body: { name: form.name, password: form.password, fingerprint },
     onSuccess: () => {
       updateCurrentUser();
       router.push(`/${locale}`);
@@ -56,19 +56,13 @@ export default function Login() {
       <label className="font-[family-name:var(--font-roboto-serif)] font-bold w-full text-center text-lg">
         {t("form-title")}
       </label>
-
-      {/* <Button label={t("btn-google")} type="button" isSecondary icn="/google-icn.svg" />
-        <div className="w-full h-10 flex flex-col items-center justify-center relative">
-          <p className="bg-white p-2 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">{t("or-email")}</p>
-          <hr className="bg-drgray w-1/2" />
-        </div> */}
       <Input
-        inputLabel="Email"
+        inputLabel="Nombre / Nick"
         inputObj={form}
-        type="email"
-        inputKey="email"
-        placeholder={form.email}
-        setInput={(e) => onInputChange(e, "email")}
+        type="text"
+        inputKey="name"
+        placeholder={form.name}
+        setInput={(e) => onInputChange(e, "name")}
         required
       />
       <Input

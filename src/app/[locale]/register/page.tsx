@@ -11,11 +11,11 @@ import { useFingerprint } from "@/hooks/fingerprint-gen";
 export default function Register() {
   const t = useTranslations("register");
   const [form, setForm] = useState<{
-    email: string;
+    name: string;
     password: string;
     repeatPassword: string;
   }>({
-    email: "",
+    name: "",
     password: "",
     repeatPassword: "",
   });
@@ -26,9 +26,9 @@ export default function Register() {
   const { fingerprint } = useFingerprint();
 
   const { doRequest } = useRequest({
-    url: "http://localhost:3002/api/users/signup",
+    url: "/api/users/signup",
     method: "post",
-    body: { email: form.email, password: form.password, fingerprint },
+    body: { name: form.name, password: form.password, fingerprint },
     onSuccess: () => {
       updateCurrentUser();
       router.push(`/${locale}`);
@@ -62,12 +62,12 @@ export default function Register() {
         {t("form-title")}
       </label>
       <Input
-        inputLabel="Email"
-        type="email"
+        inputLabel="Nombte / Nick"
+        type="text"
         inputObj={form}
-        inputKey="email"
-        placeholder={form.email}
-        setInput={(e) => onInputChange(e, "email")}
+        inputKey="name"
+        placeholder={form.name}
+        setInput={(e) => onInputChange(e, "name")}
         required
       />
       <Input

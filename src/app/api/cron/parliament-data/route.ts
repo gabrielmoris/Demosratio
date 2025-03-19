@@ -1,12 +1,14 @@
-// app/api/cron/parliament-data/route.ts
 import { NextResponse } from "next/server";
 import { Logger } from "tslog";
 
-import { saveProposalToDb } from "@/lib/database/saveProposal";
-import { extractParliamentJson } from "@/lib/functions/getParliamentData";
-import { getDateString, getFormattedDateForDB } from "@/lib/helpers/dateFormatters";
-import { mergeVotesByParty } from "@/lib/functions/votesPerParty";
+import {
+  getDateString,
+  getFormattedDateForDB,
+} from "@/lib/helpers/dateFormatters";
+import { mergeVotesByParty } from "@/lib/functions/spanishParliamentExtractor/votesPerParty";
 import { VotingData } from "@/types/proposal.types";
+import { extractParliamentJson } from "@/lib/functions/spanishParliamentExtractor/getParliamentData";
+import { saveProposalToDb } from "@/lib/database/spanishParliament/saveProposal";
 
 const log = new Logger();
 
@@ -18,14 +20,26 @@ export async function GET() {
     // Save last 5 days in DB
     for (let i = 5; i > 1; i--) {
       const dateToCheck = getDateString(i);
-      await saveToDb(dateToCheck).catch((e) => log.error("Error saving parliamentdata to DB", dateToCheck, "=>", e));
+      await saveToDb(dateToCheck).catch((e) =>
+        log.error("Error saving parliamentdata to DB", dateToCheck, "=>", e)
+      );
     }
 
     log.info("Parliament data extraction completed successfully");
-    return NextResponse.json({ success: true, message: "Parliament data extraction completed" });
+    return NextResponse.json({
+      success: true,
+      message: "Parliament data extraction completed",
+    });
   } catch (error) {
     log.error("Error in parliament data extraction:", error);
-    return NextResponse.json({ success: false, message: "Parliament data extraction failed", error: String(error) }, { status: 500 });
+    return NextResponse.json(
+      {
+        success: false,
+        message: "Parliament data extraction failed",
+        error: String(error),
+      },
+      { status: 500 }
+    );
   }
 }
 
@@ -34,7 +48,12 @@ async function saveToDb(day: string) {
 
   for (const votation of extractedParliamentData) {
     // Get the important information
-    const { sesion: session, fecha: date, titulo: title, textoExpediente: expedient_text } = votation.informacion;
+    const {
+      sesion: session,
+      fecha: date,
+      titulo: title,
+      textoExpediente: expedient_text,
+    } = votation.informacion;
 
     const {
       presentes: parliament_presence,

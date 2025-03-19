@@ -1,5 +1,11 @@
 "use client";
-import { createContext, useState, useEffect, useContext, useCallback } from "react";
+import {
+  createContext,
+  useState,
+  useEffect,
+  useContext,
+  useCallback,
+} from "react";
 import axios from "axios";
 
 const defaultAuthContext = {
@@ -17,7 +23,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const fetchCurrentUser = useCallback(async () => {
     setLoading(true);
     try {
-      const response = await axios.get("http://localhost:3002/api/users/currentuser", { withCredentials: true });
+      const response = await axios.get("/api/users/current-user", {
+        withCredentials: true,
+      });
       setCurrentUser(response.data.currentUser);
     } catch (error) {
       console.error("Error fetching current user:", error);

@@ -1,12 +1,11 @@
-// app/api/import-historical/route.ts
 import { NextResponse } from "next/server";
 import { Logger } from "tslog";
 import { getDateString } from "@/lib/helpers/dateFormatters";
-import { extractParliamentJson } from "@/lib/functions/getParliamentData";
-import { mergeVotesByParty } from "@/lib/functions/votesPerParty";
-import { saveProposalToDb } from "@/lib/database/saveProposal";
+import { mergeVotesByParty } from "@/lib/functions/spanishParliamentExtractor/votesPerParty";
 import { VotingData } from "@/types/proposal.types";
 import { getFormattedDateForDB } from "@/lib/helpers/dateFormatters";
+import { saveProposalToDb } from "@/lib/database/spanishParliament/saveProposal";
+import { extractParliamentJson } from "@/lib/functions/spanishParliamentExtractor/getParliamentData";
 
 const log = new Logger();
 
