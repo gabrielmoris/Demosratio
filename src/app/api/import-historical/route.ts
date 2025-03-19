@@ -1,7 +1,6 @@
 // app/api/import-historical/route.ts
 import { NextResponse } from "next/server";
 import { Logger } from "tslog";
-import { createTables } from "@/lib/database/tables";
 import { getDateString } from "@/lib/helpers/dateFormatters";
 import { extractParliamentJson } from "@/lib/functions/getParliamentData";
 import { mergeVotesByParty } from "@/lib/functions/votesPerParty";
@@ -17,11 +16,13 @@ export async function GET(request: Request) {
     const daysParam = searchParams.get("days");
 
     // Default to 7 days or use environment variable
-    const daysToCheck = daysParam ? parseInt(daysParam, 10) : parseInt(process.env.DAYS_TO_CHECK_VOTATIONS || "7", 10);
+    const daysToCheck = daysParam
+      ? parseInt(daysParam, 10)
+      : parseInt(process.env.DAYS_TO_CHECK_VOTATIONS || "7", 10);
 
-    log.info(`Starting historical data import for the last ${daysToCheck} days...`);
-
-    await createTables();
+    log.info(
+      `Starting historical data import for the last ${daysToCheck} days...`
+    );
 
     // Process historical data
     for (let i = daysToCheck; i > 0; i--) {
@@ -42,7 +43,14 @@ export async function GET(request: Request) {
     });
   } catch (error) {
     log.error("Error in historical data import:", error);
-    return NextResponse.json({ success: false, message: "Historical data import failed", error: String(error) }, { status: 500 });
+    return NextResponse.json(
+      {
+        success: false,
+        message: "Historical data import failed",
+        error: String(error),
+      },
+      { status: 500 }
+    );
   }
 }
 
@@ -51,7 +59,12 @@ async function saveToDb(day: string) {
 
   for (const votation of extractedParliamentData) {
     // Get the important information
-    const { sesion: session, fecha: date, titulo: title, textoExpediente: expedient_text } = votation.informacion;
+    const {
+      sesion: session,
+      fecha: date,
+      titulo: title,
+      textoExpediente: expedient_text,
+    } = votation.informacion;
 
     const {
       presentes: parliament_presence,

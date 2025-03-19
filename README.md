@@ -48,7 +48,7 @@ erDiagram
     user_devices {
         int id PK
         int user_id FK
-        varchar device_hash UNIQUE
+        varchar device_hash
         timestamp added_at
     }
 
@@ -56,7 +56,7 @@ erDiagram
         int id PK
         varchar name
         text logo
-        varchar abbreviation UNIQUE
+        varchar abbreviation
     }
 
     sources {
@@ -119,17 +119,17 @@ erDiagram
         timestamp created_at
     }
 
-    users ||--o{ user_devices : "one-to-many"
-    users ||--o{ sources : "one-to-many"
-    users ||--o{ proposal_likes : "one-to-many"
-    users ||--o{ proposal_dislikes : "one-to-many"
-    users ||--o{ promises_status_reached : "one-to-many"
-    users ||--o{ promises_status_not_reached : "one-to-many"
-    political_parties ||--o{ promises : "one-to-many"
-    proposals ||--o{ proposal_likes : "one-to-many"
-    proposals ||--o{ proposal_dislikes : "one-to-many"
-    promises ||--o{ promises_status_reached : "one-to-many"
-    promises ||--o{ promises_status_not_reached : "one-to-many"
+    users ||--o{ user_devices : has
+    users ||--o{ sources : submits
+    users ||--o{ proposal_likes : creates
+    users ||--o{ proposal_dislikes : creates
+    users ||--o{ promises_status_reached : marks
+    users ||--o{ promises_status_not_reached : marks
+    political_parties ||--o{ promises : makes
+    proposals ||--o{ proposal_likes : receives
+    proposals ||--o{ proposal_dislikes : receives
+    promises ||--o{ promises_status_reached : has
+    promises ||--o{ promises_status_not_reached : has
 ```
 
 ## Instalación
