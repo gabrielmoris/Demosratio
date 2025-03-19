@@ -20,7 +20,7 @@ const VoteCardComponent = ({ vote }: { vote: VotingData }) => {
   };
 
   const { doRequest } = useRequest({
-    url: "http://localhost:3001/api/likes",
+    url: "/api/spanish-proposals/likes",
     method: "post",
     body: { proposal_id: vote.id },
     onSuccess(data) {

@@ -21,7 +21,7 @@ export default function Parliament() {
 
   const t = useTranslations("parliament");
 
-  const { doRequest, errors } = useRequest({
+  const { doRequest } = useRequest({
     url: `/api/spanish-proposals${search ? "/search" : ""}?page=${page}${
       search ? "&expedient_text=" + encodeURIComponent(search) : ""
     }`,
@@ -103,7 +103,7 @@ export default function Parliament() {
           </div>
         )}
       </section>
-      {errors}
+
       {isLoading && <Loading />}
       {!isLoading && !noMoreVotes && <div ref={ref}></div>}
     </main>
