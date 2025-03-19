@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
     const { name, password, fingerprint } = body;
 
     // Validate input
-    if (!name || !name.includes("@")) {
+    if (!name || name.length < 3) {
       return NextResponse.json(
         { error: "Name must be valid" },
         { status: 400 }
