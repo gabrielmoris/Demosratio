@@ -14,8 +14,10 @@ export async function GET() {
   log.info("Running parliament data extractor...");
 
   try {
-    // Save last 5 days in DB
-    for (let i = 5; i > 0; i--) {
+    // Save last X days in DB
+    const daysToCheck = parseInt(process.env.DAYS_TO_CHECK_VOTATIONS || "5", 10);
+
+    for (let i = daysToCheck; i > 0; i--) {
       const dateToCheck = getDateString(i);
       await saveToDb(dateToCheck).catch((e) => log.error("Error saving parliamentdata to DB", dateToCheck, "=>", e));
     }
