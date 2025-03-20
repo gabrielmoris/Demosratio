@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabaseClient";
+import { fetchAllLikesAndDislikes } from "@/lib/database/likes/getTotalLikesAndDislikes";
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
@@ -43,6 +44,13 @@ export async function GET(request: NextRequest) {
         { error: "Error searching proposals" },
         { status: 500 }
       );
+    }
+
+    for (const proposal of proposals) {
+      const proposalLikesAndDislikes = await fetchAllLikesAndDislikes(
+        proposal.id
+      );
+      proposal.likesAndDislikes = proposalLikesAndDislikes.result;
     }
 
     // Return proposals with pagination metadata
