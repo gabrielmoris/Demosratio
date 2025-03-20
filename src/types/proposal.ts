@@ -1,3 +1,5 @@
+import { LiKesAndDislikes } from "./likesAndDislikes";
+
 interface VotesParties {
   for: number;
   party: string;
@@ -20,6 +22,7 @@ export interface VotingData {
   no_vote: number;
   assent: boolean;
   date: string;
+  likesAndDislikes?: LiKesAndDislikes;
 }
 
 export interface Proposal {

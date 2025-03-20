@@ -1,8 +1,7 @@
-import { memo, useEffect, useMemo, useState } from "react";
+import { memo, useMemo } from "react";
 import { VotingData } from "../types/proposal";
 import { ExpandableText } from "./ExpandableText";
-import { useRequest } from "@/hooks/use-request";
-import { LiKesAndDislikes } from "../types/likesAndDislikes";
+
 import Image from "next/image";
 import ChartVotes from "./ChartVotes";
 import Button from "./Button";
@@ -11,7 +10,6 @@ import { useRouter } from "../i18n/routing";
 import { formatDate } from "@/lib/helpers/dateFormatters";
 
 const VoteCardComponent = ({ vote }: { vote: VotingData }) => {
-  const [likesInfo, setLikesInfo] = useState<LiKesAndDislikes>();
   const t = useTranslations("votecard-component");
   const route = useRouter();
 
@@ -19,20 +17,6 @@ const VoteCardComponent = ({ vote }: { vote: VotingData }) => {
     e.preventDefault();
     route.push(`/parliament/${vote.id}`);
   };
-
-  const { doRequest } = useRequest({
-    url: "/api/spanish-proposals/likes",
-    method: "post",
-    body: { proposal_id: vote.id },
-    onSuccess(data) {
-      setLikesInfo(data);
-    },
-  });
-
-  useEffect(() => {
-    doRequest();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const memoizedProposals = useMemo(
     () => ({
@@ -77,7 +61,7 @@ const VoteCardComponent = ({ vote }: { vote: VotingData }) => {
               height={25}
               priority
             />
-            {likesInfo?.likes}
+            {vote.likesAndDislikes?.likes}
           </div>
           <div className="flex flex-row justify-center items-center gap-2">
             <Image
@@ -88,7 +72,7 @@ const VoteCardComponent = ({ vote }: { vote: VotingData }) => {
               height={25}
               priority
             />
-            {likesInfo?.dislikes}
+            {vote.likesAndDislikes?.dislikes}
           </div>
         </div>
         <p className="text-drgray text-xs">{formatDate(vote.date)}</p>
