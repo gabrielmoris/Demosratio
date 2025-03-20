@@ -37,6 +37,7 @@ export async function GET(request: NextRequest) {
       .select("*", { count: "exact" })
       .ilike("expedient_text", `%${expedient_text}%`)
       .order("date", { ascending: false })
+      .order("id", { ascending: false })
       .range(from, to);
 
     if (error) {

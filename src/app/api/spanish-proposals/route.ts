@@ -30,6 +30,7 @@ export async function GET(request: NextRequest) {
       .from("proposals")
       .select("*", { count: "exact" })
       .order("date", { ascending: false })
+      .order("id", { ascending: false })
       .range(from, to);
 
     if (error) {
