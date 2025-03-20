@@ -4,7 +4,7 @@ export default async function Manifest() {
   const t = await getTranslations("manifest");
 
   return (
-    <main className="flex flex-col g my-5apx-8 row-start-2 items-center sm:items-start p-4">
+    <main className="flex flex-col my-5 gap-8 row-start-2 items-center sm:items-start text-justify p-4">
       <h1 className="text-2xl font-bold">{t("title")}</h1>
       <p className="text-lg">{t("intro")}</p>
 

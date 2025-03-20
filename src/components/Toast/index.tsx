@@ -1,5 +1,5 @@
 import React from "react";
-import classes from "./toast.style.css";
+import styles from "./toast.module.css";
 
 export interface ToastProps {
   message: string;
@@ -16,11 +16,11 @@ export const Toast = ({ message, variant, duration }: ToastProps) => {
   // animate component popping in and out on duration
   React.useEffect(() => {
     if (toastRef.current) {
-      toastRef.current.classList.add(classes["animate-toast-in"]);
+      toastRef.current.classList.add(styles["animate-toast-in"]);
       setTimeout(() => {
         if (toastRef.current) {
-          toastRef.current.classList.remove(classes["animate-toast-in"]);
-          toastRef.current.classList.add(classes["animate-toast-out"]);
+          toastRef.current.classList.remove(styles["animate-toast-in"]);
+          toastRef.current.classList.add(styles["animate-toast-out"]);
         }
       }, duration - 500);
     }

@@ -19,7 +19,7 @@ export default function Navbar() {
   });
 
   return (
-    <nav className="flex flex-row md:flex-col items-center justify-around md:justify-start bg-contrast w-screen h-16 bottom-0 left-0 md:w-16 md:min-h-screen fixed md:top-0 md:left-0 py-10 gap-2 lg:gap-10">
+    <nav className="flex flex-row md:flex-col items-center z-50 border-t md:border-t-0 border-drlight backdrop-blur-2xl justify-around md:justify-start bg-contrast w-screen h-16 bottom-0 left-0 md:w-16 md:min-h-screen fixed md:top-0 md:left-0 py-10 gap-2 lg:gap-10">
       {currentUser ? (
         <>
           <p

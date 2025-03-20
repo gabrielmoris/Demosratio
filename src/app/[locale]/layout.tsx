@@ -44,12 +44,12 @@ export default async function RootLayout({
   return (
     <html lang={locale}>
       <body
-        className={`${roboto.variable} ${robotoSerif.variable} antialiased md:pl-14 flex flex-row items-start justify-center`}
+        className={`${roboto.variable} ${robotoSerif.variable} antialiased md:pl-14 flex flex-row items-start justify-center max-w-screen-sm md:max-w-screen-5xl`}
       >
         <AuthProvider>
           <UiProvider>
             <NextIntlClientProvider messages={messages}>
-              <main className="py-20 px-10 md:px-28 lg:px-48 3xl:px-56 min-h-screen font-[family-name:var(--font-roboto)] flex flex-col items-center justify-items-center">
+              <main className="py-10 px-4 md:px-28 lg:px-48 3xl:px-56 min-h-screen font-[family-name:var(--font-roboto)] flex flex-col items-center justify-items-center">
                 <Navbar />
                 {children}
               </main>

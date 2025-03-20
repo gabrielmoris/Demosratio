@@ -1,34 +1,56 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabaseClient";
 
-export async function GET(request: NextRequest, { params }: any) {
-  const { id } = params;
+export async function GET(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  const readyParams = await params;
+  const id = readyParams.id;
 
   if (!id) {
-    return NextResponse.json({ error: "Proposal ID is required." }, { status: 400 });
+    return NextResponse.json(
+      { error: "Proposal ID is required." },
+      { status: 400 }
+    );
   }
 
   try {
-    const { data: proposal, error } = await supabaseAdmin.from("proposals").select("*").eq("id", parseInt(id)).single();
+    const { data: proposal, error } = await supabaseAdmin
+      .from("proposals")
+      .select("*")
+      .eq("id", parseInt(id))
+      .single();
 
     if (error) {
       console.error("Supabase error:", error);
-      return NextResponse.json({ error: "Error fetching proposal" }, { status: 500 });
+      return NextResponse.json(
+        { error: "Error fetching proposal" },
+        { status: 500 }
+      );
     }
 
     if (!proposal) {
-      return NextResponse.json({ error: "Proposal not found." }, { status: 404 });
+      return NextResponse.json(
+        { error: "Proposal not found." },
+        { status: 404 }
+      );
     }
 
-    if (proposal && proposal.votes_parties_json && proposal.votes_parties_json.votes) {
+    if (
+      proposal &&
+      proposal.votes_parties_json &&
+      proposal.votes_parties_json.votes
+    ) {
       proposal.votes_parties_json = proposal.votes_parties_json.votes;
     }
 
     return NextResponse.json(proposal, { status: 200 });
   } catch (error) {
     console.error("Error fetching proposal:", error);
-    return NextResponse.json({ error: "Internal server error." }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal server error." },
+      { status: 500 }
+    );
   }
 }
