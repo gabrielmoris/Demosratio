@@ -1,0 +1,8 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/parliament-data",
+      "schedule": "30 23 * * *"
+    }
+  ]
+}
