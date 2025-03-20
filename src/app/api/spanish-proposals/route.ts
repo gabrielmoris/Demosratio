@@ -29,6 +29,7 @@ export async function GET(request: NextRequest) {
     } = await supabaseAdmin
       .from("proposals")
       .select("*", { count: "exact" })
+      .order("date", { ascending: false })
       .range(from, to);
 
     if (error) {
