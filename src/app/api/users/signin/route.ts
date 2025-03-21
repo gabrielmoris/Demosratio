@@ -1,4 +1,3 @@
-// src/app/api/users/signin/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import {
@@ -80,12 +79,15 @@ export async function POST(req: NextRequest) {
       name: existingUser.name,
     });
 
-    // Set cookie
+    const cookieExpiryDate = new Date();
+    cookieExpiryDate.setDate(cookieExpiryDate.getDate() + 30);
+
     (await cookies()).set("session", userJwt, {
       httpOnly: true,
-      secure: process.env.NODE_ENV !== "development",
-      sameSite: "lax",
+      secure: true,
+      sameSite: "none",
       path: "/",
+      expires: cookieExpiryDate,
     });
 
     return NextResponse.json(existingUser, { status: 200 });

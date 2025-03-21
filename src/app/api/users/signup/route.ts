@@ -81,7 +81,7 @@ export async function POST(req: NextRequest) {
       // Set cookie
       (await cookies()).set("session", userJwt, {
         httpOnly: true,
-        secure: process.env.NODE_ENV !== "development",
+        secure: true, // instead of process.env.NODE_ENV !== "development",
         sameSite: "lax",
         path: "/",
       });
