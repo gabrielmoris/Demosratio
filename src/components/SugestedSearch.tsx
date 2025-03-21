@@ -28,7 +28,7 @@ interface Props {
 
 export default function SugestedSearch({ onClickFunction }: Props) {
   return (
-    <div className="flex flex-row gap-5 w-full">
+    <div className="flex flex-row items-center justify-center flex-wrap gap-5 w-full">
       {options.map((option) => {
         return (
           <span

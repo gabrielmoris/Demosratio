@@ -99,7 +99,7 @@ export default async function RootLayout({
         <AuthProvider>
           <UiProvider>
             <NextIntlClientProvider messages={messages}>
-              <main className="py-10 px-4 md:px-28 lg:px-48 3xl:px-56 min-h-screen font-[family-name:var(--font-roboto)] flex flex-col items-center justify-items-center">
+              <main className="py-10 px-4 md:px-28 lg:px-48 3xl:px-56 w-full min-h-screen font-[family-name:var(--font-roboto)] flex flex-col items-center justify-items-center">
                 <Navbar />
                 {children}
               </main>
