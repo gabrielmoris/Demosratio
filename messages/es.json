@@ -12,7 +12,9 @@
     "btn-login": "Iniciar Sesión",
     "btn-register": "Regístrate",
     "btn-google": "Inicia sesión con Google",
-    "or-email": "O usa el Email"
+    "or-email": "O usa el Email",
+    "input-label-name": "Nombre / Nick",
+    "input-label-password": "Contraseña"
   },
   "register": {
     "form-title": "Registra tu nueva cuenta",
@@ -79,5 +81,8 @@
     "personalStatement8": "Es evidente que los discursos políticos a menudo apelan a las emociones para influir en el electorado, y el miedo se utiliza como una herramienta persuasiva más efectiva que la razón. Esta estrategia puede generar polarización y dificultar el debate racional. Un ejemplo de esto es la utilización de situaciones de crisis para exacerbar las divisiones y obtener rédito político.",
     "goalTitle": "Objetivo",
     "goalDescription": "El objetivo de Demosratio es fortalecer la democracia representativa mediante la provisión de información objetiva y transparente sobre la actividad política. Buscamos fomentar una ciudadanía informada y participativa, capaz de exigir rendición de cuentas a sus representantes y tomar decisiones basadas en datos verificables. Aspiramos a restaurar la confianza en las instituciones democráticas y promover un debate público fundamentado en la realidad."
+  },
+  "protected-route": {
+    "not-authorized": "El acceso a esta página está restringido. Consulta con los Administradores"
   }
 }

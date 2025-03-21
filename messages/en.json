@@ -1,0 +1,12 @@
+{
+  "protected-route": {
+    "not-authorized": "Access to this page is restricted. \nConsult with administrators"
+  },
+  "login": {
+    "input-label-name": "Name / Nick",
+    "form-title": "Log in your account",
+    "btn-register": "Register",
+    "btn-login": "Login",
+    "input-label-password": "Password"
+  }
+}

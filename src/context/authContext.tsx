@@ -7,8 +7,15 @@ import {
   useCallback,
 } from "react";
 import axios from "axios";
+import { UserPayload } from "../types/user";
 
-const defaultAuthContext = {
+interface IDefaultAuthContext {
+  currentUser: UserPayload | null | undefined;
+  loading: boolean;
+  updateCurrentUser: () => Promise<void>;
+}
+
+const defaultAuthContext: IDefaultAuthContext = {
   currentUser: null,
   loading: true,
   updateCurrentUser: () => Promise.resolve(),
@@ -17,7 +24,7 @@ const defaultAuthContext = {
 const AuthContext = createContext(defaultAuthContext);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [currentUser, setCurrentUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState<UserPayload | null>(null);
   const [loading, setLoading] = useState(true);
 
   const fetchCurrentUser = useCallback(async () => {

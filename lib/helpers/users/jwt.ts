@@ -1,9 +1,5 @@
+import { UserPayload } from "@/src/types/user";
 import jwt from "jsonwebtoken";
-
-export interface UserPayload {
-  id: string;
-  name: string;
-}
 
 export const createJWT = (user: { id: string; name: string }) => {
   return jwt.sign(

@@ -57,7 +57,7 @@ export default function Login() {
         {t("form-title")}
       </label>
       <Input
-        inputLabel="Nombre / Nick"
+        inputLabel={t("input-label-name")}
         inputObj={form}
         type="text"
         inputKey="name"
@@ -66,7 +66,7 @@ export default function Login() {
         required
       />
       <Input
-        inputLabel="Contraseña"
+        inputLabel={t("input-label-password")}
         type="password"
         inputObj={form}
         inputKey="password"

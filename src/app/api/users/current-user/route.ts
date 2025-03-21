@@ -2,6 +2,7 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { verifyJWT } from "@/lib/helpers/users/jwt";
+import { findUserByName } from "@/lib/database/users/users";
 
 export async function GET() {
   try {
@@ -12,6 +13,14 @@ export async function GET() {
     }
 
     const currentUser = verifyJWT(session.value);
+
+    if (!currentUser) throw new Error("No user from JWT");
+
+    const user = await findUserByName(currentUser.name);
+
+    if (!user) throw new Error("No user in DB");
+
+    currentUser.is_admin = user.is_admin;
 
     return NextResponse.json(
       { currentUser: currentUser || null },
