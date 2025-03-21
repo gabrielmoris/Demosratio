@@ -37,34 +37,17 @@ function generateCanvasFingerprint(): string | undefined {
 function generateWebglFingerprint(): string {
   try {
     const canvas = document.createElement("canvas");
-    const gl =
-      canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+    const gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
     if (!gl) return "webgl_not_supported";
 
-    const debugInfo = (gl as WebGLRenderingContext)?.getExtension(
-      "WEBGL_debug_renderer_info"
-    );
-    const vendor = debugInfo
-      ? (gl as WebGLRenderingContext)?.getParameter(
-          debugInfo.UNMASKED_VENDOR_WEBGL
-        )
-      : "unknown_vendor";
-    const renderer = debugInfo
-      ? (gl as WebGLRenderingContext)?.getParameter(
-          debugInfo.UNMASKED_RENDERER_WEBGL
-        )
-      : "unknown_renderer";
+    const debugInfo = (gl as WebGLRenderingContext)?.getExtension("WEBGL_debug_renderer_info");
+    const vendor = debugInfo ? (gl as WebGLRenderingContext)?.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL) : "unknown_vendor";
+    const renderer = debugInfo ? (gl as WebGLRenderingContext)?.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) : "unknown_renderer";
 
     const parameters = {
-      VENDOR: (gl as WebGLRenderingContext)?.getParameter(
-        (gl as WebGLRenderingContext).VENDOR
-      ),
-      VERSION: (gl as WebGLRenderingContext)?.getParameter(
-        (gl as WebGLRenderingContext).VERSION
-      ),
-      MAX_TEXTURE_SIZE: (gl as WebGLRenderingContext)?.getParameter(
-        (gl as WebGLRenderingContext).MAX_TEXTURE_SIZE
-      ),
+      VENDOR: (gl as WebGLRenderingContext)?.getParameter((gl as WebGLRenderingContext).VENDOR),
+      VERSION: (gl as WebGLRenderingContext)?.getParameter((gl as WebGLRenderingContext).VERSION),
+      MAX_TEXTURE_SIZE: (gl as WebGLRenderingContext)?.getParameter((gl as WebGLRenderingContext).MAX_TEXTURE_SIZE),
       UNMASKED_VENDOR: vendor,
       UNMASKED_RENDERER: renderer,
     };

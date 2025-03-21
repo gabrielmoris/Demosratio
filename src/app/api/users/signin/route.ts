@@ -1,12 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import {
-  findFingerprint,
-  findUserByName,
-  saveFingerprint,
-} from "@/lib/database/users/users";
+import { findUserByName } from "@/lib/database/users/users";
 import { Password } from "@/lib/helpers/users/password";
 import { createJWT } from "@/lib/helpers/users/jwt";
+import { findFingerprint, saveFingerprint } from "@/lib/database/users/fingerprint";
 
 export async function POST(req: NextRequest) {
   try {
@@ -15,42 +12,27 @@ export async function POST(req: NextRequest) {
 
     // Validate input
     if (!name || name.length < 3) {
-      return NextResponse.json(
-        { error: "Name must be valid" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Name must be valid" }, { status: 400 });
     }
 
     if (!password) {
-      return NextResponse.json(
-        { error: "You must apply a password" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "You must apply a password" }, { status: 400 });
     }
 
     // Find user
     const existingUser = await findUserByName(name);
     if (!existingUser) {
-      return NextResponse.json(
-        { error: "Invalid Credentials" },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: "Invalid Credentials" }, { status: 401 });
     }
 
     // Check fingerprint
     const fingerprintFromUser = await findFingerprint(fingerprint);
 
-    if (
-      !fingerprintFromUser ||
-      fingerprintFromUser.user_id !== existingUser.id
-    ) {
+    if (!fingerprintFromUser || fingerprintFromUser.user_id !== existingUser.id) {
       const existingFingerprint = await findFingerprint(fingerprint);
 
       if (existingFingerprint) {
-        return NextResponse.json(
-          { error: "Este dispositivo no está vinculado a tu usuario." },
-          { status: 401 }
-        );
+        return NextResponse.json({ error: "Este dispositivo no está vinculado a tu usuario." }, { status: 401 });
       } else {
         // Save new fingerprint for this user
         const fingerprintToSave = {
@@ -62,15 +44,9 @@ export async function POST(req: NextRequest) {
     }
 
     // Verify password
-    const passwordsMatch = await Password.compare(
-      existingUser.password,
-      password
-    );
+    const passwordsMatch = await Password.compare(existingUser.password, password);
     if (!passwordsMatch) {
-      return NextResponse.json(
-        { error: "Invalid Credentials" },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: "Invalid Credentials" }, { status: 401 });
     }
 
     // Generate JWT
