@@ -27,6 +27,15 @@ const log = new Logger();
 
 const STORAGE_KEY = "device_fp";
 
+async function hash(data: string): Promise<string> {
+  const encoder = new TextEncoder();
+  const buffer = encoder.encode(data);
+  const hashBuffer = await crypto.subtle.digest("SHA-256", buffer);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  const hashHex = hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
+  return hashHex;
+}
+
 async function generateCanvasFingerprint(): Promise<string | undefined> {
   const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d");
@@ -64,15 +73,6 @@ async function generateWebglFingerprint(): Promise<webGLParams | string> {
     const vendor = debugInfo ? (gl as WebGLRenderingContext)?.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL) : "unknown_vendor";
     const renderer = debugInfo ? (gl as WebGLRenderingContext)?.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) : "unknown_renderer";
 
-    async function hash(data: string): Promise<string> {
-      const encoder = new TextEncoder();
-      const buffer = encoder.encode(data);
-      const hashBuffer = await crypto.subtle.digest("SHA-256", buffer);
-      const hashArray = Array.from(new Uint8Array(hashBuffer));
-      const hashHex = hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
-      return hashHex;
-    }
-
     const webGLParams = {
       p1: await hash(vendor),
       p2: await hash(renderer),
@@ -102,14 +102,6 @@ async function generateWebglFingerprint(): Promise<webGLParams | string> {
 }
 
 async function generateAdditionalFingerprint(): Promise<string> {
-  async function hash(data: string): Promise<string> {
-    const encoder = new TextEncoder();
-    const buffer = encoder.encode(data);
-    const hashBuffer = await crypto.subtle.digest("SHA-256", buffer);
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    const hashHex = hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
-    return hashHex;
-  }
   const h1 = await hash(String(navigator.hardwareConcurrency || "unknown"));
   const h2 = await hash(String(`${screen.width}x${screen.height}`));
   const h3 = await hash(String(screen.colorDepth || "unknown"));
