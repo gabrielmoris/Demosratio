@@ -1,14 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import {
-  deleteUser,
-  findFingerprint,
-  findUserByName,
-  saveFingerprint,
-  saveUser,
-} from "@/lib/database/users/users";
+import { deleteUser, findUserByName, saveUser } from "@/lib/database/users/users";
 import { Password } from "@/lib/helpers/users/password";
 import { createJWT } from "@/lib/helpers/users/jwt";
+import { findSimilarFingerprint, saveFingerprint } from "@/lib/database/users/fingerprint";
+
+const SIMILARITY_THRESHOLD = 0.8;
 
 export async function POST(req: NextRequest) {
   try {
@@ -17,36 +14,24 @@ export async function POST(req: NextRequest) {
 
     // Validate input
     if (!name || name.length < 3) {
-      return NextResponse.json(
-        { error: "Name must be valid" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Name must be valid" }, { status: 400 });
     }
 
     if (!password || password.length < 4 || password.length > 20) {
-      return NextResponse.json(
-        { error: "Password must be between 4 and 20 characters" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Password must be between 4 and 20 characters" }, { status: 400 });
     }
 
     // Check if user exists
     const existingUser = await findUserByName(name);
     if (existingUser) {
-      return NextResponse.json(
-        { error: "No ha sido posible registrarse." },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: "No ha sido posible registrarse." }, { status: 401 });
     }
 
     // Check if fingerprint exists
-    const existingFingerprint = await findFingerprint(fingerprint);
+    const existingFingerprint = await findSimilarFingerprint(fingerprint, SIMILARITY_THRESHOLD);
     if (existingFingerprint) {
-      await deleteUser(name);
-      return NextResponse.json(
-        { error: "Este dispositivo ya está vinculado en otro usuario." },
-        { status: 401 }
-      );
+      // Device is already linked to another user.
+      return NextResponse.json({ error: "Este dispositivo ya está vinculado en otro usuario." }, { status: 401 });
     }
 
     // Hash password and save user
@@ -59,10 +44,7 @@ export async function POST(req: NextRequest) {
     try {
       const user = await saveUser(userToSave);
       if (!user) {
-        return NextResponse.json(
-          { error: "No ha sido posible registrarse." },
-          { status: 500 }
-        );
+        return NextResponse.json({ error: "No ha sido posible registrarse." }, { status: 500 });
       }
 
       // Save fingerprint
@@ -89,15 +71,9 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(user, { status: 201 });
     } catch {
       await deleteUser(name);
-      return NextResponse.json(
-        { error: "No ha sido posible registrarse." },
-        { status: 500 }
-      );
+      return NextResponse.json({ error: "No ha sido posible registrarse." }, { status: 500 });
     }
   } catch {
-    return NextResponse.json(
-      { error: "No ha sido posible registrarse." },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "No ha sido posible registrarse." }, { status: 500 });
   }
 }

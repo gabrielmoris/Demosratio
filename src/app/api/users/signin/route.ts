@@ -3,7 +3,12 @@ import { cookies } from "next/headers";
 import { findUserByName } from "@/lib/database/users/users";
 import { Password } from "@/lib/helpers/users/password";
 import { createJWT } from "@/lib/helpers/users/jwt";
-import { findFingerprint, saveFingerprint } from "@/lib/database/users/fingerprint";
+import { calculateSimilarity, findFingerprintsForUser, findSimilarFingerprint, saveFingerprint } from "@/lib/database/users/fingerprint";
+import { Logger } from "tslog";
+
+const log = new Logger();
+
+const SIMILARITY_THRESHOLD = 0.8;
 
 export async function POST(req: NextRequest) {
   try {
@@ -26,11 +31,19 @@ export async function POST(req: NextRequest) {
     }
 
     // Check fingerprint
-    const fingerprintFromUser = await findFingerprint(fingerprint);
+    const fingerprintsFromUser = await findFingerprintsForUser(existingUser.id);
+    let matchFound = false;
 
-    if (!fingerprintFromUser || fingerprintFromUser.user_id !== existingUser.id) {
-      const existingFingerprint = await findFingerprint(fingerprint);
+    for (const storedFingerprint of fingerprintsFromUser) {
+      const similarity = calculateSimilarity(fingerprint, storedFingerprint.device_hash);
+      if (similarity >= SIMILARITY_THRESHOLD) {
+        matchFound = true;
+        break;
+      }
+    }
 
+    if (!matchFound) {
+      const existingFingerprint = await findSimilarFingerprint(fingerprint, SIMILARITY_THRESHOLD);
       if (existingFingerprint) {
         return NextResponse.json({ error: "Este dispositivo no está vinculado a tu usuario." }, { status: 401 });
       } else {
@@ -67,7 +80,8 @@ export async function POST(req: NextRequest) {
     });
 
     return NextResponse.json(existingUser, { status: 200 });
-  } catch {
+  } catch (e) {
+    log.error(e);
     return NextResponse.json({ error: "Invalid Credentials" }, { status: 500 });
   }
 }
