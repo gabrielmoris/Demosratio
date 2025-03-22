@@ -1,15 +1,18 @@
 "use client";
 import { useRequest } from "@/hooks/use-request";
 import Button from "@/src/components/Button";
+import { Popup } from "@/src/components/Overlay";
 import { useAuth } from "@/src/context/authContext";
 import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function Promises() {
+  const [openDelete, setOpenDelete] = useState(false);
   const t = useTranslations("profile");
 
   const router = useRouter();
-  const { updateCurrentUser } = useAuth();
+  const { updateCurrentUser, currentUser } = useAuth();
   const locale = useLocale();
 
   const { doRequest } = useRequest({
@@ -21,20 +24,29 @@ export default function Promises() {
     },
   });
 
+  const goToAdmin = () => {
+    router.push(`/${locale}/admin`);
+  };
+
   return (
-    <div className="flex flex-col items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center justify-center">
-        <div className="flex flex-col bg-white border border-drlight gap-8 rounded-md p-10 row-start-2 items-center justify-center w-full md:w-1/2 md:min-w-96">
-          <label className="font-drserif font-bold w-full text-center text-lg">
-            {t("form-title")}
-          </label>
+    <div className="flex flex-col items-center justify-center mb-16 ] md:min-h-[calc(100vh-6rem)] font-[family-name:var(--font-geist-sans)]">
+      <main
+        className={`${
+          currentUser?.is_admin ? "grid grid-cols-1 md:grid-cols-2" : "flex flex-row w-full md:w-2/3 xl:w-2/3 3xl:w-1/2s"
+        } gap-4 items-center justify-center w-full h-full`}
+      >
+        {currentUser?.is_admin && (
+          <div className="flex flex-col bg-white border border-drlight gap-8 rounded-md p-10 items-center justify-between w-full h-full">
+            <label className="font-drserif font-bold w-full text-center text-lg">{t("admin-title")}</label>
+            <p className="font-drnote text-sm">{t("admin-advice")}</p>
+            <Button label={t("btn-admin")} type="button" icn="/window.svg" onClick={goToAdmin} />
+          </div>
+        )}
+        <div className="flex flex-col bg-white border border-drlight gap-8 rounded-md p-10 items-center justify-between w-full h-full">
+          {openDelete && <Popup click={() => doRequest} text={t("delete-advice")} show={() => setOpenDelete(false)} extendStyle="min-w-52" />}
+          <label className="font-drserif font-bold w-full text-center text-lg">{t("form-title")}</label>
           <p className="font-drnote text-sm">{t("delete-advice")}</p>
-          <Button
-            label={t("btn-del")}
-            type="button"
-            icn="/del-usr-icn.svg"
-            onClick={doRequest}
-          />
+          <Button label={t("btn-del")} type="button" icn="/del-usr-icn.svg" onClick={() => setOpenDelete(true)} />
         </div>
       </main>
     </div>

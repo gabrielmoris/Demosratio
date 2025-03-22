@@ -8,5 +8,17 @@
     "btn-register": "Register",
     "btn-login": "Login",
     "input-label-password": "Password"
+  },
+  "profile": {
+    "admin-title": "Administrator Panel",
+    "admin-advice": "This section is only for administrators. \nPlease proceed with caution.",
+    "btn-admin": "Go to administrator",
+    "form-title": "Delete your account",
+    "delete-advice": "WARNING: When confirming this action, it will proceed to the definitive elimination of your profile and all related data. \nThis operation cannot be reversed.",
+    "btn-del": "Delete now"
+  },
+  "popup": {
+    "no": "Cancel",
+    "yes": "Accept"
   }
 }

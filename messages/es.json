@@ -24,7 +24,10 @@
   "profile": {
     "form-title": "Borra tu cuenta",
     "btn-del": "Borrar ahora",
-    "delete-advice": "Advertencia: Al confirmar esta acción, procederá a la eliminación definitiva de su perfil y todos los datos relacionados. Esta operación no puede ser revertida."
+    "delete-advice": "Advertencia: Al confirmar esta acción, procederá a la eliminación definitiva de su perfil y todos los datos relacionados. Esta operación no puede ser revertida.",
+    "admin-title": "Panel de Administrador",
+    "admin-advice": "Esta sección es solo para administradores. Por favor, procede con precaución.",
+    "btn-admin": "Ir a Administrador"
   },
   "loading-component": {
     "loading-text": "Cargando..."
@@ -84,5 +87,9 @@
   },
   "protected-route": {
     "not-authorized": "El acceso a esta página está restringido. Consulta con los Administradores"
+  },
+  "popup": {
+    "no": "Cancelar",
+    "yes": "Aceptar"
   }
 }
