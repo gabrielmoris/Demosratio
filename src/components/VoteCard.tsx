@@ -33,45 +33,22 @@ const VoteCardComponent = ({ vote }: { vote: VotingData }) => {
   return (
     <div className="flex flex-col gap-5 border bg-white border-drPurple border-opacity-30 p-8 md:px-20 rounded-md w-full hover:shadow-drPurple hover:shadow-sm">
       <p className="font-drserif text-sm font-bold">{vote.title}</p>
-      <ExpandableText
-        className="font-drnote text-sm"
-        key={vote.id}
-        maxLines={2}
-        text={vote.expedient_text}
-      ></ExpandableText>
+      <ExpandableText className="font-drnote text-sm" key={vote.id} maxLines={2} text={vote.expedient_text}></ExpandableText>
       <div className="w-full flex fllex-row items-center justify-start py-2 md:px-28 md:py-5 bg-drlight rounded-md">
         <ChartVotes proposals={memoizedProposals} />
       </div>
       <div className="flex flex-row w-full items-end justify-end">
-        <Button
-          onClick={onclickCTA}
-          label={t("button-cta")}
-          className="w-full md:w-auto"
-        />
+        <Button onClick={onclickCTA} label={t("button-cta")} className="w-full md:w-1/3" />
       </div>
 
       <div className="flex justify-between items-end w-full">
         <div className="flex flex-row gap-5">
           <div className="flex flex-row justify-center items-cente gap-2">
-            <Image
-              className="w-5 h-5"
-              src="/like-filled-icn.svg"
-              alt="profile-icn"
-              width={25}
-              height={25}
-              priority
-            />
+            <Image className="w-5 h-5" src="/like-filled-icn.svg" alt="profile-icn" width={25} height={25} priority />
             {vote.likesAndDislikes?.likes}
           </div>
           <div className="flex flex-row justify-center items-center gap-2">
-            <Image
-              className="w-5 h-5"
-              src="/dislike-filled-icn.svg"
-              alt="profile-icn"
-              width={25}
-              height={25}
-              priority
-            />
+            <Image className="w-5 h-5" src="/dislike-filled-icn.svg" alt="profile-icn" width={25} height={25} priority />
             {vote.likesAndDislikes?.dislikes}
           </div>
         </div>

@@ -30,10 +30,7 @@ export default function Login() {
   const router = useRouter();
   const locale = useLocale();
 
-  const onInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    inputKey: string
-  ) => {
+  const onInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, inputKey: string) => {
     e.preventDefault();
 
     setForm({ ...form, [inputKey]: e.target.value });
@@ -51,13 +48,11 @@ export default function Login() {
   return (
     <form
       onSubmit={onFormSubmit}
-      className="flex flex-col bg-white border border-drlight gap-8 rounded-md p-10 row-start-2 items-center justify-center w-full xl:my-20"
+      className="flex flex-col bg-white border border-drlight gap-8 rounded-md p-10 row-start-2 items-center justify-center w-full md:w-2/3 xl:w-2/3 3xl:w-1/2 xl:my-20"
     >
-      <label className="font-[family-name:var(--font-roboto-serif)] font-bold w-full text-center text-lg">
-        {t("form-title")}
-      </label>
+      <label className="font-[family-name:var(--font-roboto-serif)] font-bold w-full text-center text-lg">{t("form-title")}</label>
       <Input
-        inputLabel="Nombre / Nick"
+        inputLabel={t("input-label-name")}
         inputObj={form}
         type="text"
         inputKey="name"
@@ -66,7 +61,7 @@ export default function Login() {
         required
       />
       <Input
-        inputLabel="Contraseña"
+        inputLabel={t("input-label-password")}
         type="password"
         inputObj={form}
         inputKey="password"
@@ -75,13 +70,8 @@ export default function Login() {
         required
         password
       />
-      <div className="flex flex-col gap-5 md:flex-row w-full justify-between items-betwen">
-        <Button
-          label={t("btn-register")}
-          type="button"
-          isSecondary
-          onClick={handleToRegister}
-        />
+      <div className="flex flex-col gap-5 xl:flex-row w-full justify-between items-betwen">
+        <Button label={t("btn-register")} type="button" isSecondary onClick={handleToRegister} />
         <Button label={t("btn-login")} type="submit" />
       </div>
     </form>

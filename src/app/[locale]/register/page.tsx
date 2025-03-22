@@ -35,10 +35,7 @@ export default function Register() {
     },
   });
 
-  const onInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    inputKey: string
-  ) => {
+  const onInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, inputKey: string) => {
     e.preventDefault();
 
     setForm({ ...form, [inputKey]: e.target.value });
@@ -56,11 +53,9 @@ export default function Register() {
   return (
     <form
       onSubmit={onFormSubmit}
-      className="flex flex-col bg-white border border-drlight gap-8 rounded-md p-10 row-start-2 items-center justify-center w-full"
+      className="flex flex-col bg-white border border-drlight gap-8 rounded-md p-10 row-start-2 items-center justify-centerw-full md:w-2/3 xl:w-2/3 3xl:w-1/2"
     >
-      <label className="font-[family-name:var(--font-roboto-serif)] font-bold w-full text-center text-lg">
-        {t("form-title")}
-      </label>
+      <label className="font-[family-name:var(--font-roboto-serif)] font-bold w-full text-center text-lg">{t("form-title")}</label>
       <Input
         inputLabel="Nombte / Nick"
         type="text"
@@ -90,13 +85,8 @@ export default function Register() {
         required
         password
       />
-      <div className="flex flex-col gap-5 md:flex-row w-full justify-between items-betwen">
-        <Button
-          label={t("btn-login")}
-          type="button"
-          isSecondary
-          onClick={handleToLogin}
-        />
+      <div className="flex flex-col gap-5 xl:flex-row w-full justify-between items-betwen">
+        <Button label={t("btn-login")} type="button" isSecondary onClick={handleToLogin} />
         <Button label={t("btn-register")} type="submit" />
       </div>
     </form>

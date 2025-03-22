@@ -2,6 +2,9 @@
 import { useUiContext } from "@/src/context/uiContext";
 import axios, { AxiosResponse, Method, AxiosRequestConfig } from "axios";
 import { useState, ReactNode } from "react";
+import { Logger } from "tslog";
+
+const log = new Logger();
 
 interface RequestProps {
   url: string;
@@ -33,7 +36,7 @@ export const useRequest = ({ url, method, body, onSuccess }: RequestProps) => {
 
       return response.data;
     } catch (err: any) {
-      console.log(err);
+      log.error(err);
       showToast({
         message: err?.response?.data?.error || err?.message || "Error.",
         variant: "error",
