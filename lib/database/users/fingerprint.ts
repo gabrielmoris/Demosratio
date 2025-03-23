@@ -1,3 +1,4 @@
+import { decodeFingerprint } from "@/lib/helpers/users/fingerprintEncoding";
 import { supabaseAdmin } from "@/lib/supabaseClient";
 import { Logger } from "tslog";
 
@@ -55,10 +56,10 @@ export async function saveFingerprint(data: { userId: string; hash: string }) {
   }
 }
 
-export function calculateSimilarity(fp1: string, fp2: string): number {
+export async function calculateSimilarity(fp1: string, fp2: string): Promise<number> {
   try {
-    const obj1 = JSON.parse(fp1);
-    const obj2 = JSON.parse(fp2);
+    const { fingerprintData: obj1 } = await decodeFingerprint(fp1);
+    const { fingerprintData: obj2 } = await decodeFingerprint(fp2);
 
     let similarity = 0;
 
@@ -142,7 +143,7 @@ export async function findSimilarFingerprint(fingerprint: string, threshold: num
     }
 
     for (const storedFingerprint of data) {
-      const similarity = calculateSimilarity(fingerprint, storedFingerprint.device_hash);
+      const similarity = await calculateSimilarity(fingerprint, storedFingerprint.device_hash);
       if (similarity >= threshold) {
         return storedFingerprint;
       }

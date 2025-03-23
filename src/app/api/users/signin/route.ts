@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
     let matchFound = false;
 
     for (const storedFingerprint of fingerprintsFromUser) {
-      const similarity = calculateSimilarity(fingerprint, storedFingerprint.device_hash);
+      const similarity = await calculateSimilarity(fingerprint, storedFingerprint.device_hash);
       if (similarity >= SIMILARITY_THRESHOLD) {
         matchFound = true;
         break;
