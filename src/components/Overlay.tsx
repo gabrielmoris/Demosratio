@@ -18,7 +18,7 @@ export const Popup = ({ text, show, click, extendStyle }: Props) => {
   };
 
   return (
-    <main className="h-full z-50 w-full bg-background bg-opacity-5 backdrop-blur-lg absolute top-0 left-0">
+    <main className="h-full z-45 w-full bg-background bg-opacity-5 backdrop-blur-lg absolute top-0 left-0">
       <div
         className={`bg-white left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-md border border-orange gap-5 w-[90%] md:w-1/2 p-5 absolute text-orange flex flex-col gap-5${extendStyle}`}
       >

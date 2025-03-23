@@ -91,5 +91,11 @@
   "popup": {
     "no": "Cancelar",
     "yes": "Aceptar"
+  },
+  "admin": {
+    "add-party": "Añadir partido político",
+    "syncronize-parmialent": "Sincronizar con Parlamento",
+    "add-promises": "Añadir programas electorales",
+    "change-user-rights": "Administración de Usuarios"
   }
 }

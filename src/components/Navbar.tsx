@@ -14,6 +14,7 @@ export default function Navbar() {
     method: "post",
     body: {},
     onSuccess: () => {
+      setOpenUser(false);
       updateCurrentUser();
     },
   });
@@ -26,23 +27,15 @@ export default function Navbar() {
             onClick={() => setOpenUser(!openUser)}
             className="w-7 h-7 lg:w-10 lg:h-10 rounded-full flex flex-col items-center justify-start hover:opacity-60 cursor-pointer"
           >
-            <Image
-              src="/dr-icn.svg"
-              alt="dr-icn"
-              width={50}
-              height={50}
-              priority
-            />
+            <Image src="/dr-icn.svg" alt="dr-icn" width={50} height={50} priority />
           </p>
           <div
-            className={`flex flex-row md:flex-col gap-2 lg:gap-10 items-center justify-start ${
-              openUser ? "relative" : "absolute"
-            } ${openUser ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+            className={`flex flex-row md:flex-col gap-2 lg:gap-10 items-center justify-start ${openUser ? "relative" : "absolute"} ${
+              openUser ? "opacity-100" : "opacity-0 pointer-events-none"
+            }`}
             style={{
               transition: `${
-                openUser
-                  ? "opacity 700ms ease-out, transform 300ms ease-in-out"
-                  : "opacity 300ms ease-out, transform 700ms ease-in-out"
+                openUser ? "opacity 700ms ease-out, transform 300ms ease-in-out" : "opacity 300ms ease-out, transform 700ms ease-in-out"
               }`,
             }}
           >
@@ -61,57 +54,36 @@ export default function Navbar() {
               className={`w-7 h-7 lg:w-10 lg:h-10 rounded-full flex flex-col items-center justify-center hover:opacity-60 transition-transform duration-500 ${
                 openUser ? "transform-none" : "transform translate-y-2"
               }`}
+              onClick={() => setOpenUser(false)}
               href="/profile"
             >
-              <Image
-                src="/profile-icn.svg"
-                alt="profile-icn"
-                width={50}
-                height={50}
-                priority
-              />
+              <Image src="/profile-icn.svg" alt="profile-icn" width={50} height={50} priority />
             </Link>
             <hr className="border border-drlight h-[3rem] lg:h-0 lg:w-full opacity-55" />
           </div>
         </>
       ) : (
-        <Link
-          className="w-7 h-7 lg:w-10 lg:h-10 rounded-full flex flex-col items-center justify-center hover:opacity-60 duration-500"
-          href="/login"
-        >
-          <Image
-            src="/anon-icn.svg"
-            alt="anon-icn"
-            width={50}
-            height={50}
-            priority
-          />
+        <Link className="w-7 h-7 lg:w-10 lg:h-10 rounded-full flex flex-col items-center justify-center hover:opacity-60 duration-500" href="/login">
+          <Image src="/anon-icn.svg" alt="anon-icn" width={50} height={50} priority />
         </Link>
       )}
 
       <Link
+        onClick={() => setOpenUser(false)}
         className="w-7 h-7 lg:w-10 lg:h-10 rounded-full flex flex-col items-center justify-center hover:opacity-60 duration-500"
         href="/parliament"
       >
-        <Image
-          src="/proposals-icn.svg"
-          alt="proposals-icn"
-          width={50}
-          height={50}
-        />
+        <Image src="/proposals-icn.svg" alt="proposals-icn" width={50} height={50} />
       </Link>
       <Link
+        onClick={() => setOpenUser(false)}
         className="w-7 h-7 lg:w-10 lg:h-10 rounded-full flex flex-col items-center justify-center hover:opacity-60 duration-500"
         href="/promises"
       >
-        <Image
-          src="/promis-icn.svg"
-          alt="promises-icn"
-          width={50}
-          height={50}
-        />
+        <Image src="/promis-icn.svg" alt="promises-icn" width={50} height={50} />
       </Link>
       <Link
+        onClick={() => setOpenUser(false)}
         className="w-7 h-7 lg:w-10 lg:h-10 rounded-full flex flex-col items-center justify-center hover:opacity-60 duration-500"
         href="/manifest"
       >

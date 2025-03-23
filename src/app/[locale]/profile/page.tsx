@@ -29,7 +29,7 @@ export default function Promises() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center mb-16 ] md:min-h-[calc(100vh-6rem)] font-[family-name:var(--font-geist-sans)]">
+    <div className="flex z-30 flex-col items-center justify-center mb-16 ] md:min-h-[calc(100vh-6rem)] font-[family-name:var(--font-geist-sans)]">
       <main
         className={`${
           currentUser?.is_admin ? "grid grid-cols-1 md:grid-cols-2" : "flex flex-row w-full md:w-2/3 xl:w-2/3 3xl:w-1/2s"

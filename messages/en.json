@@ -20,5 +20,11 @@
   "popup": {
     "no": "Cancel",
     "yes": "Accept"
+  },
+  "admin": {
+    "add-party": "Add political party",
+    "syncronize-parmialent": "Synchronize with Parliament",
+    "add-promises": "Add electoral programs",
+    "change-user-rights": "User administration"
   }
 }
