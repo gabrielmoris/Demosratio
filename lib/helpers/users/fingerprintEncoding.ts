@@ -1,5 +1,8 @@
 import { Fingerprint } from "@/types/fingerprint";
 import crypto from "crypto";
+import { Logger } from "tslog";
+
+const log = new Logger();
 
 export async function encodeFingerprint(fingerprintData: Fingerprint): Promise<string> {
   try {
@@ -19,7 +22,7 @@ export async function encodeFingerprint(fingerprintData: Fingerprint): Promise<s
 
     return data.fingerprint;
   } catch (error) {
-    console.error("Error encoding fingerprint:", error);
+    log.error("Error encoding fingerprint:", error);
     throw error;
   }
 }
@@ -41,7 +44,7 @@ export async function decodeFingerprint(encodedFingerprint: string) {
 
     return JSON.parse(decrypted.toString("utf8")); // Decode the buffer to utf8 string.
   } catch (error) {
-    console.error("Error decoding fingerprint:", error);
+    log.error("Error decoding fingerprint:", error);
     throw new Error("Error decoding: " + error);
   }
 }

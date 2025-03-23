@@ -1,4 +1,7 @@
 import { Temporal } from "@js-temporal/polyfill";
+import { Logger } from "tslog";
+
+const log = new Logger();
 
 export const getDateString = (daysLess: number = 0): string => {
   const today = Temporal.Now.plainDateISO();
@@ -26,7 +29,7 @@ export const normalizeWrongSpanishDate = (dateString: string): string => {
       year: "numeric",
     });
   } catch {
-    console.error("Invalid date string:", dateString);
+    log.error("Invalid date string:", dateString);
     return dateString; // Return original string if parsing fails
   }
 };
@@ -43,7 +46,7 @@ export function getFormattedDateForDB(dateString: string): string {
 }
 
 export function formatDate(date: string, locale: string = "es-ES"): string {
-  const dateToFormat = new Date(date)
+  const dateToFormat = new Date(date);
   const dateTemporal = Temporal.PlainDate.from(dateToFormat.toISOString().slice(0, 10)); // Extract YYYY-MM-DD
 
   return dateTemporal.toLocaleString(locale, {

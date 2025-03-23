@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabaseClient";
 import { fetchAllLikesAndDislikes } from "@/lib/database/likes/getTotalLikesAndDislikes";
+import { Logger } from "tslog";
+
+const log = new Logger();
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
@@ -10,10 +13,7 @@ export async function GET(request: NextRequest) {
 
   // Validate parameters
   if (isNaN(page) || isNaN(pageSize) || page < 1 || pageSize < 1) {
-    return NextResponse.json(
-      { error: "Invalid page or pageSize parameters" },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: "Invalid page or pageSize parameters" }, { status: 400 });
   }
 
   try {
@@ -34,17 +34,12 @@ export async function GET(request: NextRequest) {
       .range(from, to);
 
     if (error) {
-      console.error("Supabase error:", error);
-      return NextResponse.json(
-        { error: "Error fetching proposals" },
-        { status: 500 }
-      );
+      log.error("Supabase error:", error);
+      return NextResponse.json({ error: "Error fetching proposals" }, { status: 500 });
     }
 
     for (const proposal of proposals) {
-      const proposalLikesAndDislikes = await fetchAllLikesAndDislikes(
-        proposal.id
-      );
+      const proposalLikesAndDislikes = await fetchAllLikesAndDislikes(proposal.id);
       proposal.likesAndDislikes = proposalLikesAndDislikes.result;
     }
 
@@ -61,10 +56,7 @@ export async function GET(request: NextRequest) {
       { status: 200 }
     );
   } catch (error) {
-    console.error("Error fetching proposals:", error);
-    return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 }
-    );
+    log.error("Error fetching proposals:", error);
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }

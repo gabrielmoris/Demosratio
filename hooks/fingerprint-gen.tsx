@@ -76,7 +76,7 @@ async function generateWebglFingerprint(): Promise<WebGLParams | string> {
 
     return webGLParams;
   } catch (e) {
-    console.error("Error getting WebGL info:", e);
+    log.error("Error getting WebGL info:", e);
     return "webgl_error";
   }
 }

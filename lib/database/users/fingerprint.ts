@@ -92,7 +92,7 @@ export async function calculateSimilarity(fp1: string, fp2: string): Promise<num
       similarity += webgl1.p17 === webgl2.p17 ? 0.025 : 0;
       similarity += webgl1.p18 === webgl2.p18 ? 0.025 : 0;
     } catch (error) {
-      console.error("Error comparing WebGL parameters:", error);
+      log.error("Error comparing WebGL parameters:", error);
     }
 
     // Hardware information (highly stable across sessions)
@@ -105,7 +105,7 @@ export async function calculateSimilarity(fp1: string, fp2: string): Promise<num
       similarity += hardware1.h3 === hardware2.h3 ? 0.05 : 0; // colorDepth
       similarity += hardware1.h4 === hardware2.h4 ? 0.05 : 0; // timezone
     } catch (error) {
-      console.error("Error comparing hardware information:", error);
+      log.error("Error comparing hardware information:", error);
     }
 
     // Canvas fingerprint (less stable but still useful)
@@ -113,7 +113,7 @@ export async function calculateSimilarity(fp1: string, fp2: string): Promise<num
 
     return similarity;
   } catch (error) {
-    console.error("Error parsing fingerprint strings:", error);
+    log.error("Error parsing fingerprint strings:", error);
     return 0;
   }
 }

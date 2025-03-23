@@ -1,13 +1,10 @@
 "use client";
-import {
-  createContext,
-  useState,
-  useEffect,
-  useContext,
-  useCallback,
-} from "react";
+import { createContext, useState, useEffect, useContext, useCallback } from "react";
 import axios from "axios";
 import { UserPayload } from "../types/user";
+import { Logger } from "tslog";
+
+const log = new Logger();
 
 interface IDefaultAuthContext {
   currentUser: UserPayload | null | undefined;
@@ -35,7 +32,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       });
       setCurrentUser(response.data.currentUser);
     } catch (error) {
-      console.error("Error fetching current user:", error);
+      log.error("Error fetching current user:", error);
       setCurrentUser(null);
     } finally {
       setLoading(false);
