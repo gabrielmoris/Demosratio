@@ -73,12 +73,12 @@ export async function calculateSimilarity(fp1: string, fp2: string): Promise<num
       similarity += webgl1.p2 === webgl2.p2 ? 0.25 : 0; // RENDERER
 
       // GPU Capabilities (0.15)
-      similarity += webgl1.p12 === webgl2.p12 ? 0.1 : 0;  // maxTextureSize
-      similarity += webgl1.p8 === webgl2.p8 ? 0.05 : 0;   // maxCubeMapTextureSize
+      similarity += webgl1.p12 === webgl2.p12 ? 0.1 : 0; // maxTextureSize
+      similarity += webgl1.p8 === webgl2.p8 ? 0.05 : 0; // maxCubeMapTextureSize
 
       // Secondary WebGL Parameters (0.05)
-      const webglParams = ['p3','p4','p5','p6','p7','p9','p10','p11','p13','p14','p15','p16','p17','p18'];
-      webglParams.forEach(p => {
+      const webglParams = ["p3", "p4", "p5", "p6", "p7", "p9", "p10", "p11", "p13", "p14", "p15", "p16", "p17", "p18"];
+      webglParams.forEach((p) => {
         similarity += webgl1[p] === webgl2[p] ? 0.0035 : 0;
       });
     } catch (error) {
@@ -91,7 +91,7 @@ export async function calculateSimilarity(fp1: string, fp2: string): Promise<num
       const hardware2 = JSON.parse(obj2.h);
 
       similarity += hardware1.h1 === hardware2.h1 ? 0.15 : 0; // hardwareConcurrency
-      similarity += hardware1.h2 === hardware2.h2 ? 0.1 : 0;  // screenResolution
+      similarity += hardware1.h2 === hardware2.h2 ? 0.1 : 0; // screenResolution
       similarity += hardware1.h3 === hardware2.h3 ? 0.03 : 0; // colorDepth
       similarity += hardware1.h4 === hardware2.h4 ? 0.02 : 0; // timezone
     } catch (error) {

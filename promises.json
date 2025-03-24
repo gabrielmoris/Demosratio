@@ -1,0 +1,330 @@
+[
+  {
+    "subjects": [
+      {
+        "promise_list": ["", "", "", "", ""],
+        "subject_name": "Educación",
+        "explanation": "La educación es la base de una sociedad moderna próspera, permitiendo a los individuos adquirir conocimientos, habilidades y pensamiento crítico necesarios para la innovación y el progreso. Históricamente, sociedades como la Antigua Grecia enfatizaron la educación (por ejemplo, la Academia de Platón), fomentando el avance intelectual. Filósofos como John Locke argumentaron que la educación moldea el potencial humano y la estabilidad social. Una población bien educada impulsa el crecimiento económico, reduce la desigualdad y fortalece la participación cívica, mientras que su negligencia puede llevar al estancamiento y a crisis."
+      },
+      {
+        "promise_list": ["", "", "", "", ""],
+        "subject_name": "Economía",
+        "explanation": "Una economía sólida sustenta la capacidad de un país para proveer a sus ciudadanos y competir globalmente. Ejemplos históricos, como la Revolución Industrial en Gran Bretaña, muestran cómo la adaptabilidad económica impulsa el desarrollo. Pensadores como Adam Smith destacaron la importancia de los mercados y la productividad, mientras que Karl Marx criticó los desequilibrios que podrían desestabilizar sociedades. El fracaso económico a menudo lleva al desempleo, la pobreza y el malestar, mientras que un crecimiento equilibrado asegura recursos para infraestructura, salud y defensa."
+      },
+      {
+        "promise_list": ["", "", "", "", ""],
+        "subject_name": "Gobernanza",
+        "explanation": "Una gobernanza efectiva asegura el orden, la justicia y la asignación eficiente de recursos. Colapsos históricos, como el del Imperio Romano, a menudo surgieron de la corrupción o una mala administración. Filósofos como Hobbes enfatizaron la necesidad de un contrato social fuerte, mientras que Rousseau destacó la rendición de cuentas al pueblo. Una buena gobernanza fomenta la confianza y la estabilidad; una gobernanza débil genera ineficiencia, desigualdad y posibles crisis."
+      },
+      {
+        "promise_list": ["", "", "", "", ""],
+        "subject_name": "Defensa y Seguridad",
+        "explanation": "La capacidad de una nación para protegerse de amenazas externas e internas es crucial para su supervivencia y desarrollo. Ejemplos históricos, como la caída de Cartago, subrayan las consecuencias de una defensa inadecuada. Maquiavelo argumentó que la seguridad es un prerrequisito para la prosperidad, ya que la inestabilidad disuade la inversión y el crecimiento. Las sociedades modernas requieren tanto fuerza militar como ciberseguridad para salvaguardar la soberanía y los sistemas económicos."
+      },
+      {
+        "promise_list": ["", "", "", "", ""],
+        "subject_name": "Salud",
+        "explanation": "Una población sana es esencial para la productividad y la resiliencia. Pandemias históricas, como la Peste Negra, devastaron sociedades al paralizar la fuerza laboral y las economías. Filósofos como Jeremy Bentham, utilitarista, vincularon el bienestar social con la salud individual, enfatizando el beneficio colectivo. El acceso a la salud mejora la esperanza de vida y la eficiencia de la fuerza laboral, mientras que su negligencia puede exacerbar la desigualdad y desencadenar crisis."
+      },
+      {
+        "promise_list": ["", "", "", "", ""],
+        "subject_name": "Infraestructura",
+        "explanation": "La infraestructura física y digital soporta la actividad económica, la conectividad y la calidad de vida. Las carreteras y acueductos de Roma permitieron su dominio, mientras que las naciones modernas dependen de redes de transporte, redes energéticas y acceso a internet. Pensadores como John Stuart Mill conectaron el progreso social con las condiciones materiales. Una infraestructura deficiente obstaculiza el comercio, la comunicación y la innovación, arriesgando el declive económico."
+      },
+      {
+        "promise_list": ["", "", "", "", ""],
+        "subject_name": "Cohesión Social",
+        "explanation": "Una sociedad unida resiste mejor los desafíos que una fragmentada. Divisiones históricas, como las de la Revolución Francesa, muestran cómo el malestar social puede descarrilar el progreso. Aristóteles veía a la comunidad como la base del estado, mientras que Durkheim enfatizó la solidaridad en las sociedades modernas. La cohesión reduce los conflictos y fomenta la cooperación, mientras que la división puede llevar a la inestabilidad y crisis."
+      }
+    ],
+    "party_name": "PSOE",
+    "campaign_promises_pdf_link": "https://www.rtve.es/contenidos/documentos/elecciones_generales_2023/programa_electoral_psoe.pdf"
+  },
+  {
+    "subjects": [
+      {
+        "promise_list": ["", "", "", "", ""],
+        "subject_name": "Educación",
+        "explanation": "La educación es la base de una sociedad moderna próspera, permitiendo a los individuos adquirir conocimientos, habilidades y pensamiento crítico necesarios para la innovación y el progreso. Históricamente, sociedades como la Antigua Grecia enfatizaron la educación (por ejemplo, la Academia de Platón), fomentando el avance intelectual. Filósofos como John Locke argumentaron que la educación moldea el potencial humano y la estabilidad social. Una población bien educada impulsa el crecimiento económico, reduce la desigualdad y fortalece la participación cívica, mientras que su negligencia puede llevar al estancamiento y a crisis."
+      },
+      {
+        "promise_list": ["", "", "", "", ""],
+        "subject_name": "Economía",
+        "explanation": "Una economía sólida sustenta la capacidad de un país para proveer a sus ciudadanos y competir globalmente. Ejemplos históricos, como la Revolución Industrial en Gran Bretaña, muestran cómo la adaptabilidad económica impulsa el desarrollo. Pensadores como Adam Smith destacaron la importancia de los mercados y la productividad, mientras que Karl Marx criticó los desequilibrios que podrían desestabilizar sociedades. El fracaso económico a menudo lleva al desempleo, la pobreza y el malestar, mientras que un crecimiento equilibrado asegura recursos para infraestructura, salud y defensa."
+      },
+      {
+        "promise_list": ["", "", "", "", ""],
+        "subject_name": "Gobernanza",
+        "explanation": "Una gobernanza efectiva asegura el orden, la justicia y la asignación eficiente de recursos. Colapsos históricos, como el del Imperio Romano, a menudo surgieron de la corrupción o una mala administración. Filósofos como Hobbes enfatizaron la necesidad de un contrato social fuerte, mientras que Rousseau destacó la rendición de cuentas al pueblo. Una buena gobernanza fomenta la confianza y la estabilidad; una gobernanza débil genera ineficiencia, desigualdad y posibles crisis."
+      },
+      {
+        "promise_list": ["", "", "", "", ""],
+        "subject_name": "Defensa y Seguridad",
+        "explanation": "La capacidad de una nación para protegerse de amenazas externas e internas es crucial para su supervivencia y desarrollo. Ejemplos históricos, como la caída de Cartago, subrayan las consecuencias de una defensa inadecuada. Maquiavelo argumentó que la seguridad es un prerrequisito para la prosperidad, ya que la inestabilidad disuade la inversión y el crecimiento. Las sociedades modernas requieren tanto fuerza militar como ciberseguridad para salvaguardar la soberanía y los sistemas económicos."
+      },
+      {
+        "promise_list": ["", "", "", "", ""],
+        "subject_name": "Salud",
+        "explanation": "Una población sana es esencial para la productividad y la resiliencia. Pandemias históricas, como la Peste Negra, devastaron sociedades al paralizar la fuerza laboral y las economías. Filósofos como Jeremy Bentham, utilitarista, vincularon el bienestar social con la salud individual, enfatizando el beneficio colectivo. El acceso a la salud mejora la esperanza de vida y la eficiencia de la fuerza laboral, mientras que su negligencia puede exacerbar la desigualdad y desencadenar crisis."
+      },
+      {
+        "promise_list": ["", "", "", "", ""],
+        "subject_name": "Infraestructura",
+        "explanation": "La infraestructura física y digital soporta la actividad económica, la conectividad y la calidad de vida. Las carreteras y acueductos de Roma permitieron su dominio, mientras que las naciones modernas dependen de redes de transporte, redes energéticas y acceso a internet. Pensadores como John Stuart Mill conectaron el progreso social con las condiciones materiales. Una infraestructura deficiente obstaculiza el comercio, la comunicación y la innovación, arriesgando el declive económico."
+      },
+      {
+        "promise_list": ["", "", "", "", ""],
+        "subject_name": "Cohesión Social",
+        "explanation": "Una sociedad unida resiste mejor los desafíos que una fragmentada. Divisiones históricas, como las de la Revolución Francesa, muestran cómo el malestar social puede descarrilar el progreso. Aristóteles veía a la comunidad como la base del estado, mientras que Durkheim enfatizó la solidaridad en las sociedades modernas. La cohesión reduce los conflictos y fomenta la cooperación, mientras que la división puede llevar a la inestabilidad y crisis."
+      }
+    ],
+    "party_name": "PP",
+    "campaign_promises_pdf_link": "https://www.rtve.es/contenidos/documentos/elecciones_generales_2023/programa_electoral_pp.pdf"
+  },
+  {
+    "subjects": [
+      {
+        "promise_list": ["", "", "", "", ""],
+        "subject_name": "Educación",
+        "explanation": "La educación es la base de una sociedad moderna próspera, permitiendo a los individuos adquirir conocimientos, habilidades y pensamiento crítico necesarios para la innovación y el progreso. Históricamente, sociedades como la Antigua Grecia enfatizaron la educación (por ejemplo, la Academia de Platón), fomentando el avance intelectual. Filósofos como John Locke argumentaron que la educación moldea el potencial humano y la estabilidad social. Una población bien educada impulsa el crecimiento económico, reduce la desigualdad y fortalece la participación cívica, mientras que su negligencia puede llevar al estancamiento y a crisis."
+      },
+      {
+        "promise_list": ["", "", "", "", ""],
+        "subject_name": "Economía",
+        "explanation": "Una economía sólida sustenta la capacidad de un país para proveer a sus ciudadanos y competir globalmente. Ejemplos históricos, como la Revolución Industrial en Gran Bretaña, muestran cómo la adaptabilidad económica impulsa el desarrollo. Pensadores como Adam Smith destacaron la importancia de los mercados y la productividad, mientras que Karl Marx criticó los desequilibrios que podrían desestabilizar sociedades. El fracaso económico a menudo lleva al desempleo, la pobreza y el malestar, mientras que un crecimiento equilibrado asegura recursos para infraestructura, salud y defensa."
+      },
+      {
+        "promise_list": ["", "", "", "", ""],
+        "subject_name": "Gobernanza",
+        "explanation": "Una gobernanza efectiva asegura el orden, la justicia y la asignación eficiente de recursos. Colapsos históricos, como el del Imperio Romano, a menudo surgieron de la corrupción o una mala administración. Filósofos como Hobbes enfatizaron la necesidad de un contrato social fuerte, mientras que Rousseau destacó la rendición de cuentas al pueblo. Una buena gobernanza fomenta la confianza y la estabilidad; una gobernanza débil genera ineficiencia, desigualdad y posibles crisis."
+      },
+      {
+        "promise_list": ["", "", "", "", ""],
+        "subject_name": "Defensa y Seguridad",
+        "explanation": "La capacidad de una nación para protegerse de amenazas externas e internas es crucial para su supervivencia y desarrollo. Ejemplos históricos, como la caída de Cartago, subrayan las consecuencias de una defensa inadecuada. Maquiavelo argumentó que la seguridad es un prerrequisito para la prosperidad, ya que la inestabilidad disuade la inversión y el crecimiento. Las sociedades modernas requieren tanto fuerza militar como ciberseguridad para salvaguardar la soberanía y los sistemas económicos."
+      },
+      {
+        "promise_list": ["", "", "", "", ""],
+        "subject_name": "Salud",
+        "explanation": "Una población sana es esencial para la productividad y la resiliencia. Pandemias históricas, como la Peste Negra, devastaron sociedades al paralizar la fuerza laboral y las economías. Filósofos como Jeremy Bentham, utilitarista, vincularon el bienestar social con la salud individual, enfatizando el beneficio colectivo. El acceso a la salud mejora la esperanza de vida y la eficiencia de la fuerza laboral, mientras que su negligencia puede exacerbar la desigualdad y desencadenar crisis."
+      },
+      {
+        "promise_list": ["", "", "", "", ""],
+        "subject_name": "Infraestructura",
+        "explanation": "La infraestructura física y digital soporta la actividad económica, la conectividad y la calidad de vida. Las carreteras y acueductos de Roma permitieron su dominio, mientras que las naciones modernas dependen de redes de transporte, redes energéticas y acceso a internet. Pensadores como John Stuart Mill conectaron el progreso social con las condiciones materiales. Una infraestructura deficiente obstaculiza el comercio, la comunicación y la innovación, arriesgando el declive económico."
+      },
+      {
+        "promise_list": ["", "", "", "", ""],
+        "subject_name": "Cohesión Social",
+        "explanation": "Una sociedad unida resiste mejor los desafíos que una fragmentada. Divisiones históricas, como las de la Revolución Francesa, muestran cómo el malestar social puede descarrilar el progreso. Aristóteles veía a la comunidad como la base del estado, mientras que Durkheim enfatizó la solidaridad en las sociedades modernas. La cohesión reduce los conflictos y fomenta la cooperación, mientras que la división puede llevar a la inestabilidad y crisis."
+      }
+    ],
+    "party_name": "VOX",
+    "campaign_promises_pdf_link": "https://www.rtve.es/contenidos/documentos/elecciones_generales_2023/programa_electoral_vox.pdf"
+  },
+  {
+    "subjects": [
+      {
+        "promise_list": ["", "", "", "", ""],
+        "subject_name": "Educación",
+        "explanation": "La educación es la base de una sociedad moderna próspera, permitiendo a los individuos adquirir conocimientos, habilidades y pensamiento crítico necesarios para la innovación y el progreso. Históricamente, sociedades como la Antigua Grecia enfatizaron la educación (por ejemplo, la Academia de Platón), fomentando el avance intelectual. Filósofos como John Locke argumentaron que la educación moldea el potencial humano y la estabilidad social. Una población bien educada impulsa el crecimiento económico, reduce la desigualdad y fortalece la participación cívica, mientras que su negligencia puede llevar al estancamiento y a crisis."
+      },
+      {
+        "promise_list": ["", "", "", "", ""],
+        "subject_name": "Economía",
+        "explanation": "Una economía sólida sustenta la capacidad de un país para proveer a sus ciudadanos y competir globalmente. Ejemplos históricos, como la Revolución Industrial en Gran Bretaña, muestran cómo la adaptabilidad económica impulsa el desarrollo. Pensadores como Adam Smith destacaron la importancia de los mercados y la productividad, mientras que Karl Marx criticó los desequilibrios que podrían desestabilizar sociedades. El fracaso económico a menudo lleva al desempleo, la pobreza y el malestar, mientras que un crecimiento equilibrado asegura recursos para infraestructura, salud y defensa."
+      },
+      {
+        "promise_list": ["", "", "", "", ""],
+        "subject_name": "Gobernanza",
+        "explanation": "Una gobernanza efectiva asegura el orden, la justicia y la asignación eficiente de recursos. Colapsos históricos, como el del Imperio Romano, a menudo surgieron de la corrupción o una mala administración. Filósofos como Hobbes enfatizaron la necesidad de un contrato social fuerte, mientras que Rousseau destacó la rendición de cuentas al pueblo. Una buena gobernanza fomenta la confianza y la estabilidad; una gobernanza débil genera ineficiencia, desigualdad y posibles crisis."
+      },
+      {
+        "promise_list": ["", "", "", "", ""],
+        "subject_name": "Defensa y Seguridad",
+        "explanation": "La capacidad de una nación para protegerse de amenazas externas e internas es crucial para su supervivencia y desarrollo. Ejemplos históricos, como la caída de Cartago, subrayan las consecuencias de una defensa inadecuada. Maquiavelo argumentó que la seguridad es un prerrequisito para la prosperidad, ya que la inestabilidad disuade la inversión y el crecimiento. Las sociedades modernas requieren tanto fuerza militar como ciberseguridad para salvaguardar la soberanía y los sistemas económicos."
+      },
+      {
+        "promise_list": ["", "", "", "", ""],
+        "subject_name": "Salud",
+        "explanation": "Una población sana es esencial para la productividad y la resiliencia. Pandemias históricas, como la Peste Negra, devastaron sociedades al paralizar la fuerza laboral y las economías. Filósofos como Jeremy Bentham, utilitarista, vincularon el bienestar social con la salud individual, enfatizando el beneficio colectivo. El acceso a la salud mejora la esperanza de vida y la eficiencia de la fuerza laboral, mientras que su negligencia puede exacerbar la desigualdad y desencadenar crisis."
+      },
+      {
+        "promise_list": ["", "", "", "", ""],
+        "subject_name": "Infraestructura",
+        "explanation": "La infraestructura física y digital soporta la actividad económica, la conectividad y la calidad de vida. Las carreteras y acueductos de Roma permitieron su dominio, mientras que las naciones modernas dependen de redes de transporte, redes energéticas y acceso a internet. Pensadores como John Stuart Mill conectaron el progreso social con las condiciones materiales. Una infraestructura deficiente obstaculiza el comercio, la comunicación y la innovación, arriesgando el declive económico."
+      },
+      {
+        "promise_list": ["", "", "", "", ""],
+        "subject_name": "Cohesión Social",
+        "explanation": "Una sociedad unida resiste mejor los desafíos que una fragmentada. Divisiones históricas, como las de la Revolución Francesa, muestran cómo el malestar social puede descarrilar el progreso. Aristóteles veía a la comunidad como la base del estado, mientras que Durkheim enfatizó la solidaridad en las sociedades modernas. La cohesión reduce los conflictos y fomenta la cooperación, mientras que la división puede llevar a la inestabilidad y crisis."
+      }
+    ],
+    "party_name": "Sumar",
+    "campaign_promises_pdf_link": "https://www.rtve.es/contenidos/documentos/elecciones_generales_2023/programa_electoral_sumar.pdf"
+  },
+  {
+    "subjects": [
+      {
+        "promise_list": ["", "", "", "", ""],
+        "subject_name": "Educación",
+        "explanation": "La educación es la base de una sociedad moderna próspera, permitiendo a los individuos adquirir conocimientos, habilidades y pensamiento crítico necesarios para la innovación y el progreso. Históricamente, sociedades como la Antigua Grecia enfatizaron la educación (por ejemplo, la Academia de Platón), fomentando el avance intelectual. Filósofos como John Locke argumentaron que la educación moldea el potencial humano y la estabilidad social. Una población bien educada impulsa el crecimiento económico, reduce la desigualdad y fortalece la participación cívica, mientras que su negligencia puede llevar al estancamiento y a crisis."
+      },
+      {
+        "promise_list": ["", "", "", "", ""],
+        "subject_name": "Economía",
+        "explanation": "Una economía sólida sustenta la capacidad de un país para proveer a sus ciudadanos y competir globalmente. Ejemplos históricos, como la Revolución Industrial en Gran Bretaña, muestran cómo la adaptabilidad económica impulsa el desarrollo. Pensadores como Adam Smith destacaron la importancia de los mercados y la productividad, mientras que Karl Marx criticó los desequilibrios que podrían desestabilizar sociedades. El fracaso económico a menudo lleva al desempleo, la pobreza y el malestar, mientras que un crecimiento equilibrado asegura recursos para infraestructura, salud y defensa."
+      },
+      {
+        "promise_list": ["", "", "", "", ""],
+        "subject_name": "Gobernanza",
+        "explanation": "Una gobernanza efectiva asegura el orden, la justicia y la asignación eficiente de recursos. Colapsos históricos, como el del Imperio Romano, a menudo surgieron de la corrupción o una mala administración. Filósofos como Hobbes enfatizaron la necesidad de un contrato social fuerte, mientras que Rousseau destacó la rendición de cuentas al pueblo. Una buena gobernanza fomenta la confianza y la estabilidad; una gobernanza débil genera ineficiencia, desigualdad y posibles crisis."
+      },
+      {
+        "promise_list": ["", "", "", "", ""],
+        "subject_name": "Defensa y Seguridad",
+        "explanation": "La capacidad de una nación para protegerse de amenazas externas e internas es crucial para su supervivencia y desarrollo. Ejemplos históricos, como la caída de Cartago, subrayan las consecuencias de una defensa inadecuada. Maquiavelo argumentó que la seguridad es un prerrequisito para la prosperidad, ya que la inestabilidad disuade la inversión y el crecimiento. Las sociedades modernas requieren tanto fuerza militar como ciberseguridad para salvaguardar la soberanía y los sistemas económicos."
+      },
+      {
+        "promise_list": ["", "", "", "", ""],
+        "subject_name": "Salud",
+        "explanation": "Una población sana es esencial para la productividad y la resiliencia. Pandemias históricas, como la Peste Negra, devastaron sociedades al paralizar la fuerza laboral y las economías. Filósofos como Jeremy Bentham, utilitarista, vincularon el bienestar social con la salud individual, enfatizando el beneficio colectivo. El acceso a la salud mejora la esperanza de vida y la eficiencia de la fuerza laboral, mientras que su negligencia puede exacerbar la desigualdad y desencadenar crisis."
+      },
+      {
+        "promise_list": ["", "", "", "", ""],
+        "subject_name": "Infraestructura",
+        "explanation": "La infraestructura física y digital soporta la actividad económica, la conectividad y la calidad de vida. Las carreteras y acueductos de Roma permitieron su dominio, mientras que las naciones modernas dependen de redes de transporte, redes energéticas y acceso a internet. Pensadores como John Stuart Mill conectaron el progreso social con las condiciones materiales. Una infraestructura deficiente obstaculiza el comercio, la comunicación y la innovación, arriesgando el declive económico."
+      },
+      {
+        "promise_list": ["", "", "", "", ""],
+        "subject_name": "Cohesión Social",
+        "explanation": "Una sociedad unida resiste mejor los desafíos que una fragmentada. Divisiones históricas, como las de la Revolución Francesa, muestran cómo el malestar social puede descarrilar el progreso. Aristóteles veía a la comunidad como la base del estado, mientras que Durkheim enfatizó la solidaridad en las sociedades modernas. La cohesión reduce los conflictos y fomenta la cooperación, mientras que la división puede llevar a la inestabilidad y crisis."
+      }
+    ],
+    "party_name": "ERC",
+    "campaign_promises_pdf_link": "https://www.rtve.es/contenidos/documentos/elecciones_generales_2023/programa_electoral_erc.pdf"
+  },
+  {
+    "subjects": [
+      {
+        "promise_list": ["", "", "", "", ""],
+        "subject_name": "Educación",
+        "explanation": "La educación es la base de una sociedad moderna próspera, permitiendo a los individuos adquirir conocimientos, habilidades y pensamiento crítico necesarios para la innovación y el progreso. Históricamente, sociedades como la Antigua Grecia enfatizaron la educación (por ejemplo, la Academia de Platón), fomentando el avance intelectual. Filósofos como John Locke argumentaron que la educación moldea el potencial humano y la estabilidad social. Una población bien educada impulsa el crecimiento económico, reduce la desigualdad y fortalece la participación cívica, mientras que su negligencia puede llevar al estancamiento y a crisis."
+      },
+      {
+        "promise_list": ["", "", "", "", ""],
+        "subject_name": "Economía",
+        "explanation": "Una economía sólida sustenta la capacidad de un país para proveer a sus ciudadanos y competir globalmente. Ejemplos históricos, como la Revolución Industrial en Gran Bretaña, muestran cómo la adaptabilidad económica impulsa el desarrollo. Pensadores como Adam Smith destacaron la importancia de los mercados y la productividad, mientras que Karl Marx criticó los desequilibrios que podrían desestabilizar sociedades. El fracaso económico a menudo lleva al desempleo, la pobreza y el malestar, mientras que un crecimiento equilibrado asegura recursos para infraestructura, salud y defensa."
+      },
+      {
+        "promise_list": ["", "", "", "", ""],
+        "subject_name": "Gobernanza",
+        "explanation": "Una gobernanza efectiva asegura el orden, la justicia y la asignación eficiente de recursos. Colapsos históricos, como el del Imperio Romano, a menudo surgieron de la corrupción o una mala administración. Filósofos como Hobbes enfatizaron la necesidad de un contrato social fuerte, mientras que Rousseau destacó la rendición de cuentas al pueblo. Una buena gobernanza fomenta la confianza y la estabilidad; una gobernanza débil genera ineficiencia, desigualdad y posibles crisis."
+      },
+      {
+        "promise_list": ["", "", "", "", ""],
+        "subject_name": "Defensa y Seguridad",
+        "explanation": "La capacidad de una nación para protegerse de amenazas externas e internas es crucial para su supervivencia y desarrollo. Ejemplos históricos, como la caída de Cartago, subrayan las consecuencias de una defensa inadecuada. Maquiavelo argumentó que la seguridad es un prerrequisito para la prosperidad, ya que la inestabilidad disuade la inversión y el crecimiento. Las sociedades modernas requieren tanto fuerza militar como ciberseguridad para salvaguardar la soberanía y los sistemas económicos."
+      },
+      {
+        "promise_list": ["", "", "", "", ""],
+        "subject_name": "Salud",
+        "explanation": "Una población sana es esencial para la productividad y la resiliencia. Pandemias históricas, como la Peste Negra, devastaron sociedades al paralizar la fuerza laboral y las economías. Filósofos como Jeremy Bentham, utilitarista, vincularon el bienestar social con la salud individual, enfatizando el beneficio colectivo. El acceso a la salud mejora la esperanza de vida y la eficiencia de la fuerza laboral, mientras que su negligencia puede exacerbar la desigualdad y desencadenar crisis."
+      },
+      {
+        "promise_list": ["", "", "", "", ""],
+        "subject_name": "Infraestructura",
+        "explanation": "La infraestructura física y digital soporta la actividad económica, la conectividad y la calidad de vida. Las carreteras y acueductos de Roma permitieron su dominio, mientras que las naciones modernas dependen de redes de transporte, redes energéticas y acceso a internet. Pensadores como John Stuart Mill conectaron el progreso social con las condiciones materiales. Una infraestructura deficiente obstaculiza el comercio, la comunicación y la innovación, arriesgando el declive económico."
+      },
+      {
+        "promise_list": ["", "", "", "", ""],
+        "subject_name": "Cohesión Social",
+        "explanation": "Una sociedad unida resiste mejor los desafíos que una fragmentada. Divisiones históricas, como las de la Revolución Francesa, muestran cómo el malestar social puede descarrilar el progreso. Aristóteles veía a la comunidad como la base del estado, mientras que Durkheim enfatizó la solidaridad en las sociedades modernas. La cohesión reduce los conflictos y fomenta la cooperación, mientras que la división puede llevar a la inestabilidad y crisis."
+      }
+    ],
+    "party_name": "Junts",
+    "campaign_promises_pdf_link": "https://www.rtve.es/contenidos/documentos/elecciones_generales_2023/programa_electoral_junts.pdf"
+  },
+  {
+    "subjects": [
+      {
+        "promise_list": ["", "", "", "", ""],
+        "subject_name": "Educación",
+        "explanation": "La educación es la base de una sociedad moderna próspera, permitiendo a los individuos adquirir conocimientos, habilidades y pensamiento crítico necesarios para la innovación y el progreso. Históricamente, sociedades como la Antigua Grecia enfatizaron la educación (por ejemplo, la Academia de Platón), fomentando el avance intelectual. Filósofos como John Locke argumentaron que la educación moldea el potencial humano y la estabilidad social. Una población bien educada impulsa el crecimiento económico, reduce la desigualdad y fortalece la participación cívica, mientras que su negligencia puede llevar al estancamiento y a crisis."
+      },
+      {
+        "promise_list": ["", "", "", "", ""],
+        "subject_name": "Economía",
+        "explanation": "Una economía sólida sustenta la capacidad de un país para proveer a sus ciudadanos y competir globalmente. Ejemplos históricos, como la Revolución Industrial en Gran Bretaña, muestran cómo la adaptabilidad económica impulsa el desarrollo. Pensadores como Adam Smith destacaron la importancia de los mercados y la productividad, mientras que Karl Marx criticó los desequilibrios que podrían desestabilizar sociedades. El fracaso económico a menudo lleva al desempleo, la pobreza y el malestar, mientras que un crecimiento equilibrado asegura recursos para infraestructura, salud y defensa."
+      },
+      {
+        "promise_list": ["", "", "", "", ""],
+        "subject_name": "Gobernanza",
+        "explanation": "Una gobernanza efectiva asegura el orden, la justicia y la asignación eficiente de recursos. Colapsos históricos, como el del Imperio Romano, a menudo surgieron de la corrupción o una mala administración. Filósofos como Hobbes enfatizaron la necesidad de un contrato social fuerte, mientras que Rousseau destacó la rendición de cuentas al pueblo. Una buena gobernanza fomenta la confianza y la estabilidad; una gobernanza débil genera ineficiencia, desigualdad y posibles crisis."
+      },
+      {
+        "promise_list": ["", "", "", "", ""],
+        "subject_name": "Defensa y Seguridad",
+        "explanation": "La capacidad de una nación para protegerse de amenazas externas e internas es crucial para su supervivencia y desarrollo. Ejemplos históricos, como la caída de Cartago, subrayan las consecuencias de una defensa inadecuada. Maquiavelo argumentó que la seguridad es un prerrequisito para la prosperidad, ya que la inestabilidad disuade la inversión y el crecimiento. Las sociedades modernas requieren tanto fuerza militar como ciberseguridad para salvaguardar la soberanía y los sistemas económicos."
+      },
+      {
+        "promise_list": ["", "", "", "", ""],
+        "subject_name": "Salud",
+        "explanation": "Una población sana es esencial para la productividad y la resiliencia. Pandemias históricas, como la Peste Negra, devastaron sociedades al paralizar la fuerza laboral y las economías. Filósofos como Jeremy Bentham, utilitarista, vincularon el bienestar social con la salud individual, enfatizando el beneficio colectivo. El acceso a la salud mejora la esperanza de vida y la eficiencia de la fuerza laboral, mientras que su negligencia puede exacerbar la desigualdad y desencadenar crisis."
+      },
+      {
+        "promise_list": ["", "", "", "", ""],
+        "subject_name": "Infraestructura",
+        "explanation": "La infraestructura física y digital soporta la actividad económica, la conectividad y la calidad de vida. Las carreteras y acueductos de Roma permitieron su dominio, mientras que las naciones modernas dependen de redes de transporte, redes energéticas y acceso a internet. Pensadores como John Stuart Mill conectaron el progreso social con las condiciones materiales. Una infraestructura deficiente obstaculiza el comercio, la comunicación y la innovación, arriesgando el declive económico."
+      },
+      {
+        "promise_list": ["", "", "", "", ""],
+        "subject_name": "Cohesión Social",
+        "explanation": "Una sociedad unida resiste mejor los desafíos que una fragmentada. Divisiones históricas, como las de la Revolución Francesa, muestran cómo el malestar social puede descarrilar el progreso. Aristóteles veía a la comunidad como la base del estado, mientras que Durkheim enfatizó la solidaridad en las sociedades modernas. La cohesión reduce los conflictos y fomenta la cooperación, mientras que la división puede llevar a la inestabilidad y crisis."
+      }
+    ],
+    "party_name": "PNV",
+    "campaign_promises_pdf_link": "https://www.rtve.es/contenidos/documentos/elecciones_generales_2023/programa_electoral_pnv.pdf"
+  },
+  {
+    "subjects": [
+      {
+        "promise_list": ["", "", "", "", ""],
+        "subject_name": "Educación",
+        "explanation": "La educación es la base de una sociedad moderna próspera, permitiendo a los individuos adquirir conocimientos, habilidades y pensamiento crítico necesarios para la innovación y el progreso. Históricamente, sociedades como la Antigua Grecia enfatizaron la educación (por ejemplo, la Academia de Platón), fomentando el avance intelectual. Filósofos como John Locke argumentaron que la educación moldea el potencial humano y la estabilidad social. Una población bien educada impulsa el crecimiento económico, reduce la desigualdad y fortalece la participación cívica, mientras que su negligencia puede llevar al estancamiento y a crisis."
+      },
+      {
+        "promise_list": ["", "", "", "", ""],
+        "subject_name": "Economía",
+        "explanation": "Una economía sólida sustenta la capacidad de un país para proveer a sus ciudadanos y competir globalmente. Ejemplos históricos, como la Revolución Industrial en Gran Bretaña, muestran cómo la adaptabilidad económica impulsa el desarrollo. Pensadores como Adam Smith destacaron la importancia de los mercados y la productividad, mientras que Karl Marx criticó los desequilibrios que podrían desestabilizar sociedades. El fracaso económico a menudo lleva al desempleo, la pobreza y el malestar, mientras que un crecimiento equilibrado asegura recursos para infraestructura, salud y defensa."
+      },
+      {
+        "promise_list": ["", "", "", "", ""],
+        "subject_name": "Gobernanza",
+        "explanation": "Una gobernanza efectiva asegura el orden, la justicia y la asignación eficiente de recursos. Colapsos históricos, como el del Imperio Romano, a menudo surgieron de la corrupción o una mala administración. Filósofos como Hobbes enfatizaron la necesidad de un contrato social fuerte, mientras que Rousseau destacó la rendición de cuentas al pueblo. Una buena gobernanza fomenta la confianza y la estabilidad; una gobernanza débil genera ineficiencia, desigualdad y posibles crisis."
+      },
+      {
+        "promise_list": ["", "", "", "", ""],
+        "subject_name": "Defensa y Seguridad",
+        "explanation": "La capacidad de una nación para protegerse de amenazas externas e internas es crucial para su supervivencia y desarrollo. Ejemplos históricos, como la caída de Cartago, subrayan las consecuencias de una defensa inadecuada. Maquiavelo argumentó que la seguridad es un prerrequisito para la prosperidad, ya que la inestabilidad disuade la inversión y el crecimiento. Las sociedades modernas requieren tanto fuerza militar como ciberseguridad para salvaguardar la soberanía y los sistemas económicos."
+      },
+      {
+        "promise_list": ["", "", "", "", ""],
+        "subject_name": "Salud",
+        "explanation": "Una población sana es esencial para la productividad y la resiliencia. Pandemias históricas, como la Peste Negra, devastaron sociedades al paralizar la fuerza laboral y las economías. Filósofos como Jeremy Bentham, utilitarista, vincularon el bienestar social con la salud individual, enfatizando el beneficio colectivo. El acceso a la salud mejora la esperanza de vida y la eficiencia de la fuerza laboral, mientras que su negligencia puede exacerbar la desigualdad y desencadenar crisis."
+      },
+      {
+        "promise_list": ["", "", "", "", ""],
+        "subject_name": "Infraestructura",
+        "explanation": "La infraestructura física y digital soporta la actividad económica, la conectividad y la calidad de vida. Las carreteras y acueductos de Roma permitieron su dominio, mientras que las naciones modernas dependen de redes de transporte, redes energéticas y acceso a internet. Pensadores como John Stuart Mill conectaron el progreso social con las condiciones materiales. Una infraestructura deficiente obstaculiza el comercio, la comunicación y la innovación, arriesgando el declive económico."
+      },
+      {
+        "promise_list": ["", "", "", "", ""],
+        "subject_name": "Cohesión Social",
+        "explanation": "Una sociedad unida resiste mejor los desafíos que una fragmentada. Divisiones históricas, como las de la Revolución Francesa, muestran cómo el malestar social puede descarrilar el progreso. Aristóteles veía a la comunidad como la base del estado, mientras que Durkheim enfatizó la solidaridad en las sociedades modernas. La cohesión reduce los conflictos y fomenta la cooperación, mientras que la división puede llevar a la inestabilidad y crisis."
+      }
+    ],
+    "party_name": "Bildu",
+    "campaign_promises_pdf_link": "https://www.rtve.es/contenidos/documentos/elecciones_generales_2023/programa_electoral_bildu.pdf"
+  }
+]
