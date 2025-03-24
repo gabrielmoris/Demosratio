@@ -4,6 +4,7 @@ import { Logger } from "tslog";
 import { WebGLParams } from "@/types/fingerprint";
 import { STORAGE_KEY } from "@/constants";
 import { encodeFingerprint } from "@/lib/helpers/users/fingerprintEncoding";
+import { useTranslations } from "next-intl";
 
 const log = new Logger();
 
@@ -99,6 +100,7 @@ export const useFingerprint = () => {
   const [fingerprint, setFingerprint] = useState<string | null>(null);
 
   const { showToast } = useUiContext();
+  const t = useTranslations("fingerprint")
 
   useEffect(() => {
     const generateFingerprint = async () => {
@@ -134,13 +136,14 @@ export const useFingerprint = () => {
 
         const encodedFP = await encodeFingerprint(fingerprintData);
 
+
         localStorage.setItem(STORAGE_KEY, encodedFP);
 
         setFingerprint(encodedFP);
       } catch (e) {
         log.error(e);
         showToast({
-          message: "Error.",
+          message: t("error"),
           variant: "error",
           duration: 3000,
         });

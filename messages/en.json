@@ -26,5 +26,8 @@
     "syncronize-parmialent": "Synchronize with Parliament",
     "add-promises": "Add electoral programs",
     "change-user-rights": "User administration"
+  },
+  "fingerprint": {
+    "error": "Error generating the fingerprint."
   }
 }

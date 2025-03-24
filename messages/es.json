@@ -97,5 +97,8 @@
     "syncronize-parmialent": "Sincronizar con Parlamento",
     "add-promises": "Añadir programas electorales",
     "change-user-rights": "Administración de Usuarios"
+  },
+  "fingerprint":{
+    "error":"Error al generar la huella digital."
   }
 }
