@@ -4,9 +4,11 @@ import { Logger } from "tslog";
 
 const log = new Logger();
 
-export async function encodeFingerprint(fingerprintData: Fingerprint): Promise<string> {
+export async function encodeFingerprint(
+  fingerprintData: Fingerprint
+): Promise<string> {
   try {
-    const response = await fetch("/api/fingerprint/encoder", {
+    const response = await fetch("/api/fingerprint-encoder", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -33,12 +35,17 @@ export async function decodeFingerprint(encodedFingerprint: string) {
     if (!key) throw new Error("No ENCRYPTION_KEY in .env");
 
     const textParts = encodedFingerprint.split(":");
-    if (!textParts || textParts.length !== 2) throw new Error("Invalid encoded fingerprint format");
+    if (!textParts || textParts.length !== 2)
+      throw new Error("Invalid encoded fingerprint format");
 
     const iv = Buffer.from(textParts[0], "hex");
     const encryptedText = Buffer.from(textParts[1], "base64"); // Decode from base64
 
-    const decipher = crypto.createDecipheriv("aes-256-cbc", Buffer.from(key, "hex"), iv);
+    const decipher = crypto.createDecipheriv(
+      "aes-256-cbc",
+      Buffer.from(key, "hex"),
+      iv
+    );
     let decrypted = decipher.update(encryptedText); // Remove utf8 encoding from update.
     decrypted = Buffer.concat([decrypted, decipher.final()]);
 
