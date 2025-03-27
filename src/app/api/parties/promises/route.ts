@@ -1,19 +1,20 @@
+import { deletePromise } from "@/lib/database/parties/promises/deletePromise";
 import { fetchPartyPromises } from "@/lib/database/parties/promises/getPartyPromises";
+import { savePartyPromise } from "@/lib/database/parties/promises/savePartyPromise";
 import { NextRequest, NextResponse } from "next/server";
 import { Logger } from "tslog";
 
 const log = new Logger();
 
-export async function GET(request: { url: string | URL }) {
+export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url); // Extract search params
-    const party = searchParams.get("party");
-    const year = Number(searchParams.get("year"));
+    const party_id = Number(searchParams.get("party_id"));
+    const campaign_id = Number(searchParams.get("campaign_id"));
 
-    if (!party || !year || isNaN(year))
-      return NextResponse.json({ error: "Bad Request" }, { status: 400 });
+    if (!party_id || !campaign_id || isNaN(campaign_id) || isNaN(party_id)) return NextResponse.json({ error: "Bad Request" }, { status: 400 });
 
-    const { promises } = await fetchPartyPromises(party, year);
+    const { promises } = await fetchPartyPromises(party_id, campaign_id);
 
     return NextResponse.json({ promises });
   } catch (error) {
@@ -29,50 +30,49 @@ export async function GET(request: { url: string | URL }) {
   }
 }
 
-// export async function POST(req: NextRequest) {
-//   const { promise, subject, campaign_year, party } = await req.json();
+export async function POST(req: NextRequest) {
+  const { promise, subject_id, campaign_id, party_id } = await req.json();
 
-//   if (!promise || !subject || !campaign_year || !party) {
-//     return NextResponse.json({ error: "Bad Request" }, { status: 400 });
-//   }
+  if (!promise || !subject_id || !campaign_id || !party_id) {
+    return NextResponse.json({ error: "Bad Request" }, { status: 400 });
+  }
 
-//   try {
-//     const campaign = await getCampaign(party, campaign_year);
-//     const { id } = await savePromise(promise);
-//     return NextResponse.json({ id }, { status: 201 });
-//   } catch (error) {
-//     log.error("Error encoding data:", error);
-//     return NextResponse.json(
-//       {
-//         success: false,
-//         message: "Saving Parties data failed",
-//         error: String(error),
-//       },
-//       { status: 200 }
-//     );
-//   }
-// }
+  try {
+    const { id } = await savePartyPromise(party_id, campaign_id, subject_id, promise);
+    return NextResponse.json({ id }, { status: 201 });
+  } catch (error) {
+    log.error("Error encoding data:", error);
+    return NextResponse.json(
+      {
+        success: false,
+        message: "Saving Parties data failed",
+        error: String(error),
+      },
+      { status: 200 }
+    );
+  }
+}
 
-// export async function DELETE(req: NextRequest) {
-//   const { name } = await req.json();
+export async function DELETE(req: NextRequest) {
+  const { promise_id } = await req.json();
 
-//   if (!name) {
-//     return NextResponse.json({ error: "Bad Request" }, { status: 400 });
-//   }
+  if (!promise_id) {
+    return NextResponse.json({ error: "Bad Request" }, { status: 400 });
+  }
 
-//   try {
-//     const { id } = await deleteSubject(name);
+  try {
+    const { id } = await deletePromise(promise_id);
 
-//     return NextResponse.json({ id }, { status: 201 });
-//   } catch (error) {
-//     log.error("Error encoding data:", error);
-//     return NextResponse.json(
-//       {
-//         success: false,
-//         message: "Saving Parties data failed",
-//         error: String(error),
-//       },
-//       { status: 200 }
-//     );
-//   }
-// }
+    return NextResponse.json({ id }, { status: 201 });
+  } catch (error) {
+    log.error("Error encoding data:", error);
+    return NextResponse.json(
+      {
+        success: false,
+        message: "Saving Parties data failed",
+        error: String(error),
+      },
+      { status: 200 }
+    );
+  }
+}

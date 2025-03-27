@@ -48,14 +48,14 @@ export async function POST(req: NextRequest) {
 }
 
 export async function DELETE(req: NextRequest) {
-  const { name } = await req.json();
+  const { subject_id } = await req.json();
 
-  if (!name) {
+  if (!subject_id) {
     return NextResponse.json({ error: "Bad Request" }, { status: 400 });
   }
 
   try {
-    const { id } = await deleteSubject(name);
+    const { id } = await deleteSubject(subject_id);
 
     return NextResponse.json({ id }, { status: 201 });
   } catch (error) {
