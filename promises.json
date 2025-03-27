@@ -1,0 +1,670 @@
+[
+  {
+    "subjects": [
+      {
+        "promise_list": [
+          "Programa de gratuidad de libros de texto.",
+          "Aumentar la oferta de educación gratuita en la etapa de 0-3 años y en la FP.",
+          "Programas de refuerzo para combatir el absentismo y becas para el intercambio internacional de alumnos de Bachillerato y FP de grado medio.",
+          "Bajada de ratio de alumnos en centros que presenten un proyecto de mejora.",
+          "Formación para 3 millones de personas en FP al año: 1,4 millones serán jóvenes y 1,6 trabajadores ocupados o desempleados."
+        ],
+        "subject_name": "Educación",
+        "explanation": "La educación es la base de una sociedad moderna próspera, permitiendo a los individuos adquirir conocimientos, habilidades y pensamiento crítico necesarios para la innovación y el progreso. Históricamente, sociedades como la Antigua Grecia enfatizaron la educación (por ejemplo, la Academia de Platón), fomentando el avance intelectual. Filósofos como John Locke argumentaron que la educación moldea el potencial humano y la estabilidad social. Una población bien educada impulsa el crecimiento económico, reduce la desigualdad y fortalece la participación cívica, mientras que su negligencia puede llevar al estancamiento y a crisis."
+      },
+      {
+        "promise_list": [
+          "Impulsar un Pacto por el Pleno Empleo con los agentes sociales para alinear los niveles de desempleo al 8% de paro estructural en línea con la media europea.",
+          "Garantizar en el Estatuto de los trabajadores que el SMI se acompase al 60% del salario medio.",
+          "Ley Integral de Impulso de la Economía Social para la modernización y adecuación de las leyes de economía social, de cooperativas, de empresas de inserción y de Sociedades Laborales y Participadas.",
+          "Impulsar la atracción de inversiones extranjeras desarrollando instrumentos de co-inversión y crear una ventanilla única para agilizar el despliegue de los proyectos estratégicos.",
+          "Creación de una ley de 'startups' y desplegar el programa Scaleup Spain, con gestionado por el ICO."
+        ],
+        "subject_name": "Economía",
+        "explanation": "Una economía sólida sustenta la capacidad de un país para proveer a sus ciudadanos y competir globalmente. Ejemplos históricos, como la Revolución Industrial en Gran Bretaña, muestran cómo la adaptabilidad económica impulsa el desarrollo. Pensadores como Adam Smith destacaron la importancia de los mercados y la productividad, mientras que Karl Marx criticó los desequilibrios que podrían desestabilizar sociedades. El fracaso económico a menudo lleva al desempleo, la pobreza y el malestar, mientras que un crecimiento equilibrado asegura recursos para infraestructura, salud y defensa."
+      },
+      {
+        "promise_list": [
+          "Fomento de la cogobernanza, la cooperación y coordinación con las CCAA aprobando, entre otros, una Ley de Cohesión Territorial y con diálogo entre administraciones.",
+          "Avanzar en la configuración de un estado laico: reforzar la neutralidad religiosa en actos públicos y mismo régimen fiscal de las confesiones que las entidades sin ánimo de lucro.",
+          "Impulsar una reforma fiscal europea para conjugar la estabilidad presupuestaria con la consolidación de la deuda pública con el crecimiento económico e impulsar la unión bancaria y de los mercados de capitales para disponer de mercados financieros sólidos mediante la reforma del marco de gestión de crisis bancarias.",
+          "Pacto de Estado contra el Fraude Fiscal.",
+          "Exigir la inmediata renovación del Consejo General del Poder Judicial."
+        ],
+        "subject_name": "Gobernanza",
+        "explanation": "Una gobernanza efectiva asegura el orden, la justicia y la asignación eficiente de recursos. Colapsos históricos, como el del Imperio Romano, a menudo surgieron de la corrupción o una mala administración. Filósofos como Hobbes enfatizaron la necesidad de un contrato social fuerte, mientras que Rousseau destacó la rendición de cuentas al pueblo. Una buena gobernanza fomenta la confianza y la estabilidad; una gobernanza débil genera ineficiencia, desigualdad y posibles crisis."
+      },
+      {
+        "promise_list": [
+          "Refuerzo del presupuesto específico de Defensa y compromiso por seguir trabajando en el seno de la OTAN por la defensa de la paz y la seguridad y en solidaridad con Ucrania.",
+          "Impulso del Centro Tecnológico de Desarrollo y Experimentación (CETEDEX) en Jaén, con 220 millones de euros y 2.500 nuevos.",
+          "Nueva Base Logística del Ejército de Tierra en Córdoba con 1.600 puestos de trabajo.",
+          "Impulso a a los programas de los vehículos VCR 8X8, fragatas F-110, submarinos S-80, sistema FCAS/NGWS, cazas Halcon y drones Euromale.",
+          "Continuar trabajando en el seno de la OTAN por la defensa de la paz y la seguridad, del orden internacional y de los valores democráticos."
+        ],
+        "subject_name": "Defensa y Seguridad",
+        "explanation": "La capacidad de una nación para protegerse de amenazas externas e internas es crucial para su supervivencia y desarrollo. Ejemplos históricos, como la caída de Cartago, subrayan las consecuencias de una defensa inadecuada. Maquiavelo argumentó que la seguridad es un prerrequisito para la prosperidad, ya que la inestabilidad disuade la inversión y el crecimiento. Las sociedades modernas requieren tanto fuerza militar como ciberseguridad para salvaguardar la soberanía y los sistemas económicos."
+      },
+      {
+        "promise_list": [
+          "Acabar con las listas de espera, estableciendo por ley unos tiempos máximos de espera de 120 días para intervenciones quirúrgicas, 60 para consultas externas especializadas, 30 para pruebas complementarias y 15 días para el psiquiatra en menores de 21 años.",
+          "Incrementar hasta el 30% las plazas de Formación Sanitaria Especializada en todas las especialidades de Salud Mental y un 15% de las plazas ofertadas en el grado de Medicina.",
+          "Impulsar el diagnóstico genómico y la identificación de biomarcadores para pacientes con cáncer e impulsar en el Congreso una Ley de donantes vivos.",
+          "Creación de una autoridad independiente de evaluación de la financiación y fijación de precio de los medicamentos y productos sanitarios.",
+          "Promover el uso terapéutico del Cánnabis desarrollando un sistema de atención farmacológica para los pacientes con patologías que así lo indiquen."
+        ],
+        "subject_name": "Salud",
+        "explanation": "Una población sana es esencial para la productividad y la resiliencia. Pandemias históricas, como la Peste Negra, devastaron sociedades al paralizar la fuerza laboral y las economías. Filósofos como Jeremy Bentham, utilitarista, vincularon el bienestar social con la salud individual, enfatizando el beneficio colectivo. El acceso a la salud mejora la esperanza de vida y la eficiencia de la fuerza laboral, mientras que su negligencia puede exacerbar la desigualdad y desencadenar crisis."
+      },
+      {
+        "promise_list": [
+          "Plan de vivienda para el alquiler asequible: 201.000 viviendas mediante acuerdos con las comunidades, ayuntamientos, promovidas a través de la Entidad Pública Estatal de Suelo (SEPES), construidas con los fondos europeos o con préstamos. Se le añadirán otras 50.000 de la SAREB.",
+          "Que las reservas obligatorias de suelo para vivienda de protección oficial en los nuevos desarrollos urbanísticos destinen el 50% a la construcción de viviendas en régimen de alquiler social y alquiler asequible y rehabilitación de 500.000 viviendas.",
+          "Tren de Alta Velocidad a Asturias en 2023 y a Almería en el 2026.",
+          "Plan de electrificación de la Red de Carreteras del Estado para los vehículos eléctricos.",
+          "Ampliar las redes de Cercanias."
+        ],
+        "subject_name": "Infraestructura",
+        "explanation": "La infraestructura física y digital soporta la actividad económica, la conectividad y la calidad de vida. Las carreteras y acueductos de Roma permitieron su dominio, mientras que las naciones modernas dependen de redes de transporte, redes energéticas y acceso a internet. Pensadores como John Stuart Mill conectaron el progreso social con las condiciones materiales. Una infraestructura deficiente obstaculiza el comercio, la comunicación y la innovación, arriesgando el declive económico."
+      },
+      {
+        "promise_list": [
+          "Consolidar el Ingreso Mínimo Vital, el Complemento de Ayuda a la Infancia hasta llegar a un millón de menores de edad y los bonos jóvenes al alquiler y para cultura.",
+          "Ayuda directa para la compra de gafas y lentillas a menores de 18 años con pocos recursos.",
+          "Prestación por crianza para familias con personas menores a cargo.",
+          "Alcanzar un Pacto de Estado por la Cultura, un Plan Nacional de Danza y desarrollar el Estatuto del Artista.",
+          "Entradas de cine a dos euros para mayores de 65 años y mantener el Bono Cultural Joven."
+        ],
+        "subject_name": "Cohesión Social",
+        "explanation": "Una sociedad unida resiste mejor los desafíos que una fragmentada. Divisiones históricas, como las de la Revolución Francesa, muestran cómo el malestar social puede descarrilar el progreso. Aristóteles veía a la comunidad como la base del estado, mientras que Durkheim enfatizó la solidaridad en las sociedades modernas. La cohesión reduce los conflictos y fomenta la cooperación, mientras que la división puede llevar a la inestabilidad y crisis."
+      }
+    ],
+    "party_name": "Partido Socialista Obrero Español",
+    "party_logo": "/parties/GS.svg",
+    "campaign_promises_pdf_link": "https://www.psoe.es/media-content/2023/07/PROGRAMA_ELECTORAL-GENERALES-2023.pdf"
+  },
+  {
+    "subjects": [
+      {
+        "promise_list": [
+          "Reformar la LOMLOE, la ley educativa conocida como Ley Celaá.",
+          "Implantar una EBAU común para toda España cuyas condiciones básicas y evaluación sean fijadas por el Gobierno.",
+          "Educación de cero a tres años universal y gratuita.",
+          "Libre elección de centro, incluidos los de educación especial, y equilibrio lingüístico en las aulas.",
+          "Sistema nacional de becas que lleguen a todas las etapas."
+        ],
+        "subject_name": "Educación",
+        "explanation": "La educación es la base de una sociedad moderna próspera, permitiendo a los individuos adquirir conocimientos, habilidades y pensamiento crítico necesarios para la innovación y el progreso. Históricamente, sociedades como la Antigua Grecia enfatizaron la educación (por ejemplo, la Academia de Platón), fomentando el avance intelectual. Filósofos como John Locke argumentaron que la educación moldea el potencial humano y la estabilidad social. Una población bien educada impulsa el crecimiento económico, reduce la desigualdad y fortalece la participación cívica, mientras que su negligencia puede llevar al estancamiento y a crisis."
+      },
+      {
+        "promise_list": [
+          "Aprobar un plan de alivio fiscal para las familias con la rebaja del IRPF a las rentas inferiores a 40.000 euros y promover incentivos fiscales para nuevos residentes.",
+          "Reducir el IVA a la carne, pescados y conservas con carácter temporal, y eliminar el impuesto a las grandes fortunas.",
+          "Auditoría y evaluación sobre la gestión de los Fondos de recuperación de la UE para conocer el estado de ejecución, el cumplimiento de los hitos y objetivos pactados. Agilizar su ejecución y su llegada a la economía real.",
+          "Introducir una tarifa 'cero' para nuevos autónomos durante el primer año, mejorar sus condiciones laborales y de Seguridad Social y facilitar la financiación de las pymes y el acceso a la segunda oportunidad del emprendedor.",
+          "Poner en marcha una estrategia nacional de reindustrialización y un plan estratégico con el objetivo de incrementar hasta el 20% del PIB el peso de la industria española."
+        ],
+        "subject_name": "Economía",
+        "explanation": "Una economía sólida sustenta la capacidad de un país para proveer a sus ciudadanos y competir globalmente. Ejemplos históricos, como la Revolución Industrial en Gran Bretaña, muestran cómo la adaptabilidad económica impulsa el desarrollo. Pensadores como Adam Smith destacaron la importancia de los mercados y la productividad, mientras que Karl Marx criticó los desequilibrios que podrían desestabilizar sociedades. El fracaso económico a menudo lleva al desempleo, la pobreza y el malestar, mientras que un crecimiento equilibrado asegura recursos para infraestructura, salud y defensa."
+      },
+      {
+        "promise_list": [
+          "Recuperación del delito de sedición y malversación en el Código Penal, que será revisado para mejorar la regulación de los tipos, y modificación de la Ley del Indulto.",
+          "Reforma de la Ley Orgánica del Poder Judicial para que los miembros del Consejo sean elegidos por los jueces y magistrados; reforma de la Ley del Tribunal Constitucional para que no sean elegibles los magistrados vinculados a la política durante los últimos cinco años; y reforma de la Ley del Consejo de Estado. Nuevo Régimen Jurídico del Fiscal General del Estado para desvincularlo del poder ejecutivo.",
+          "Garantizar que presidentes, directores y responsables de organismos independientes del Estado (Airef, INE, CIS, Tribunal de Cuentas…) no hayan ocupado puestos políticos.",
+          "Derogación de la Ley de Memoria Democrática y creación de nueva normativa.",
+          "Reforma del sistema de financiación autonómica y local."
+        ],
+        "subject_name": "Gobernanza",
+        "explanation": "Una gobernanza efectiva asegura el orden, la justicia y la asignación eficiente de recursos. Colapsos históricos, como el del Imperio Romano, a menudo surgieron de la corrupción o una mala administración. Filósofos como Hobbes enfatizaron la necesidad de un contrato social fuerte, mientras que Rousseau destacó la rendición de cuentas al pueblo. Una buena gobernanza fomenta la confianza y la estabilidad; una gobernanza débil genera ineficiencia, desigualdad y posibles crisis."
+      },
+      {
+        "promise_list": [
+          "Reforzar las Fuerzas Armadas como instrumento de disuasión y defensa ante cualquier posible amenaza.",
+          "Cumplir el compromiso adquirido por los aliados de destinar un 2% del PIB nacional en seguridad y defensa.",
+          "Elevar el número de efectivos de las fuerzas armadas durante dos legislaturas hasta alcanzar los 140.000 previstos por la ley, y desarrollar un nuevo modelo de reserva militar voluntaria.",
+          "Potenciar la \"inspección fronteriza\" incrementando el personal y los medios de la Policía Nacional y la Guardia Civil, implantando el nuevo Sistema Europeo de Registro de Entradas y Salidas y del Sistema Europeo de Información y Autorización de Viaje, y coordinándose con Frontex.",
+          "Agilizar el cumplimiento de las órdenes de retorno de inmigrantes irregulares o expulsión de los que hayan cometido un delito, mejorando los acuerdos con los países de origen o tránsito con el objetivo de prevenir amenazas a la seguridad y evitar el \"efecto llamada\"."
+        ],
+        "subject_name": "Defensa y Seguridad",
+        "explanation": "La capacidad de una nación para protegerse de amenazas externas e internas es crucial para su supervivencia y desarrollo. Ejemplos históricos, como la caída de Cartago, subrayan las consecuencias de una defensa inadecuada. Maquiavelo argumentó que la seguridad es un prerrequisito para la prosperidad, ya que la inestabilidad disuade la inversión y el crecimiento. Las sociedades modernas requieren tanto fuerza militar como ciberseguridad para salvaguardar la soberanía y los sistemas económicos."
+      },
+      {
+        "promise_list": [
+          "Plan de choque en Atención Primaria con 1.000 plazas adicionales de medicina familiar y comunitaria a la oferta de 2024, incentivos y creación del título de especialista en urgencias y emergencias.",
+          "Agilizar la convalidación de las titulaciones extranjeras y eliminar el requisito de nacionalidad para el acceso a personal estatutario.",
+          "Nueva Ley General de Sanidad y Ley de Pandemias.",
+          "Estrategia Nacional en Salud Mental con especial atención en la infancia y la adolescencia y un Plan de Prevención del Suicidio.",
+          "Ley de apoyo a los afectados por la ELA y sus familias y ley en defensa de los pacientes oncológicos."
+        ],
+        "subject_name": "Salud",
+        "explanation": "Una población sana es esencial para la productividad y la resiliencia. Pandemias históricas, como la Peste Negra, devastaron sociedades al paralizar la fuerza laboral y las economías. Filósofos como Jeremy Bentham, utilitarista, vincularon el bienestar social con la salud individual, enfatizando el beneficio colectivo. El acceso a la salud mejora la esperanza de vida y la eficiencia de la fuerza laboral, mientras que su negligencia puede exacerbar la desigualdad y desencadenar crisis."
+      },
+      {
+        "promise_list": [
+          "Plan de choque en el Cercanías, impulso de los corredores ferroviarios y mejora de las infraestructuras ferroviarias clave, de forma especial la conexión con Extremadura.",
+          "Nuevos planes directores para los aeropuertos del Prat y Barajas.",
+          "Impulsar las inversiones en infraestructuras conectadas, sostenibles y seguras, que favorezcan la implantación y despliegue del 5G en las vías de alta capacidad y la implantación de puntos de recarga.",
+          "Promover un Pacto Nacional del Agua e impulsar un regadío moderno y sostenible, con nuevas inversiones.",
+          "Crear una Autoridad Nacional del Agua."
+        ],
+        "subject_name": "Infraestructura",
+        "explanation": "La infraestructura física y digital soporta la actividad económica, la conectividad y la calidad de vida. Las carreteras y acueductos de Roma permitieron su dominio, mientras que las naciones modernas dependen de redes de transporte, redes energéticas y acceso a internet. Pensadores como John Stuart Mill conectaron el progreso social con las condiciones materiales. Una infraestructura deficiente obstaculiza el comercio, la comunicación y la innovación, arriesgando el declive económico."
+      },
+      {
+        "promise_list": [
+          "Erradicación de la violencia de género y de toda la violencia contra la mujer.",
+          "Cumplir el Pacto de Estado contra la violencia de género; modificar la ley para tipificar la violencia digital y luchar contra la violencia de control, amenazas o violencia psicológica a través de los móviles; y aprobar una ley orgánica integral de lucha contra la trata con fines de explotación sexual.",
+          "Promover nuevos protocolos educativos con el fin de que ningún menor sufra exclusión o humillación alguna.",
+          "Aprobar una ley de desarrollo rural para todo el territorio nacional y destinar fondos europeos a la construcción y mejora de infraestructuras prioritarias en el rural.",
+          "Mejorar el acceso al Ingreso Mínimo Vital, en coordinación con las comunidades autónomas."
+        ],
+        "subject_name": "Cohesión Social",
+        "explanation": "Una sociedad unida resiste mejor los desafíos que una fragmentada. Divisiones históricas, como las de la Revolución Francesa, muestran cómo el malestar social puede descarrilar el progreso. Aristóteles veía a la comunidad como la base del estado, mientras que Durkheim enfatizó la solidaridad en las sociedades modernas. La cohesión reduce los conflictos y fomenta la cooperación, mientras que la división puede llevar a la inestabilidad y crisis."
+      }
+    ],
+    "party_name": "Partido Popular",
+    "party_logo": "/parties/GP.svg",
+    "campaign_promises_pdf_link": "https://www.rtve.es/contenidos/documentos/elecciones_generales_2023/programa_electoral_pp.pdf"
+  },
+  {
+    "subjects": [
+      {
+        "promise_list": [
+          "Aprobar una ley nacional de educación para establecer contenidos comunes e incluir contenidos sobre la historia de España, la identidad nacional y sus símbolos.",
+          "Implantar una prueba única de acceso a la Universidad.",
+          "Apoyar la educación infantil con medidas fiscales para el comedor y transporte escolar, materiales, uniforme o actividades extraescolares y blindar la libre elección de centro educativo con un cheque.",
+          "Recuperar la \"legítima autoridad de los padres\" garantizando el conocimiento previo y aceptación de cualquier contenido afectivo-sexual o ideológico, derogar la \"Ley Herodes\" y revertir \"la presencia de activistas y asociaciones que pretenden adoctrinar\".",
+          "Suprimir todos los privilegios legales y fiscales amparados en \"derechos históricos\", garantizar el uso del español en todo el territorio."
+        ],
+        "subject_name": "Educación",
+        "explanation": "La educación es la base de una sociedad moderna próspera, permitiendo a los individuos adquirir conocimientos, habilidades y pensamiento crítico necesarios para la innovación y el progreso. Históricamente, sociedades como la Antigua Grecia enfatizaron la educación (por ejemplo, la Academia de Platón), fomentando el avance intelectual. Filósofos como John Locke argumentaron que la educación moldea el potencial humano y la estabilidad social. Una población bien educada impulsa el crecimiento económico, reduce la desigualdad y fortalece la participación cívica, mientras que su negligencia puede llevar al estancamiento y a crisis."
+      },
+      {
+        "promise_list": [
+          "Derogar la actual reforma laboral e impulsar una nueva reforma laboral.",
+          "Bajar el IVA en productos de primera necesidad y esenciales, eliminarlo para la adquisición de primera vivienda y eliminar la doble imposición en artículos ya gravados con impuestos especiales.",
+          "Reducir del Impuesto de Sociedades hasta alcanzar el 15% y suprimir el Impuesto sobre el Patrimonio, Sucesiones y Donaciones y Plusvalía municipales en todo el territorio.",
+          "IRPF: reducir hasta cuatro puntos los tipos únicos por cada hijo y simplificarlo a un tipo único reducido del 15% sobre bases inferiores a 70.000 euros y un tipo ordinario del 25% para superiores.",
+          "Llevar a cabo una reforma total del sistema fiscal y elaborar presupuestos de base 0 para eliminar el déficil y la deuda pública."
+        ],
+        "subject_name": "Economía",
+        "explanation": "Una economía sólida sustenta la capacidad de un país para proveer a sus ciudadanos y competir globalmente. Ejemplos históricos, como la Revolución Industrial en Gran Bretaña, muestran cómo la adaptabilidad económica impulsa el desarrollo. Pensadores como Adam Smith destacaron la importancia de los mercados y la productividad, mientras que Karl Marx criticó los desequilibrios que podrían desestabilizar sociedades. El fracaso económico a menudo lleva al desempleo, la pobreza y el malestar, mientras que un crecimiento equilibrado asegura recursos para infraestructura, salud y defensa."
+      },
+      {
+        "promise_list": [
+          "Promover un estado unitario administrativamente descentralizado para todos los españoles y devolver de forma inmediata al Estado las competencias de Educación, Sanidad, Seguridad y Justicia para terminar con los 17 sistemas normativos distintos.",
+          "Suspender inmediatamente la autonomía de las comunidades cuyos gobiernos utilicen recursos e instrumentos para atentar contra la unidad de España.",
+          "Suprimir organismos ideológicos y subvenciones a partidos, sindicatos, patronales y otros entes políticos.",
+          "Poner fin a subvenciones públicas e ilegalizar los partidos, asociaciones u ONG que \"persigan la destrucción de la unidad territorial\".",
+          "Crear una oficina nacional para luchar contra el fraude y la corrupción y luchar contra la evasión y la elusión fiscal y reintroducir en el Código Penal los delitos de referéndum ilegal, sedición, traición y malversación de caudales públicos."
+        ],
+        "subject_name": "Gobernanza",
+        "explanation": "Una gobernanza efectiva asegura el orden, la justicia y la asignación eficiente de recursos. Colapsos históricos, como el del Imperio Romano, a menudo surgieron de la corrupción o una mala administración. Filósofos como Hobbes enfatizaron la necesidad de un contrato social fuerte, mientras que Rousseau destacó la rendición de cuentas al pueblo. Una buena gobernanza fomenta la confianza y la estabilidad; una gobernanza débil genera ineficiencia, desigualdad y posibles crisis."
+      },
+      {
+        "promise_list": [
+          "Impulsar un bloqueo naval, expulsar de forma inmediata a todos los inmigrantes que accedan ilegalmente y sancionar a quienes empleen a inmigrantes sin permiso de residencia.",
+          "Dotar de máxima protección jurídica a los símbolos de la nación -bandera, himno y Corona- y agravar penas por ofensas y ultrajes a España para que ninguna afrenta quede impune.",
+          "Asegurar y visibilizar la presencia de la administración civil y militar del Estado, especialmente en aquellos territorios \"donde los gobiernos separatistas han tratado de borrar a España\".",
+          "Crear un mando integrado de gestión de las fronteras para control e inspección de personas y mercancías y un mayor despliegue militar en Ceuta, Melilla y Canarias.",
+          "Aumentar la inversión en Defensa y dignificar la vocación profesional militar y homologar los estudios y especialidades militares y desarrollar un servicio militar de reserva voluntaria."
+        ],
+        "subject_name": "Defensa y Seguridad",
+        "explanation": "La capacidad de una nación para protegerse de amenazas externas e internas es crucial para su supervivencia y desarrollo. Ejemplos históricos, como la caída de Cartago, subrayan las consecuencias de una defensa inadecuada. Maquiavelo argumentó que la seguridad es un prerrequisito para la prosperidad, ya que la inestabilidad disuade la inversión y el crecimiento. Las sociedades modernas requieren tanto fuerza militar como ciberseguridad para salvaguardar la soberanía y los sistemas económicos."
+      },
+      {
+        "promise_list": [
+          "Recuperar las competencias transferidas a las comunidades, invertir más constituyendo un sistema de compras centralizado y transparente.",
+          "Potenciar un único sistema de formación especializada y presionar para que el desconocimiento de las lenguas regionales no sea un impedimento en el acceso a plazas.",
+          "Reducir volumen y tiempo de las listas de espera reforzando los conciertos con la sanidad privada, incrementar la inversión en Atención Primaria y dotar de medios humanos y materiales necesarios para su puesta en funcionamiento o reapertura.",
+          "Garantizar la libertad de conciencia de todo el personal y la libre elección de médico y centro.",
+          "Incluir prestaciones relacionadas con la salud bucodental y oftalmológica."
+        ],
+        "subject_name": "Salud",
+        "explanation": "Una población sana es esencial para la productividad y la resiliencia. Pandemias históricas, como la Peste Negra, devastaron sociedades al paralizar la fuerza laboral y las economías. Filósofos como Jeremy Bentham, utilitarista, vincularon el bienestar social con la salud individual, enfatizando el beneficio colectivo. El acceso a la salud mejora la esperanza de vida y la eficiencia de la fuerza laboral, mientras que su negligencia puede exacerbar la desigualdad y desencadenar crisis."
+      },
+      {
+        "promise_list": [
+          "Acometer las inversiones para la mejora logística y del transporte y en las comunicaciones de la actividad industrial.",
+          "Fomentar inversiones públicas en barrios, provincias y regiones abandonadas con equipamientos, infraestructuras de transporte y servicios de salud y cultura.",
+          "Mejorar la red ferroviaria con énfasis en la alta velocidad para conectar todos los territorios e impulsar la red de cercanías para alcanzar todas las provincias.",
+          "Realizar un plan nacional para impulsar la interconexión de todas las cuencas, acabar con la destrucción de presas y embalses y facilitar la inversión en infraestructuras hidráulicas para almacenar y llevar agua.",
+          "Revitalizar la industria del automóvil y de partes y componentes para asegurar la posición dominante en el sector, garantizando la convivencia de todos los vehículos y suspendiendo de forma inmediat\" la prohibición del motor de combustión para 2035."
+        ],
+        "subject_name": "Infraestructura",
+        "explanation": "La infraestructura física y digital soporta la actividad económica, la conectividad y la calidad de vida. Las carreteras y acueductos de Roma permitieron su dominio, mientras que las naciones modernas dependen de redes de transporte, redes energéticas y acceso a internet. Pensadores como John Stuart Mill conectaron el progreso social con las condiciones materiales. Una infraestructura deficiente obstaculiza el comercio, la comunicación y la innovación, arriesgando el declive económico."
+      },
+      {
+        "promise_list": [
+          "Derogar la Ley de Violencia de Género y promover una ley que proteja a todas las posibles víctimas de violencia en el ámbito doméstico.",
+          "Eliminar toda la legislación de género y que establezca diferencias laborales, como cuotas o preferencia a la contratación en caso de empate, atendiendo al sexo, raza u orientación sexual.",
+          "Suprimir el Ministerio de Igualdad y crear en su lugar el Ministerio de Familias y dedicar su gasto a otros servicios públicos.",
+          "Garantizar la imposibilidad de tratamientos hormonales y la cirugía de cambio de sexo en los menores de edad y derogar leyes LGTBIQ+ o la Ley Trans.",
+          "Fomentar condiciones para promover la natalidad y derogar la ley del aborto y defender el acceso a un protocolo de información permanente."
+        ],
+        "subject_name": "Cohesión Social",
+        "explanation": "Una sociedad unida resiste mejor los desafíos que una fragmentada. Divisiones históricas, como las de la Revolución Francesa, muestran cómo el malestar social puede descarrilar el progreso. Aristóteles veía a la comunidad como la base del estado, mientras que Durkheim enfatizó la solidaridad en las sociedades modernas. La cohesión reduce los conflictos y fomenta la cooperación, mientras que la división puede llevar a la inestabilidad y crisis."
+      }
+    ],
+    "party_name": "VOX",
+    "party_logo": "/parties/GVOX.svg",
+    "campaign_promises_pdf_link": "https://www.voxespana.es/programa/programa-electoral-vox"
+  },
+  {
+    "subjects": [
+      {
+        "promise_list": [
+          "Universalización de la cobertura pública gratuita de la etapa educativa de cero a tres años y su inclusión plena en el sistema educativo.",
+          "Alcanzar de manera inmediata el 5% del PIB en gasto educativo, y avanzar progresivamente hacia el 7%.",
+          "Bajada de ratios en las aulas y aumento de la dotación de medios humanos y materiales.",
+          "Ecocomedores escolares gratuitos de gestión directa en los centros públicos durante toda la etapa obligatoria.",
+          "Red pública suficiente de centros de Formación Profesional que garantice la cobertura de estos estudios."
+        ],
+        "subject_name": "Educación",
+        "explanation": "La educación es la base de una sociedad moderna próspera, permitiendo a los individuos adquirir conocimientos, habilidades y pensamiento crítico necesarios para la innovación y el progreso. Históricamente, sociedades como la Antigua Grecia enfatizaron la educación (por ejemplo, la Academia de Platón), fomentando el avance intelectual. Filósofos como John Locke argumentaron que la educación moldea el potencial humano y la estabilidad social. Una población bien educada impulsa el crecimiento económico, reduce la desigualdad y fortalece la participación cívica, mientras que su negligencia puede llevar al estancamiento y a crisis."
+      },
+      {
+        "promise_list": [
+          "Herencia universal de 20.000 euros para todos los jóvenes que cumplan 18 años.",
+          "Establecer una cesta de la compra básica a precios asequibles.",
+          "Establecer por ley en 2024 una jornada laboral máxima de 37,5 horas sin reducción de salario y abrir un proceso de diálogo social para seguir reduciendo la jornada hasta las 32 horas semanales.",
+          "Subir el salario mínimo interprofesional por encima del IPC anual.",
+          "Impulsar la firma de un gran pacto de rentas por la estabilidad de precios."
+        ],
+        "subject_name": "Economía",
+        "explanation": "Una economía sólida sustenta la capacidad de un país para proveer a sus ciudadanos y competir globalmente. Ejemplos históricos, como la Revolución Industrial en Gran Bretaña, muestran cómo la adaptabilidad económica impulsa el desarrollo. Pensadores como Adam Smith destacaron la importancia de los mercados y la productividad, mientras que Karl Marx criticó los desequilibrios que podrían desestabilizar sociedades. El fracaso económico a menudo lleva al desempleo, la pobreza y el malestar, mientras que un crecimiento equilibrado asegura recursos para infraestructura, salud y defensa."
+      },
+      {
+        "promise_list": [
+          "Impulsar la mesa de diálogo con Cataluña y someter a votación en Cataluña el acuerdo surgido de la negociación de esta mesa entre Gobierno y Generalitat; avanzar hacia un nuevo pacto territorial entre Cataluña y el Estado.",
+          "Nuevo pacto territorial, reconociendo y poniendo en valor la diversidad de España, aunque dotándola de un sentido solidario.",
+          "Impulsar de forma inmediata la reforma del sistema de financiación autonómico, acordando un nuevo modelo que incluya un suelo fiscal para prestar unos servicios públicos de calidad y encauzar las reformas de los Estatutos de Autonomía que necesiten ser actualizados.",
+          "Extender la promoción y uso de la pluralidad lingüística al conjunto del España, no solo a las comunidades autónomas con lengua propia, así como al marco de la UE.",
+          "Promover foros ciudadanos para debatir sobre el modelo de España y el estado de las autonomías."
+        ],
+        "subject_name": "Gobernanza",
+        "explanation": "Una gobernanza efectiva asegura el orden, la justicia y la asignación eficiente de recursos. Colapsos históricos, como el del Imperio Romano, a menudo surgieron de la corrupción o una mala administración. Filósofos como Hobbes enfatizaron la necesidad de un contrato social fuerte, mientras que Rousseau destacó la rendición de cuentas al pueblo. Una buena gobernanza fomenta la confianza y la estabilidad; una gobernanza débil genera ineficiencia, desigualdad y posibles crisis."
+      },
+      {
+        "promise_list": [
+          "Adoptar, en el ámbito específico de la política de defensa, una Estrategia Nacional de Seguridad Humana que fortalezca el compromiso con el derecho internacional humanitario.",
+          "Promover la revisión y auditoría de los Programas Especiales de Armamento y otros gastos asociados a planes de defensa con el fin de dotarlos de mayor transparencia.",
+          "Revisar en profundidad la política de exportación de armamento, tanto a nivel estatal como europeo, para prohibir la venta de armas a países que vulneren los derechos humanos.",
+          "Adoptar un papel más activo en la mediación y la resolución pacífica y dialogada en los conflictos en los que la diplomacia española tenga un valor añadido, como los del Sáhara Occidental, Palestina, Colombia, Haití, Ucrania o Sahel.",
+          "Continuar con la solidaridad integral con Ucrania y fortaleceremos la vía diplomática para lograr, cuando las circunstancias lo permitan, una paz justa y duradera alineada con las aspiraciones del pueblo ucraniano."
+        ],
+        "subject_name": "Defensa y Seguridad",
+        "explanation": "La capacidad de una nación para protegerse de amenazas externas e internas es crucial para su supervivencia y desarrollo. Ejemplos históricos, como la caída de Cartago, subrayan las consecuencias de una defensa inadecuada. Maquiavelo argumentó que la seguridad es un prerrequisito para la prosperidad, ya que la inestabilidad disuade la inversión y el crecimiento. Las sociedades modernas requieren tanto fuerza militar como ciberseguridad para salvaguardar la soberanía y los sistemas económicos."
+      },
+      {
+        "promise_list": [
+          "Aumentar anualmente medio punto del PIB en gasto sanitario.",
+          "Blindar el carácter público del Sistema Nacional de Salud, impidiendo las formas de gestión privatizadas y \"desprivatizando\" servicios como limpieza u hostelería.",
+          "Incorporar a los servicios sanitarios públicos nuevas prestaciones, como la salud bucodental, la nutrición, la salud óptica, la audioprótesis, la psicoterapia, la terapia ocupacional y la fisioterapia.",
+          "Aprobar una ley de listas de espera que establezca tiempos máximos de espera y garantice un registro homogéneo, transparente y fiable de las listas de espera en todo el país.",
+          "Fin de la precariedad del personal sanitario: mejora de sus condiciones laborales. Acabar con las guardias médicas de matronas y enfermeras de 24 horas."
+        ],
+        "subject_name": "Salud",
+        "explanation": "Una población sana es esencial para la productividad y la resiliencia. Pandemias históricas, como la Peste Negra, devastaron sociedades al paralizar la fuerza laboral y las economías. Filósofos como Jeremy Bentham, utilitarista, vincularon el bienestar social con la salud individual, enfatizando el beneficio colectivo. El acceso a la salud mejora la esperanza de vida y la eficiencia de la fuerza laboral, mientras que su negligencia puede exacerbar la desigualdad y desencadenar crisis."
+      },
+      {
+        "promise_list": [
+          "Redirigir las inversiones ferroviarias de alta velocidad a Cercanías, así como a las líneas de ferrocarril convencional, para, al menos, triplicar la inversión anual en esta red estatal en los próximos cuatro años.",
+          "Modernizar los aeropuertos para reducir su impacto ambiental, restringir las ampliaciones innecesarias e insostenibles de los aeropuertos y transferir las competencias de gestión de puertos y aeropuertos para que la gestión sea conjunta con las ciudades en las que se encuentran.",
+          "Transformar en una política de transporte permanente la reducción del precio de los abonos de transporte para desplazamientos recurrentes, al trabajo o a los centros de estudio.",
+          "Implantar un billete único para todos los modos de transporte, incluidos los sistemas de alquiler de bicicletas públicas, con modalidades de pago progresivas y pago digital.",
+          "Reducir las tarifas de AVE para trasvasar viajeros del avión al tren."
+        ],
+        "subject_name": "Infraestructura",
+        "explanation": "La infraestructura física y digital soporta la actividad económica, la conectividad y la calidad de vida. Las carreteras y acueductos de Roma permitieron su dominio, mientras que las naciones modernas dependen de redes de transporte, redes energéticas y acceso a internet. Pensadores como John Stuart Mill conectaron el progreso social con las condiciones materiales. Una infraestructura deficiente obstaculiza el comercio, la comunicación y la innovación, arriesgando el declive económico."
+      },
+      {
+        "promise_list": [
+          "Impulsar una reforma constitucional que blinde el derecho a la Seguridad Social; garantizar que todas las personas residentes en España tengan derecho a la protección por la Seguridad Social, incluidas las personas residentes en situación de irregularidad.",
+          "Revalorizar prestaciones con el IPC.",
+          "Mejorar el acceso y alcance del íngreso mínimo vital, simplificando la burocracia e incluyendo jóvenes de entre 18 y 23 años como potenciales beneficiarios, o migrantes irregulares.... Nueva ley de cuidados y de sostenibilidad de la vida.",
+          "Introducir otras formas de violencia de género en el sistema VioGén; sistema específico de indemnizaciones, mecanismos de reparación y atención para víctimas graves de delitos vinculados a las violencias machistas; blindar el Pacto de Estado contra la Violencia de Género.",
+          "Políticas de salud para las mujeres: acceso a técnicas de reproducción asistida financiadas por el sector público para mujeres hasta los 45 años de edad, asegurando la no discriminación de mujeres lesbianas o sin pareja."
+        ],
+        "subject_name": "Cohesión Social",
+        "explanation": "Una sociedad unida resiste mejor los desafíos que una fragmentada. Divisiones históricas, como las de la Revolución Francesa, muestran cómo el malestar social puede descarrilar el progreso. Aristóteles veía a la comunidad como la base del estado, mientras que Durkheim enfatizó la solidaridad en las sociedades modernas. La cohesión reduce los conflictos y fomenta la cooperación, mientras que la división puede llevar a la inestabilidad y crisis."
+      }
+    ],
+    "party_name": "Sumar",
+    "party_logo": "/parties/GSUMAR.svg",
+    "campaign_promises_pdf_link": "https://movimientosumar.es/wp-content/uploads/2023/07/Un-Programa-para-ti.pdf"
+  },
+  {
+    "subjects": [
+      {
+        "promise_list": [
+          "Defensa del modelo de Escuela Catalana.",
+          "Pedir las competencias exclusivas en la elaboración de los currículos de las etapas obligatorias y postobligatorias.",
+          "Transferir a la Generalidad de Cataluña el pleno ejercicio de las competencias en gestión de becas y ayudas al estudio.",
+          "Exigir que el 30% de los recursos dedicados por el gobierno e instituciones publicas en la promoción, difusión y potenciación de la lengua castellana se destinen a la lengua catalana.",
+          "Potenciar la Formación Profesional."
+        ],
+        "subject_name": "Educación",
+        "explanation": "La educación es la base de una sociedad moderna próspera, permitiendo a los individuos adquirir conocimientos, habilidades y pensamiento crítico necesarios para la innovación y el progreso. Históricamente, sociedades como la Antigua Grecia enfatizaron la educación (por ejemplo, la Academia de Platón), fomentando el avance intelectual. Filósofos como John Locke argumentaron que la educación moldea el potencial humano y la estabilidad social. Una población bien educada impulsa el crecimiento económico, reduce la desigualdad y fortalece la participación cívica, mientras que su negligencia puede llevar al estancamiento y a crisis."
+      },
+      {
+        "promise_list": [
+          "Desarrollar una fiscalidad progresiva que ayude a acabar con la brecha social.",
+          "Garantizar los ingresos necesarios para el Estado del Bienestar.",
+          "Acabar con la discriminación de las rentas del trabajo frente a las del capital.",
+          "Hacer permanentes los impuestos sobre los beneficios extraordinarios de bancos y eléctricas.",
+          "Luchar contra el fraude de grandes empresas y mejorar el impuesto para las grandes fortunas."
+        ],
+        "subject_name": "Economía",
+        "explanation": "Una economía sólida sustenta la capacidad de un país para proveer a sus ciudadanos y competir globalmente. Ejemplos históricos, como la Revolución Industrial en Gran Bretaña, muestran cómo la adaptabilidad económica impulsa el desarrollo. Pensadores como Adam Smith destacaron la importancia de los mercados y la productividad, mientras que Karl Marx criticó los desequilibrios que podrían desestabilizar sociedades. El fracaso económico a menudo lleva al desempleo, la pobreza y el malestar, mientras que un crecimiento equilibrado asegura recursos para infraestructura, salud y defensa."
+      },
+      {
+        "promise_list": [
+          "Impulsar Ley de Amnistía, para acabar con la persecución judicial al independentismo.",
+          "Despenalizar las injurias a la Corona.",
+          "Derogar la \"Ley Mordaza\".",
+          "Velar por que las nuevas leyes de secretos oficiales y de Seguridad Nacional no laminen derechos básicos y fundamentales.",
+          "Democratizar el sistema judicial del Estado español."
+        ],
+        "subject_name": "Gobernanza",
+        "explanation": "Una gobernanza efectiva asegura el orden, la justicia y la asignación eficiente de recursos. Colapsos históricos, como el del Imperio Romano, a menudo surgieron de la corrupción o una mala administración. Filósofos como Hobbes enfatizaron la necesidad de un contrato social fuerte, mientras que Rousseau destacó la rendición de cuentas al pueblo. Una buena gobernanza fomenta la confianza y la estabilidad; una gobernanza débil genera ineficiencia, desigualdad y posibles crisis."
+      },
+      {
+        "promise_list": [
+          "Detener la venta de armas a países que no respetan los derechos humanos.",
+          "Fiscalizar sistemáticamente el modelo de Defensa español y sus programas especiales de armamento y exigir el cumplimiento de la ley general presupuestaria y de estabilidad presupuestaria aplicable al Ministerio de Defensa para evitar la presentación de futuros reales decretos que pretendan cubrir gastos ya conocidos.",
+          "Desmilitarizar las políticas públicas y la vida social, impidiendo las subvenciones a las empresas armamentísticas y los desfiles, las exhibiciones militares y las maniobras fuera de los terrenos militares.",
+          "Reducir un 50% el presupuesto anual del Ministerio de Defensa destinado a partidas y programas armamentísticos.",
+          "Modelo de estado: Reconocimiento del derecho a decidir."
+        ],
+        "subject_name": "Defensa y Seguridad",
+        "explanation": "La capacidad de una nación para protegerse de amenazas externas e internas es crucial para su supervivencia y desarrollo. Ejemplos históricos, como la caída de Cartago, subrayan las consecuencias de una defensa inadecuada. Maquiavelo argumentó que la seguridad es un prerrequisito para la prosperidad, ya que la inestabilidad disuade la inversión y el crecimiento. Las sociedades modernas requieren tanto fuerza militar como ciberseguridad para salvaguardar la soberanía y los sistemas económicos."
+      },
+      {
+        "promise_list": [
+          "Sanidad pública y universal, con una financiación adecuada.",
+          "Traspaso competencial en todas las materias sanitarias.",
+          "Fiscalidad especial para productos relacionados con la sanidad, incluidos los de higiene femenina.",
+          "Paliar el déficit de profesionales sanitarios.",
+          "Formar al personal de los centros de salud y hospitales en diversidad y no discriminación y dotar a los centros de salud y hospitales de servicio de acompañamiento y/o interpretación."
+        ],
+        "subject_name": "Salud",
+        "explanation": "Una población sana es esencial para la productividad y la resiliencia. Pandemias históricas, como la Peste Negra, devastaron sociedades al paralizar la fuerza laboral y las economías. Filósofos como Jeremy Bentham, utilitarista, vincularon el bienestar social con la salud individual, enfatizando el beneficio colectivo. El acceso a la salud mejora la esperanza de vida y la eficiencia de la fuerza laboral, mientras que su negligencia puede exacerbar la desigualdad y desencadenar crisis."
+      },
+      {
+        "promise_list": [
+          "Impulso definitivo al Corredor Mediterraneo.",
+          "Fomentar la interconexión ferroviaria entre aeropuertos y puertos.",
+          "Titularidad catalana de puertos y aeropuertos.",
+          "Paralización de la ampliación del puerto de València.",
+          "Servicio público obligatorio de la línea Menorca-Barcelona."
+        ],
+        "subject_name": "Infraestructura",
+        "explanation": "La infraestructura física y digital soporta la actividad económica, la conectividad y la calidad de vida. Las carreteras y acueductos de Roma permitieron su dominio, mientras que las naciones modernas dependen de redes de transporte, redes energéticas y acceso a internet. Pensadores como John Stuart Mill conectaron el progreso social con las condiciones materiales. Una infraestructura deficiente obstaculiza el comercio, la comunicación y la innovación, arriesgando el declive económico."
+      },
+      {
+        "promise_list": [
+          "Derogar la ley de extranjería y promover una ley de movilidad humana que garantice el trato digno para todas las personas mediante vías legales y seguras, que permita la obtención de la nacionalidad por residencia en un máximo de 5 años.",
+          "Elaborar una ley contra el racismo y la xenofobia que tenga como objetivo ilegalizar las prácticas discriminatorias por razón de origen y creencia.",
+          "Reconocer el derecho a voto activo y pasivo a toda la ciudadanía, inherente a la persona y, en todo caso, vinculado a la residencia reconocida mediante el empadronamiento.",
+          "Poner fin a las devoluciones en caliente y garantizar el derecho de asilo.",
+          "Agilizar los trámites para la reagrupación familiar."
+        ],
+        "subject_name": "Cohesión Social",
+        "explanation": "Una sociedad unida resiste mejor los desafíos que una fragmentada. Divisiones históricas, como las de la Revolución Francesa, muestran cómo el malestar social puede descarrilar el progreso. Aristóteles veía a la comunidad como la base del estado, mientras que Durkheim enfatizó la solidaridad en las sociedades modernas. La cohesión reduce los conflictos y fomenta la cooperación, mientras que la división puede llevar a la inestabilidad y crisis."
+      }
+    ],
+    "party_name": "Esquerra Republicana",
+    "party_logo": "/parties/GR.svg",
+    "campaign_promises_pdf_link": "https://static.esquerra.cat/uploads/20230905/e2023-programa.pdf"
+  },
+  {
+    "subjects": [
+      {
+        "promise_list": [
+          "Defensa del modelo educativo propio de Cataluña, con el catalán como lengua vehicular y de uso preferente (inmersión lingüística).",
+          "Aumentar el presupuesto destinado a educación para mejorar los recursos humanos y materiales y financiar la educación de 0 a 3 años y garantizar que la postobligatoria (16-18 años) sea gratuita.",
+          "Centros concertados: actualizar su legislación y financiación, para adecuarlas a las necesidades del siglo XXI y sus costes reales.",
+          "Regular la carrera docente en públicos y concertados a través de un periodo de acreditación práctica (MIR docente).",
+          "Exigir la transferencia de la gestión de las becas de educación superior a Cataluña."
+        ],
+        "subject_name": "Educación",
+        "explanation": "La educación es la base de una sociedad moderna próspera, permitiendo a los individuos adquirir conocimientos, habilidades y pensamiento crítico necesarios para la innovación y el progreso. Históricamente, sociedades como la Antigua Grecia enfatizaron la educación (por ejemplo, la Academia de Platón), fomentando el avance intelectual. Filósofos como John Locke argumentaron que la educación moldea el potencial humano y la estabilidad social. Una población bien educada impulsa el crecimiento económico, reduce la desigualdad y fortalece la participación cívica, mientras que su negligencia puede llevar al estancamiento y a crisis."
+      },
+      {
+        "promise_list": [
+          "Exigir el traspaso a la Generalitat de la gestión de todos los impuestos.",
+          "Reequilibrar los tipos impositivos sobre las rentas del trabajo, considerados \"excesivos\", y eliminar la rigidez de la tributación de los autónomos.",
+          "Equiparar la presión fiscal en Cataluña a la de otras comunidades para evitar el 'dumping' fiscal, revisar la fiscalidad que grava el empleo y bajar el impuesto de sociedades de las pymes del 25 al 20%.",
+          "Reducir el IVA de todos los alimentos al 4%.",
+          "Adaptar una fiscalidad verde que refleje el coste medioambiental de productos y servicios, y apoyo a la tasa Google en toda la Unión Europea."
+        ],
+        "subject_name": "Economía",
+        "explanation": "Una economía sólida sustenta la capacidad de un país para proveer a sus ciudadanos y competir globalmente. Ejemplos históricos, como la Revolución Industrial en Gran Bretaña, muestran cómo la adaptabilidad económica impulsa el desarrollo. Pensadores como Adam Smith destacaron la importancia de los mercados y la productividad, mientras que Karl Marx criticó los desequilibrios que podrían desestabilizar sociedades. El fracaso económico a menudo lleva al desempleo, la pobreza y el malestar, mientras que un crecimiento equilibrado asegura recursos para infraestructura, salud y defensa."
+      },
+      {
+        "promise_list": [
+          "Transferencia de la captación de tasas judiciales a Cataluña y traspaso integral del personal y los medios de la Administración de Justicia.",
+          "Establecer la obligación de jueces y fiscales de conocer el catalán.",
+          "Defensa de los juzgados de paz.",
+          "Reformar la legislación para combatir la reincidencia de delitos y agilizar la respuesta frente a la ocupación ilegal.",
+          "Reforma de la malversación y el orden público, de la ley de memoria democrática, la ley de secretos oficiales, la ley mordaza y la ley de amnistía."
+        ],
+        "subject_name": "Gobernanza",
+        "explanation": "Una gobernanza efectiva asegura el orden, la justicia y la asignación eficiente de recursos. Colapsos históricos, como el del Imperio Romano, a menudo surgieron de la corrupción o una mala administración. Filósofos como Hobbes enfatizaron la necesidad de un contrato social fuerte, mientras que Rousseau destacó la rendición de cuentas al pueblo. Una buena gobernanza fomenta la confianza y la estabilidad; una gobernanza débil genera ineficiencia, desigualdad y posibles crisis."
+      },
+      {
+        "promise_list": [
+          "Avanzar hacia la consolidación de un ejército europeo, impulsando una mayor interrelación de los ejércitos de los países miembros de la UE.",
+          "Revisar el modelo de Defensa y sus programas especiales de armamento, asegurando que el Ministerio cumple con la ley general presupuestaria y las legislación europea de estabilidad.",
+          "Exigir al Ministerio de Defensa menos opacidad.",
+          "Compromiso de no exportación de material de defensa a países que violen los derechos humanos o el derecho internacional, como Arabia Saudí.",
+          "Reconocimiento de la autodeterminación para que Cataluña pueda ser un Estado independiente."
+        ],
+        "subject_name": "Defensa y Seguridad",
+        "explanation": "La capacidad de una nación para protegerse de amenazas externas e internas es crucial para su supervivencia y desarrollo. Ejemplos históricos, como la caída de Cartago, subrayan las consecuencias de una defensa inadecuada. Maquiavelo argumentó que la seguridad es un prerrequisito para la prosperidad, ya que la inestabilidad disuade la inversión y el crecimiento. Las sociedades modernas requieren tanto fuerza militar como ciberseguridad para salvaguardar la soberanía y los sistemas económicos."
+      },
+      {
+        "promise_list": [
+          "Garantizar el acceso universal a una sanidad de calidad y eficaz.",
+          "Reclamar más recursos para la sanidad catalana y la transferencia a la Generalitat de los inmuebles destinados a hospitales, ambulatorios y servicios sociales.",
+          "Ampliar el número de plazas MIR en Cataluña y reformar la ley de Ordenación de Profesiones Sanitarias para adaptarla a la nueva situación e introducir nuevas profesiones.",
+          "Reactivar las iniciativas legislativas para reclamar más prestaciones a los enfermos de ELA y otras enfermedades con un alto grado de dependencia.",
+          "Reclamar al Gobierno que recorte los plazos de incorporación de los medicamentos ya aprobados por la UE al sistema público de salud, especialmente, en los casos de cáncer metastásico."
+        ],
+        "subject_name": "Salud",
+        "explanation": "Una población sana es esencial para la productividad y la resiliencia. Pandemias históricas, como la Peste Negra, devastaron sociedades al paralizar la fuerza laboral y las economías. Filósofos como Jeremy Bentham, utilitarista, vincularon el bienestar social con la salud individual, enfatizando el beneficio colectivo. El acceso a la salud mejora la esperanza de vida y la eficiencia de la fuerza laboral, mientras que su negligencia puede exacerbar la desigualdad y desencadenar crisis."
+      },
+      {
+        "promise_list": [
+          "Implantar un modelo de gestión aeroportuaria propio de Cataluña que potencie los vuelos continentales e intercontinentales.",
+          "Reclamar la titularidad de la red ferroviaria y, entre otros proyectos, mejorar el servicio de cercanías y ejecutar el Corredor Mediterráneo, que incluye los accesos ferroviarios al puerto de Barcelona y Tarragona.",
+          "Traspasar la titularidad de los Puertos de Barcelona y Tarragona, y que sus beneficios se queden en Cataluña para mejorar la red.",
+          "Implementar un sistema de pago para el uso de todas las carreteras y destinar los recursos obtenidos a mejorar la red.",
+          "Dotar a toda Cataluña de internet de alta velocidad y convertirla en un referente y laboratorio del desarrollo de las tecnologías 5G y 6G."
+        ],
+        "subject_name": "Infraestructura",
+        "explanation": "La infraestructura física y digital soporta la actividad económica, la conectividad y la calidad de vida. Las carreteras y acueductos de Roma permitieron su dominio, mientras que las naciones modernas dependen de redes de transporte, redes energéticas y acceso a internet. Pensadores como John Stuart Mill conectaron el progreso social con las condiciones materiales. Una infraestructura deficiente obstaculiza el comercio, la comunicación y la innovación, arriesgando el declive económico."
+      },
+      {
+        "promise_list": [
+          "Trabajar para articular vías legales y seguras de inmigración regular y buscar vías de solución a las personas que ya están en el territorio en situación administrativa irregular.",
+          "Exigir que Cataluña pueda decidir sobre sus flujos migratorios y negociar directamente con la Comisión Europea sobre la acogida de refugiados.",
+          "Eliminar las devoluciones en caliente, garantizar el pleno respeto a los derechos humanos y cumplir con el deber de auxilio a embarcaciones.",
+          "Impulsar políticas en origen y una estrategia europea sobre menores no acompañados y víctimas de las redes de tráfico de personas.",
+          "Articular políticas de apertura y acogida de refugiados."
+        ],
+        "subject_name": "Cohesión Social",
+        "explanation": "Una sociedad unida resiste mejor los desafíos que una fragmentada. Divisiones históricas, como las de la Revolución Francesa, muestran cómo el malestar social puede descarrilar el progreso. Aristóteles veía a la comunidad como la base del estado, mientras que Durkheim enfatizó la solidaridad en las sociedades modernas. La cohesión reduce los conflictos y fomenta la cooperación, mientras que la división puede llevar a la inestabilidad y crisis."
+      }
+    ],
+    "party_name": "Junts per Catalunya",
+    "party_logo": "/parties/GJxCAT.svg",
+    "campaign_promises_pdf_link": "https://www.rtve.es/contenidos/documentos/elecciones_generales_2023/programa_electoral_junts.pdf"
+  },
+  {
+    "subjects": [
+      {
+        "promise_list": [
+          "Seguir respetando el régimen de competencias, respetar el modelo propio de la EBAU y defender la capacidad de Euskadi de decisión en el marco de la gobernanza de las universidades.",
+          "Defender la integración de la Formación Profesional y desarrollar la innovación aplicada también en este ámbito.",
+          "Reivindicar el euskera como eje del sistema universitario y de ciencia de excelencia.",
+          "Reivindicar la homologación de títulos extranjeros universitarios para facilitar la captación de estudiantes vascos que hayan cursado estudios en el extranjero.",
+          "Impulsar la colaboración universidad-empresa y eliminar toda barrera a titulaciones oficiales universitarias duales para generar talento altamente cualificado."
+        ],
+        "subject_name": "Educación",
+        "explanation": "La educación es la base de una sociedad moderna próspera, permitiendo a los individuos adquirir conocimientos, habilidades y pensamiento crítico necesarios para la innovación y el progreso. Históricamente, sociedades como la Antigua Grecia enfatizaron la educación (por ejemplo, la Academia de Platón), fomentando el avance intelectual. Filósofos como John Locke argumentaron que la educación moldea el potencial humano y la estabilidad social. Una población bien educada impulsa el crecimiento económico, reduce la desigualdad y fortalece la participación cívica, mientras que su negligencia puede llevar al estancamiento y a crisis."
+      },
+      {
+        "promise_list": [
+          "Avanzar en el proceso de consolidación fiscal con una visión a largo plazo de la política presupuestaria y fiscal y fomentar mecanismos para la revisión de los precios en los contratos públicos.",
+          "Revisión del listado de bienes y servicios como de los tipos general, reducido y superreducido del IVA y reclamar la capacidad de regulación de este impuesto para las instituciones vascas.",
+          "Que el País Vasco y Navarra sean capaces de modular la mayor parte de lasÂ figuras que integran sus sistemas tributarios e incorporar al Concierto Económico las nuevas figuras a adoptar en su caso por el Estado.",
+          "Impulsar la modificación de la Ley de Seguridad Social para incluir nuevos sistemas de colaboración en el pago e impulsar la modificación de las cuentas de pago básicas.",
+          "Impulsar nuevas fórmulas para la ejecución de fondos, como los PERTE regionales, impulsar la activación de un mecanismo de cogestión y nuevos instrumentos de colaboración público-privada."
+        ],
+        "subject_name": "Economía",
+        "explanation": "Una economía sólida sustenta la capacidad de un país para proveer a sus ciudadanos y competir globalmente. Ejemplos históricos, como la Revolución Industrial en Gran Bretaña, muestran cómo la adaptabilidad económica impulsa el desarrollo. Pensadores como Adam Smith destacaron la importancia de los mercados y la productividad, mientras que Karl Marx criticó los desequilibrios que podrían desestabilizar sociedades. El fracaso económico a menudo lleva al desempleo, la pobreza y el malestar, mientras que un crecimiento equilibrado asegura recursos para infraestructura, salud y defensa."
+      },
+      {
+        "promise_list": [
+          "Adecuar la Administración de Justicia a la realidad autonómica vasca, por ejemplo, correspondiendo el gobieno del poder judicial al Consejo Vasco de Justicia y siendo la Ertzaintza la policía judicial en este ámbito.",
+          "Promover la reforma de la Ley Orgánica del Poder Judicial para que las autoridades investiguen y procesen a toda persona sospechosa de un crimen humanitario, con independencia del lugar del delito o la nacionalidad de acusado o víctima.",
+          "Actualizar las leyes del CNI para ahondar en el control político y judicial de las actuaciones de este servicio y mostrar firmeza ante la corrupción de todas las organizaciones políticas.",
+          "Garantizar la aplicación de la Ley de Memoria Histórica y Democrática.",
+          "Reformar el Código Penal en lo relativo a diversos tipos penales que constriñen la libertad de expresión como delitos contra la Corona, poderes, instituciones y símbolos del Estado que \"impiden expresar opiniones e ideas sin temor a sanciones\"."
+        ],
+        "subject_name": "Gobernanza",
+        "explanation": "Una gobernanza efectiva asegura el orden, la justicia y la asignación eficiente de recursos. Colapsos históricos, como el del Imperio Romano, a menudo surgieron de la corrupción o una mala administración. Filósofos como Hobbes enfatizaron la necesidad de un contrato social fuerte, mientras que Rousseau destacó la rendición de cuentas al pueblo. Una buena gobernanza fomenta la confianza y la estabilidad; una gobernanza débil genera ineficiencia, desigualdad y posibles crisis."
+      },
+      {
+        "promise_list": [
+          "Adoptar una política europea de inmigración y asilo y garantizar que se cumplan los tratados internacionales en materia humanitaria y de Derechos Humanos en las \"devoluciones en caliente\".",
+          "Garantizar los derechos de las personas migrantes y adoptar medidas para una equitativa distribución de menores migrantes no acompañados y de personas demandantes de asilo.",
+          "Transferir a Euskadi las políticas migratorias y defender el modelo vasco de acogida y reformar el Reglamento de los Centros de Internamiento de Extranjeros (CIE).",
+          "Mejorar la capacidad de las políticas migratorias para responder a las demandas del mercado laboral de manera efectiva.",
+          "Proponer que las personas migrantes que tengan trabajo no tengan que pasar por el proceso de arraigo vigente y adoptar medidas para su incorporación en el mercado laboral."
+        ],
+        "subject_name": "Defensa y Seguridad",
+        "explanation": "La capacidad de una nación para protegerse de amenazas externas e internas es crucial para su supervivencia y desarrollo. Ejemplos históricos, como la caída de Cartago, subrayan las consecuencias de una defensa inadecuada. Maquiavelo argumentó que la seguridad es un prerrequisito para la prosperidad, ya que la inestabilidad disuade la inversión y el crecimiento. Las sociedades modernas requieren tanto fuerza militar como ciberseguridad para salvaguardar la soberanía y los sistemas económicos."
+      },
+      {
+        "promise_list": [
+          "Transferir las competencias sanitarias pendientes: formación especializada, acreditación de plazas, control de incapacidades laborales y sanidad exterior.",
+          "Exigir la participación del gobierno vasco y navarro en los órganos encargados de la autorización, registro y fijación del precio de los medicamentos.",
+          "Mejorar e impulsar la investigación de enfermedades raras, medicamentos huérfanos y enfermedades neurodegenerativas como el Alzheimer.",
+          "Regular el uso medicinal del cannabis.",
+          "Promover cambios en el MIR para que se adecúen las plazas y no queden vacantes."
+        ],
+        "subject_name": "Salud",
+        "explanation": "Una población sana es esencial para la productividad y la resiliencia. Pandemias históricas, como la Peste Negra, devastaron sociedades al paralizar la fuerza laboral y las economías. Filósofos como Jeremy Bentham, utilitarista, vincularon el bienestar social con la salud individual, enfatizando el beneficio colectivo. El acceso a la salud mejora la esperanza de vida y la eficiencia de la fuerza laboral, mientras que su negligencia puede exacerbar la desigualdad y desencadenar crisis."
+      },
+      {
+        "promise_list": [
+          "Transferir las infraestructuras ferroviarias de cercanías y la gestión de los tres aeropuertos de Hondarribia, Loiu y Foronda.",
+          "Culminar la red de alta velocidad-Y Vasca tras el acuerdo logrado de la llegada soterrada a Vitoria-Gasteiz y Bilbao e impulsar el corredor Atlántico de Mercancías \"European Trasport Networks, TEN-T\".",
+          "Impulsar la conexión de la nueva red ferroviaria en alta velocidad con Aquitania y Nafarroa y la de Gasteiz con Burgos.",
+          "En los puertos, descalificar como puerto de interés general y mejorar la operatividad ferroviaria del Puerto de Pasaia.",
+          "Garantizar la accesibilidad universal e impulsar la intermodalidad, la conexión con los puertos, aeropuertos y nodos logísticos."
+        ],
+        "subject_name": "Infraestructura",
+        "explanation": "La infraestructura física y digital soporta la actividad económica, la conectividad y la calidad de vida. Las carreteras y acueductos de Roma permitieron su dominio, mientras que las naciones modernas dependen de redes de transporte, redes energéticas y acceso a internet. Pensadores como John Stuart Mill conectaron el progreso social con las condiciones materiales. Una infraestructura deficiente obstaculiza el comercio, la comunicación y la innovación, arriesgando el declive económico."
+      },
+      {
+        "promise_list": [
+          "Efectuar la ley integral contra la trata de personas y su protección.",
+          "Favorecer la integración laboral para personas discapacitadas.",
+          "Erradicar la violencia y explotación sexual infantil e incidir en el peligro para los niños al consumo de la pornografía.",
+          "Trabajar por la aplicación del tratado sobre la eliminación de todas las formas de discriminación contra las mujeres (CEDAW) y su Protocolo facultativo.",
+          "Incorporar la perspectiva de género en todas las políticas públicas y trabajar por la paridad e igualdad entre mujeres y hombres."
+        ],
+        "subject_name": "Cohesión Social",
+        "explanation": "Una sociedad unida resiste mejor los desafíos que una fragmentada. Divisiones históricas, como las de la Revolución Francesa, muestran cómo el malestar social puede descarrilar el progreso. Aristóteles veía a la comunidad como la base del estado, mientras que Durkheim enfatizó la solidaridad en las sociedades modernas. La cohesión reduce los conflictos y fomenta la cooperación, mientras que la división puede llevar a la inestabilidad y crisis."
+      }
+    ],
+    "party_name": "Partido Nacionalista Vasco",
+    "party_logo": "/parties/GV (EAJ-PNV).svg",
+    "campaign_promises_pdf_link": "https://www.eaj-pnv.eus/es/documentos/20945/con-voz-propia-programa-electoral-23-j"
+  },
+  {
+    "subjects": [
+      {
+        "promise_list": [
+          "Blindar nuestros modelos educativos y curriculares y sus características lingüísticas, no permitiendo ningún tipo de intromisión ni cambio impuesto en los modelos educativos propios.",
+          "Transferencia del sistema de becas."
+        ],
+        "subject_name": "Educación",
+        "explanation": "La educación es la base de una sociedad moderna próspera, permitiendo a los individuos adquirir conocimientos, habilidades y pensamiento crítico necesarios para la innovación y el progreso. Históricamente, sociedades como la Antigua Grecia enfatizaron la educación (por ejemplo, la Academia de Platón), fomentando el avance intelectual. Filósofos como John Locke argumentaron que la educación moldea el potencial humano y la estabilidad social. Una población bien educada impulsa el crecimiento económico, reduce la desigualdad y fortalece la participación cívica, mientras que su negligencia puede llevar al estancamiento y a crisis."
+      },
+      {
+        "promise_list": [
+          "Aumentar la carga impositiva y convertir en permanentes los impuestos a la banca, energéticas y grandes fortunas, respetando la competencia y capacidad de nuestras haciendas forales en la gestión y recaudación de los mismos.",
+          "Aprobar un impuesto especial sobre los beneficios de grandes cadenas distribuidoras alimentarias.",
+          "Adoptar frente al Banco Central Europeo (BCE) y las instituciones comunitarias una posición contraria y de exigencia de reversión del aumento de los tipos de interés adoptada desde julio de 2022. Esa política monetaria se ha demostrado inútil para rebajar la inflación y está ahogando a familias y pymes.",
+          "Rechazar la recuperación de las reglas fiscales para la contención de la inversión pública, impidiendo cualquier tipo de política de austeridad que conlleve recortes sociales o de servicios públicos.",
+          "Derogar la modificación del artículo 135 de la Constitución española ejecutada por el PP y el PSOE, que prioriza el pago de la deuda sobre la inversión pública y social."
+        ],
+        "subject_name": "Economía",
+        "explanation": "Una economía sólida sustenta la capacidad de un país para proveer a sus ciudadanos y competir globalmente. Ejemplos históricos, como la Revolución Industrial en Gran Bretaña, muestran cómo la adaptabilidad económica impulsa el desarrollo. Pensadores como Adam Smith destacaron la importancia de los mercados y la productividad, mientras que Karl Marx criticó los desequilibrios que podrían desestabilizar sociedades. El fracaso económico a menudo lleva al desempleo, la pobreza y el malestar, mientras que un crecimiento equilibrado asegura recursos para infraestructura, salud y defensa."
+      },
+      {
+        "promise_list": [
+          "Derogación de la Ley Mordaza.",
+          "Crear un mecanismo externo e independiente de supervisión e investigación de las actuaciones policiales como garantía de control.",
+          "Ampliar la Ley de Memoria Democrática para incluir en la misma garantías de reconocimiento, justicia y reparación para todas las víctimas de todas las fases históricas que aún siguen sin ser reconocidas: las víctimas del franquismo, las de la tortura, las del terrorismo de Estado y de los grupos ultraderechistas, aportando garantías y haciendo efectivo el derecho a la justicia para todas ellas.",
+          "Acabar con la Ley de Secretos Oficiales para asegurar una legislación que asegure claridad, accesibilidad, información y protección de los derechos individuales.",
+          "Reconocimiento de Euskal Herria como nación."
+        ],
+        "subject_name": "Gobernanza",
+        "explanation": "Una gobernanza efectiva asegura el orden, la justicia y la asignación eficiente de recursos. Colapsos históricos, como el del Imperio Romano, a menudo surgieron de la corrupción o una mala administración. Filósofos como Hobbes enfatizaron la necesidad de un contrato social fuerte, mientras que Rousseau destacó la rendición de cuentas al pueblo. Una buena gobernanza fomenta la confianza y la estabilidad; una gobernanza débil genera ineficiencia, desigualdad y posibles crisis."
+      },
+      {
+        "promise_list": [
+          "Exigiremos la derogación de la Ley de Extranjería, sustituyéndola por una nueva legislación que respete y garantice todos los derechos humanos y civiles de todas las personas migrantes, así como su acceso a los servicios públicos básicos.",
+          "Trabajaremos por el establecimiento de corredores y vías seguras para todas las personas migrantes, comenzando por la reapertura de los pasos entre Irun y Hendaia, así como medidas que garanticen el asilo y la asistencia para todas ellas.",
+          "Exigiremos el fin de las devoluciones en caliente ya sean por vía terrestre o marítima. Son contrarias a la legislación internacional y vulneran los derechos básicos de las personas migrantes.",
+          "Propondremos una Ley Integral contra el Racismo y todas las formas de discriminación."
+        ],
+        "subject_name": "Defensa y Seguridad",
+        "explanation": "La capacidad de una nación para protegerse de amenazas externas e internas es crucial para su supervivencia y desarrollo. Ejemplos históricos, como la caída de Cartago, subrayan las consecuencias de una defensa inadecuada. Maquiavelo argumentó que la seguridad es un prerrequisito para la prosperidad, ya que la inestabilidad disuade la inversión y el crecimiento. Las sociedades modernas requieren tanto fuerza militar como ciberseguridad para salvaguardar la soberanía y los sistemas económicos."
+      },
+      {
+        "promise_list": [
+          "Ampliar y asegurar la adjudicación de plazas MIR para poder ocupar todas las plazas necesarias y reforzar especialmente la Atención Primaria.",
+          "Derogar la Ley 15/1997 de Gestión del Sistema de Salud aprobada por el PP, que permite la privatización y externalización de los servicios sanitarios.",
+          "Multiplicar el presupuesto dedicado a la Salud Mental y aumentar las plazas PIR, asegurando el acceso a los servicios psicológicos públicos y gratuitos para las personas solicitantes, con especial atención a las personas jóvenes.",
+          "Incluir servicios oftalmológicos y dentales básicos en la cartera de servicios públicos sanitarios.",
+          "Aprobar la gratuidad de productos de higiene menstrual para personas vulnerables mediante su distribución farmacéutica y aplicar el IVA superreducido a estos productos en todos los puntos de venta."
+        ],
+        "subject_name": "Salud",
+        "explanation": "Una población sana es esencial para la productividad y la resiliencia. Pandemias históricas, como la Peste Negra, devastaron sociedades al paralizar la fuerza laboral y las economías. Filósofos como Jeremy Bentham, utilitarista, vincularon el bienestar social con la salud individual, enfatizando el beneficio colectivo. El acceso a la salud mejora la esperanza de vida y la eficiencia de la fuerza laboral, mientras que su negligencia puede exacerbar la desigualdad y desencadenar crisis."
+      },
+      {
+        "promise_list": [
+          "Establecer por ley la gratuidad y los descuentos al transporte público actualmente en vigor de forma permanente y con financiación suficiente.",
+          "Aumentar la inversión en los trenes de la red estatal que operan en nuestros territorios, dependientes de Renfe y Feve, para mejorar y modernizar la red –infraestructura, trenes y accesibilidad– y ampliar horarios.",
+          "Negociar y hacer efectiva la transferencia completa de los trenes de Cercanías para las instituciones vascas.",
+          "Transferencia de la gestión de puertos y aeropuertos.",
+          "Adoptar nuevas medidas frente a las situaciones de sequía, que se agravarán los próximos años, impulsando una nueva política de regulación, control y ahorro."
+        ],
+        "subject_name": "Infraestructura",
+        "explanation": "La infraestructura física y digital soporta la actividad económica, la conectividad y la calidad de vida. Las carreteras y acueductos de Roma permitieron su dominio, mientras que las naciones modernas dependen de redes de transporte, redes energéticas y acceso a internet. Pensadores como John Stuart Mill conectaron el progreso social con las condiciones materiales. Una infraestructura deficiente obstaculiza el comercio, la comunicación y la innovación, arriesgando el declive económico."
+      },
+      {
+        "promise_list": [
+          "Trabajaremos para lograr la recuperación de las medidas laborales más importantes para los y las trabajadoras que quedaron excluidas de la última Reforma Laboral.",
+          "Exigiremos el aumento del SMI hasta los 1.200€, asumiendo además la capacidad para establecer un SMI propio acorde a nuestra realidad socio-económica y guiado por las directrices recogidas en la Carta Social Europea, que lo fijan en el 60% del salario medio. Eso nos permitirá complementar el SMI en función de nuestra evolución y entorno salarial, y siempre por encima de lo estipulado a nivel estatal.",
+          "Reformular los condicionantes de la calificación de “persona vulnerable” ampliando los límites de renta en un 15%, permitiendo así que las medidas de protección social amparadas en esta definición amplíen su alcance acorde a la nueva situación de vulnerabilidad social.",
+          "Ampliar el alcance del IMV elevando los máximos de renta para hacerlo accesible a más personas y aumentando las cuantías en un mínimo del 12%, así como simplificar trámites, facilitar canales para agilizar y acortar las tramitaciones y concesiones y asegurar la posibilidad de solicitud y trámite presencial.",
+          "Defenderemos todos los avances feministas conseguidos y trabajaremos para conquistar nuevos derechos."
+        ],
+        "subject_name": "Cohesión Social",
+        "explanation": "Una sociedad unida resiste mejor los desafíos que una fragmentada. Divisiones históricas, como las de la Revolución Francesa, muestran cómo el malestar social puede descarrilar el progreso. Aristóteles veía a la comunidad como la base del estado, mientras que Durkheim enfatizó la solidaridad en las sociedades modernas. La cohesión reduce los conflictos y fomenta la cooperación, mientras que la división puede llevar a la inestabilidad y crisis."
+      }
+    ],
+    "party_name": "EH Bildu",
+    "party_logo": "/parties/GEH Bildu.svg",
+    "campaign_promises_pdf_link": "https://www.rtve.es/contenidos/documentos/elecciones_generales_2023/programa_electoral_bildu.pdf"
+  }
+]

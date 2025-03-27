@@ -3,6 +3,9 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { verifyJWT } from "@/lib/helpers/users/jwt";
 import { findUserByName } from "@/lib/database/users/users";
+import { Logger } from "tslog";
+
+const log = new Logger();
 
 export async function GET() {
   try {
@@ -22,12 +25,9 @@ export async function GET() {
 
     currentUser.is_admin = user.is_admin;
 
-    return NextResponse.json(
-      { currentUser: currentUser || null },
-      { status: 200 }
-    );
+    return NextResponse.json({ currentUser: currentUser || null }, { status: 200 });
   } catch (error) {
-    console.error("Error getting current user:", error);
+    log.error("Error getting current user:", error);
     return NextResponse.json({ currentUser: null }, { status: 200 });
   }
 }

@@ -4,10 +4,7 @@ import { Logger } from "tslog";
 const log = new Logger();
 
 export const mergeVotesByParty = (votes: Votacion[]) => {
-  const mergedVotes = new Map<
-    string,
-    { against: number; for: number; abstain: number; noVote: number }
-  >();
+  const mergedVotes = new Map<string, { against: number; for: number; abstain: number; noVote: number }>();
 
   for (const vote of votes) {
     const { grupo: party, voto: votation } = vote;
@@ -53,7 +50,7 @@ export const mergeVotesByParty = (votes: Votacion[]) => {
         });
         break;
       default:
-        console.warn(`Unknown vote type: ${votation}`);
+        log.warn(`Unknown vote type: ${votation}`);
     }
   }
 

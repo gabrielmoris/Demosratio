@@ -12,6 +12,9 @@ import { LiKesAndDislikes } from "@/src/types/likesAndDislikes";
 import { useAuth } from "@/src/context/authContext";
 import { useUiContext } from "@/src/context/uiContext";
 import { formatDate } from "@/lib/helpers/dateFormatters";
+import { Logger } from "tslog";
+
+const log = new Logger();
 
 export default function VotePage() {
   const t = useTranslations("votepage");
@@ -93,7 +96,7 @@ export default function VotePage() {
 
         if (user.currentUser) await userLikeRequest();
       } catch (error) {
-        console.error("Error fetching data:", error);
+        log.error("Error fetching data:", error);
       } finally {
         setIsFetching(false);
       }
@@ -126,7 +129,7 @@ export default function VotePage() {
         await onDisLikeProposal();
       }
     } catch (error) {
-      console.error("Error handling likes:", error);
+      log.error("Error handling likes:", error);
     } finally {
       setIsFetching(false);
     }

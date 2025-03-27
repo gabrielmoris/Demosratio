@@ -5,10 +5,9 @@ import { Password } from "@/lib/helpers/users/password";
 import { createJWT } from "@/lib/helpers/users/jwt";
 import { calculateSimilarity, findFingerprintsForUser, findSimilarFingerprint, saveFingerprint } from "@/lib/database/users/fingerprint";
 import { Logger } from "tslog";
+import { SIMILARITY_THRESHOLD } from "@/constants";
 
 const log = new Logger();
-
-const SIMILARITY_THRESHOLD = 0.8;
 
 export async function POST(req: NextRequest) {
   try {
@@ -35,7 +34,7 @@ export async function POST(req: NextRequest) {
     let matchFound = false;
 
     for (const storedFingerprint of fingerprintsFromUser) {
-      const similarity = calculateSimilarity(fingerprint, storedFingerprint.device_hash);
+      const similarity = await calculateSimilarity(fingerprint, storedFingerprint.device_hash);
       if (similarity >= SIMILARITY_THRESHOLD) {
         matchFound = true;
         break;

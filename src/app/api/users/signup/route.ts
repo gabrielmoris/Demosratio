@@ -4,8 +4,7 @@ import { deleteUser, findUserByName, saveUser } from "@/lib/database/users/users
 import { Password } from "@/lib/helpers/users/password";
 import { createJWT } from "@/lib/helpers/users/jwt";
 import { findSimilarFingerprint, saveFingerprint } from "@/lib/database/users/fingerprint";
-
-const SIMILARITY_THRESHOLD = 0.8;
+import { SIMILARITY_THRESHOLD } from "@/constants";
 
 export async function POST(req: NextRequest) {
   try {

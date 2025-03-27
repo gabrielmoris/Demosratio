@@ -18,9 +18,9 @@ const AdminProtectedRoute = ({ children }: { children: React.ReactNode }) => {
       showToast({
         message: t("not-authorized"),
         variant: "warning",
-        duration: 3000,
+        duration: 5000,
       });
-      setTimeout(() => router.push("/"), 3000);
+      setTimeout(() => router.push("/"), 5000);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -1,31 +1,21 @@
 import { useEffect, useState } from "react";
 import { useUiContext } from "@/src/context/uiContext";
 import { Logger } from "tslog";
-
-interface webGLParams {
-  p1: string;
-  p2: string;
-  p3: string;
-  p4: string;
-  p5: string;
-  p6: string;
-  p7: string;
-  p8: string;
-  p9: string;
-  p10: string;
-  p11: string;
-  p12: string;
-  p13: string;
-  p14: string;
-  p15: string;
-  p16: string;
-  p17: string;
-  p18: string;
-}
+import { WebGLParams } from "@/types/fingerprint";
+import { STORAGE_KEY } from "@/constants";
+import { encodeFingerprint } from "@/lib/helpers/users/fingerprintEncoding";
+import { useTranslations } from "next-intl";
 
 const log = new Logger();
 
-const STORAGE_KEY = "device_fp";
+async function hash(data: string): Promise<string> {
+  const encoder = new TextEncoder();
+  const buffer = encoder.encode(data);
+  const hashBuffer = await crypto.subtle.digest("SHA-256", buffer);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  const hashHex = hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
+  return hashHex;
+}
 
 async function generateCanvasFingerprint(): Promise<string | undefined> {
   const canvas = document.createElement("canvas");
@@ -54,7 +44,7 @@ async function generateCanvasFingerprint(): Promise<string | undefined> {
   return canvas.toDataURL();
 }
 
-async function generateWebglFingerprint(): Promise<webGLParams | string> {
+async function generateWebglFingerprint(): Promise<WebGLParams | string> {
   try {
     const canvas = document.createElement("canvas");
     const gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
@@ -63,15 +53,6 @@ async function generateWebglFingerprint(): Promise<webGLParams | string> {
     const debugInfo = (gl as WebGLRenderingContext)?.getExtension("WEBGL_debug_renderer_info");
     const vendor = debugInfo ? (gl as WebGLRenderingContext)?.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL) : "unknown_vendor";
     const renderer = debugInfo ? (gl as WebGLRenderingContext)?.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) : "unknown_renderer";
-
-    async function hash(data: string): Promise<string> {
-      const encoder = new TextEncoder();
-      const buffer = encoder.encode(data);
-      const hashBuffer = await crypto.subtle.digest("SHA-256", buffer);
-      const hashArray = Array.from(new Uint8Array(hashBuffer));
-      const hashHex = hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
-      return hashHex;
-    }
 
     const webGLParams = {
       p1: await hash(vendor),
@@ -96,20 +77,12 @@ async function generateWebglFingerprint(): Promise<webGLParams | string> {
 
     return webGLParams;
   } catch (e) {
-    console.error("Error getting WebGL info:", e);
+    log.error("Error getting WebGL info:", e);
     return "webgl_error";
   }
 }
 
 async function generateAdditionalFingerprint(): Promise<string> {
-  async function hash(data: string): Promise<string> {
-    const encoder = new TextEncoder();
-    const buffer = encoder.encode(data);
-    const hashBuffer = await crypto.subtle.digest("SHA-256", buffer);
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    const hashHex = hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
-    return hashHex;
-  }
   const h1 = await hash(String(navigator.hardwareConcurrency || "unknown"));
   const h2 = await hash(String(`${screen.width}x${screen.height}`));
   const h3 = await hash(String(screen.colorDepth || "unknown"));
@@ -127,6 +100,7 @@ export const useFingerprint = () => {
   const [fingerprint, setFingerprint] = useState<string | null>(null);
 
   const { showToast } = useUiContext();
+  const t = useTranslations("fingerprint")
 
   useEffect(() => {
     const generateFingerprint = async () => {
@@ -154,19 +128,22 @@ export const useFingerprint = () => {
 
         const canvasHash = await hash(canvasDataURL);
 
-        const combined = {
+        const fingerprintData = {
           c: canvasHash,
           wg: webgl,
           h: hardwareInfo,
         };
-        const fingerprintString = JSON.stringify(combined);
 
-        localStorage.setItem(STORAGE_KEY, fingerprintString);
-        setFingerprint(fingerprintString);
+        const encodedFP = await encodeFingerprint(fingerprintData);
+
+
+        localStorage.setItem(STORAGE_KEY, encodedFP);
+
+        setFingerprint(encodedFP);
       } catch (e) {
         log.error(e);
         showToast({
-          message: "Error.",
+          message: t("error"),
           variant: "error",
           duration: 3000,
         });

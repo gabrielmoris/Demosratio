@@ -2,9 +2,9 @@ import { NextResponse } from "next/server";
 import { Logger } from "tslog";
 
 import { getDateString, getFormattedDateForDB } from "@/lib/helpers/dateFormatters";
-import { mergeVotesByParty } from "@/lib/functions/spanishParliamentExtractor/votesPerParty";
+import { mergeVotesByParty } from "@/lib/helpers/spanishParliamentExtractor/votesPerParty";
 import { VotingData } from "@/types/proposal.types";
-import { extractParliamentJson } from "@/lib/functions/spanishParliamentExtractor/getParliamentData";
+import { extractParliamentJson } from "@/lib/helpers/spanishParliamentExtractor/getParliamentData";
 import { saveProposalToDb } from "@/lib/database/spanishParliament/saveProposal";
 
 const log = new Logger();

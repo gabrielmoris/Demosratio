@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { supabaseAdmin } from "@/lib/supabaseClient";
-import { fetchAllLikesAndDislikes } from "@/lib/database/likes/getTotalLikesAndDislikes";
+import { Logger } from "tslog";
+import { getAllProposalsByExpedient } from "@/lib/database/spanishParliament/getAllProposalsByExpedient";
+
+const log = new Logger();
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
@@ -23,39 +25,12 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    // Calculate pagination values
-    const from = (page - 1) * pageSize;
-    const to = from + pageSize - 1;
+    const { count, proposals } = await getAllProposalsByExpedient(
+      expedient_text,
+      page,
+      pageSize
+    );
 
-    // Query Supabase for proposals matching the expedient text
-    const {
-      data: proposals,
-      error,
-      count,
-    } = await supabaseAdmin
-      .from("proposals")
-      .select("*", { count: "exact" })
-      .ilike("expedient_text", `%${expedient_text}%`)
-      .order("date", { ascending: false })
-      .order("id", { ascending: false })
-      .range(from, to);
-
-    if (error) {
-      console.error("Supabase error:", error);
-      return NextResponse.json(
-        { error: "Error searching proposals" },
-        { status: 500 }
-      );
-    }
-
-    for (const proposal of proposals) {
-      const proposalLikesAndDislikes = await fetchAllLikesAndDislikes(
-        proposal.id
-      );
-      proposal.likesAndDislikes = proposalLikesAndDislikes.result;
-    }
-
-    // Return proposals with pagination metadata
     return NextResponse.json(
       {
         proposals,
@@ -69,7 +44,7 @@ export async function GET(request: NextRequest) {
       { status: 200 }
     );
   } catch (error) {
-    console.error("Error searching proposals:", error);
+    log.error("Error searching proposals:", error);
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }

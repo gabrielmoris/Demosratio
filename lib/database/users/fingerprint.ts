@@ -1,3 +1,4 @@
+import { decodeFingerprint } from "@/lib/helpers/users/fingerprintEncoding";
 import { supabaseAdmin } from "@/lib/supabaseClient";
 import { Logger } from "tslog";
 
@@ -55,64 +56,54 @@ export async function saveFingerprint(data: { userId: string; hash: string }) {
   }
 }
 
-export function calculateSimilarity(fp1: string, fp2: string): number {
+export async function calculateSimilarity(fp1: string, fp2: string): Promise<number> {
   try {
-    const obj1 = JSON.parse(fp1);
-    const obj2 = JSON.parse(fp2);
+    const { fingerprintData: obj1 } = await decodeFingerprint(fp1);
+    const { fingerprintData: obj2 } = await decodeFingerprint(fp2);
 
     let similarity = 0;
 
-    // WebGL parameters (hardware-dependent and stable)
+    // WebGL Parameters (Total weight: 0.65)
     try {
       const webgl1 = obj1.wg;
       const webgl2 = obj2.wg;
 
-      // Vendor and Renderer (highly specific to GPU)
-      similarity += webgl1.p1 === webgl2.p1 ? 0.2 : 0; // vendor
-      similarity += webgl1.p2 === webgl2.p2 ? 0.2 : 0; // renderer
+      // Core GPU Identification (0.5)
+      similarity += webgl1.p1 === webgl2.p1 ? 0.25 : 0; // VENDOR (most unique)
+      similarity += webgl1.p2 === webgl2.p2 ? 0.25 : 0; // RENDERER
 
-      // Max Texture Sizes (indicative of GPU capabilities)
+      // GPU Capabilities (0.15)
       similarity += webgl1.p12 === webgl2.p12 ? 0.1 : 0; // maxTextureSize
       similarity += webgl1.p8 === webgl2.p8 ? 0.05 : 0; // maxCubeMapTextureSize
 
-      // Other WebGL parameters (less weight but still hardware-dependent)
-      similarity += webgl1.p9 === webgl2.p9 ? 0.05 : 0; // maxFragmentUniformVectors
-      similarity += webgl1.p16 === webgl2.p16 ? 0.05 : 0; // maxVertexUniformVectors
-      similarity += webgl1.p3 === webgl2.p3 ? 0.025 : 0;
-      similarity += webgl1.p4 === webgl2.p4 ? 0.025 : 0;
-      similarity += webgl1.p5 === webgl2.p5 ? 0.025 : 0;
-      similarity += webgl1.p6 === webgl2.p6 ? 0.025 : 0;
-      similarity += webgl1.p7 === webgl2.p7 ? 0.025 : 0;
-      similarity += webgl1.p10 === webgl2.p10 ? 0.025 : 0;
-      similarity += webgl1.p11 === webgl2.p11 ? 0.025 : 0;
-      similarity += webgl1.p13 === webgl2.p13 ? 0.025 : 0;
-      similarity += webgl1.p14 === webgl2.p14 ? 0.025 : 0;
-      similarity += webgl1.p15 === webgl2.p15 ? 0.025 : 0;
-      similarity += webgl1.p17 === webgl2.p17 ? 0.025 : 0;
-      similarity += webgl1.p18 === webgl2.p18 ? 0.025 : 0;
+      // Secondary WebGL Parameters (0.05)
+      const webglParams = ["p3", "p4", "p5", "p6", "p7", "p9", "p10", "p11", "p13", "p14", "p15", "p16", "p17", "p18"];
+      webglParams.forEach((p) => {
+        similarity += webgl1[p] === webgl2[p] ? 0.0035 : 0;
+      });
     } catch (error) {
-      console.error("Error comparing WebGL parameters:", error);
+      log.error("Error comparing WebGL parameters:", error);
     }
 
-    // Hardware information (highly stable across sessions)
+    // Hardware Characteristics (Total weight: 0.3)
     try {
       const hardware1 = JSON.parse(obj1.h);
       const hardware2 = JSON.parse(obj2.h);
 
-      similarity += hardware1.h1 === hardware2.h1 ? 0.1 : 0; // hardwareConcurrency
+      similarity += hardware1.h1 === hardware2.h1 ? 0.15 : 0; // hardwareConcurrency
       similarity += hardware1.h2 === hardware2.h2 ? 0.1 : 0; // screenResolution
-      similarity += hardware1.h3 === hardware2.h3 ? 0.05 : 0; // colorDepth
-      similarity += hardware1.h4 === hardware2.h4 ? 0.05 : 0; // timezone
+      similarity += hardware1.h3 === hardware2.h3 ? 0.03 : 0; // colorDepth
+      similarity += hardware1.h4 === hardware2.h4 ? 0.02 : 0; // timezone
     } catch (error) {
-      console.error("Error comparing hardware information:", error);
+      log.error("Error comparing hardware information:", error);
     }
 
-    // Canvas fingerprint (less stable but still useful)
-    similarity += obj1.c === obj2.c ? 0.05 : 0; // canvasHash
+    // Canvas Fingerprint (Weight: 0.05)
+    similarity += obj1.c === obj2.c ? 0.05 : 0;
 
-    return similarity;
+    return Math.min(similarity, 1);
   } catch (error) {
-    console.error("Error parsing fingerprint strings:", error);
+    log.error("Error parsing fingerprint strings:", error);
     return 0;
   }
 }
@@ -142,7 +133,7 @@ export async function findSimilarFingerprint(fingerprint: string, threshold: num
     }
 
     for (const storedFingerprint of data) {
-      const similarity = calculateSimilarity(fingerprint, storedFingerprint.device_hash);
+      const similarity = await calculateSimilarity(fingerprint, storedFingerprint.device_hash);
       if (similarity >= threshold) {
         return storedFingerprint;
       }
