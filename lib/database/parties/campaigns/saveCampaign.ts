@@ -1,5 +1,6 @@
 import { Logger } from "tslog";
 import { supabaseAdmin } from "@/lib/supabaseClient";
+import { fetchPartyByName } from "../getPartybyName";
 
 const log = new Logger();
 
@@ -8,17 +9,7 @@ export const saveCampaign = async (
   party_name: string,
   campaign_pdf_url: string
 ) => {
-  const { data: party_id, error: partyError } = await supabaseAdmin
-    .from("parties")
-    .select("*")
-    .eq("name", party_name)
-    .select("id")
-    .single();
-
-  if (partyError) {
-    log.error(`Error gettting party ID: `, partyError);
-    throw partyError;
-  }
+  const { party } = await fetchPartyByName(party_name);
 
   const { data: result, error: insertError } = await supabaseAdmin
     .from("campaigns")
@@ -26,7 +17,7 @@ export const saveCampaign = async (
       {
         year,
         campaign_pdf_url,
-        party_id: party_id.id,
+        party_id: party.id,
       },
     ])
     .select("id")

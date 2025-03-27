@@ -29,5 +29,34 @@
   },
   "fingerprint": {
     "error": "Error generating the fingerprint."
+  },
+  "manifest": {
+    "title": "Demonstration manifesto",
+    "intro": "Demratio is an online tool designed to verify the fulfillment of promises and political decisions, promoting transparency and citizen participation.",
+    "problemTitle": "What problem solves?",
+    "problemDescription": "Demratio seeks to resolve the lack of transparency in politics, allowing citizens to inform themselves clearly and objectively about the promises of politicians and the decisions they make. \nThe platform avoids the political filters of the current press, providing direct access to information and facilitating citizen participation.",
+    "problemExample": "According to a 2023 study of the Ipsos Global Trustworthiness Index, Spain is one of the countries of the world that least trusts its politicians and policies, and the fourth in Europe behind Poland (75%), Romania (74%) and Hungary (73%).",
+    "howItWorksTitle": "How does it work?",
+    "howItWorksDescription": "Demonstration collects and organizes information about the electoral promises of politicians and the decisions they make in the government. \nUsers can access this information in a simple way, verify official sources and participate in voting drills.",
+    "featuresTitle": "Functionalities",
+    "feature1": "Clear and accessible information: Database with promises and decisions, linked to official sources.",
+    "feature2": "Easy monitoring: state of promises (fulfilled, not fulfilled, in progress) and results of the decisions (approved, rejected, in progress).",
+    "feature3": "Citizen Participation: Contribution of verifiable information, complaints of manipulation and voting drills.",
+    "feature4": "Data visualization: graphics and interactive tables to analyze the information.",
+    "feature5": "Web sections: main page, votes in Congress, electoral promises, data visualization, voting drills, information contribution, manipulation, manifest and contact complaints.",
+    "personalStatementTitle": "Manifest",
+    "personalStatement1": "Many citizens feel that politicians serve their own interests and manipulate data to maintain their positions.",
+    "quote1": "'Power tends to corrupt, and absolute power corrupts absolutely.' \n--Lord Acton",
+    "personalStatement2": "It is common to observe that unpopular decisions tend to be avoided, especially if they do not generate direct benefits for those who take them. \nThis may be due to the fear of losing support. \nThis dynamic can lead to problems being postponed instead of solving effectively.",
+    "personalStatement4": "There is a growing disconnection between elected representatives and the needs of citizenship. \nCurrent representative democracy faces challenges due to the prevalence of communication strategies that prioritize persuasion over the effective problem resolution. \nPolitical speeches often appeal to emotions to influence the electorate, and fear is used as a more effective persuasive tool than reason",
+    "quote2": "'Political language is designed for lies to seem truths, murder a respectable action and to give the wind appearance of solidity.' \n-George Orwell",
+    "personalStatement5": "There is a growing trend in society to perceive politics as a mere zero -sum game, where the victory of a side is considered a defeat of the other. \nThis mentality of 'we against them' hinders the search for consensual solutions and leads us to a stagnation. \nExtreme polarization, fed by misinformation and propaganda, erodes confidence in institutions and undermines social cohesion.",
+    "personalStatement6": "It is the responsibility of the population having political education, understanding that politics is not a game and that the parties have a responsibility with people.",
+    "quote3": "'The people are the only one with whom we can count to preserve our freedom.' \n`` Thomas Jefferson",
+    "personalStatement7": "It is essential that there is an accountability mechanism to evaluate government performance. \nWhen management does not comply with efficiency, transparency or capacity standards, it is necessary that there are consequences. \nIt is also important to promote a culture of critical analysis of political proposals, understanding that ideologies are tools that can be useful in different historical contexts. \nThe effectiveness of a policy should not depend on adherence to a particular ideology, but on its ability to solve the specific problems facing society. \nSometimes the right can solve problems that the left cannot, and vice versa.",
+    "quote4": "'Being the left is, as being from the right, one of the infinite ways that man can choose to be a moron: both, in effect, are forms of moral hemiplegia.' \n-JOSÉ ORTEGA Y GASSET",
+    "goalTitle": "Goal",
+    "goalDescription": "The objective of demonstration is to strengthen representative democracy through the provision of objective and transparent information about political activity. \nWe seek to promote informed and participatory citizenship, capable of demanding accountability from their representatives and making decisions based on verifiable data. \nWe aspire to restore confidence in democratic institutions and promote a public debate based on reality.",
+    "personalStatement3": "In the political sphere, it is common for proposals, even those that coincide with opposition campaign promises, are simply rejected to come from another party. \nThis dynamic hinders the search for joint solutions and can generate polarization, as seen in situations of economic crisis, where the necessary measures are hindered by partisan interests."
   }
 }
