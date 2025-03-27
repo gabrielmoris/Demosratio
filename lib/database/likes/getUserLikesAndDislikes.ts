@@ -1,7 +1,7 @@
 import { Logger } from "tslog";
-
-import { supabaseAdmin } from "@/lib/supabaseClient";
 import { LiKesAndDislikes } from "@/src/types/likesAndDislikes";
+import { getUserDislikes } from "./user/getUserDislikes";
+import { getUserLikes } from "./user/getUserLikes";
 
 const log = new Logger();
 
@@ -11,26 +11,10 @@ export async function fetchUserLikesAndDislikes(
 ) {
   try {
     // Count likes
-    const { count: likesCount, error: likesError } = await supabaseAdmin
-      .from("proposal_likes")
-      .select("*", { count: "exact" })
-      .eq("proposal_id", proposal_id)
-      .eq("user_id", userId);
-
-    if (likesError) {
-      throw new Error("Error fetching likes");
-    }
+    const likesCount = await getUserLikes(proposal_id, Number(userId));
 
     // Count dislikes
-    const { count: dislikesCount, error: dislikesError } = await supabaseAdmin
-      .from("proposal_dislikes")
-      .select("*", { count: "exact" })
-      .eq("proposal_id", proposal_id)
-      .eq("user_id", userId);
-
-    if (dislikesError) {
-      throw new Error("Error fetching dislikes");
-    }
+    const dislikesCount = await getUserDislikes(proposal_id, Number(userId));
 
     const result: LiKesAndDislikes = {
       likes: likesCount || 0, // Handle potential null count

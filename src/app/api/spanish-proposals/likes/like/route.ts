@@ -1,6 +1,10 @@
 import { fetchAllLikesAndDislikes } from "@/lib/database/likes/getTotalLikesAndDislikes";
+import { addUserLike } from "@/lib/database/likes/user/addUserLike";
+import { deleteUserDislike } from "@/lib/database/likes/user/deleteUserDislike";
+import { deleteUserLike } from "@/lib/database/likes/user/deleteUserLike";
+import { getUserDislikes } from "@/lib/database/likes/user/getUserDislikes";
+import { getUserLikes } from "@/lib/database/likes/user/getUserLikes";
 import { verifyJWT } from "@/lib/helpers/users/jwt";
-import { supabaseAdmin } from "@/lib/supabaseClient";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { Logger } from "tslog";
@@ -10,10 +14,13 @@ const log = new Logger();
 export async function POST(request: Request) {
   const { proposal_id } = await request.json();
   const session = (await cookies()).get("session")?.value;
-  if (!session) return NextResponse.json({ error: "Invalid User" }, { status: 400 });
+  if (!session)
+    return NextResponse.json({ error: "Invalid User" }, { status: 400 });
   const userPayload = verifyJWT(session);
-  if (!userPayload) return NextResponse.json({ error: "Invalid token" }, { status: 400 });
+  if (!userPayload)
+    return NextResponse.json({ error: "Invalid token" }, { status: 400 });
   const { id: userId } = userPayload;
+  const user_id = Number(userId);
 
   if (!proposal_id) {
     return NextResponse.json({ error: "Invalid body" }, { status: 400 });
@@ -21,74 +28,38 @@ export async function POST(request: Request) {
 
   try {
     // Count likes and delete them if it was already liked
-    const { count: likesCount, error: likesError } = await supabaseAdmin
-      .from("proposal_likes")
-      .select("*", { count: "exact" })
-      .eq("proposal_id", proposal_id)
-      .eq("user_id", userId);
-
-    if (likesError) {
-      log.error("Supabase error fetching likes:", likesError);
-      return NextResponse.json({ error: "Error fetching likes" }, { status: 500 });
-    }
+    const likesCount = await getUserLikes(proposal_id, user_id);
 
     if (likesCount && likesCount > 0) {
-      const { error: likedDeleteError } = await supabaseAdmin.from("proposal_likes").delete().eq("user_id", userId).select("id").single();
-
-      if (likedDeleteError) {
-        log.error("Supabase error deleting likes:", likesError);
-        return NextResponse.json({ error: "Error deleting likes" }, { status: 500 });
-      }
+      await deleteUserLike(proposal_id, user_id);
     } else {
-      const { error: likedAddedError } = await supabaseAdmin
-        .from("proposal_likes")
-        .insert([
-          {
-            user_id: userId,
-            proposal_id,
-          },
-        ])
-        .select("id")
-        .single();
-
-      if (likedAddedError) {
-        log.error("Supabase error adding likes:", likedAddedError);
-        return NextResponse.json({ error: "Error adding likes" }, { status: 500 });
-      }
+      await addUserLike(proposal_id, user_id);
     }
 
     // Count dislikes and delete them if it was already disliked
 
-    const { count: dislikesCount, error: dislikesError } = await supabaseAdmin
-      .from("proposal_dislikes")
-      .select("*", { count: "exact" })
-      .eq("proposal_id", proposal_id)
-      .eq("user_id", userId);
-
-    if (dislikesError) {
-      log.error("Supabase error fetching dislikes:", dislikesError);
-      return NextResponse.json({ error: "Error fetching dislikes" }, { status: 500 });
-    }
+    const dislikesCount = await getUserDislikes(proposal_id, user_id);
 
     if (dislikesCount && dislikesCount > 0) {
-      const { error: dislikedDeleteError } = await supabaseAdmin.from("proposal_dislikes").delete().eq("user_id", userId).select("id").single();
-
-      if (dislikedDeleteError) {
-        log.error("Supabase error deleting dislikes:", dislikesError);
-        return NextResponse.json({ error: "Error deleting likes" }, { status: 500 });
-      }
+      await deleteUserDislike(proposal_id, user_id);
     }
 
     const { result, error } = await fetchAllLikesAndDislikes(proposal_id);
 
     if (error) {
       log.error("Supabase error fetching likes and dislikes:", error);
-      return NextResponse.json({ error: "Error fetching dislikes" }, { status: 500 });
+      return NextResponse.json(
+        { error: "Error fetching dislikes" },
+        { status: 500 }
+      );
     }
 
     return NextResponse.json(result);
   } catch (error) {
-    log.error("Error fetching likes and dislikes:", error);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    log.error("Error: ", error);
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
   }
 }
