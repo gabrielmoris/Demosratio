@@ -99,5 +99,10 @@
   },
   "fingerprint": {
     "error": "Error al generar la huella digital."
+  },
+  "dropdown": {
+    "input-label-name": "Nombre del partido",
+    "input-label-logo_url": "Logo del partido",
+    "save-party-btn": "Guardar Partido"
   }
 }

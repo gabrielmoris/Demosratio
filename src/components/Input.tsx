@@ -4,14 +4,12 @@ interface ImputProps {
   inputString?: string;
   inputLabel: string;
   placeholder: string;
-  setInput: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    inputKey?: string
-  ) => void;
+  setInput: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, inputKey?: string) => void;
   required?: boolean;
   password?: boolean;
   type?: "password" | "email" | "text" | "checkbox";
   className?: string;
+  placeholderClass?: string;
 }
 
 export default function Input({
@@ -24,6 +22,7 @@ export default function Input({
   required,
   password,
   type,
+  placeholderClass,
   className,
 }: ImputProps) {
   return (
@@ -36,7 +35,7 @@ export default function Input({
         value={inputObj && inputKey ? inputObj[inputKey] : inputString}
         autoComplete={password ? "use-password" : inputKey}
         placeholder={placeholder}
-        className={`px-2.5 pb-2.5 pt-4 w-full text-lg text-drgray rounded-md border border-drPurple focus:outline-none focus:ring-0 focus:border-bg-drgray  peer`}
+        className={`${placeholderClass} px-2.5 pb-2.5 pt-4 w-full text-lg text-drgray rounded-md border border-drPurple focus:outline-none focus:ring-0 focus:border-bg-drgray  peer`}
         onChange={(e) => setInput(e, inputKey ? inputKey : inputString || "")}
       />
       <label

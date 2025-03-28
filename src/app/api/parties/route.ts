@@ -10,7 +10,7 @@ export async function GET() {
   try {
     const { parties } = await fetchAllParties();
 
-    return NextResponse.json({ parties });
+    return NextResponse.json(parties);
   } catch (error) {
     log.error("Error encoding data:", error);
     return NextResponse.json(
