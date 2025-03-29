@@ -13,11 +13,11 @@ export async function GET(request: NextRequest) {
     const party_id = Number(searchParams.get("party_id"));
 
     if (party_id && !isNaN(party_id)) {
-      const { campaign } = await fetchCampaign(party_id);
-      return NextResponse.json({ campaign });
+      const { campaignsOfParty } = await fetchCampaign(party_id);
+      return NextResponse.json(campaignsOfParty);
     } else {
       const { campaigns } = await fetchAllCampaigns();
-      return NextResponse.json({ campaigns });
+      return NextResponse.json(campaigns);
     }
   } catch (error) {
     log.error("Error encoding data:", error);
@@ -33,14 +33,14 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  const { year, party_name, campaign_pdf_url } = await req.json();
+  const { year, party_id, campaign_pdf_url } = await req.json();
 
-  if (!year || !party_name || !campaign_pdf_url) {
+  if (!year || !party_id || !campaign_pdf_url) {
     return NextResponse.json({ error: "Bad Request" }, { status: 400 });
   }
 
   try {
-    const { id } = await saveCampaign(year, party_name, campaign_pdf_url);
+    const { id } = await saveCampaign(year, party_id, campaign_pdf_url);
     return NextResponse.json({ id }, { status: 201 });
   } catch (error) {
     log.error("Error encoding data:", error);

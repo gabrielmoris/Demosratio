@@ -22,7 +22,7 @@
     "yes": "Accept"
   },
   "admin": {
-    "add-party": "Add political party",
+    "manage-parties": "Manage Parties",
     "syncronize-parmialent": "Synchronize with Parliament",
     "add-promises": "Add electoral programs",
     "change-user-rights": "User administration"
@@ -59,9 +59,14 @@
     "goalDescription": "The objective of demonstration is to strengthen representative democracy through the provision of objective and transparent information about political activity. \nWe seek to promote informed and participatory citizenship, capable of demanding accountability from their representatives and making decisions based on verifiable data. \nWe aspire to restore confidence in democratic institutions and promote a public debate based on reality.",
     "personalStatement3": "In the political sphere, it is common for proposals, even those that coincide with opposition campaign promises, are simply rejected to come from another party. \nThis dynamic hinders the search for joint solutions and can generate polarization, as seen in situations of economic crisis, where the necessary measures are hindered by partisan interests."
   },
-  "dropdown": {
+  "manage-parties": {
     "input-label-logo_url": "Party logo",
     "input-label-name": "Party name",
-    "save-party-btn": "Save Party"
+    "save-party-btn": "Save Party",
+    "input-canpaign-year": "Year of the electoral campaign",
+    "save-campaign-btn": "Save campaign",
+    "input-campaign-pdf": "Campaign PDF",
+    "save-party-label": "Save new political party",
+    "save-campaign-label": "Add electoral campaign"
   }
 }

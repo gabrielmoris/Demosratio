@@ -1,5 +1,5 @@
 import { Logger } from "tslog";
-import { LiKesAndDislikes } from "@/src/types/likesAndDislikes";
+import { LiKesAndDislikes } from "@/types/likesAndDislikes";
 import { getLikesCount } from "./likesCount";
 import { getDislikesCount } from "./dislikesCount";
 

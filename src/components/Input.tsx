@@ -1,13 +1,14 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 interface ImputProps {
-  inputObj?: Record<string, string>;
+  inputObj?: Record<string, any>;
   inputKey?: string;
   inputString?: string;
   inputLabel: string;
-  placeholder: string;
+  placeholder: string | number;
   setInput: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, inputKey?: string) => void;
   required?: boolean;
   password?: boolean;
-  type?: "password" | "email" | "text" | "checkbox";
+  type?: "password" | "email" | "text" | "checkbox" | "number";
   className?: string;
   placeholderClass?: string;
 }
@@ -34,7 +35,7 @@ export default function Input({
         required={required}
         value={inputObj && inputKey ? inputObj[inputKey] : inputString}
         autoComplete={password ? "use-password" : inputKey}
-        placeholder={placeholder}
+        placeholder={placeholder.toString()}
         className={`${placeholderClass} px-2.5 pb-2.5 pt-4 w-full text-lg text-drgray rounded-md border border-drPurple focus:outline-none focus:ring-0 focus:border-bg-drgray  peer`}
         onChange={(e) => setInput(e, inputKey ? inputKey : inputString || "")}
       />

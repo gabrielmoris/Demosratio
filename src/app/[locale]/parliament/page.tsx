@@ -5,7 +5,7 @@ import { useInView } from "react-intersection-observer";
 import { useRequest } from "@/hooks/use-request";
 import Loading from "@/src/components/Loading";
 import { VoteCard } from "@/src/components/VoteCard";
-import { VotingData } from "@/src/types/proposal";
+import { VotingData } from "@/types/proposal";
 import Input from "@/src/components/Input";
 import { useTranslations } from "next-intl";
 import SugestedSearch from "@/src/components/SugestedSearch";
@@ -22,17 +22,11 @@ export default function Parliament() {
   const t = useTranslations("parliament");
 
   const { doRequest } = useRequest({
-    url: `/api/spanish-proposals${search ? "/search" : ""}?page=${page}${
-      search ? "&expedient_text=" + encodeURIComponent(search) : ""
-    }`,
+    url: `/api/spanish-proposals${search ? "/search" : ""}?page=${page}${search ? "&expedient_text=" + encodeURIComponent(search) : ""}`,
     method: "get",
     onSuccess(data) {
-      setVotes((prevVotes) =>
-        page === 1 ? data.proposals : [...prevVotes, ...data.proposals]
-      );
-      setNoMoreVotes(
-        data.proposals.length === 0 || data.pagination.totalPages === page
-      );
+      setVotes((prevVotes) => (page === 1 ? data.proposals : [...prevVotes, ...data.proposals]));
+      setNoMoreVotes(data.proposals.length === 0 || data.pagination.totalPages === page);
       setIsLoading(false);
     },
   });
@@ -57,24 +51,21 @@ export default function Parliament() {
     loadVotes();
   }, [page, search]);
 
-  const onInputChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      const newValue = e.target.value;
-      setInputValue(newValue);
+  const onInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const newValue = e.target.value;
+    setInputValue(newValue);
 
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
 
-      timeoutRef.current = setTimeout(() => {
-        setSearch(newValue);
-        setPage(1);
-        setVotes([]);
-        setNoMoreVotes(false);
-      }, 500);
-    },
-    []
-  );
+    timeoutRef.current = setTimeout(() => {
+      setSearch(newValue);
+      setPage(1);
+      setVotes([]);
+      setNoMoreVotes(false);
+    }, 500);
+  }, []);
 
   const sugestedSearch = (sugestedSearch: string) => {
     const event = {
@@ -86,14 +77,7 @@ export default function Parliament() {
   return (
     <main className="flex flex-col items-center justify-items-center min-h-screen pb-20 gap-16 font-[family-name:var(--font-geist-sans)] w-full">
       <section className="flex flex-col w-full gap-8 justify-center items-center">
-        <Input
-          inputLabel={t("search-input")}
-          inputString={inputValue}
-          type="text"
-          inputKey="search"
-          placeholder=""
-          setInput={onInputChange}
-        />
+        <Input inputLabel={t("search-input")} inputString={inputValue} type="text" inputKey="search" placeholder="" setInput={onInputChange} />
         {votes.length ? (
           votes.map((vote) => <VoteCard key={vote.id} vote={vote} />)
         ) : (

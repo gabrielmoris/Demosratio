@@ -10,7 +10,7 @@ export const saveCampaign = async (year: number, party_id: number, campaign_pdf_
       {
         year,
         campaign_pdf_url,
-        party_id: party_id,
+        party_id,
       },
     ])
     .select("id")

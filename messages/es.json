@@ -92,7 +92,7 @@
     "yes": "Aceptar"
   },
   "admin": {
-    "add-party": "Añadir partido político",
+    "manage-parties": "Gestionar partidos políticos",
     "syncronize-parmialent": "Sincronizar con Parlamento",
     "add-promises": "Añadir programas electorales",
     "change-user-rights": "Administración de Usuarios"
@@ -100,9 +100,14 @@
   "fingerprint": {
     "error": "Error al generar la huella digital."
   },
-  "dropdown": {
+  "manage-parties": {
     "input-label-name": "Nombre del partido",
     "input-label-logo_url": "Logo del partido",
-    "save-party-btn": "Guardar Partido"
+    "save-party-btn": "Guardar Partido",
+    "input-canpaign-year": "Año de la Campaña electoral",
+    "input-campaign-pdf": "PDF de la Campaña",
+    "save-campaign-btn": "Guardar Campaña",
+    "save-party-label": "Guardar Nuevo Partido Político",
+    "save-campaign-label": "Añadir Campaña Electoral"
   }
 }

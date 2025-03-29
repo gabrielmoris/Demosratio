@@ -1,5 +1,6 @@
 import { AdminPanel } from "@/src/components/admin/AdminPanel";
 import AdminProtectedRoute from "@/src/components/admin/ProtectedRoute";
+
 import { useTranslations } from "next-intl";
 
 export default function Admin() {
@@ -14,7 +15,7 @@ export default function Admin() {
     },
     {
       id: 2,
-      name: t("add-party"),
+      name: t("manage-parties"),
       icon: "/add-party-icn.svg",
       link: "/admin/manage-parties",
     },
@@ -36,15 +37,7 @@ export default function Admin() {
     <main className="flex flex-col md:grid-cols-3 gap-10 w-full">
       <AdminProtectedRoute>
         {ADMIN_PANELS &&
-          ADMIN_PANELS.map((panel) => (
-            <AdminPanel
-              key={panel.id}
-              name={panel.name}
-              icon={panel.icon}
-              link={panel.link}
-              api={panel.api}
-            />
-          ))}
+          ADMIN_PANELS.map((panel) => <AdminPanel key={panel.id} name={panel.name} icon={panel.icon} link={panel.link} api={panel.api} />)}
       </AdminProtectedRoute>
     </main>
   );
