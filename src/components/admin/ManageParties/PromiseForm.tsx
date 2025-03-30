@@ -9,8 +9,7 @@ import { Subject } from "@/types/politicalParties";
 
 export function PromiseForm() {
   const [promiseToSave, setPromiseToSave] = useState("");
-  const [subjectChoice, setSubjectChoice] = useState<Subject>();
-  const { partyChoice, campaignChoice, subjects } = usePartiesContext();
+  const { partyChoice, campaignChoice, subjects, subjectChoice, setSubjectChoice } = usePartiesContext();
 
   const t = useTranslations("manage-parties");
 

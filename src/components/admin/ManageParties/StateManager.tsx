@@ -14,6 +14,8 @@ type PartiesContextType = {
   setCampaigns: React.Dispatch<React.SetStateAction<Campaign[]>>;
   campaignChoice: Campaign | undefined;
   setCampaignChoice: React.Dispatch<React.SetStateAction<Campaign | undefined>>;
+  subjectChoice: Subject | undefined;
+  setSubjectChoice: React.Dispatch<React.SetStateAction<Subject | undefined>>;
   loading: boolean;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   getPartyCampaign: () => Promise<any>;
@@ -29,6 +31,7 @@ export function PartiesProvider({ children }: { children: React.ReactNode }) {
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const [campaignChoice, setCampaignChoice] = useState<Campaign>();
   const [subjects, setSubjects] = useState<Subject[]>([]);
+  const [subjectChoice, setSubjectChoice] = useState<Subject>();
   const [loading, setLoading] = useState(true);
 
   const { doRequest: getAllParties } = useRequest({
@@ -92,6 +95,8 @@ export function PartiesProvider({ children }: { children: React.ReactNode }) {
         setParties,
         partyChoice,
         setPartyChoice,
+        subjectChoice,
+        setSubjectChoice,
         campaigns,
         setCampaigns,
         campaignChoice,

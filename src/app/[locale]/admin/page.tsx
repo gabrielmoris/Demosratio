@@ -21,12 +21,6 @@ export default function Admin() {
     },
     {
       id: 3,
-      name: t("add-promises"),
-      icon: "/add-promises-icn.svg",
-      link: "/admin/manage-promises",
-    },
-    {
-      id: 4,
       name: t("change-user-rights"),
       icon: "/usr-admin-icn.svg",
       link: "/admin/user-admin",

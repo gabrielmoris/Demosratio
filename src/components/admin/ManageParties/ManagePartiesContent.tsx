@@ -33,11 +33,14 @@ export default function ManagePartiesContent() {
           choice={campaignChoice || campaigns[0]}
         />
       )}
-      <div className="flex w-full h-full gap-5 flex-col xl:flex-row">
+
+      <div className="flex w-full h-full">
+        <PromiseForm />
+      </div>
+      <div className="flex w-full h-full gap-8 flex-col xl:flex-row">
         <PartyForm />
         <CampaignForm />
       </div>
-      <PromiseForm />
     </main>
   );
 }
