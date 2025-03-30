@@ -1,13 +1,12 @@
-import { Party } from "@/types/parties";
 import Image from "next/image";
 import { useState, useCallback } from "react";
-import { Campaign } from "@/types/politicalParties";
+import { Campaign, Party, Subject } from "@/types/politicalParties";
 
 interface ImputProps {
-  items: Party[] | Campaign[];
-  deleteItem: (id: number) => void;
-  choose: (item: Party | Campaign) => void;
-  choice: Party | Campaign;
+  items: Party[] | Campaign[] | Subject[];
+  deleteItem?: (id: number) => void;
+  choose: (item: Party | Campaign | Subject) => void;
+  choice: Party | Campaign | Subject;
   className?: string;
 }
 
@@ -15,7 +14,7 @@ export default function Dropdown({ className, items, deleteItem, choice, choose 
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const handleItemClick = useCallback(
-    (item: Party | Campaign) => {
+    (item: Party | Campaign | Subject) => {
       choose(item);
       setIsOpen(false);
     },
@@ -24,6 +23,7 @@ export default function Dropdown({ className, items, deleteItem, choice, choose 
 
   const handleDeleteClick = useCallback(
     (id: number, event: React.MouseEvent<HTMLImageElement>) => {
+      if (!deleteItem) return;
       event.stopPropagation();
       deleteItem(id);
     },
@@ -31,7 +31,7 @@ export default function Dropdown({ className, items, deleteItem, choice, choose 
   );
 
   return (
-    <div className={`w-full ${className}`}>
+    <div className={`w-full relative ${className}`}>
       <button
         id="dropdownDefaultButton"
         onClick={() => setIsOpen(!isOpen)}
@@ -39,7 +39,7 @@ export default function Dropdown({ className, items, deleteItem, choice, choose 
         className="text-drlight w-full bg-contrast hover:opacity-90 focus:ring-1 focus:outline-none focus:ring-drgray font-medium rounded-md text-sm px-5 py-2.5 text-center inline-flex items-center"
         type="button"
       >
-        {"name" in choice ? choice.name : choice.year}
+        {choice && "name" in choice ? choice?.name : choice?.year}
         <svg
           className={`w-2.5 h-2.5 ms-3 transition-transform ${isOpen ? "transform rotate-180" : ""}`}
           aria-hidden="true"
@@ -50,19 +50,26 @@ export default function Dropdown({ className, items, deleteItem, choice, choose 
           <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4" />
         </svg>
       </button>
-      <div id="dropdown" className={`z-10 ${isOpen ? "" : "hidden"} bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-full`}>
+      <div
+        id="dropdown"
+        className={`z-50 ${
+          isOpen ? "" : "hidden"
+        } bg-white divide-y divide-gray-100 rounded-lg border border-drlight shadow-sm w-full absolute top-10`}
+      >
         <ul className="py-2 text-sm text-contrast" aria-labelledby="dropdownDefaultButton">
           {Array.isArray(items) &&
             items.map((item) => {
-              if ("name" in item && "logo_url" in item) {
+              if ("name" in item) {
                 return (
                   <li
                     onClick={() => handleItemClick(item)}
                     className="flex cursor-pointer flex-row items-between w-full px-4 py-2  hover:bg-drPurple hover:bg-opacity-50 justify-between items-center"
                     key={item.id}
                   >
-                    {item.name}
-                    <Image onClick={(event) => handleDeleteClick(item.id, event)} width={20} height={20} alt="delete-icn" src="/delete-icn.svg" />
+                    {item?.name}
+                    {deleteItem && (
+                      <Image onClick={(event) => handleDeleteClick(item.id, event)} width={20} height={20} alt="delete-icn" src="/delete-icn.svg" />
+                    )}
                   </li>
                 );
               } else if ("campaign_pdf_url" in item && "year" in item) {

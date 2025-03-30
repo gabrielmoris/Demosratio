@@ -1,5 +1,4 @@
 import Input from "@/src/components/Input";
-// import { usePartiesContext } from "../Shared/StateManager";
 import { FormWrapper } from "@/src/components/FormWrapper";
 import { useTranslations } from "next-intl";
 import Button from "@/src/components/Button";
@@ -7,7 +6,6 @@ import { ChangeEvent, FormEvent, useCallback, useState } from "react";
 
 export function PartyForm() {
   const [partyToSave, setPartyToSave] = useState({ name: "", logo_url: "" });
-  //   const { partyChoice } = usePartiesContext();
 
   const t = useTranslations("manage-parties");
 

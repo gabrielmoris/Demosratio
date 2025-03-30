@@ -10,7 +10,7 @@ export async function GET() {
   try {
     const { subjects } = await fetchAllsubjects();
 
-    return NextResponse.json({ subjects });
+    return NextResponse.json(subjects);
   } catch (error) {
     log.error("Error encoding data:", error);
     return NextResponse.json(

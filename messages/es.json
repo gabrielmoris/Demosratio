@@ -104,10 +104,13 @@
     "input-label-name": "Nombre del partido",
     "input-label-logo_url": "Logo del partido",
     "save-party-btn": "Guardar Partido",
-    "input-canpaign-year": "Año de la Campaña electoral",
+    "input-canpaign-year": "Año de la Campaña",
     "input-campaign-pdf": "PDF de la Campaña",
     "save-campaign-btn": "Guardar Campaña",
     "save-party-label": "Guardar Nuevo Partido Político",
-    "save-campaign-label": "Añadir Campaña Electoral"
+    "save-campaign-label": "Añadir Campaña Electoral",
+    "save-promise-label": "Guardar Nueva Promesa Electoral",
+    "input-label-promise": "Promesa electoral",
+    "save-promise-btn": "Guardar Promesa"
   }
 }

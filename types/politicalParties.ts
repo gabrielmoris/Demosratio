@@ -1,4 +1,4 @@
-export interface PoliticalParties {
+export interface Party {
   id: number;
   created_at: Date;
   year: string;
@@ -12,4 +12,11 @@ export interface Campaign {
   year: number;
   party_id: number;
   campaign_pdf_url: string;
+}
+
+export interface Subject {
+  id: number;
+  created_at: Date;
+  description: string;
+  name: string;
 }
