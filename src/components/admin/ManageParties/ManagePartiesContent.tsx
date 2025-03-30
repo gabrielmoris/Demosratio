@@ -6,12 +6,21 @@ import Dropdown from "@/src/components/Dropdown";
 import Loading from "@/src/components/Loading";
 import { Campaign, Party } from "@/types/politicalParties";
 import { PromiseForm } from "./PromiseForm";
+import { useRequest } from "@/hooks/use-request";
 
 export default function ManagePartiesContent() {
-  const { loading, parties, partyChoice, setPartyChoice, campaigns, campaignChoice, setCampaignChoice } = usePartiesContext();
+  const { loading, parties, getAllParties, partyChoice, setPartyChoice, campaigns, campaignChoice, setCampaignChoice } = usePartiesContext();
+
+  const { doRequest: deletePartyReq } = useRequest({
+    url: "/api/parties",
+    method: "delete",
+    onSuccess() {
+      getAllParties();
+    },
+  });
 
   const deleteParty = (id: number) => {
-    console.log("DELETE PARTY WITH ID => ", id);
+    deletePartyReq({ party_id: id });
   };
 
   const deleteCampaign = (id: number) => {
@@ -34,9 +43,11 @@ export default function ManagePartiesContent() {
         />
       )}
 
-      <div className="flex w-full h-full">
-        <PromiseForm />
-      </div>
+      {campaigns[0] && (
+        <div className="flex w-full h-full">
+          <PromiseForm />
+        </div>
+      )}
       <div className="flex w-full h-full gap-8 flex-col xl:flex-row">
         <PartyForm />
         <CampaignForm />

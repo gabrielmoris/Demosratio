@@ -40,7 +40,7 @@ export default function Navbar() {
             }}
           >
             <Image
-              onClick={doRequest}
+              onClick={() => doRequest()}
               className={`cursor-pointer w-7 h-7 lg:w-10 lg:h-10 transition-transform duration-500 ${
                 openUser ? "transform-none" : "transform translate-y-2"
               }`}

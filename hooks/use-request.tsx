@@ -18,13 +18,13 @@ export const useRequest = ({ url, method, body, onSuccess }: RequestProps) => {
 
   const { showToast } = useUiContext();
 
-  const doRequest = async (): Promise<any> => {
+  const doRequest = async (props = {}): Promise<any> => {
     try {
       setErrors(null);
       const requestConfig: AxiosRequestConfig = {
         url,
         method,
-        data: body,
+        data: { ...body, ...props },
         withCredentials: true,
       };
 

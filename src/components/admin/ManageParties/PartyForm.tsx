@@ -3,9 +3,12 @@ import { FormWrapper } from "@/src/components/FormWrapper";
 import { useTranslations } from "next-intl";
 import Button from "@/src/components/Button";
 import { ChangeEvent, FormEvent, useCallback, useState } from "react";
+import { useRequest } from "@/hooks/use-request";
+import { usePartiesContext } from "./StateManager";
 
 export function PartyForm() {
   const [partyToSave, setPartyToSave] = useState({ name: "", logo_url: "" });
+  const { getAllParties } = usePartiesContext();
 
   const t = useTranslations("manage-parties");
 
@@ -19,9 +22,18 @@ export function PartyForm() {
     [partyToSave, setPartyToSave]
   );
 
+  const { doRequest: saveParty } = useRequest({
+    url: "/api/parties",
+    method: "post",
+    body: partyToSave,
+    onSuccess() {
+      getAllParties();
+    },
+  });
+
   const handleSubmit = (e: FormEvent<Element>): void => {
     e.preventDefault();
-    console.log(partyToSave);
+    saveParty();
   };
 
   return (
