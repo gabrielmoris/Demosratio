@@ -4,9 +4,11 @@ import { FormWrapper } from "@/src/components/FormWrapper";
 import { useTranslations } from "next-intl";
 import Button from "@/src/components/Button";
 import { ChangeEvent, FormEvent, useCallback, useState } from "react";
+import { useRequest } from "@/hooks/use-request";
 
 export function CampaignForm() {
-  const { partyChoice, campaignChoice, campaigns } = usePartiesContext();
+  const { partyChoice, getAllParties, campaignChoice, campaigns } =
+    usePartiesContext();
 
   const [campaignToSave, setCampaignToSave] = useState({
     year: campaignChoice?.year || campaigns[0]?.year,
@@ -16,8 +18,20 @@ export function CampaignForm() {
 
   const t = useTranslations("manage-parties");
 
+  const { doRequest: saveCampaign } = useRequest({
+    url: "/api/parties/campaigns",
+    method: "post",
+    body: campaignToSave,
+    onSuccess() {
+      getAllParties();
+    },
+  });
+
   const onInputCampaignChange = useCallback(
-    (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, inputKey: string | undefined) => {
+    (
+      e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+      inputKey: string | undefined
+    ) => {
       e.preventDefault();
       if (inputKey) {
         setCampaignToSave({ ...campaignToSave, [inputKey]: e.target.value });
@@ -28,7 +42,7 @@ export function CampaignForm() {
 
   const handleSubmit = (e: FormEvent<Element>): void => {
     e.preventDefault();
-    console.log(campaignToSave);
+    saveCampaign();
   };
 
   return (

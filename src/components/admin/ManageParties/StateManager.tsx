@@ -2,7 +2,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { createContext, useContext, useEffect, useState } from "react";
-import { Campaign, Party, Subject } from "@/types/politicalParties";
+import {
+  Campaign,
+  Party,
+  PartyPromise,
+  Subject,
+} from "@/types/politicalParties";
 import { useRequest } from "@/hooks/use-request";
 
 type PartiesContextType = {
@@ -20,7 +25,9 @@ type PartiesContextType = {
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   getPartyCampaign: () => Promise<any>;
   getAllParties: () => Promise<any>;
+  getPartyPromises: () => Promise<any>;
   subjects: Subject[];
+  promises: PartyPromise[];
 };
 
 const PartiesContext = createContext<PartiesContextType | undefined>(undefined);
@@ -32,6 +39,7 @@ export function PartiesProvider({ children }: { children: React.ReactNode }) {
   const [campaignChoice, setCampaignChoice] = useState<Campaign>();
   const [subjects, setSubjects] = useState<Subject[]>([]);
   const [subjectChoice, setSubjectChoice] = useState<Subject>();
+  const [promises, setPromises] = useState<PartyPromise[]>([]);
   const [loading, setLoading] = useState(true);
 
   const { doRequest: getAllParties } = useRequest({
@@ -49,6 +57,15 @@ export function PartiesProvider({ children }: { children: React.ReactNode }) {
     method: "get",
     onSuccess: (data: Subject[]) => {
       setSubjects(data);
+      setSubjectChoice(data[0]);
+    },
+  });
+
+  const { doRequest: getPartyPromises } = useRequest({
+    url: `/api/parties/promises?party_id=${partyChoice?.id}&campaign_id=${campaignChoice?.id}`,
+    method: "get",
+    onSuccess: (data: PartyPromise[]) => {
+      setPromises(data);
     },
   });
 
@@ -71,6 +88,7 @@ export function PartiesProvider({ children }: { children: React.ReactNode }) {
       setLoading(true);
       await getAllParties();
       await getAllSubjects();
+      await getPartyPromises();
     };
 
     fetchData();
@@ -88,7 +106,9 @@ export function PartiesProvider({ children }: { children: React.ReactNode }) {
       value={{
         getAllParties,
         getPartyCampaign,
+        getPartyPromises,
         subjects,
+        promises,
         loading,
         setLoading,
         parties,

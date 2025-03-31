@@ -3,12 +3,11 @@ import { supabaseAdmin } from "@/lib/supabaseClient";
 
 const log = new Logger();
 
-export const deleteCampaign = async (party_id: number, year: string) => {
+export const deleteCampaign = async (campaign_id: number) => {
   const { data: result, error: insertError } = await supabaseAdmin
     .from("campaigns")
     .delete()
-    .eq("party_id", party_id)
-    .eq("year", year)
+    .eq("id", campaign_id)
     .select("id")
     .single();
 

@@ -56,14 +56,14 @@ export async function POST(req: NextRequest) {
 }
 
 export async function DELETE(req: NextRequest) {
-  const { party_id, year } = await req.json();
+  const { campaign_id } = await req.json();
 
-  if (!party_id || !year) {
+  if (!campaign_id) {
     return NextResponse.json({ error: "Bad Request" }, { status: 400 });
   }
 
   try {
-    const { id } = await deleteCampaign(party_id, year);
+    const { id } = await deleteCampaign(campaign_id);
 
     return NextResponse.json({ id }, { status: 201 });
   } catch (error) {

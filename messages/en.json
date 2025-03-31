@@ -70,6 +70,10 @@
     "save-campaign-label": "Add electoral campaign",
     "save-promise-label": "Keep new electoral promise",
     "input-label-promise": "Electoral promise",
-    "save-promise-btn": "Save promise"
+    "save-promise-btn": "Save promise",
+    "saved-promise": "The electoral promise has been saved correctly."
+  },
+  "dropdown": {
+    "delete-advice": "Sure you want to erase this element?"
   }
 }

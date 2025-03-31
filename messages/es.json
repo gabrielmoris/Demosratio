@@ -111,6 +111,10 @@
     "save-campaign-label": "Añadir Campaña Electoral",
     "save-promise-label": "Guardar Nueva Promesa Electoral",
     "input-label-promise": "Promesa electoral",
-    "save-promise-btn": "Guardar Promesa"
+    "save-promise-btn": "Guardar Promesa",
+    "saved-promise": "La promesa electoral se ha guardado correctamente."
+  },
+  "dropdown": {
+    "delete-advice": "Seguro que quieres borrar este elemento?"
   }
 }

@@ -20,3 +20,12 @@ export interface Subject {
   description: string;
   name: string;
 }
+
+export interface PartyPromise {
+  id: number;
+  created_at: Date;
+  campaign_id: number;
+  subject_id: number;
+  promise: string;
+  party_id: number;
+}

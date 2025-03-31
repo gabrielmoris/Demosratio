@@ -9,10 +9,27 @@ import { PromiseForm } from "./PromiseForm";
 import { useRequest } from "@/hooks/use-request";
 
 export default function ManagePartiesContent() {
-  const { loading, parties, getAllParties, partyChoice, setPartyChoice, campaigns, campaignChoice, setCampaignChoice } = usePartiesContext();
+  const {
+    loading,
+    parties,
+    getAllParties,
+    partyChoice,
+    setPartyChoice,
+    campaigns,
+    campaignChoice,
+    setCampaignChoice,
+  } = usePartiesContext();
 
   const { doRequest: deletePartyReq } = useRequest({
     url: "/api/parties",
+    method: "delete",
+    onSuccess() {
+      getAllParties();
+    },
+  });
+
+  const { doRequest: deleteCampaignReq } = useRequest({
+    url: "/api/parties/campaigns",
     method: "delete",
     onSuccess() {
       getAllParties();
@@ -24,7 +41,7 @@ export default function ManagePartiesContent() {
   };
 
   const deleteCampaign = (id: number) => {
-    console.log("DELETE CAMPAIGN WITH ID => ", id);
+    deleteCampaignReq({ campaign_id: id });
   };
 
   if (loading) {
@@ -33,7 +50,12 @@ export default function ManagePartiesContent() {
 
   return (
     <main className="w-full flex flex-col justify-center items-center gap-5 md:gap-10 mb-16 md:mb-0">
-      <Dropdown items={parties} deleteItem={deleteParty} choose={(item) => setPartyChoice(item as Party)} choice={partyChoice || parties[0]} />
+      <Dropdown
+        items={parties}
+        deleteItem={deleteParty}
+        choose={(item) => setPartyChoice(item as Party)}
+        choice={partyChoice || parties[0]}
+      />
       {campaigns[0] && (
         <Dropdown
           items={campaigns}
