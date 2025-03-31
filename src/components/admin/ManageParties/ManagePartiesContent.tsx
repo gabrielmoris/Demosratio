@@ -67,12 +67,14 @@ export default function ManagePartiesContent() {
 
   return (
     <main className="w-full flex flex-col justify-center items-center gap-5 md:gap-10 mb-16 md:mb-0">
-      <Dropdown
-        items={parties}
-        deleteItem={deleteParty}
-        choose={(item) => setPartyChoice(item as Party)}
-        choice={partyChoice || parties[0]}
-      />
+      {parties[0] && (
+        <Dropdown
+          items={parties}
+          deleteItem={deleteParty}
+          choose={(item) => setPartyChoice(item as Party)}
+          choice={partyChoice || parties[0]}
+        />
+      )}
       {campaigns[0] && (
         <Dropdown
           items={campaigns}
