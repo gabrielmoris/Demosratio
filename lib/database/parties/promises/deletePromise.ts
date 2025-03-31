@@ -3,13 +3,8 @@ import { supabaseAdmin } from "@/lib/supabaseClient";
 
 const log = new Logger();
 
-export const deleteCampaign = async (campaign_id: number) => {
-  const { data: result, error: insertError } = await supabaseAdmin
-    .from("campaigns")
-    .delete()
-    .eq("id", campaign_id)
-    .select("id")
-    .single();
+export const deletePromise = async (id: number) => {
+  const { data: result, error: insertError } = await supabaseAdmin.from("promises").delete().eq("id", id).select("id").single();
 
   if (insertError) {
     log.error(`Error deleting subject: `, insertError);

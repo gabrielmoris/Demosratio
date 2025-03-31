@@ -10,7 +10,7 @@ export async function GET() {
   try {
     const { parties } = await fetchAllParties();
 
-    return NextResponse.json({ parties });
+    return NextResponse.json(parties);
   } catch (error) {
     log.error("Error encoding data:", error);
     return NextResponse.json(
@@ -48,14 +48,14 @@ export async function POST(req: NextRequest) {
 }
 
 export async function DELETE(req: NextRequest) {
-  const { name } = await req.json();
+  const { party_id } = await req.json();
 
-  if (!name) {
+  if (!party_id) {
     return NextResponse.json({ error: "Bad Request" }, { status: 400 });
   }
 
   try {
-    const { id } = await deleteParty(name);
+    const { id } = await deleteParty(party_id);
 
     return NextResponse.json({ id }, { status: 201 });
   } catch (error) {

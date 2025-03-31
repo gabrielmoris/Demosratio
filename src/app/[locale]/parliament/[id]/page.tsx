@@ -2,13 +2,13 @@
 import { useRequest } from "@/hooks/use-request";
 import ChartVotes from "@/src/components/ChartVotes";
 import Loading from "@/src/components/Loading";
-import { Proposal } from "@/src/types/proposal";
+import { Proposal } from "@/types/proposal";
 import Image from "next/image";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
-import { LiKesAndDislikes } from "@/src/types/likesAndDislikes";
+import { LiKesAndDislikes } from "@/types/likesAndDislikes";
 import { useAuth } from "@/src/context/authContext";
 import { useUiContext } from "@/src/context/uiContext";
 import { formatDate } from "@/lib/helpers/dateFormatters";

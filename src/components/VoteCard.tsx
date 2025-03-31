@@ -1,5 +1,5 @@
 import { memo, useMemo } from "react";
-import { VotingData } from "../types/proposal";
+import { VotingData } from "../../types/proposal";
 import { ExpandableText } from "./ExpandableText";
 
 import Image from "next/image";

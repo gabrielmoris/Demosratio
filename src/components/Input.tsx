@@ -1,17 +1,16 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 interface ImputProps {
-  inputObj?: Record<string, string>;
+  inputObj?: Record<string, any>;
   inputKey?: string;
   inputString?: string;
   inputLabel: string;
-  placeholder: string;
-  setInput: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    inputKey?: string
-  ) => void;
+  placeholder: string | number;
+  setInput: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, inputKey?: string) => void;
   required?: boolean;
   password?: boolean;
-  type?: "password" | "email" | "text" | "checkbox";
+  type?: "password" | "email" | "text" | "checkbox" | "number" | "textarea";
   className?: string;
+  placeholderClass?: string;
 }
 
 export default function Input({
@@ -24,8 +23,32 @@ export default function Input({
   required,
   password,
   type,
+  placeholderClass,
   className,
 }: ImputProps) {
+  if (type === "textarea") {
+    return (
+      <div className={`relative w-full ${className}`}>
+        <textarea
+          name={inputKey}
+          id={inputKey}
+          required={required}
+          value={inputObj && inputKey ? inputObj[inputKey] : inputString}
+          autoComplete={password ? "use-password" : inputKey}
+          placeholder={placeholder.toString()}
+          className={`${placeholderClass} px-2.5 pb-2.5 pt-4 w-full min-h-28 text-lg text-drgray rounded-md border border-drPurple focus:outline-none focus:ring-0 focus:border-bg-drgray peer`}
+          onChange={(e) => setInput(e, inputKey ? inputKey : inputString || "")}
+        />
+        <label
+          htmlFor={inputKey}
+          className="absolute text-lg rounded-md text-drgray duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-transparent backdrop-blur-sm px-2 peer-focus:px-2 peer-focus:text-drgray peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/4 peer-focus:top-1 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
+        >
+          {inputLabel} {required ? "*" : ""}
+        </label>
+      </div>
+    );
+  }
+
   return (
     <div className={`relative w-full ${className}`}>
       <input
@@ -35,8 +58,8 @@ export default function Input({
         required={required}
         value={inputObj && inputKey ? inputObj[inputKey] : inputString}
         autoComplete={password ? "use-password" : inputKey}
-        placeholder={placeholder}
-        className={`px-2.5 pb-2.5 pt-4 w-full text-lg text-drgray rounded-md border border-drPurple focus:outline-none focus:ring-0 focus:border-bg-drgray  peer`}
+        placeholder={placeholder.toString()}
+        className={`${placeholderClass} px-2.5 pb-2.5 pt-4 w-full text-lg text-drgray rounded-md border border-drPurple focus:outline-none focus:ring-0 focus:border-bg-drgray  peer`}
         onChange={(e) => setInput(e, inputKey ? inputKey : inputString || "")}
       />
       <label

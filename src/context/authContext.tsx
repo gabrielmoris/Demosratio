@@ -1,7 +1,7 @@
 "use client";
 import { createContext, useState, useEffect, useContext, useCallback } from "react";
 import axios from "axios";
-import { UserPayload } from "../types/user";
+import { UserPayload } from "../../types/user";
 import { Logger } from "tslog";
 
 const log = new Logger();

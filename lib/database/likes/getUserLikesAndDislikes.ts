@@ -1,14 +1,11 @@
 import { Logger } from "tslog";
-import { LiKesAndDislikes } from "@/src/types/likesAndDislikes";
+import { LiKesAndDislikes } from "@/types/likesAndDislikes";
 import { getUserDislikes } from "./user/getUserDislikes";
 import { getUserLikes } from "./user/getUserLikes";
 
 const log = new Logger();
 
-export async function fetchUserLikesAndDislikes(
-  proposal_id: number,
-  userId: number | string
-) {
+export async function fetchUserLikesAndDislikes(proposal_id: number, userId: number | string) {
   try {
     // Count likes
     const likesCount = await getUserLikes(proposal_id, Number(userId));

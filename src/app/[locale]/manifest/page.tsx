@@ -47,25 +47,36 @@ export default async function Manifest() {
       <section className="my-4">
         <h2 className="text-xl font-semibold">{t("personalStatementTitle")}</h2>
         <p>{t("personalStatement1")}</p>
-        <blockquote className="italic text-sm my-5 px-8 text-gray-700" cite="https://es.wikiquote.org/wiki/Lord_Acton">
+        <blockquote
+          className="italic text-sm my-5 px-8 text-gray-700"
+          cite="https://es.wikiquote.org/wiki/Lord_Acton"
+        >
           <p>{t("quote1")}</p>
         </blockquote>
         <p className="mb-5">{t("personalStatement2")}</p>
         <p className="mb-5">{t("personalStatement3")}</p>
         <p>{t("personalStatement4")}</p>
-        <blockquote className="italic text-sm my-5 px-8 text-gray-700" cite="https://es.wikiquote.org/wiki/George_Orwell">
+        <blockquote
+          className="italic text-sm my-5 px-8 text-gray-700"
+          cite="https://es.wikiquote.org/wiki/George_Orwell"
+        >
           <p>{t("quote2")}</p>
         </blockquote>
         <p className="mb-5">{t("personalStatement5")}</p>
         <p>{t("personalStatement6")}</p>
-        <blockquote className="italic text-sm my-5 px-8 text-gray-700" cite="https://es.wikiquote.org/wiki/Thomas_Jefferson">
+        <blockquote
+          className="italic text-sm my-5 px-8 text-gray-700"
+          cite="https://es.wikiquote.org/wiki/Thomas_Jefferson"
+        >
           <p>{t("quote3")}</p>
         </blockquote>
         <p>{t("personalStatement7")}</p>
-        <blockquote className="italic text-sm my-5 px-8 text-gray-700" cite="https://es.wikiquote.org/wiki/Jos%C3%A9_Ortega_y_Gasset">
+        <blockquote
+          className="italic text-sm my-5 px-8 text-gray-700"
+          cite="https://es.wikiquote.org/wiki/Jos%C3%A9_Ortega_y_Gasset"
+        >
           <p>{t("quote4")}</p>
         </blockquote>
-        <p className="mb-5">{t("personalStatement8")}</p>
       </section>
 
       {/* Goal Section */}

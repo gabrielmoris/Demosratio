@@ -1,4 +1,4 @@
-import { UserPayload } from "@/src/types/user";
+import { UserPayload } from "@/types/user";
 import jwt from "jsonwebtoken";
 import { Logger } from "tslog";
 
