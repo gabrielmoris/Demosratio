@@ -57,11 +57,13 @@ export function PromiseForm() {
   return (
     <FormWrapper onSubmit={handleSubmit}>
       <label className="font-bold text-xl">{t("save-promise-label")}</label>
-      <Dropdown
-        items={subjects}
-        choose={(item) => setSubjectChoice(item as Subject)}
-        choice={subjectChoice || subjects[0]}
-      />
+      {subjects[0] && (
+        <Dropdown
+          items={subjects}
+          choose={(item) => setSubjectChoice(item as Subject)}
+          choice={subjectChoice || subjects[0]}
+        />
+      )}
       <Input
         inputLabel={t("input-label-promise")}
         type="textarea"
