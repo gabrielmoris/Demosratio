@@ -40,6 +40,7 @@ export function PartiesProvider({ children }: { children: React.ReactNode }) {
   const [subjects, setSubjects] = useState<Subject[]>([]);
   const [subjectChoice, setSubjectChoice] = useState<Subject>();
   const [promises, setPromises] = useState<PartyPromise[]>([]);
+
   const [loading, setLoading] = useState(true);
 
   const { doRequest: getAllParties } = useRequest({
@@ -88,7 +89,6 @@ export function PartiesProvider({ children }: { children: React.ReactNode }) {
       setLoading(true);
       await getAllParties();
       await getAllSubjects();
-      await getPartyPromises();
     };
 
     fetchData();
@@ -100,6 +100,10 @@ export function PartiesProvider({ children }: { children: React.ReactNode }) {
       getPartyCampaign();
     }
   }, [partyChoice]);
+
+  useEffect(() => {
+    if (partyChoice?.id && campaignChoice?.id) getPartyPromises();
+  }, [partyChoice, campaignChoice]);
 
   return (
     <PartiesContext.Provider

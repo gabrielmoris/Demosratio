@@ -1,14 +1,19 @@
 import Image from "next/image";
 import { useState, useCallback } from "react";
-import { Campaign, Party, Subject } from "@/types/politicalParties";
+import {
+  Campaign,
+  Party,
+  PartyPromise,
+  Subject,
+} from "@/types/politicalParties";
 import { Popup } from "./Overlay";
 import { useTranslations } from "next-intl";
 
 interface ImputProps {
-  items: Party[] | Campaign[] | Subject[];
+  items: Party[] | Campaign[] | Subject[] | PartyPromise[];
   deleteItem?: (id: number) => void;
-  choose: (item: Party | Campaign | Subject) => void;
-  choice: Party | Campaign | Subject;
+  choose: (item: Party | Campaign | Subject | PartyPromise) => void;
+  choice: Party | Campaign | Subject | PartyPromise | string;
   className?: string;
 }
 
@@ -26,7 +31,7 @@ export default function Dropdown({
   const t = useTranslations("dropdown");
 
   const handleItemClick = useCallback(
-    (item: Party | Campaign | Subject) => {
+    (item: Party | Campaign | Subject | PartyPromise) => {
       choose(item);
       setIsOpen(false);
     },
@@ -53,7 +58,10 @@ export default function Dropdown({
         className="w-full bg-white rounded-md border border-drPurple  text-contrast hover:opacity-90 focus:ring-1 focus:outline-none focus:ring-drgray font-medium text-sm px-5 py-2.5 text-center inline-flex items-center"
         type="button"
       >
-        {choice && "name" in choice ? choice?.name : choice?.year}
+        {typeof choice === "string" && choice}
+        {typeof choice !== "string" && "name" in choice && choice?.name}
+        {typeof choice !== "string" && "year" in choice && choice?.year}
+        {typeof choice !== "string" && "promise" in choice && choice?.promise}
         <svg
           className={`w-2.5 h-2.5 ms-3 transition-transform ${
             isOpen ? "transform rotate-180" : ""
@@ -114,6 +122,26 @@ export default function Dropdown({
                     key={item.id}
                   >
                     {item.year}
+                    <Image
+                      onClick={() => {
+                        setIsOpenPopup(true);
+                        setIdToDelete(item.id);
+                      }}
+                      width={20}
+                      height={20}
+                      alt="delete-icn"
+                      src="/delete-icn.svg"
+                    />
+                  </li>
+                );
+              } else if ("promise" in item) {
+                return (
+                  <li
+                    onClick={() => handleItemClick(item)}
+                    className="flex cursor-pointer flex-row items-between w-full px-4 py-2  hover:bg-drPurple hover:bg-opacity-50 justify-between items-center"
+                    key={item.id}
+                  >
+                    {item.promise}
                     <Image
                       onClick={() => {
                         setIsOpenPopup(true);

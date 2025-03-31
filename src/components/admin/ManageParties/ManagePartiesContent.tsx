@@ -4,21 +4,26 @@ import { PartyForm } from "@/src/components/admin/ManageParties/PartyForm";
 import { usePartiesContext } from "@/src/components/admin/ManageParties/StateManager";
 import Dropdown from "@/src/components/Dropdown";
 import Loading from "@/src/components/Loading";
-import { Campaign, Party } from "@/types/politicalParties";
+import { Campaign, Party, PartyPromise } from "@/types/politicalParties";
 import { PromiseForm } from "./PromiseForm";
 import { useRequest } from "@/hooks/use-request";
+import { useTranslations } from "next-intl";
 
 export default function ManagePartiesContent() {
   const {
     loading,
     parties,
+    promises,
     getAllParties,
     partyChoice,
     setPartyChoice,
     campaigns,
     campaignChoice,
     setCampaignChoice,
+    getPartyPromises,
   } = usePartiesContext();
+
+  const t = useTranslations("manage-parties");
 
   const { doRequest: deletePartyReq } = useRequest({
     url: "/api/parties",
@@ -36,12 +41,24 @@ export default function ManagePartiesContent() {
     },
   });
 
+  const { doRequest: deletePromiseReq } = useRequest({
+    url: "/api/parties/promises",
+    method: "delete",
+    onSuccess() {
+      getPartyPromises();
+    },
+  });
+
   const deleteParty = (id: number) => {
     deletePartyReq({ party_id: id });
   };
 
   const deleteCampaign = (id: number) => {
     deleteCampaignReq({ campaign_id: id });
+  };
+
+  const deletePromise = (id: number) => {
+    deletePromiseReq({ promise_id: id });
   };
 
   if (loading) {
@@ -62,6 +79,15 @@ export default function ManagePartiesContent() {
           deleteItem={deleteCampaign}
           choose={(item) => setCampaignChoice(item as Campaign)}
           choice={campaignChoice || campaigns[0]}
+        />
+      )}
+
+      {promises[0] && (
+        <Dropdown
+          items={promises}
+          deleteItem={deletePromise}
+          choose={(item) => console.log(item as PartyPromise)}
+          choice={t("delete-promise")}
         />
       )}
 

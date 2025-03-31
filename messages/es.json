@@ -112,7 +112,8 @@
     "save-promise-label": "Guardar Nueva Promesa Electoral",
     "input-label-promise": "Promesa electoral",
     "save-promise-btn": "Guardar Promesa",
-    "saved-promise": "La promesa electoral se ha guardado correctamente."
+    "saved-promise": "La promesa electoral se ha guardado correctamente.",
+    "delete-promise": "Borrar Promesas"
   },
   "dropdown": {
     "delete-advice": "Seguro que quieres borrar este elemento?"
