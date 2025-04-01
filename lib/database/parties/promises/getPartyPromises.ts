@@ -8,7 +8,13 @@ export async function fetchPartyPromises(party_id: number, campaign_id: number) 
   try {
     const { data: promises, error: promisesError } = await supabaseAdmin
       .from("promises")
-      .select("*")
+      .select(
+        `
+      *,
+      campaigns ( * ),
+      subjects ( * )
+    `
+      )
       .eq("campaign_id", campaign_id)
       .eq("party_id", party_id);
 
