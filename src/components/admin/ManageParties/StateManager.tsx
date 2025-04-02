@@ -37,7 +37,7 @@ export function PartiesProvider({
   structured = false,
 }: {
   children: React.ReactNode;
-  structured: boolean;
+  structured?: boolean;
 }) {
   const [parties, setParties] = useState<Party[]>([]);
   const [partyChoice, setPartyChoice] = useState<Party>();
