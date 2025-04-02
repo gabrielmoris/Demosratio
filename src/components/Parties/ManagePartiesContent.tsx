@@ -1,27 +1,17 @@
 "use client";
 import { CampaignForm } from "@/src/components/admin/ManageParties/CampaignForm";
 import { PartyForm } from "@/src/components/admin/ManageParties/PartyForm";
-import { usePartiesContext } from "@/src/components/admin/ManageParties/StateManager";
+import { usePartiesContext } from "@/src/components/Parties/PartyStateManager";
 import Dropdown from "@/src/components/Dropdown";
 import Loading from "@/src/components/Loading";
 import { Campaign, Party } from "@/types/politicalParties";
-import { PromiseForm } from "./PromiseForm";
+import { PromiseForm } from "../admin/ManageParties/PromiseForm";
 import { useRequest } from "@/hooks/use-request";
 import { useTranslations } from "next-intl";
 
 export default function ManagePartiesContent() {
-  const {
-    loading,
-    parties,
-    promises,
-    getAllParties,
-    partyChoice,
-    setPartyChoice,
-    campaigns,
-    campaignChoice,
-    setCampaignChoice,
-    getPartyPromises,
-  } = usePartiesContext();
+  const { loading, parties, promises, getAllParties, partyChoice, setPartyChoice, campaigns, campaignChoice, setCampaignChoice, getPartyPromises } =
+    usePartiesContext();
 
   const t = useTranslations("manage-parties");
 
@@ -72,7 +62,7 @@ export default function ManagePartiesContent() {
           items={parties}
           deleteItem={deleteParty}
           choose={(item) => setPartyChoice(item as Party)}
-          choice={partyChoice || parties[0]}
+          choice={partyChoice || t("choose-party")}
         />
       )}
       {campaigns[0] && (
@@ -84,14 +74,7 @@ export default function ManagePartiesContent() {
         />
       )}
 
-      {promises[0] && (
-        <Dropdown
-          items={promises}
-          deleteItem={deletePromise}
-          choose={() => null}
-          choice={t("delete-promise")}
-        />
-      )}
+      {promises[0] && <Dropdown items={promises} deleteItem={deletePromise} choose={() => null} choice={t("delete-promise")} />}
 
       {campaigns[0] && (
         <div className="flex w-full h-full">

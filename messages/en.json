@@ -72,7 +72,8 @@
     "input-label-promise": "Electoral promise",
     "save-promise-btn": "Save promise",
     "saved-promise": "The electoral promise has been saved correctly.",
-    "delete-promise": "Delete promises"
+    "delete-promise": "Delete promises",
+    "choose-party": "Choose political party"
   },
   "dropdown": {
     "delete-advice": "Sure you want to erase this element?"

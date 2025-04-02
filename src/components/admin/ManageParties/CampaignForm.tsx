@@ -1,5 +1,5 @@
 import Input from "@/src/components/Input";
-import { usePartiesContext } from "./StateManager";
+import { usePartiesContext } from "../../Parties/PartyStateManager";
 import { FormWrapper } from "@/src/components/FormWrapper";
 import { useTranslations } from "next-intl";
 import Button from "@/src/components/Button";
@@ -7,8 +7,7 @@ import { ChangeEvent, FormEvent, useCallback, useState } from "react";
 import { useRequest } from "@/hooks/use-request";
 
 export function CampaignForm() {
-  const { partyChoice, getAllParties, campaignChoice, campaigns } =
-    usePartiesContext();
+  const { partyChoice, getAllParties, campaignChoice, campaigns } = usePartiesContext();
 
   const [campaignToSave, setCampaignToSave] = useState({
     year: campaignChoice?.year || campaigns[0]?.year,
@@ -28,10 +27,7 @@ export function CampaignForm() {
   });
 
   const onInputCampaignChange = useCallback(
-    (
-      e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-      inputKey: string | undefined
-    ) => {
+    (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, inputKey: string | undefined) => {
       e.preventDefault();
       if (inputKey) {
         setCampaignToSave({ ...campaignToSave, [inputKey]: e.target.value });

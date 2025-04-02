@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl";
 import Button from "@/src/components/Button";
 import { ChangeEvent, FormEvent, useCallback, useState } from "react";
 import { useRequest } from "@/hooks/use-request";
-import { usePartiesContext } from "./StateManager";
+import { usePartiesContext } from "../../Parties/PartyStateManager";
 
 export function PartyForm() {
   const [partyToSave, setPartyToSave] = useState({ name: "", logo_url: "" });

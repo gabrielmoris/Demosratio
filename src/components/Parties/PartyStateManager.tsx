@@ -2,12 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { createContext, useContext, useEffect, useState } from "react";
-import {
-  Campaign,
-  Party,
-  PartyPromise,
-  Subject,
-} from "@/types/politicalParties";
+import { Campaign, Party, PartyPromise, Subject } from "@/types/politicalParties";
 import { useRequest } from "@/hooks/use-request";
 
 type PartiesContextType = {
@@ -32,13 +27,7 @@ type PartiesContextType = {
 
 const PartiesContext = createContext<PartiesContextType | undefined>(undefined);
 
-export function PartiesProvider({
-  children,
-  structured = false,
-}: {
-  children: React.ReactNode;
-  structured?: boolean;
-}) {
+export function PartiesProvider({ children, structured = false }: { children: React.ReactNode; structured?: boolean }) {
   const [parties, setParties] = useState<Party[]>([]);
   const [partyChoice, setPartyChoice] = useState<Party>();
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
@@ -54,7 +43,7 @@ export function PartiesProvider({
     method: "get",
     onSuccess: (data: Party[]) => {
       setParties(data);
-      setPartyChoice(data[0]);
+      // setPartyChoice(data[0]); // I Could nitialize the first party. (Still in decission)
       setLoading(false);
     },
   });
