@@ -32,7 +32,13 @@ type PartiesContextType = {
 
 const PartiesContext = createContext<PartiesContextType | undefined>(undefined);
 
-export function PartiesProvider({ children }: { children: React.ReactNode }) {
+export function PartiesProvider({
+  children,
+  structured = false,
+}: {
+  children: React.ReactNode;
+  structured: boolean;
+}) {
   const [parties, setParties] = useState<Party[]>([]);
   const [partyChoice, setPartyChoice] = useState<Party>();
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
@@ -64,6 +70,14 @@ export function PartiesProvider({ children }: { children: React.ReactNode }) {
 
   const { doRequest: getPartyPromises } = useRequest({
     url: `/api/parties/promises?party_id=${partyChoice?.id}&campaign_id=${campaignChoice?.id}`,
+    method: "get",
+    onSuccess: (data: PartyPromise[]) => {
+      setPromises(data);
+    },
+  });
+
+  const { doRequest: getPartyPromisesStructured } = useRequest({
+    url: `/api/parties/promises?party_id=${partyChoice?.id}&campaign_id=${campaignChoice?.id}&structured=true`,
     method: "get",
     onSuccess: (data: PartyPromise[]) => {
       setPromises(data);
@@ -102,7 +116,13 @@ export function PartiesProvider({ children }: { children: React.ReactNode }) {
   }, [partyChoice]);
 
   useEffect(() => {
-    if (partyChoice?.id && campaignChoice?.id) getPartyPromises();
+    if (partyChoice?.id && campaignChoice?.id) {
+      if (structured) {
+        getPartyPromisesStructured();
+      } else {
+        getPartyPromises();
+      }
+    }
   }, [partyChoice, campaignChoice]);
 
   return (

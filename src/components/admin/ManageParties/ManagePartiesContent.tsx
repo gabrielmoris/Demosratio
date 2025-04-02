@@ -4,7 +4,7 @@ import { PartyForm } from "@/src/components/admin/ManageParties/PartyForm";
 import { usePartiesContext } from "@/src/components/admin/ManageParties/StateManager";
 import Dropdown from "@/src/components/Dropdown";
 import Loading from "@/src/components/Loading";
-import { Campaign, Party, PartyPromise } from "@/types/politicalParties";
+import { Campaign, Party } from "@/types/politicalParties";
 import { PromiseForm } from "./PromiseForm";
 import { useRequest } from "@/hooks/use-request";
 import { useTranslations } from "next-intl";
@@ -88,7 +88,7 @@ export default function ManagePartiesContent() {
         <Dropdown
           items={promises}
           deleteItem={deletePromise}
-          choose={(item) => console.log(item as PartyPromise)}
+          choose={() => null}
           choice={t("delete-promise")}
         />
       )}
