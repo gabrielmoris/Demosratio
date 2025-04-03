@@ -23,8 +23,7 @@ const robotoSerif = Roboto_Serif({
 
 export const metadata: Metadata = {
   title: "Demosratio - Verifica promesas y decisiones políticas",
-  description:
-    "Demosratio: Transparencia y participación ciudadana en la política. Verifica promesas, decisiones y participa en la democracia.",
+  description: "Demosratio: Transparencia y participación ciudadana en la política. Verifica promesas, decisiones y participa en la democracia.",
   keywords: [
     "demosratio",
     "política",
@@ -41,8 +40,7 @@ export const metadata: Metadata = {
   authors: [{ name: "Gabriel C. Moris" }],
   openGraph: {
     title: "Demosratio - Verifica promesas y decisiones políticas",
-    description:
-      "Demosratio: Transparencia y participación ciudadana en la política. Verifica promesas, decisiones y participa en la democracia.",
+    description: "Demosratio: Transparencia y participación ciudadana en la política. Verifica promesas, decisiones y participa en la democracia.",
     // url: "https://demosratio.com",
     siteName: "Demosratio",
     images: [
@@ -59,8 +57,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Demosratio - Verifica promesas y decisiones políticas",
-    description:
-      "Demosratio: Transparencia y participación ciudadana en la política. Verifica promesas, decisiones y participa en la democracia.",
+    description: "Demosratio: Transparencia y participación ciudadana en la política. Verifica promesas, decisiones y participa en la democracia.",
     images: ["/demosratio.png"],
   },
   robots: {
@@ -76,13 +73,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function RootLayout({
-  children,
-  params,
-}: {
-  children: React.ReactNode;
-  params: Promise<{ locale: string }>;
-}) {
+export default async function RootLayout({ children, params }: { children: React.ReactNode; params: Promise<{ locale: string }> }) {
   const { locale } = await Promise.resolve(params);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -94,12 +85,12 @@ export default async function RootLayout({
   return (
     <html lang={locale}>
       <body
-        className={`${roboto.variable} ${robotoSerif.variable} antialiased md:pl-14 flex flex-row items-start justify-center max-w-screen-sm md:max-w-screen-5xl`}
+        className={`${roboto.variable} ${robotoSerif.variable} h-full antialiased md:pl-14 flex flex-row items-start justify-center max-w-screen-sm md:max-w-screen-5xl`}
       >
         <AuthProvider>
           <UiProvider>
             <NextIntlClientProvider messages={messages}>
-              <main className="py-10 px-4 md:px-28 lg:px-48 3xl:px-56 w-full min-h-screen font-[family-name:var(--font-roboto)] flex flex-col items-center justify-items-center">
+              <main className="py-10 h-full px-4 md:px-28 lg:px-48 3xl:px-56 w-full min-h-screen font-drsans flex flex-col items-center justify-items-center">
                 <Navbar />
                 {children}
               </main>

@@ -113,7 +113,8 @@
     "input-label-promise": "Promesa electoral",
     "save-promise-btn": "Guardar Promesa",
     "saved-promise": "La promesa electoral se ha guardado correctamente.",
-    "delete-promise": "Borrar Promesas"
+    "delete-promise": "Borrar Promesas",
+    "choose-party": "Escoge Partido Político"
   },
   "dropdown": {
     "delete-advice": "Seguro que quieres borrar este elemento?"

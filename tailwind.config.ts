@@ -21,7 +21,7 @@ export default {
       },
       fontFamily: {
         drserif: ["var(--font-roboto-serif)", "serif"],
-        drnote: ["var(--font-roboto)", "sans-serif"],
+        drsans: ["var(--font-roboto)", "sans-serif"],
       },
       screens: {
         "3xl": "1920px",
@@ -30,5 +30,14 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    function ({ addComponents }: { addComponents: (components: Record<string, any>) => void }) {
+      addComponents({
+        ".bold-roman-markers li::marker": {
+          fontWeight: "900",
+        },
+      });
+    },
+  ],
 } satisfies Config;

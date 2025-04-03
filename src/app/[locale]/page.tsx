@@ -7,9 +7,7 @@ export default function Home() {
   return (
     <section className="flex flex-col gap-8 md:gap-12 items-center sm:items-start">
       <div className="flex flex-col gap-5 md:gap-10">
-        <h1 className="text-2xl font-semibold text-[#262835] font-[family-name:var(--font-roboto-serif)]">
-          {t("title")}
-        </h1>
+        <h1 className="text-2xl font-semibold text-[#262835] font-drsans">{t("title")}</h1>
         <p className="text-lg text-justify">{t("subtitle")}</p>
       </div>
 

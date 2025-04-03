@@ -55,7 +55,7 @@ export default function Register() {
       onSubmit={onFormSubmit}
       className="flex flex-col bg-white border border-drlight gap-8 rounded-md p-10 row-start-2 items-center justify-centerw-full md:w-2/3 xl:w-2/3 3xl:w-1/2"
     >
-      <label className="font-[family-name:var(--font-roboto-serif)] font-bold w-full text-center text-lg">{t("form-title")}</label>
+      <label className="font-drsans font-bold w-full text-center text-lg">{t("form-title")}</label>
       <Input
         inputLabel="Nombte / Nick"
         type="text"

@@ -75,7 +75,7 @@ export default function Parliament() {
   };
 
   return (
-    <main className="flex flex-col items-center justify-items-center min-h-screen pb-20 gap-16 font-[family-name:var(--font-geist-sans)] w-full">
+    <main className="flex flex-col items-center justify-items-center min-h-screen pb-20 gap-16 font-drsans w-full">
       <section className="flex flex-col w-full gap-8 justify-center items-center">
         <Input inputLabel={t("search-input")} inputString={inputValue} type="text" inputKey="search" placeholder="" setInput={onInputChange} />
         {votes.length ? (

@@ -1,5 +1,5 @@
 import Input from "@/src/components/Input";
-import { usePartiesContext } from "./StateManager";
+import { usePartiesContext } from "../../Parties/PartyStateManager";
 import { FormWrapper } from "@/src/components/FormWrapper";
 import { useTranslations } from "next-intl";
 import Button from "@/src/components/Button";
@@ -7,8 +7,7 @@ import { ChangeEvent, FormEvent, useCallback, useState } from "react";
 import { useRequest } from "@/hooks/use-request";
 
 export function CampaignForm() {
-  const { partyChoice, getAllParties, campaignChoice, campaigns } =
-    usePartiesContext();
+  const { partyChoice, campaignChoice, campaigns, getPartyCampaign } = usePartiesContext();
 
   const [campaignToSave, setCampaignToSave] = useState({
     year: campaignChoice?.year || campaigns[0]?.year,
@@ -23,15 +22,17 @@ export function CampaignForm() {
     method: "post",
     body: campaignToSave,
     onSuccess() {
-      getAllParties();
+      getPartyCampaign();
+      setCampaignToSave({
+        year: campaignChoice?.year || campaigns[0]?.year,
+        campaign_pdf_url: "",
+        party_id: partyChoice?.id,
+      });
     },
   });
 
   const onInputCampaignChange = useCallback(
-    (
-      e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-      inputKey: string | undefined
-    ) => {
+    (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, inputKey: string | undefined) => {
       e.preventDefault();
       if (inputKey) {
         setCampaignToSave({ ...campaignToSave, [inputKey]: e.target.value });

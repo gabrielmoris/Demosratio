@@ -1,5 +1,6 @@
 import { deletePromise } from "@/lib/database/parties/promises/deletePromise";
 import { fetchPartyPromises } from "@/lib/database/parties/promises/getPartyPromises";
+import { fetchStructuredPartyPromises } from "@/lib/database/parties/promises/getStructuredPartyPromises";
 import { savePartyPromise } from "@/lib/database/parties/promises/savePartyPromise";
 import { NextRequest, NextResponse } from "next/server";
 import { Logger } from "tslog";
@@ -11,11 +12,15 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url); // Extract search params
     const party_id = Number(searchParams.get("party_id"));
     const campaign_id = Number(searchParams.get("campaign_id"));
+    const structured = searchParams.get("structured");
 
-    if (!party_id || !campaign_id || isNaN(campaign_id) || isNaN(party_id))
+    if (!party_id || !campaign_id || isNaN(campaign_id) || isNaN(party_id)) {
       return NextResponse.json({ error: "Bad Request" }, { status: 400 });
+    }
 
-    const { promises } = await fetchPartyPromises(party_id, campaign_id);
+    const { promises } = structured
+      ? await fetchStructuredPartyPromises(party_id, campaign_id)
+      : await fetchPartyPromises(party_id, campaign_id);
 
     return NextResponse.json(promises);
   } catch (error) {

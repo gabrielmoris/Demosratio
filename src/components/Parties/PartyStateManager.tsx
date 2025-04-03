@@ -2,12 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { createContext, useContext, useEffect, useState } from "react";
-import {
-  Campaign,
-  Party,
-  PartyPromise,
-  Subject,
-} from "@/types/politicalParties";
+import { Campaign, Party, PartyPromise, StructuredPromises, Subject } from "@/types/politicalParties";
 import { useRequest } from "@/hooks/use-request";
 
 type PartiesContextType = {
@@ -28,11 +23,12 @@ type PartiesContextType = {
   getPartyPromises: () => Promise<any>;
   subjects: Subject[];
   promises: PartyPromise[];
+  structuredPromises: StructuredPromises[];
 };
 
 const PartiesContext = createContext<PartiesContextType | undefined>(undefined);
 
-export function PartiesProvider({ children }: { children: React.ReactNode }) {
+export function PartiesProvider({ children, structured = false }: { children: React.ReactNode; structured?: boolean }) {
   const [parties, setParties] = useState<Party[]>([]);
   const [partyChoice, setPartyChoice] = useState<Party>();
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
@@ -40,6 +36,7 @@ export function PartiesProvider({ children }: { children: React.ReactNode }) {
   const [subjects, setSubjects] = useState<Subject[]>([]);
   const [subjectChoice, setSubjectChoice] = useState<Subject>();
   const [promises, setPromises] = useState<PartyPromise[]>([]);
+  const [structuredPromises, setStructuredPromises] = useState<StructuredPromises[]>([]);
 
   const [loading, setLoading] = useState(true);
 
@@ -48,7 +45,7 @@ export function PartiesProvider({ children }: { children: React.ReactNode }) {
     method: "get",
     onSuccess: (data: Party[]) => {
       setParties(data);
-      setPartyChoice(data[0]);
+      // setPartyChoice(data[0]); // I Could nitialize the first party. (Still in decission)
       setLoading(false);
     },
   });
@@ -67,6 +64,14 @@ export function PartiesProvider({ children }: { children: React.ReactNode }) {
     method: "get",
     onSuccess: (data: PartyPromise[]) => {
       setPromises(data);
+    },
+  });
+
+  const { doRequest: getPartyPromisesStructured } = useRequest({
+    url: `/api/parties/promises?party_id=${partyChoice?.id}&campaign_id=${campaignChoice?.id}&structured=true`,
+    method: "get",
+    onSuccess: (data: StructuredPromises[]) => {
+      setStructuredPromises(data);
     },
   });
 
@@ -102,7 +107,13 @@ export function PartiesProvider({ children }: { children: React.ReactNode }) {
   }, [partyChoice]);
 
   useEffect(() => {
-    if (partyChoice?.id && campaignChoice?.id) getPartyPromises();
+    if (partyChoice?.id && campaignChoice?.id) {
+      if (structured) {
+        getPartyPromisesStructured();
+      } else {
+        getPartyPromises();
+      }
+    }
   }, [partyChoice, campaignChoice]);
 
   return (
@@ -125,6 +136,7 @@ export function PartiesProvider({ children }: { children: React.ReactNode }) {
         setCampaigns,
         campaignChoice,
         setCampaignChoice,
+        structuredPromises,
       }}
     >
       {children}
