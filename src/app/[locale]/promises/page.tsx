@@ -1,12 +1,12 @@
 import { PartiesProvider } from "@/src/components/Parties/PartyStateManager";
-import { PromisesComponent } from "@/src/components/Promises/PromisesComponent";
+import { PartyChoiceComponent } from "@/src/components/Promises/PartyChoiceComponent";
 
 export default function Promises() {
   return (
-    <div className="flex flex-col items-center justify-items-center p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
+    <div className="flex flex-col w-full h-full justify-center items-center mb-24 md:mb-5 min-h-96 gap-16 font-drsans">
+      <main className="flex w-full flex-col gap-8 items-center justify-center">
         <PartiesProvider structured>
-          <PromisesComponent />
+          <PartyChoiceComponent />
         </PartiesProvider>
       </main>
     </div>

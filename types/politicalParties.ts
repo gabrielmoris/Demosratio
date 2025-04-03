@@ -29,3 +29,20 @@ export interface PartyPromise {
   promise: string;
   party_id: number;
 }
+
+export interface StructuredPromises {
+  id: number;
+  name: string;
+  description: string;
+  promises: [
+    {
+      id: number;
+      created_at: Date;
+      campaign_id: number;
+      subject_id: number;
+      promise: string;
+      party_id: number;
+      subjects: Subject;
+    }
+  ];
+}

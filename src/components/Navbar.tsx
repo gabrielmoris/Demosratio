@@ -27,7 +27,7 @@ export default function Navbar() {
             onClick={() => setOpenUser(!openUser)}
             className="w-7 h-7 lg:w-10 lg:h-10 rounded-full flex flex-col items-center justify-start hover:opacity-60 cursor-pointer"
           >
-            <Image src="/dr-icn.svg" alt="dr-icn" width={50} height={50} priority />
+            <Image src="/dr-icn.svg" alt="dr-icn" width={100} height={100} priority />
           </p>
           <div
             className={`flex flex-row md:flex-col gap-2 lg:gap-10 items-center justify-start ${openUser ? "relative" : "absolute"} ${

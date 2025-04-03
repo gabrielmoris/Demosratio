@@ -100,16 +100,18 @@ export default function Dropdown({ className, items, deleteItem, choice, choose 
                     key={item.id}
                   >
                     {item.year}
-                    <Image
-                      onClick={() => {
-                        setIsOpenPopup(true);
-                        setIdToDelete(item.id);
-                      }}
-                      width={20}
-                      height={20}
-                      alt="delete-icn"
-                      src="/delete-icn.svg"
-                    />
+                    {deleteItem && (
+                      <Image
+                        onClick={() => {
+                          setIsOpenPopup(true);
+                          setIdToDelete(item.id);
+                        }}
+                        width={20}
+                        height={20}
+                        alt="delete-icn"
+                        src="/delete-icn.svg"
+                      />
+                    )}
                   </li>
                 );
               } else if ("promise" in item) {

@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { createContext, useContext, useEffect, useState } from "react";
-import { Campaign, Party, PartyPromise, Subject } from "@/types/politicalParties";
+import { Campaign, Party, PartyPromise, StructuredPromises, Subject } from "@/types/politicalParties";
 import { useRequest } from "@/hooks/use-request";
 
 type PartiesContextType = {
@@ -23,6 +23,7 @@ type PartiesContextType = {
   getPartyPromises: () => Promise<any>;
   subjects: Subject[];
   promises: PartyPromise[];
+  structuredPromises: StructuredPromises[];
 };
 
 const PartiesContext = createContext<PartiesContextType | undefined>(undefined);
@@ -35,6 +36,7 @@ export function PartiesProvider({ children, structured = false }: { children: Re
   const [subjects, setSubjects] = useState<Subject[]>([]);
   const [subjectChoice, setSubjectChoice] = useState<Subject>();
   const [promises, setPromises] = useState<PartyPromise[]>([]);
+  const [structuredPromises, setStructuredPromises] = useState<StructuredPromises[]>([]);
 
   const [loading, setLoading] = useState(true);
 
@@ -68,8 +70,8 @@ export function PartiesProvider({ children, structured = false }: { children: Re
   const { doRequest: getPartyPromisesStructured } = useRequest({
     url: `/api/parties/promises?party_id=${partyChoice?.id}&campaign_id=${campaignChoice?.id}&structured=true`,
     method: "get",
-    onSuccess: (data: PartyPromise[]) => {
-      setPromises(data);
+    onSuccess: (data: StructuredPromises[]) => {
+      setStructuredPromises(data);
     },
   });
 
@@ -134,6 +136,7 @@ export function PartiesProvider({ children, structured = false }: { children: Re
         setCampaigns,
         campaignChoice,
         setCampaignChoice,
+        structuredPromises,
       }}
     >
       {children}

@@ -159,7 +159,7 @@ export default function VotePage() {
 
   if (voteResults) {
     return (
-      <section className="flex flex-col items-center justify-center min-h-screen pb-20 gap-16 font-drnote">
+      <section className="flex flex-col items-center justify-center min-h-screen pb-20 gap-16 font-drsans">
         <div className="w-full flex flex-row items-end justify-between">
           <Image
             onClick={goBack}
@@ -173,7 +173,7 @@ export default function VotePage() {
           <p className="text-xs text-drgray">{formatDate(voteResults.date)}</p>
         </div>
         <h1 className="text-2xl font-bold font-drserif w-full">{voteResults.title}</h1>
-        <h2 className="text-justify font-drnote text-drgray">{voteResults.expedient_text}</h2>
+        <h2 className="text-justify font-drsans text-drgray">{voteResults.expedient_text}</h2>
         <Link className="w-full text-drPurple hover:opacity-60 duration-500" href={voteResults.url} target="_blank">
           {t("parliament-link")}
         </Link>
