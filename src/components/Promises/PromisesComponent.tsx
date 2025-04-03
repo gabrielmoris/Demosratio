@@ -3,11 +3,12 @@ import React from "react";
 import { usePartiesContext } from "../Parties/PartyStateManager";
 import Loading from "../Loading";
 import Image from "next/image";
-import { Party } from "@/types/politicalParties";
+import { Campaign, Party } from "@/types/politicalParties";
+import Dropdown from "../Dropdown";
 
 export const PromisesComponent = () => {
   // const t = useTranslations("promises");
-  const { parties, loading, setPartyChoice, partyChoice } = usePartiesContext();
+  const { parties, loading, setPartyChoice, partyChoice, campaigns, setCampaignChoice, campaignChoice } = usePartiesContext();
 
   if (loading) {
     return <Loading />;
@@ -46,6 +47,9 @@ export const PromisesComponent = () => {
           >
             <Image src={partyChoice.logo_url} width={100} height={100} alt={partyChoice.name + "logo"} />
           </div>
+          {campaigns[0] && (
+            <Dropdown items={campaigns} choose={(item) => setCampaignChoice(item as Campaign)} choice={campaignChoice || campaigns[0]} />
+          )}
         </>
       )}
     </div>

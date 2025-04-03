@@ -1,11 +1,6 @@
 import Image from "next/image";
 import { useState, useCallback } from "react";
-import {
-  Campaign,
-  Party,
-  PartyPromise,
-  Subject,
-} from "@/types/politicalParties";
+import { Campaign, Party, PartyPromise, Subject } from "@/types/politicalParties";
 import { Popup } from "./Overlay";
 import { useTranslations } from "next-intl";
 
@@ -17,13 +12,7 @@ interface ImputProps {
   className?: string;
 }
 
-export default function Dropdown({
-  className,
-  items,
-  deleteItem,
-  choice,
-  choose,
-}: ImputProps) {
+export default function Dropdown({ className, items, deleteItem, choice, choose }: ImputProps) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isOpenPopup, setIsOpenPopup] = useState<boolean>(false);
   const [idToDelete, setIdToDelete] = useState<number>();
@@ -55,7 +44,7 @@ export default function Dropdown({
         id="dropdownDefaultButton"
         onClick={() => setIsOpen(!isOpen)}
         data-dropdown-toggle="dropdown"
-        className="w-full bg-white rounded-md border border-drPurple  text-contrast hover:opacity-90 focus:ring-1 focus:outline-none focus:ring-drgray font-medium text-sm px-5 py-2.5 text-center inline-flex items-center"
+        className="w-full bg-white flex justify-between rounded-md border border-drPurple  text-contrast hover:opacity-90 focus:ring-1 focus:outline-none focus:ring-drgray font-medium text-sm px-5 py-2.5 text-center items-center"
         type="button"
       >
         {typeof choice === "string" && choice}
@@ -63,21 +52,13 @@ export default function Dropdown({
         {typeof choice !== "string" && "year" in choice && choice?.year}
         {typeof choice !== "string" && "promise" in choice && choice?.promise}
         <svg
-          className={`w-2.5 h-2.5 ms-3 transition-transform ${
-            isOpen ? "transform rotate-180" : ""
-          }`}
+          className={`w-4 h-4 ms-3 transition-transform ${isOpen ? "transform rotate-180" : ""}`}
           aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 10 6"
         >
-          <path
-            stroke="currentColor"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="m1 1 4 4 4-4"
-          />
+          <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4" />
         </svg>
       </button>
       <div
@@ -86,10 +67,7 @@ export default function Dropdown({
           isOpen ? "" : "hidden"
         } bg-white divide-y divide-gray-100 rounded-lg border border-drlight shadow-sm w-full absolute top-10`}
       >
-        <ul
-          className="py-2 text-sm text-contrast"
-          aria-labelledby="dropdownDefaultButton"
-        >
+        <ul className="py-2 text-sm text-contrast" aria-labelledby="dropdownDefaultButton">
           {Array.isArray(items) &&
             items.map((item) => {
               if ("name" in item) {

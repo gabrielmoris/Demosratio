@@ -19,16 +19,16 @@ export default function Admin() {
       icon: "/add-party-icn.svg",
       link: "/admin/manage-parties",
     },
-    {
-      id: 3,
-      name: t("change-user-rights"),
-      icon: "/usr-admin-icn.svg",
-      link: "/admin/user-admin",
-    },
+    // {
+    //   id: 3,
+    //   name: t("change-user-rights"),
+    //   icon: "/usr-admin-icn.svg",
+    //   link: "/admin/user-admin",
+    // },
   ];
 
   return (
-    <main className="flex flex-col md:grid-cols-3 gap-10 w-full">
+    <main className="flex flex-col items-center justify-center md:grid-cols-3 gap-10 w-full h-[80vh]">
       <AdminProtectedRoute>
         {ADMIN_PANELS &&
           ADMIN_PANELS.map((panel) => <AdminPanel key={panel.id} name={panel.name} icon={panel.icon} link={panel.link} api={panel.api} />)}

@@ -34,6 +34,7 @@ export function PartyForm() {
   const handleSubmit = (e: FormEvent<Element>): void => {
     e.preventDefault();
     saveParty();
+    setPartyToSave({ name: "", logo_url: "" });
   };
 
   return (

@@ -7,7 +7,7 @@ import { ChangeEvent, FormEvent, useCallback, useState } from "react";
 import { useRequest } from "@/hooks/use-request";
 
 export function CampaignForm() {
-  const { partyChoice, getAllParties, campaignChoice, campaigns } = usePartiesContext();
+  const { partyChoice, campaignChoice, campaigns, getPartyCampaign } = usePartiesContext();
 
   const [campaignToSave, setCampaignToSave] = useState({
     year: campaignChoice?.year || campaigns[0]?.year,
@@ -22,7 +22,12 @@ export function CampaignForm() {
     method: "post",
     body: campaignToSave,
     onSuccess() {
-      getAllParties();
+      getPartyCampaign();
+      setCampaignToSave({
+        year: campaignChoice?.year || campaigns[0]?.year,
+        campaign_pdf_url: "",
+        party_id: partyChoice?.id,
+      });
     },
   });
 

@@ -10,8 +10,19 @@ import { useRequest } from "@/hooks/use-request";
 import { useTranslations } from "next-intl";
 
 export default function ManagePartiesContent() {
-  const { loading, parties, promises, getAllParties, partyChoice, setPartyChoice, campaigns, campaignChoice, setCampaignChoice, getPartyPromises } =
-    usePartiesContext();
+  const {
+    loading,
+    parties,
+    promises,
+    getAllParties,
+    partyChoice,
+    setPartyChoice,
+    campaigns,
+    campaignChoice,
+    setCampaignChoice,
+    getPartyCampaign,
+    getPartyPromises,
+  } = usePartiesContext();
 
   const t = useTranslations("manage-parties");
 
@@ -27,7 +38,7 @@ export default function ManagePartiesContent() {
     url: "/api/parties/campaigns",
     method: "delete",
     onSuccess() {
-      getAllParties();
+      getPartyCampaign();
     },
   });
 
@@ -41,6 +52,7 @@ export default function ManagePartiesContent() {
 
   const deleteParty = (id: number) => {
     deletePartyReq({ party_id: id });
+    setPartyChoice(undefined);
   };
 
   const deleteCampaign = (id: number) => {
