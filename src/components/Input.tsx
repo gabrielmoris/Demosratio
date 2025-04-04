@@ -21,6 +21,7 @@ interface ImputProps {
     | "range";
   className?: string;
   placeholderClass?: string;
+  value?: string | number;
 }
 
 export default function Input({
@@ -32,6 +33,7 @@ export default function Input({
   setInput,
   required,
   password,
+  value,
   type,
   placeholderClass,
   className,
@@ -65,7 +67,7 @@ export default function Input({
           htmlFor={inputKey}
           className="rounded-md text-drgray duration-300 transform xl:text-xl peer-focus:text-drgray peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2  left-1"
         >
-          {inputLabel} {inputString + "%"}
+          {inputLabel} {inputString && inputString + "%"}
         </label>
         <input
           type={type ? type : "text"}
@@ -75,7 +77,7 @@ export default function Input({
           min="0"
           max="100"
           step="5"
-          value={inputObj && inputKey ? inputObj[inputKey] : inputString}
+          value={value}
           placeholder={placeholder.toString() + "%"}
           className={`w-full h-4 bg-gradient-to-r from-drerror via-drgray to-drgreen rounded-lg appearance-none cursor-pointer ${placeholderClass}`}
           onChange={(e) => setInput(e, inputKey ? inputKey : inputString || "")}

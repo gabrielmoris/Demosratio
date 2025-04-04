@@ -80,6 +80,8 @@
   },
   "parties": {
     "readiness-promise": "According to compliance",
-    "save-promise-readiness-btn": "Send"
+    "save-promise-readiness-btn": "Send",
+    "choose-party": "Choose a political party",
+    "readiness-sent": "Agreement sent."
   }
 }

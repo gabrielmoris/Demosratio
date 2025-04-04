@@ -121,6 +121,8 @@
   },
   "parties": {
     "readiness-promise": "Acuerdo con el Cumplimiento",
-    "save-promise-readiness-btn": "Enviar"
+    "save-promise-readiness-btn": "Enviar",
+    "choose-party": "Escoge un Partido Político",
+    "readiness-sent": "Acuerdo enviado."
   }
 }
