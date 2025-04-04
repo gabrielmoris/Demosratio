@@ -51,7 +51,7 @@ export const PartyChoiceComponent = () => {
   });
 
   const { doRequest: getPromiseReadiness } = useRequest({
-    url: `http://localhost:3000/api/parties/promises/readiness?campaign_id=${campaignChoice?.id}`,
+    url: `/api/parties/promises/readiness?campaign_id=${campaignChoice?.id}`,
     method: "get",
     onSuccess: (data) => {
       setPromiseReadiness(data.readiness || "0");
