@@ -77,5 +77,11 @@
   },
   "dropdown": {
     "delete-advice": "Sure you want to erase this element?"
+  },
+  "parties": {
+    "readiness-promise": "According to compliance",
+    "save-promise-readiness-btn": "Send",
+    "choose-party": "Choose a political party",
+    "readiness-sent": "Agreement sent."
   }
 }
