@@ -118,5 +118,9 @@
   },
   "dropdown": {
     "delete-advice": "Seguro que quieres borrar este elemento?"
+  },
+  "parties": {
+    "readiness-promise": "Acuerdo con el Cumplimiento",
+    "save-promise-readiness-btn": "Enviar"
   }
 }
