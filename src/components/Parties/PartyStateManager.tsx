@@ -2,7 +2,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { createContext, useContext, useEffect, useState } from "react";
-import { Campaign, Party, PartyPromise, StructuredPromises, Subject } from "@/types/politicalParties";
+import {
+  Campaign,
+  Party,
+  PartyPromise,
+  StructuredPromises,
+  Subject,
+} from "@/types/politicalParties";
 import { useRequest } from "@/hooks/use-request";
 
 type PartiesContextType = {
@@ -28,7 +34,13 @@ type PartiesContextType = {
 
 const PartiesContext = createContext<PartiesContextType | undefined>(undefined);
 
-export function PartiesProvider({ children, structured = false }: { children: React.ReactNode; structured?: boolean }) {
+export function PartiesProvider({
+  children,
+  structured = false,
+}: {
+  children: React.ReactNode;
+  structured?: boolean;
+}) {
   const [parties, setParties] = useState<Party[]>([]);
   const [partyChoice, setPartyChoice] = useState<Party>();
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
@@ -36,7 +48,9 @@ export function PartiesProvider({ children, structured = false }: { children: Re
   const [subjects, setSubjects] = useState<Subject[]>([]);
   const [subjectChoice, setSubjectChoice] = useState<Subject>();
   const [promises, setPromises] = useState<PartyPromise[]>([]);
-  const [structuredPromises, setStructuredPromises] = useState<StructuredPromises[]>([]);
+  const [structuredPromises, setStructuredPromises] = useState<
+    StructuredPromises[]
+  >([]);
 
   const [loading, setLoading] = useState(true);
 

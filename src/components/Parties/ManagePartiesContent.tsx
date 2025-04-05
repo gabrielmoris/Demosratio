@@ -86,16 +86,19 @@ export default function ManagePartiesContent() {
         />
       )}
 
-      {promises[0] && <Dropdown items={promises} deleteItem={deletePromise} choose={() => null} choice={t("delete-promise")} />}
-
-      {campaigns[0] && (
-        <div className="flex w-full h-full">
-          <PromiseForm />
-        </div>
+      {promises[0] && (
+        <Dropdown
+          items={promises}
+          deleteItem={deletePromise}
+          choose={() => null}
+          choice={t("delete-promise")}
+        />
       )}
+
       <div className="flex w-full h-full gap-8 flex-col xl:flex-row">
-        <PartyForm />
-        <CampaignForm />
+        {campaigns[0] && <PromiseForm />}
+        {!partyChoice && <PartyForm />}
+        {partyChoice && <CampaignForm />}
       </div>
     </main>
   );
