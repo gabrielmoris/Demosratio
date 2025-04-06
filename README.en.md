@@ -61,72 +61,93 @@ ENCRYPTION_KEY=<GENERATED_ENCRYPTION_KEY> #openssl rand -base64 64 | tr -dc 'a-z
 
 ```mermaid
 erDiagram
-    users {
-        int id PK
-        timestamp register_date
-        text name
-        text password
-        boolean is_admin
+    campaigns {
+        bigint id PK
+        timestamp with time zone created_at DEFAULT now() NOT NULL
+        bigint year NOT NULL
+        bigint party_id FK
+        character varying campaign_pdf_url
     }
-
     parties {
-        int id PK
-        timestamp created_at
-        text name
+        bigint id PK
+        timestamp with time zone created_at DEFAULT now() NOT NULL
+        text name UNIQUE NOT NULL
         text logo_url
     }
-
-    campaigns {
-        int id PK
-        timestamp created_at
-        int year
-        int party_id FK --> parties.id
-        text campaign_pdf_url
-    }
-
-    subjects {
-        int id PK
-        timestamp created_at
-        text name
-        text description
-    }
-
     promises {
-        int id PK
-        timestamp created_at
-        int campaign_id FK --> campaigns.id
-        int subject_id FK --> subjects.id
-        text promise
+        bigint id PK
+        timestamp with time zone created_at DEFAULT now() NOT NULL
+        bigint campaign_id FK
+        bigint subject_id FK
+        text promise NOT NULL
+        bigint party_id FK
     }
-
     promises_readiness_index {
-        int id PK
-        timestamp created_at
-        int campaign_id FK --> campaigns.id
-        int user_id FK --> users.id
-        int readiness_score
+        bigint id PK
+        timestamp with time zone created_at DEFAULT now() NOT NULL
+        bigint campaign_id FK
+        bigint user_id FK
+        bigint readiness_score
     }
-
-    proposal_likes {
-        int id PK
-        timestamp created_at
-        int proposal_id FK --> promises.id
-        int user_id FK --> users.id
-    }
-
     proposal_dislikes {
-        int id PK
-        timestamp created_at
-        int proposal_id FK --> promises.id
-        int user_id FK --> users.id
+        bigint id PK
+        timestamp with time zone created_at DEFAULT now() NOT NULL
+        bigint proposal_id FK
+        bigint user_id FK
+    }
+    proposal_likes {
+        bigint id PK
+        timestamp with time zone created_at DEFAULT now() NOT NULL
+        bigint proposal_id FK
+        bigint user_id FK
+    }
+    proposals {
+        bigint id PK
+        text title NOT NULL
+        text url NOT NULL
+        bigint session DEFAULT 0 NOT NULL
+        text expedient_text NOT NULL
+        jsonb votes_parties_json NOT NULL
+        bigint parliament_presence NOT NULL
+        bigint votes_for NOT NULL
+        bigint abstentions NOT NULL
+        bigint votes_against NOT NULL
+        bigint no_vote NOT NULL
+        boolean assent
+        timestamp with time zone date DEFAULT now() NOT NULL
+        text BOE
+    }
+    subjects {
+        bigint id PK
+        timestamp with time zone created_at DEFAULT now() NOT NULL
+        text name UNIQUE NOT NULL
+        character varying description
+    }
+    user_devices {
+        bigint id PK
+        bigint user_id FK
+        character varying device_hash UNIQUE NOT NULL
+        timestamp with time zone added_at DEFAULT now() NOT NULL
+    }
+    users {
+        bigint id PK
+        timestamp with time zone register_date DEFAULT now() NOT NULL
+        text name NOT NULL
+        text password
+        boolean is_admin DEFAULT false
     }
 
-    user_devices {
-        int id PK
-        int user_id FK --> users.id
-        varchar device_hash
-        timestamp added_at DEFAULT NOW()
-    }
+    campaigns ||--o{ parties : "party_id"
+    promises ||--o{ campaigns : "campaign_id"
+    promises ||--o{ parties : "party_id"
+    promises ||--o{ subjects : "subject_id"
+    promises_readiness_index ||--o{ campaigns : "campaign_id"
+    promises_readiness_index ||--o{ users : "user_id"
+    proposal_dislikes ||--o{ proposals : "proposal_id"
+    proposal_dislikes ||--o{ users : "user_id"
+    proposal_likes ||--o{ proposals : "proposal_id"
+    proposal_likes ||--o{ users : "user_id"
+    user_devices ||--o{ users : "user_id"
 ```
 
 ## Installation
