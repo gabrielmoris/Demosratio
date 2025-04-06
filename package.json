@@ -6,8 +6,7 @@
     "dev": "next dev --turbo",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "init-supabase": "npx supabase init"
+    "lint": "next lint"
   },
   "dependencies": {
     "@js-temporal/polyfill": "^0.4.4",
