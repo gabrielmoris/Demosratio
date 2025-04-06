@@ -15,7 +15,7 @@ export async function GET() {
 
   try {
     // Save last X days in DB
-    const daysToCheck = parseInt(process.env.DAYS_TO_CHECK_VOTATIONS || "5", 10);
+    const daysToCheck = parseInt(process.env.DAYS_TO_CHECK_VOTES || "5", 10);
 
     for (let i = daysToCheck; i > 0; i--) {
       const dateToCheck = getDateString(i);
