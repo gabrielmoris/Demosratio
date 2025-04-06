@@ -62,78 +62,78 @@ ENCRYPTION_KEY=<GENERATED_ENCRYPTION_KEY> #openssl rand -base64 64 | tr -dc 'a-z
 ```mermaid
 erDiagram
     campaigns {
-        bigint id PK
-        timestamp with time zone created_at DEFAULT now() NOT NULL
-        bigint year NOT NULL
-        bigint party_id FK
-        character varying campaign_pdf_url
+        int id PK
+        string created_at DEFAULT now() NOT NULL
+        int year NOT NULL
+        int party_id FK
+        string campaign_pdf_url
     }
     parties {
-        bigint id PK
-        timestamp with time zone created_at DEFAULT now() NOT NULL
-        text name UNIQUE NOT NULL
-        text logo_url
+        int id PK
+        string created_at DEFAULT now() NOT NULL
+        string name UNIQUE NOT NULL
+        string logo_url
     }
     promises {
-        bigint id PK
-        timestamp with time zone created_at DEFAULT now() NOT NULL
-        bigint campaign_id FK
-        bigint subject_id FK
-        text promise NOT NULL
-        bigint party_id FK
+        int id PK
+        string created_at DEFAULT now() NOT NULL
+        int campaign_id FK
+        int subject_id FK
+        string promise NOT NULL
+        int party_id FK
     }
     promises_readiness_index {
-        bigint id PK
-        timestamp with time zone created_at DEFAULT now() NOT NULL
-        bigint campaign_id FK
-        bigint user_id FK
-        bigint readiness_score
+        int id PK
+        string created_at DEFAULT now() NOT NULL
+        int campaign_id FK
+        int user_id FK
+        int readiness_score
     }
     proposal_dislikes {
-        bigint id PK
-        timestamp with time zone created_at DEFAULT now() NOT NULL
-        bigint proposal_id FK
-        bigint user_id FK
+        int id PK
+        string created_at DEFAULT now() NOT NULL
+        int proposal_id FK
+        int user_id FK
     }
     proposal_likes {
-        bigint id PK
-        timestamp with time zone created_at DEFAULT now() NOT NULL
-        bigint proposal_id FK
-        bigint user_id FK
+        int id PK
+        string created_at DEFAULT now() NOT NULL
+        int proposal_id FK
+        int user_id FK
     }
     proposals {
-        bigint id PK
-        text title NOT NULL
-        text url NOT NULL
-        bigint session DEFAULT 0 NOT NULL
-        text expedient_text NOT NULL
-        jsonb votes_parties_json NOT NULL
-        bigint parliament_presence NOT NULL
-        bigint votes_for NOT NULL
-        bigint abstentions NOT NULL
-        bigint votes_against NOT NULL
-        bigint no_vote NOT NULL
+        int id PK
+        string title NOT NULL
+        string url NOT NULL
+        int session DEFAULT 0 NOT NULL
+        string expedient_text NOT NULL
+        json votes_parties_json NOT NULL
+        int parliament_presence NOT NULL
+        int votes_for NOT NULL
+        int abstentions NOT NULL
+        int votes_against NOT NULL
+        int no_vote NOT NULL
         boolean assent
-        timestamp with time zone date DEFAULT now() NOT NULL
-        text BOE
+        string date DEFAULT now() NOT NULL
+        string BOE
     }
     subjects {
-        bigint id PK
-        timestamp with time zone created_at DEFAULT now() NOT NULL
-        text name UNIQUE NOT NULL
-        character varying description
+        int id PK
+        string created_at DEFAULT now() NOT NULL
+        string name UNIQUE NOT NULL
+        string description
     }
     user_devices {
-        bigint id PK
-        bigint user_id FK
-        character varying device_hash UNIQUE NOT NULL
-        timestamp with time zone added_at DEFAULT now() NOT NULL
+        int id PK
+        int user_id FK
+        string device_hash UNIQUE NOT NULL
+        string added_at DEFAULT now() NOT NULL
     }
     users {
-        bigint id PK
-        timestamp with time zone register_date DEFAULT now() NOT NULL
-        text name NOT NULL
-        text password
+        int id PK
+        string register_date DEFAULT now() NOT NULL
+        string name NOT NULL
+        string password
         boolean is_admin DEFAULT false
     }
 
