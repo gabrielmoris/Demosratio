@@ -64,44 +64,50 @@ ENCRYPTION_KEY=<GENERATED_ENCRIPTION_KEY> #openssl rand -base64 64 | tr -dc 'a-z
 erDiagram
     campaigns {
         int id PK
-        string created_at DEFAULT now() NOT NULL
+        string created_at
         int year NOT NULL
         int party_id FK
         string campaign_pdf_url
     }
+
     parties {
         int id PK
-        string created_at DEFAULT now() NOT NULL
+        string created_at
         string name UNIQUE NOT NULL
         string logo_url
     }
+
     promises {
         int id PK
-        string created_at DEFAULT now() NOT NULL
+        string created_at
         int campaign_id FK
         int subject_id FK
         string promise NOT NULL
         int party_id FK
     }
+
     promises_readiness_index {
         int id PK
-        string created_at DEFAULT now() NOT NULL
+        string created_at
         int campaign_id FK
         int user_id FK
         int readiness_score
     }
+
     proposal_dislikes {
         int id PK
-        string created_at DEFAULT now() NOT NULL
+        string created_at
         int proposal_id FK
         int user_id FK
     }
+
     proposal_likes {
         int id PK
-        string created_at DEFAULT now() NOT NULL
+        string created_at
         int proposal_id FK
         int user_id FK
     }
+
     proposals {
         int id PK
         string title NOT NULL
@@ -115,24 +121,27 @@ erDiagram
         int votes_against NOT NULL
         int no_vote NOT NULL
         boolean assent
-        string date DEFAULT now() NOT NULL
+        string date
         string BOE
     }
+
     subjects {
         int id PK
-        string created_at DEFAULT now() NOT NULL
+        string created_at
         string name UNIQUE NOT NULL
         string description
     }
+
     user_devices {
         int id PK
         int user_id FK
         string device_hash UNIQUE NOT NULL
-        string added_at DEFAULT now() NOT NULL
+        string added_at
     }
+
     users {
         int id PK
-        string register_date DEFAULT now() NOT NULL
+        string register_date
         string name NOT NULL
         string password
         boolean is_admin DEFAULT false
@@ -149,6 +158,7 @@ erDiagram
     proposal_likes ||--o{ proposals : "proposal_id"
     proposal_likes ||--o{ users : "user_id"
     user_devices ||--o{ users : "user_id"
+
 ```
 
 ## Instalación
