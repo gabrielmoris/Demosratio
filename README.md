@@ -19,20 +19,44 @@ Demosratio recopila y organiza información sobre las promesas electorales de lo
 - **Participación ciudadana**: Aportación de información verificable, denuncias de manipulación y simulacros de votación.
 - **Visualización de datos**: Gráficos y tablas interactivas para analizar la información.
 - **Secciones de la web**:
-  - Página principal: Resumen de promesas y decisiones recientes.
+  - Página principal: Cartas para ver promesas y decisiones recientes.
   - Votos en el congreso: Decisiones ordenadas por fecha. Con búsqueda por texto de expediente.
   - Promesas electorales: Promesas y decisiones agrupadas por temas.
   - Visualización de datos: Gráficos y tablas interactivas. cuando se clicka en los votos
-  - Simulacros de votación: Votaciones simuladas sobre temas de actualidad.
-  - Aportación de información: Formulario para añadir promesas y decisiones. (NO MVP)
-  - Denuncias de manipulación: Formulario para denunciar información falsa. (NO MVP)
   - Manifiesto: Información sobre el proyecto y sus creadores.
-  - Contacto: Formulario de contacto.
 
 ## Tecnologías
 
 - **Frontend**: Next.js, Typescript
-- **Backend**: Express (o Next.js), Bun.js, Docker
+- **Backend**: Next.js, Supabase
+
+## Primera instalación
+
+- Antes de la primera instalación se debe hacer una cuenta en [supabase](https://supabase.com/).
+- Crea un proyecto en supabase y un documento .env en ROOT del código
+- En subapabse: Configuracuón > DATA API Copiar y pegar el `Project URL`, y los 2 `Projet API keys`.
+- en el código: `npm run dev` y visitar la url `http://localhost:3000/api/create-tables`
+
+```
+# Supabase Configuration
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+SUPABASE_SERVICE_ROLE_KEY=
+
+# Application Configuration
+DAYS_TO_CHECK_VOTES=30 # Cuantos dias de anterioridad quieres ver los votos que se hicieron en el congreso
+JWT_KEY=<RANDOM_STRING>
+ENCRYPTION_KEY=<GENERATED_ENCRIPTION_KEY> #openssl rand -base64 64 | tr -dc 'a-zA-Z0-9' | head -c 64
+
+```
+
+- Crea un proyecto en supabase
+- En la consola: `npx supabase login`
+- Ir a Supabase y buscar Database > Migrations y seguir los pasos (añadiendo npx al principio)
+  - `npx supabase link --project-ref <TU_PROJECT_REF>`
+  - `npx supabase migration new new-migration`
+  - Ir a `supabase/migrations/<ID>_new-migration.sql` y pegar el contenido de `schema.sql`
+  - `npx supabase db push`
 
 ## Base de Datos
 
@@ -40,104 +64,78 @@ Demosratio recopila y organiza información sobre las promesas electorales de lo
 erDiagram
     users {
         int id PK
-        varchar email
-        varchar password
-        date register_date
+        timestamp register_date
+        text name
+        text password
+        boolean is_admin
     }
 
-    user_devices {
+    parties {
         int id PK
-        int user_id FK
-        varchar device_hash
-        timestamp added_at
-    }
-
-    political_parties {
-        int id PK
-        varchar name
-        text logo
-        varchar abbreviation
-    }
-
-    sources {
-        int id PK
-        text url
-        date date
-        int user_id FK
-        varchar source_type
-    }
-
-    proposals {
-        int id PK
-        text title
-        text url
-        int session
-        text expedient_text
-        jsonb votes_parties_json
-        int parliament_presence
-        int votes_for
-        int abstentions
-        int votes_against
-        int no_vote
-        boolean assent
-        date date
-    }
-
-    proposal_likes {
-        int id PK
-        int proposal_id FK
-        int user_id FK
         timestamp created_at
+        text name
+        text logo_url
     }
 
-    proposal_dislikes {
+    campaigns {
         int id PK
-        int proposal_id FK
-        int user_id FK
         timestamp created_at
+        int year
+        int party_id FK --> parties.id
+        text campaign_pdf_url
+    }
+
+    subjects {
+        int id PK
+        timestamp created_at
+        text name
+        text description
     }
 
     promises {
         int id PK
-        text text
-        text url
-        int political_party_id FK
-        date date
-    }
-
-    promises_status_reached {
-        int id PK
-        int promise_id FK
-        int user_id FK
         timestamp created_at
+        int campaign_id FK --> campaigns.id
+        int subject_id FK --> subjects.id
+        text promise
     }
 
-    promises_status_not_reached {
+    promises_readiness_index {
         int id PK
-        int promise_id FK
-        int user_id FK
         timestamp created_at
+        int campaign_id FK --> campaigns.id
+        int user_id FK --> users.id
+        int readiness_score
     }
 
-    users ||--o{ user_devices : has
-    users ||--o{ sources : submits
-    users ||--o{ proposal_likes : creates
-    users ||--o{ proposal_dislikes : creates
-    users ||--o{ promises_status_reached : marks
-    users ||--o{ promises_status_not_reached : marks
-    political_parties ||--o{ promises : makes
-    proposals ||--o{ proposal_likes : receives
-    proposals ||--o{ proposal_dislikes : receives
-    promises ||--o{ promises_status_reached : has
-    promises ||--o{ promises_status_not_reached : has
+    proposal_likes {
+        int id PK
+        timestamp created_at
+        int proposal_id FK --> promises.id
+        int user_id FK --> users.id
+    }
+
+    proposal_dislikes {
+        int id PK
+        timestamp created_at
+        int proposal_id FK --> promises.id
+        int user_id FK --> users.id
+    }
+
+    user_devices {
+        int id PK
+        int user_id FK --> users.id
+        varchar device_hash
+        timestamp added_at DEFAULT NOW()
+    }
 ```
 
 ## Instalación
 
 1.  Clona el repositorio: `git clone git@github.com:gabrielmoris/Demosratio.git`
 2.  Navega al directorio del proyecto: `cd Demosratio`
-3.  Instala las dependencias: `bun install`
-4.  Inicia el servidor de desarrollo: `bun run next dev`
+3.  Instala las dependencias: `npm install`
+4.  Inicia el servidor de desarrollo: `npm run next dev`
 
 ## Contribución
 

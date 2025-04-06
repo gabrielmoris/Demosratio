@@ -19,20 +19,43 @@ Demosratio collects and organizes information about the electoral promises of po
 - **Citizen participation**: Contribution of verifiable information, reports of manipulation, and voting simulations.
 - **Data visualization**: Interactive graphs and tables to analyze information.
 - **Website sections**:
-  - Homepage: Summary of recent promises and decisions.
+  - Homepage: Cards to show recent promises and decisions.
   - Votes in congress: Decisions sorted by date. With search by file text.
   - Electoral promises: Promises and decisions grouped by topics.
   - Data visualization: Interactive graphs and tables, when votes are clicked.
-  - Voting simulations: Simulated votes on current issues.
-  - Information contribution: Form to add promises and decisions. (NO MVP)
-  - Manipulation reports: Form to report false information. (NO MVP)
   - Manifesto: Information about the project and its creators.
-  - Contact: Contact form.
 
 ## Technologies
 
 - **Frontend**: Next.js, Typescript
-- **Backend**: Express (or Next.js), Bun.js, Docker
+- **Backend**: Next.js, Supabase
+
+## First Installation
+
+- Create an account on Supabase.
+- Set up a project in Supabase and create a .env file at the root of the codebase.
+- In Supabase: Navigate to Configuration > DATA API, then copy the Project URL and two Project API keys.
+- In the code: Run npm run dev and visit `http://localhost:3000/api/create-tables`.
+
+```
+# Supabase Configuration
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+SUPABASE_SERVICE_ROLE_KEY=
+
+# Application Configuration
+DAYS_TO_CHECK_VOTES=30 # Number of days to check prior congressional votes
+JWT_KEY=<RANDOM_STRING>
+ENCRYPTION_KEY=<GENERATED_ENCRYPTION_KEY> #openssl rand -base64 64 | tr -dc 'a-zA-Z0-9' | head -c 64
+```
+
+- Create a project in Supabase
+- Log in via console using: `npx supabase login`
+- Go to Supabaseand search Database > Migrations and follow all steps adding `npx` at the beginning
+  - `npx supabase link --project-ref <TU_PROJECT_REF>`
+  - `npx supabase migration new new-migration`
+  - Go to `supabase/migrations/<ID>_new-migration.sql` and paste the content of `schema.sql`
+  - `npx supabase db push`
 
 ## Database
 
@@ -40,96 +63,70 @@ Demosratio collects and organizes information about the electoral promises of po
 erDiagram
     users {
         int id PK
-        varchar email
-        varchar password
-        date register_date
+        timestamp register_date
+        text name
+        text password
+        boolean is_admin
     }
 
-    user_devices {
+    parties {
         int id PK
-        int user_id FK
-        varchar device_hash UNIQUE
-        timestamp added_at
-    }
-
-    political_parties {
-        int id PK
-        varchar name
-        text logo
-        varchar abbreviation UNIQUE
-    }
-
-    sources {
-        int id PK
-        text url
-        date date
-        int user_id FK
-        varchar source_type
-    }
-
-    proposals {
-        int id PK
-        text title
-        text url
-        int session
-        text expedient_text
-        jsonb votes_parties_json
-        int parliament_presence
-        int votes_for
-        int abstentions
-        int votes_against
-        int no_vote
-        boolean assent
-        date date
-    }
-
-    proposal_likes {
-        int id PK
-        int proposal_id FK
-        int user_id FK
         timestamp created_at
+        text name
+        text logo_url
     }
 
-    proposal_dislikes {
+    campaigns {
         int id PK
-        int proposal_id FK
-        int user_id FK
         timestamp created_at
+        int year
+        int party_id FK --> parties.id
+        text campaign_pdf_url
+    }
+
+    subjects {
+        int id PK
+        timestamp created_at
+        text name
+        text description
     }
 
     promises {
         int id PK
-        text text
-        text url
-        int political_party_id FK
-        date date
-    }
-
-    promises_status_reached {
-        int id PK
-        int promise_id FK
-        int user_id FK
         timestamp created_at
+        int campaign_id FK --> campaigns.id
+        int subject_id FK --> subjects.id
+        text promise
     }
 
-    promises_status_not_reached {
+    promises_readiness_index {
         int id PK
-        int promise_id FK
-        int user_id FK
         timestamp created_at
+        int campaign_id FK --> campaigns.id
+        int user_id FK --> users.id
+        int readiness_score
     }
 
-    users ||--o{ user_devices : "one-to-many"
-    users ||--o{ sources : "one-to-many"
-    users ||--o{ proposal_likes : "one-to-many"
-    users ||--o{ proposal_dislikes : "one-to-many"
-    users ||--o{ promises_status_reached : "one-to-many"
-    users ||--o{ promises_status_not_reached : "one-to-many"
-    political_parties ||--o{ promises : "one-to-many"
-    proposals ||--o{ proposal_likes : "one-to-many"
-    proposals ||--o{ proposal_dislikes : "one-to-many"
-    promises ||--o{ promises_status_reached : "one-to-many"
-    promises ||--o{ promises_status_not_reached : "one-to-many"
+    proposal_likes {
+        int id PK
+        timestamp created_at
+        int proposal_id FK --> promises.id
+        int user_id FK --> users.id
+    }
+
+    proposal_dislikes {
+        int id PK
+        timestamp created_at
+        int proposal_id FK --> promises.id
+        int user_id FK --> users.id
+    }
+
+    user_devices {
+        int id PK
+        int user_id FK --> users.id
+        varchar device_hash
+        timestamp added_at DEFAULT NOW()
+    }
 ```
 
 ## Installation
