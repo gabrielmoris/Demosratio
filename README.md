@@ -62,19 +62,19 @@ ENCRYPTION_KEY=<GENERATED_ENCRIPTION_KEY> #openssl rand -base64 64 | tr -dc 'a-z
 
 ```mermaid
 erDiagram
-    campaigns {
-        bigint id PK
-        timestamp created_at
-        bigint year NOT NULL
-        bigint party_id FK
-        varchar campaign_pdf_url
-    }
-
     parties {
         bigint id PK
         timestamp created_at
-        text name UNIQUE NOT NULL
+        text name UK
         text logo_url
+    }
+
+    campaigns {
+        bigint id PK
+        timestamp created_at
+        bigint year
+        bigint party_id FK
+        varchar campaign_pdf_url
     }
 
     promises {
@@ -82,8 +82,15 @@ erDiagram
         timestamp created_at
         bigint campaign_id FK
         bigint subject_id FK
-        text promise NOT NULL
+        text promise
         bigint party_id FK
+    }
+
+    subjects {
+        bigint id PK
+        timestamp created_at
+        text name UK
+        varchar description
     }
 
     promises_readiness_index {
@@ -94,11 +101,21 @@ erDiagram
         bigint readiness_score
     }
 
-    proposal_dislikes {
+    proposals {
         bigint id PK
-        timestamp created_at
-        bigint proposal_id FK
-        bigint user_id FK
+        text title
+        text url
+        bigint session
+        text expedient_text
+        jsonb votes_parties_json
+        bigint parliament_presence
+        bigint votes_for
+        bigint abstentions
+        bigint votes_against
+        bigint no_vote
+        boolean assent
+        timestamp date
+        text BOE
     }
 
     proposal_likes {
@@ -108,56 +125,39 @@ erDiagram
         bigint user_id FK
     }
 
-    proposals {
-        bigint id PK
-        text title NOT NULL
-        text url NOT NULL
-        bigint session DEFAULT 0 NOT NULL
-        text expedient_text NOT NULL
-        jsonb votes_parties_json NOT NULL
-        bigint parliament_presence NOT NULL
-        bigint votes_for NOT NULL
-        bigint abstentions NOT NULL
-        bigint votes_against NOT NULL
-        bigint no_vote NOT NULL
-        boolean assent
-        timestamp date DEFAULT now() NOT NULL
-        text BOE
-    }
-
-    subjects {
+    proposal_dislikes {
         bigint id PK
         timestamp created_at
-        text name UNIQUE NOT NULL
-        varchar description
+        bigint proposal_id FK
+        bigint user_id FK
+    }
+
+    users {
+        bigint id PK
+        timestamp register_date
+        text name
+        text password
+        boolean is_admin
     }
 
     user_devices {
         bigint id PK
         bigint user_id FK
-        varchar device_hash UNIQUE NOT NULL
-        timestamp added_at DEFAULT now() NOT NULL
+        varchar device_hash UK
+        timestamp added_at
     }
 
-    users {
-        bigint id PK
-        timestamp register_date DEFAULT now() NOT NULL
-        text name NOT NULL
-        text password
-        boolean is_admin DEFAULT false
-    }
-
-    campaigns ||--|| parties : "has"
-    promises ||--|| campaigns : "belongs to"
-    promises ||--|| parties : "made by"
-    promises ||--|| subjects : "categorized as"
-    promises_readiness_index ||--|| campaigns : "evaluates"
-    promises_readiness_index ||--|| users : "created by"
-    proposal_dislikes ||--|| proposals : "targets"
-    proposal_dislikes ||--|| users : "created by"
-    proposal_likes ||--|| proposals : "targets"
-    proposal_likes ||--|| users : "created by"
-    user_devices ||--|| users : "belongs to"
+    parties ||--o{ campaigns : has
+    campaigns ||--o{ promises : contains
+    parties ||--o{ promises : makes
+    subjects ||--o{ promises : categorizes
+    campaigns ||--o{ promises_readiness_index : evaluated_by
+    users ||--o{ promises_readiness_index : creates
+    proposals ||--o{ proposal_likes : receives
+    users ||--o{ proposal_likes : gives
+    proposals ||--o{ proposal_dislikes : receives
+    users ||--o{ proposal_dislikes : gives
+    users ||--o{ user_devices : owns
 ```
 
 ## Instalación
