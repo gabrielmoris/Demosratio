@@ -17,9 +17,16 @@ export async function getPromisesReadiness(campaign_id: number) {
     }
 
     const readinesLength = readiness.length;
+
+    // If there are no readiness scores, return 0
+    if (readinesLength === 0) {
+      return { readiness: 0 };
+    }
+
+    // Calculate the total readiness score
     const totalReadiness = readiness.reduce(
-      (totalScore, currentScore) =>
-        totalScore.readiness_score + currentScore.readiness_score
+      (totalScore, currentScore) => totalScore + currentScore.readiness_score,
+      0 // Initial value of 0
     );
 
     return { readiness: Math.round(totalReadiness / readinesLength) };
