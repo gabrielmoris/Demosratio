@@ -62,87 +62,87 @@ ENCRYPTION_KEY=<GENERATED_ENCRYPTION_KEY> #openssl rand -base64 64 | tr -dc 'a-z
 ```mermaid
 erDiagram
     campaigns {
-        int id PK
-        string created_at
-        int year NOT NULL
-        int party_id FK
-        string campaign_pdf_url
+        bigint id PK
+        timestamp created_at
+        bigint year NOT NULL
+        bigint party_id FK
+        varchar campaign_pdf_url
     }
 
     parties {
-        int id PK
-        string created_at
-        string name UNIQUE NOT NULL
-        string logo_url
+        bigint id PK
+        timestamp created_at
+        text name UNIQUE NOT NULL
+        text logo_url
     }
 
     promises {
-        int id PK
-        string created_at
-        int campaign_id FK
-        int subject_id FK
-        string promise NOT NULL
-        int party_id FK
+        bigint id PK
+        timestamp created_at
+        bigint campaign_id FK
+        bigint subject_id FK
+        text promise NOT NULL
+        bigint party_id FK
     }
 
     promises_readiness_index {
-        int id PK
-        string created_at
-        int campaign_id FK
-        int user_id FK
-        int readiness_score
+        bigint id PK
+        timestamp created_at
+        bigint campaign_id FK
+        bigint user_id FK
+        bigint readiness_score
     }
 
     proposal_dislikes {
-        int id PK
-        string created_at
-        int proposal_id FK
-        int user_id FK
+        bigint id PK
+        timestamp created_at
+        bigint proposal_id FK
+        bigint user_id FK
     }
 
     proposal_likes {
-        int id PK
-        string created_at
-        int proposal_id FK
-        int user_id FK
+        bigint id PK
+        timestamp created_at
+        bigint proposal_id FK
+        bigint user_id FK
     }
 
     proposals {
-        int id PK
-        string title NOT NULL
-        string url NOT NULL
-        int session DEFAULT 0 NOT NULL
-        string expedient_text NOT NULL
-        json votes_parties_json NOT NULL
-        int parliament_presence NOT NULL
-        int votes_for NOT NULL
-        int abstentions NOT NULL
-        int votes_against NOT NULL
-        int no_vote NOT NULL
+        bigint id PK
+        text title NOT NULL
+        text url NOT NULL
+        bigint session DEFAULT 0 NOT NULL
+        text expedient_text NOT NULL
+        jsonb votes_parties_json NOT NULL
+        bigint parliament_presence NOT NULL
+        bigint votes_for NOT NULL
+        bigint abstentions NOT NULL
+        bigint votes_against NOT NULL
+        bigint no_vote NOT NULL
         boolean assent
-        string date
-        string BOE
+        timestamp date DEFAULT now() NOT NULL
+        text BOE
     }
 
     subjects {
-        int id PK
-        string created_at
-        string name UNIQUE NOT NULL
-        string description
+        bigint id PK
+        timestamp created_at
+        text name UNIQUE NOT NULL
+        varchar description
     }
 
     user_devices {
-        int id PK
-        int user_id FK
-        string device_hash UNIQUE NOT NULL
-        string added_at
+        bigint id PK
+        bigint user_id FK
+        varchar device_hash UNIQUE NOT NULL
+        timestamp added_at DEFAULT now() NOT NULL
     }
 
     users {
-        int id PK
-        string register_date
-        string name NOT NULL
-        string password
+        bigint id PK
+        timestamp register_date DEFAULT now() NOT NULL
+        text name NOT NULL
+        text password
         boolean is_admin DEFAULT false
     }
 
@@ -157,7 +157,6 @@ erDiagram
     proposal_likes ||--o{ proposals : "proposal_id"
     proposal_likes ||--o{ users : "user_id"
     user_devices ||--o{ users : "user_id"
-
 ```
 
 ## Installation
