@@ -62,72 +62,102 @@ ENCRYPTION_KEY=<GENERATED_ENCRIPTION_KEY> #openssl rand -base64 64 | tr -dc 'a-z
 
 ```mermaid
 erDiagram
+    parties {
+        bigint id PK
+        timestamp created_at
+        text name UK
+        text logo_url
+    }
+
+    campaigns {
+        bigint id PK
+        timestamp created_at
+        bigint year
+        bigint party_id FK
+        varchar campaign_pdf_url
+    }
+
+    promises {
+        bigint id PK
+        timestamp created_at
+        bigint campaign_id FK
+        bigint subject_id FK
+        text promise
+        bigint party_id FK
+    }
+
+    subjects {
+        bigint id PK
+        timestamp created_at
+        text name UK
+        varchar description
+    }
+
+    promises_readiness_index {
+        bigint id PK
+        timestamp created_at
+        bigint campaign_id FK
+        bigint user_id FK
+        bigint readiness_score
+    }
+
+    proposals {
+        bigint id PK
+        text title
+        text url
+        bigint session
+        text expedient_text
+        jsonb votes_parties_json
+        bigint parliament_presence
+        bigint votes_for
+        bigint abstentions
+        bigint votes_against
+        bigint no_vote
+        boolean assent
+        timestamp date
+        text BOE
+    }
+
+    proposal_likes {
+        bigint id PK
+        timestamp created_at
+        bigint proposal_id FK
+        bigint user_id FK
+    }
+
+    proposal_dislikes {
+        bigint id PK
+        timestamp created_at
+        bigint proposal_id FK
+        bigint user_id FK
+    }
+
     users {
-        int id PK
+        bigint id PK
         timestamp register_date
         text name
         text password
         boolean is_admin
     }
 
-    parties {
-        int id PK
-        timestamp created_at
-        text name
-        text logo_url
-    }
-
-    campaigns {
-        int id PK
-        timestamp created_at
-        int year
-        int party_id FK --> parties.id
-        text campaign_pdf_url
-    }
-
-    subjects {
-        int id PK
-        timestamp created_at
-        text name
-        text description
-    }
-
-    promises {
-        int id PK
-        timestamp created_at
-        int campaign_id FK --> campaigns.id
-        int subject_id FK --> subjects.id
-        text promise
-    }
-
-    promises_readiness_index {
-        int id PK
-        timestamp created_at
-        int campaign_id FK --> campaigns.id
-        int user_id FK --> users.id
-        int readiness_score
-    }
-
-    proposal_likes {
-        int id PK
-        timestamp created_at
-        int proposal_id FK --> promises.id
-        int user_id FK --> users.id
-    }
-
-    proposal_dislikes {
-        int id PK
-        timestamp created_at
-        int proposal_id FK --> promises.id
-        int user_id FK --> users.id
-    }
-
     user_devices {
-        int id PK
-        int user_id FK --> users.id
-        varchar device_hash
-        timestamp added_at DEFAULT NOW()
+        bigint id PK
+        bigint user_id FK
+        varchar device_hash UK
+        timestamp added_at
     }
+
+    parties ||--o{ campaigns : has
+    campaigns ||--o{ promises : contains
+    parties ||--o{ promises : makes
+    subjects ||--o{ promises : categorizes
+    campaigns ||--o{ promises_readiness_index : evaluated_by
+    users ||--o{ promises_readiness_index : creates
+    proposals ||--o{ proposal_likes : receives
+    users ||--o{ proposal_likes : gives
+    proposals ||--o{ proposal_dislikes : receives
+    users ||--o{ proposal_dislikes : gives
+    users ||--o{ user_devices : owns
 ```
 
 ## Instalación
