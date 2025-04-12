@@ -147,17 +147,17 @@ erDiagram
         boolean is_admin DEFAULT false
     }
 
-    campaigns }|--|| parties : "has"
-    promises }|--|| campaigns : "belongs to"
-    promises }|--|| parties : "made by"
-    promises }|--|| subjects : "categorized as"
-    promises_readiness_index }|--|| campaigns : "evaluates"
-    promises_readiness_index }|--|| users : "created by"
-    proposal_dislikes }|--|| proposals : "targets"
-    proposal_dislikes }|--|| users : "created by"
-    proposal_likes }|--|| proposals : "targets"
-    proposal_likes }|--|| users : "created by"
-    user_devices }|--|| users : "belongs to"
+    campaigns ||--|| parties : "has"
+    promises ||--|| campaigns : "belongs to"
+    promises ||--|| parties : "made by"
+    promises ||--|| subjects : "categorized as"
+    promises_readiness_index ||--|| campaigns : "evaluates"
+    promises_readiness_index ||--|| users : "created by"
+    proposal_dislikes ||--|| proposals : "targets"
+    proposal_dislikes ||--|| users : "created by"
+    proposal_likes ||--|| proposals : "targets"
+    proposal_likes ||--|| users : "created by"
+    user_devices ||--|| users : "belongs to"
 ```
 
 ## Instalación
