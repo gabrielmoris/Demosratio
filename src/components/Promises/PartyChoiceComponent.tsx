@@ -19,24 +19,12 @@ export const PartyChoiceComponent = () => {
   const t = useTranslations("parties");
   const { showToast } = useUiContext();
   const user = useAuth();
-  const {
-    parties,
-    loading,
-    setPartyChoice,
-    partyChoice,
-    campaigns,
-    setCampaignChoice,
-    campaignChoice,
-    structuredPromises,
-  } = usePartiesContext();
+  const { parties, loading, setPartyChoice, partyChoice, campaigns, setCampaignChoice, campaignChoice, structuredPromises } = usePartiesContext();
 
-  const onInputChange = useCallback(
-    (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      const newValue = e.target.value;
-      setPromiseReadiness(newValue);
-    },
-    []
-  );
+  const onInputChange = useCallback((e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const newValue = e.target.value;
+    setPromiseReadiness(newValue);
+  }, []);
 
   const { doRequest: sendPromiseReadiness } = useRequest({
     url: `/api/parties/promises/readiness`,
@@ -87,9 +75,7 @@ export const PartyChoiceComponent = () => {
     <div className="flex w-full flex-col justify-center align-center">
       {!partyChoice ? (
         <section className="w-full flex flex-row flex-wrap justify-center align-center gap-10 p-5 md:p-36">
-          <h1 className="font-bold text-contrast text-xl md:text-2xl">
-            {t("choose-party")}
-          </h1>
+          <h1 className="font-bold text-contrast text-xl md:text-2xl">{t("choose-party")}</h1>
           <div className="w-full flex flex-row flex-wrap justify-center align-center gap-10 xl:gap-20">
             {parties.map((party) => {
               return (
@@ -98,14 +84,7 @@ export const PartyChoiceComponent = () => {
                   onClick={() => handlePartychoice(party)}
                   className="border cursor-pointer duration-500 bg-white flex items-center justify-center border-drPurple h-28 w-28 rounded-md hover:-translate-y-1 hover:shadow-drPurple hover:shadow-sm"
                 >
-                  <Image
-                    className="w-auto"
-                    src={party.logo_url}
-                    width={100}
-                    height={100}
-                    alt={party.name + "logo"}
-                    priority
-                  />
+                  <Image className="w-auto" src={party.logo_url} width={100} height={100} alt={party.name + "logo"} priority />
                 </div>
               );
             })}
@@ -120,21 +99,11 @@ export const PartyChoiceComponent = () => {
               partyChoice.id === partyChoice?.id && "border-4"
             } border cursor-pointer duration-500 bg-white flex items-center justify-center border-drPurple h-28 w-28 rounded-md hover:-translate-y-1 hover:shadow-drPurple hover:shadow-sm`}
           >
-            <Image
-              src={partyChoice.logo_url}
-              width={100}
-              height={100}
-              alt={partyChoice.name + "logo"}
-              priority
-            />
+            <Image src={partyChoice.logo_url} width={100} height={100} alt={partyChoice.name + "logo"} priority />
           </div>
           <div className="w-full flex flex-col gap-10 items-center justify-center">
             {campaigns[0] && (
-              <Dropdown
-                items={campaigns}
-                choose={(item) => setCampaignChoice(item as Campaign)}
-                choice={campaignChoice || campaigns[0]}
-              />
+              <Dropdown items={campaigns} choose={(item) => setCampaignChoice(item as Campaign)} choice={campaignChoice || campaigns[0]} />
             )}
             <div className="w-full flex flex-col xl:flex-row gap-5 xl:gap-20 justify-end items-end">
               {campaignChoice && (
@@ -149,12 +118,7 @@ export const PartyChoiceComponent = () => {
                   placeholderClass="h-12"
                 />
               )}
-              <Button
-                onClick={sendReadyness}
-                className="w-full xl:w-1/3"
-                label={t("save-promise-readiness-btn")}
-                type="submit"
-              />
+              <Button onClick={sendReadyness} className="w-full xl:w-1/3" label={t("save-promise-readiness-btn")} type="submit" />
             </div>
           </div>
 
@@ -162,10 +126,7 @@ export const PartyChoiceComponent = () => {
             {structuredPromises.map((subject) => {
               return (
                 <div key={subject.id + "-subject"}>
-                  <div
-                    className="cursor-help text-xl font-bold font-drserif"
-                    title={subject.description}
-                  >
+                  <div className="cursor-help text-xl font-bold font-drserif" title={subject.description}>
                     {subject.name}
                   </div>
 

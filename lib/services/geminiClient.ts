@@ -23,7 +23,7 @@ export async function analyzePromisesWithGemini(): Promise<GeminiPromiseAnalysis
     const prompt = `
       Eres un analista político experto que evalúa si los partidos políticos cumplen sus promesas electorales basándose en sus votos en el parlamento.
 
-      Analiza la siguiente propuesta legislativa y determina si el voto del partido está alineado con sus promesas electorales.
+      Analiza las propuestas legislativas del siguiente partido político y determina si el voto del partido está alineado con sus promesas electorales.
 
      
       Para cada promesa, determina uno de los siguientes estados:
