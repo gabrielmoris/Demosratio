@@ -1,6 +1,7 @@
 import { fetchAllCampaigns } from "@/lib/database/parties/campaigns/getAllCampagns";
 import { fetchAllParties } from "@/lib/database/parties/getAllParties";
 import { analyzePromisesWithGemini } from "@/lib/services/geminiClient";
+import { Party } from "@/types/politicalParties";
 import { NextResponse } from "next/server";
 import { Logger } from "tslog";
 
@@ -11,9 +12,11 @@ export async function GET() {
   log.info("Running ai analysis...");
 
   try {
-    const { parties } = await fetchAllParties();
+    const result = await fetchAllParties();
+    if (!result.parties) throw new Error("Error fetching parties");
+    const parties: Party[] = result.parties;
     const { campaigns } = await fetchAllCampaigns();
-    if (!campaigns) throw new Error("Error fetching campaigns");
+    if (!campaigns || !parties) throw new Error("Error fetching campaigns");
 
     let latestcampaign = 2018;
 
@@ -23,9 +26,18 @@ export async function GET() {
 
     const mappedCampaigns = campaigns.filter((campaign) => campaign.year === latestcampaign);
 
-    const infoToCheck = { parties, campaigns: mappedCampaigns };
+    parties.forEach((party) => {
+      for (const campaign of mappedCampaigns) {
+        if (party.id == campaign.party_id) {
+          party.campaign_year = campaign.year;
+          party.campaign_pdf_url = campaign.campaign_pdf_url;
+          delete party.logo_url;
+          delete party.created_at;
+        }
+      }
+    });
 
-    const analysis = await analyzePromisesWithGemini(infoToCheck);
+    const analysis = await analyzePromisesWithGemini(parties);
 
     return NextResponse.json({
       analysis,

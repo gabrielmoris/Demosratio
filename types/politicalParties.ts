@@ -1,9 +1,11 @@
 export interface Party {
   id: number;
-  created_at: Date;
+  created_at?: Date;
   year: string;
   name: string;
-  logo_url: string;
+  logo_url?: string;
+  campaign_year?: number;
+  campaign_pdf_url?: string;
 }
 
 export interface Campaign {
@@ -45,4 +47,12 @@ export interface StructuredPromises {
       subjects: Subject;
     }
   ];
+}
+
+export interface PartiesWithCampaigns {
+  id: number;
+  name: string;
+  abbreviation: string;
+  campaign_year: number;
+  campaign_pdf_url: string;
 }
