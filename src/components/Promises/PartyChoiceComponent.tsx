@@ -84,7 +84,7 @@ export const PartyChoiceComponent = () => {
                   onClick={() => handlePartychoice(party)}
                   className="border cursor-pointer duration-500 bg-white flex items-center justify-center border-drPurple h-28 w-28 rounded-md hover:-translate-y-1 hover:shadow-drPurple hover:shadow-sm"
                 >
-                  <Image className="w-auto" src={party.logo_url} width={100} height={100} alt={party.name + "logo"} priority />
+                  {party.logo_url && <Image className="w-auto" src={party.logo_url} width={100} height={100} alt={party.name + "logo"} priority />}
                 </div>
               );
             })}
@@ -99,7 +99,7 @@ export const PartyChoiceComponent = () => {
               partyChoice.id === partyChoice?.id && "border-4"
             } border cursor-pointer duration-500 bg-white flex items-center justify-center border-drPurple h-28 w-28 rounded-md hover:-translate-y-1 hover:shadow-drPurple hover:shadow-sm`}
           >
-            <Image src={partyChoice.logo_url} width={100} height={100} alt={partyChoice.name + "logo"} priority />
+            {partyChoice.logo_url && <Image src={partyChoice.logo_url} width={100} height={100} alt={partyChoice.name + "logo"} priority />}
           </div>
           <div className="w-full flex flex-col gap-10 items-center justify-center">
             {campaigns[0] && (

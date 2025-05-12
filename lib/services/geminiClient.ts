@@ -1,147 +1,185 @@
-import { Party } from "@/types/politicalParties";
+import { PartyWithPromises } from "@/types/politicalParties";
+import { VotingData } from "@/types/proposal.types";
 import { Logger } from "tslog";
 
 const log = new Logger();
 
-interface GeminiPromiseAnalysisOutput {
+type FulfillmentStatus = "Supporting Evidence" | "Contradictory Evidence" | "Partial/Indirect Evidence";
+
+interface PromiseAnalysis {
   promise_id: number;
-  fullfillment_status: "supported" | "opposed" | "abstained" | "no_vote" | "not_addressed_attempted" | "not_addressed_no_attempt";
-  analysis_text: string;
+  subject_id: number;
+  promise_text: string;
+  // Use the defined type for fulfillment_status
+  fulfillment_status: FulfillmentStatus;
+  // Combine the details and evidence into one field
+  analysis_summary: string;
 }
 
-export async function analyzePromisesWithGemini(partiesToAnalyze: Party[]): Promise<GeminiPromiseAnalysisOutput[]> {
+interface PartyAnalysisOutput {
+  party_id: number;
+  party_name: string;
+  party_abbreviation: string;
+  campaign_year: number;
+  promise_analyses: PromiseAnalysis[];
+}
+
+export async function analyzePromisesWithGemini(partiesToAnalyze: PartyWithPromises[], proposalData: VotingData): Promise<PartyAnalysisOutput[]> {
   try {
+    if (!proposalData) throw new Error("You need to send Proposal Data");
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
       throw new Error("GEMINI_API_KEY is not defined in environment variables");
     }
 
-    const apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent";
+    const apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent";
 
-    const partiesDataForPrompt = JSON.stringify(partiesToAnalyze, null, 2);
-    const currentDate = new Date().toISOString().split("T")[0];
-    const campaignYearToAnalyze = partiesToAnalyze[0].campaign_year;
-
+    // Use your latest refined prompt here (e.g., the one from Option 1 above)
+    // It's still good to have the best possible prompt to get the analysis part right,
+    // even if the filtering is done client-side.
     const prompt = `
-Eres un analista político experto y objetivo, especializado en la evaluación del cumplimiento de promesas electorales por parte de los partidos políticos, basándote estrictamente en sus acciones parlamentarias (votaciones, propuestas de ley, enmiendas) y documentos programáticos. Tu análisis debe ser rigurosamente imparcial, racional, y desprovisto de cualquier sesgo ideológico. Opera como una máquina de análisis de datos.
+Eres un sistema de análisis automatizado, diseñado para evaluar el cumplimiento de promesas electorales de partidos políticos en España basándose en datos públicamente disponibles sobre su actividad parlamentaria, iniciativas legislativas y acciones gubernamentales relevantes (cuando sea aplicable a su posición).
 
-A continuación, se te proporciona una lista de partidos políticos españoles, junto con la URL a su programa electoral de la campaña de ${campaignYearToAnalyze}:
+Se te proporcionarán las instrucciones y, A CONTINUACIÓN, dos bloques de datos en formato JSON en partes separadas:
+1. Información de los partidos y sus promesas de campaña de 2023.
+2. Información de las votaciones de un tema específico en el Congreso, incluyendo el voto de cada grupo parlamentario relevante.
 
-PARTIDOS Y PROGRAMAS:
-${partiesDataForPrompt}
+Tu tarea es:
+1.  Procesar los datos JSON proporcionados.
+2.  Para CADA PROMESA de cada partido, analizar si la votación proporcionada ('proposalData') y su contexto directo ofrecen evidencia (a favor o en contra) para esa promesa.
+3.  Si se encuentra una conexión significativa y evidencia relevante DIRECTAMENTE ASOCIADA A ESTA VOTACIÓN ESPECÍFICA para una promesa, generar un objeto 'PromiseAnalysis' con los campos ('promise_id', 'subject_id', 'promise_text', 'fulfillment_status', 'analysis_summary').
 
-Para CADA UNO de los partidos listados:
-1.  Consulta su programa electoral (accesible mediante 'campaign_pdf_url') para identificar las promesas clave. Dada la posible extensión de los programas, céntrate en las propuestas más concretas y verificables que se puedan rastrear en la actividad parlamentaria.
-2.  Investiga las actividades parlamentarias del partido desde la campaña de ${campaignYearToAnalyze} (aproximadamente desde mediados de ${campaignYearToAnalyze}) hasta la fecha actual (${currentDate}). Utiliza fuentes como el sitio web del Congreso de los Diputados (https://www.congreso.es/es/opendata/votaciones), información oficial de los partidos sobre su actividad parlamentaria (notas de prensa, webs oficiales), y noticias de fuentes periodísticas fiables y consolidadas que reporten sobre votaciones y propuestas legislativas. Prioriza la información que puedas verificar.
-3.  Evalúa si el partido ha INTENTADO cumplir sus promesas. Considera:
-    * Propuestas legislativas (proyectos de ley, proposiciones de ley) presentadas que se alinean con el programa.
-    * Votos a favor de iniciativas (propias o de otros grupos) que concuerdan con sus promesas.
-    * Votos en contra de iniciativas que contradicen sus promesas.
-    * Enmiendas presentadas a legislaciones para alinearlas con sus promesas.
-    * Ausencia de acción parlamentaria constatable en áreas prometidas clave.
-    * Acciones parlamentarias que puedan ser objetivamente contradictorias con las promesas del programa.
+    **REGLAS PARA 'fulfillment_status':** Debes asignar *estrictamente* uno de los siguientes valores STRING:
+    * "Supporting Evidence": Si el voto específico del partido en esta propuesta proporciona evidencia directa que apoya el cumplimiento de la promesa.
+    * "Contradictory Evidence": Si el voto específico del partido en esta propuesta proporciona evidencia directa que contradice el cumplimiento de la promesa.
+    * "Partial/Indirect Evidence": Si el voto específico del partido en esta propuesta es sobre un tema relacionado y ofrece evidencia parcial o indirecta sobre el cumplimiento de la promesa.
+    * NO uses ningún otro valor.
 
-Tu análisis debe ser como el de una máquina: basado en datos, lógico y sin emociones ni opiniones personales. Cita la evidencia de forma concisa.
+    **REGLAS PARA 'analysis_summary':** Debes generar un string conciso que explique:
+    * La conexión entre la promesa y la votación específica.
+    * La naturaleza de la evidencia encontrada en el voto (si apoya, contradice o es parcial/indirecta).
+    * Por qué se asignó el 'fulfillment_status' elegido basándose *únicamente* en esta votación.
+    * Este campo reemplaza la información antes contenida en 'analysis_details' y 'evidence_summary'.
 
-Responde ÚNICAMENTE en formato JSON. El JSON debe ser un array, donde cada objeto del array representa el análisis para uno de los partidos proporcionados. La estructura para cada objeto de partido debe ser la siguiente:
+4.  **GENERACIÓN DEL ARRAY JSON DE SALIDA FINAL (REGLA ABSOLUTA):**
+    * Para cada partido en los datos de entrada:
+        * Realiza el análisis de todas sus promesas (según pasos 2 y 3) para construir un array temporal de 'PromiseAnalysis' para ese partido.
+        * **DECISIÓN CLAVE:** Si este array temporal de 'PromiseAnalysis' para el partido está VACÍO, entonces este partido **NO DEBE SER INCLUIDO DE NINGUNA FORMA** en el array JSON de salida final. OMITE COMPLETAMENTE cualquier objeto o mención de este partido.
+        * **SOLO SI** el array temporal de 'PromiseAnalysis' para el partido **NO ESTÁ VACÍO**, entonces y solo entonces, crea un objeto de partido para incluir en el array JSON de salida final. Este objeto de partido DEBE contener 'party_id', 'party_name', 'party_abbreviation', 'campaign_year', un 'overall_analysis_summary' apropiado para los hallazgos *de esta votación específica* para ese partido, y el array 'promise_analyses' (que será el array temporal no vacío).
+    * El array JSON de salida final que generes DEBE SER un array que contenga ÚNICAMENTE los objetos de partido que cumplieron la condición del paso 4.c.
+    * **Si NINGÚN partido cumple la condición 4.c, el resultado debe ser un array JSON vacío: []**
 
-{
-  "party_id": "integer", // ID del partido (e.g., 1)
-  "party_name": "string", // Nombre del partido (e.g., "Partido Socialista Obrero Español")
-  "party_abbreviation": "string", // Abreviatura del partido (e.g., "GS")
-  "campaign_year": "integer", // Año de la campaña analizada (e.g., 2023)
-  "campaign_pdf_url": "string", // URL del programa electoral analizado
-  "analysis_summary": "string", // Resumen conciso (2-4 frases) de los hallazgos generales sobre el intento de cumplimiento de promesas, basado en la evidencia recopilada.
-  "key_promise_areas_analysed": [ // Lista de las principales áreas temáticas de promesas del programa que fueron objeto de análisis (e.g., "Política Fiscal", "Sanidad Pública", "Transición Ecológica").
-    "string"
-  ],
-  "promise_fulfillment_evidence": [ // Array de ejemplos concretos de promesas y la evidencia parlamentaria relacionada.
-    {
-      "promise_summary": "string", // Breve descripción de una promesa específica identificada en el programa electoral.
-      "category": "string", // Clasificación de la evidencia: "Attempted Fulfillment", "Contradictory Action", "Inaction Noted", "Partial Fulfillment".
-      "evidence_items": [ // Lista de acciones parlamentarias concretas relacionadas con esta promesa.
-        {
-          "action_type": "string", // Tipo de acción: e.g., "Propuesta de Ley", "Voto a Favor en Congreso", "Voto en Contra en Senado", "Enmienda Presentada", "Pregunta Parlamentaria", "Debate de Moción".
-          "description_of_action": "string", // Detalle de la acción parlamentaria y su contenido relevante.
-          "date_of_action": "string", // Fecha de la acción (Formato YYYY-MM-DD, si se conoce). Si es un periodo, indicarlo.
-          "source_reference": "string", // Breve descripción de la fuente: e.g., "Diario de Sesiones Congreso [Fecha/Número]", "Nota Prensa Partido [Fecha]", "Artículo [Medio de Comunicación] [Fecha]", "Web Congreso Votación [ID/Título]". No incluyas URLs largas y volátiles; describe la fuente.
-          "assessment_of_link_to_promise": "string" // Explicación objetiva y concisa de cómo esta acción específica se relaciona con la promesa (si la apoya, la contradice, o evidencia inacción/acción parcial).
-        }
-      ]
-    }
-  ],
-  "overall_rational_assessment": {
-    "highlights": [ // Lista de 2-4 puntos destacados que ilustran intentos significativos de cumplimiento o coherencia con el programa. Deben ser afirmaciones basadas en la evidencia.
-      "string"
-    ],
-    "downlights": [ // Lista de 2-4 puntos destacados que ilustran contradicciones notables, inacciones en promesas clave, o falta clara de intento de cumplimiento, basados en la evidencia.
-      "string"
-    ],
-    "conclusion": "string" // Conclusión general (1-2 frases) puramente racional y objetiva sobre el grado de intento de cumplimiento, basada en la evidencia analizada. Evitar juicios de valor ideológicos.
-  },
-  "methodology_notes": {
-    "information_sources_used_summary": "string", // Resumen de los tipos de fuentes consultadas (e.g., "Programas electorales PDF, web oficial del Congreso, comunicados de prensa de partidos, noticias de agencias de noticias y periódicos nacionales.").
-    "challenges_or_limitations": "string" // Cualquier dificultad encontrada o limitación del análisis (e.g., "Ambigüedad en la formulación de algunas promesas electorales", "Dificultad para rastrear todas las votaciones específicas sobre temas muy granulares sin acceso directo y completo a bases de datos parlamentarias detalladas y clasificadas por tema de programa.", "Análisis basado en información pública hasta ${currentDate}.").
+5.  Tu análisis debe ser imparcial, no ideológico y estrictamente racional. No introduzcas opiniones ni interpretaciones subjetivas.
+
+Fuentes de Datos Autorizadas:
+* Sitio web del Congreso de los Diputados (congreso.es).
+* Boletines Oficiales del Estado (BOE).
+* Registros públicos y debates parlamentarios.
+* Archivos de noticias reputadas sobre acciones legislativas (verificando en múltiples fuentes).
+* **La información JSON sobre votaciones proporcionada.**
+
+Formato de Salida:
+Debes responder ÚNICAMENTE con un array JSON. Este array JSON debe seguir la estructura descrita abajo y OBEDECER ESTRICTAMENTE LA REGLA ABSOLUTA del punto 4 para la inclusión de partidos.
+
+JSON
+[
+  // SI NINGÚN PARTIDO TIENE UN ARRAY 'promise_analyses' NO VACÍO, ESTE ARRAY DEBE SER [].
+  // CADA OBJETO DE PARTIDO LISTADO AQUÍ DEBE OBLIGATORIAMENTE TENER 'promise_analyses' CON AL MENOS UN ELEMENTO.
+  {
+    "party_id": integer,
+    "party_name": "string",
+    "party_abbreviation": "string",
+    "campaign_year": integer,
+    "promise_analyses": [ // ESTE ARRAY NUNCA DEBE ESTAR VACÍO PARA UN PARTIDO INCLUIDO.
+      {
+        "promise_id": integer,
+        "subject_id": integer,
+        "promise_text": "string",
+        "fulfillment_status": "Supporting Evidence" | "Contradictory Evidence" | "Partial/Indirect Evidence", // UNO DE ESTOS VALORES STRING
+        "analysis_summary": "string" // Combinación de análisis y evidencia del voto
+      }
+      // ... más análisis de promesas si hay múltiples relevantes.
+    ]
   }
-}
-
-Asegúrate de que tu respuesta sea un único bloque JSON válido, comenzando con '[' y terminando con ']'. No incluyas ninguna explicación, introducción o texto adicional fuera del propio JSON. Analiza todos los partidos proporcionados en la sección PARTIDOS Y PROGRAMAS. El análisis debe ser exhaustivo dentro de lo razonable para cada partido.
+  // ... más objetos de partido, PERO SOLO SI 'promise_analyses' NO ESTÁ VACÍO.
+]
 `;
 
-    // Make the API request
+    const requestBody = {
+      contents: [
+        {
+          parts: [{ text: prompt }, { text: JSON.stringify(partiesToAnalyze) }, { text: JSON.stringify(proposalData) }],
+        },
+      ],
+      generationConfig: {
+        temperature: 0.2,
+        topP: 0.8,
+        topK: 40,
+        maxOutputTokens: 8192,
+      },
+    };
+
     const response = await fetch(`${apiUrl}?key=${apiKey}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        contents: [
-          {
-            parts: [
-              {
-                text: prompt,
-              },
-            ],
-          },
-        ],
-        generationConfig: {
-          temperature: 0.2,
-          topP: 0.8,
-          topK: 40,
-          maxOutputTokens: 8192,
-        },
-      }),
+      body: JSON.stringify(requestBody),
     });
 
     if (!response.ok) {
       const errorText = await response.text();
       log.error(`Gemini API error: ${response.status} ${response.statusText}`, errorText);
-
-      // If we hit a rate limit, wait longer and try again
       if (response.status === 429) {
-        log.warn(`Rate limit hit, waiting 5 seconds before retrying...`);
-        throw new Error(`Rate limit hit`);
+        log.warn(`Rate limit hit, waiting 10 seconds before recommending retry...`);
+        await new Promise((resolve) => setTimeout(resolve, 10000));
+        throw new Error(`Rate limit hit. Please wait and try again.`);
       }
-
       throw new Error(`Gemini API error: ${response.status} ${response.statusText}`);
     }
 
     const data = await response.json();
+    let generatedText = data.candidates?.[0]?.content?.parts?.[0]?.text;
 
-    // Extract the generated text from the response
-    const generatedText = data.candidates[0].content.parts[0].text;
-
-    // Parse the JSON from the generated text
-    // Find the JSON array in the response (it might be surrounded by markdown code blocks or other text)
-    const jsonMatch = generatedText.match(/\[[\s\S]*\]/);
-    if (!jsonMatch) {
-      log.error("Could not extract JSON from Gemini response:", generatedText);
-      throw new Error("Could not extract JSON from Gemini response");
+    if (!generatedText) {
+      log.error("Gemini response does not contain expected text content:", data);
+      throw new Error("Gemini response does not contain expected text content or is empty");
     }
 
-    return jsonMatch;
+    generatedText = generatedText.trim();
+    const jsonPrefix = "```json\n";
+    if (generatedText.startsWith(jsonPrefix)) {
+      generatedText = generatedText.substring(jsonPrefix.length);
+    }
+    const jsonSuffix = "\n```";
+    if (generatedText.endsWith(jsonSuffix) && generatedText.length >= jsonSuffix.length) {
+      generatedText = generatedText.substring(0, generatedText.length - jsonSuffix.length);
+    }
+
+    log.info("Attempting to parse CLEANED text as JSON:", generatedText);
+    let analysisResult: PartyAnalysisOutput[];
+    try {
+      analysisResult = JSON.parse(generatedText);
+    } catch (parseError) {
+      log.error("Failed to parse Gemini response as JSON after cleaning:", parseError, "Cleaned text causing error:", generatedText);
+      throw new Error("Failed to parse Gemini response as JSON after cleaning");
+    }
+
+    // **CLIENT-SIDE FILTERING ADDED HERE**
+    const filteredResult = analysisResult.filter((partyAnalysis) => partyAnalysis.promise_analyses && partyAnalysis.promise_analyses.length > 0);
+
+    if (analysisResult.length > 0 && filteredResult.length === 0) {
+      log.info("All parties were filtered out because their promise_analyses were empty. Returning empty array.");
+    } else if (analysisResult.length !== filteredResult.length) {
+      log.info(`Filtered out ${analysisResult.length - filteredResult.length} parties with empty promise_analyses.`);
+    }
+
+    return filteredResult; // Return the filtered result
   } catch (error) {
     log.error("Error analyzing promises with Gemini:", error);
-    throw error;
+    if (error instanceof Error && error.message.includes("Rate limit hit")) {
+      throw error;
+    }
+    throw new Error(`Error general al analizar promesas: ${error}`);
   }
 }

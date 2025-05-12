@@ -4,8 +4,13 @@ export interface Party {
   year: string;
   name: string;
   logo_url?: string;
+}
+
+export interface PartyWithPromises extends Party {
   campaign_year?: number;
   campaign_pdf_url?: string;
+  campaign_id?: number;
+  promises: PartyPromise[];
 }
 
 export interface Campaign {
