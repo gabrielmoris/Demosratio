@@ -6,7 +6,8 @@ import { mergeVotesByParty } from "@/lib/helpers/spanishParliamentExtractor/vote
 import { VotingData } from "@/types/proposal.types";
 import { extractParliamentJson } from "@/lib/helpers/spanishParliamentExtractor/getParliamentData";
 import { saveProposalToDb } from "@/lib/database/spanishParliament/saveProposal";
-import { aiPromiseAnalizer } from "@/lib/database/promises/promisesAnaliseAI";
+import { aiPromiseAnalizer } from "@/lib/services/ai/promisesAnaliseAI";
+import { setPromiseAnalysis } from "@/lib/database/parties/promises/promises-analysis/setPromisesAnalysis";
 
 const log = new Logger();
 
@@ -75,10 +76,11 @@ async function saveToDb(day: string) {
       assent: isAccepted,
     };
 
-    const analysis = await aiPromiseAnalizer(proposalData);
-    console.log(JSON.stringify(analysis));
-    // Then save it in DB
+    const analysisArr = await aiPromiseAnalizer(proposalData);
+
     try {
+      analysisArr.forEach(async (analysis) => await setPromiseAnalysis(analysis));
+
       await saveProposalToDb(proposalData);
     } catch (error) {
       log.error(`Failed to save proposal "${title}":`, error);

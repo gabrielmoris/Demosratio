@@ -3,7 +3,7 @@ import { fetchAllParties } from "@/lib/database/parties/getAllParties";
 import { analyzePromisesWithGemini } from "@/lib/services/geminiClient";
 import { PartyWithPromises } from "@/types/politicalParties";
 import { Logger } from "tslog";
-import { fetchPartyPromises } from "../parties/promises/getPartyPromises";
+import { fetchPartyPromises } from "../../database/parties/promises/getPartyPromises";
 import { VotingData } from "@/types/proposal.types";
 
 const log = new Logger();

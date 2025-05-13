@@ -61,3 +61,21 @@ export interface PartiesWithCampaigns {
   campaign_year: number;
   campaign_pdf_url: string;
 }
+
+export type FulfillmentStatus = "Supporting Evidence" | "Contradictory Evidence" | "Partial/Indirect Evidence";
+
+export interface PromiseAnalysis {
+  promise_id: number;
+  subject_id: number;
+  promise_text: string;
+  analysis_summary: string;
+  fulfillment_status: FulfillmentStatus;
+}
+
+export interface PartyAnalysisOutput {
+  party_id: number;
+  party_name: string;
+  party_abbreviation: string;
+  campaign_year: number;
+  promise_analyses: PromiseAnalysis[];
+}

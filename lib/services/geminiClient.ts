@@ -1,28 +1,8 @@
-import { PartyWithPromises } from "@/types/politicalParties";
+import { PartyAnalysisOutput, PartyWithPromises } from "@/types/politicalParties";
 import { VotingData } from "@/types/proposal.types";
 import { Logger } from "tslog";
 
 const log = new Logger();
-
-type FulfillmentStatus = "Supporting Evidence" | "Contradictory Evidence" | "Partial/Indirect Evidence";
-
-interface PromiseAnalysis {
-  promise_id: number;
-  subject_id: number;
-  promise_text: string;
-  // Use the defined type for fulfillment_status
-  fulfillment_status: FulfillmentStatus;
-  // Combine the details and evidence into one field
-  analysis_summary: string;
-}
-
-interface PartyAnalysisOutput {
-  party_id: number;
-  party_name: string;
-  party_abbreviation: string;
-  campaign_year: number;
-  promise_analyses: PromiseAnalysis[];
-}
 
 export async function analyzePromisesWithGemini(partiesToAnalyze: PartyWithPromises[], proposalData: VotingData): Promise<PartyAnalysisOutput[]> {
   try {
@@ -63,9 +43,9 @@ Tu tarea es:
 
 4.  **GENERACIÓN DEL ARRAY JSON DE SALIDA FINAL (REGLA ABSOLUTA):**
     * Para cada partido en los datos de entrada:
-        * Realiza el análisis de todas sus promesas (según pasos 2 y 3) para construir un array temporal de 'PromiseAnalysis' para ese partido.
-        * **DECISIÓN CLAVE:** Si este array temporal de 'PromiseAnalysis' para el partido está VACÍO, entonces este partido **NO DEBE SER INCLUIDO DE NINGUNA FORMA** en el array JSON de salida final. OMITE COMPLETAMENTE cualquier objeto o mención de este partido.
-        * **SOLO SI** el array temporal de 'PromiseAnalysis' para el partido **NO ESTÁ VACÍO**, entonces y solo entonces, crea un objeto de partido para incluir en el array JSON de salida final. Este objeto de partido DEBE contener 'party_id', 'party_name', 'party_abbreviation', 'campaign_year', un 'overall_analysis_summary' apropiado para los hallazgos *de esta votación específica* para ese partido, y el array 'promise_analyses' (que será el array temporal no vacío).
+        * Realiza el análisis de todas sus promesas (según pasos 2 y 3) para construir un array temporal de 'promise_analyses' para ese partido.
+        * **DECISIÓN CLAVE:** Si este array temporal de 'promise_analyses' para el partido está VACÍO, entonces este partido **NO DEBE SER INCLUIDO DE NINGUNA FORMA** en el array JSON de salida final. OMITE COMPLETAMENTE cualquier objeto o mención de este partido.
+        * **SOLO SI** el array temporal de 'promise_analyses' para el partido **NO ESTÁ VACÍO**, entonces y solo entonces, crea un objeto de partido para incluir en el array JSON de salida final. Este objeto de partido DEBE contener 'party_id', 'party_name', 'party_abbreviation', 'campaign_year',  y el array 'promise_analyses' (que será el array temporal no vacío).
     * El array JSON de salida final que generes DEBE SER un array que contenga ÚNICAMENTE los objetos de partido que cumplieron la condición del paso 4.c.
     * **Si NINGÚN partido cumple la condición 4.c, el resultado debe ser un array JSON vacío: []**
 
@@ -156,7 +136,7 @@ JSON
       generatedText = generatedText.substring(0, generatedText.length - jsonSuffix.length);
     }
 
-    log.info("Attempting to parse CLEANED text as JSON:", generatedText);
+    log.info("Attempting to parse CLEANED text as JSON");
     let analysisResult: PartyAnalysisOutput[];
     try {
       analysisResult = JSON.parse(generatedText);
