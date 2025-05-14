@@ -17,9 +17,9 @@ export async function GET() {
 
   try {
     // Save last X days in DB
-    // const daysToCheck = parseInt(process.env.DAYS_TO_CHECK_VOTES || "5", 10);
+    const daysToCheck = parseInt(process.env.DAYS_TO_CHECK_VOTATIONS || "5", 10);
 
-    for (let i = 10; i > 0; i--) {
+    for (let i = daysToCheck; i > 0; i--) {
       const dateToCheck = getDateString(i);
       await saveToDb(dateToCheck).catch((e) => log.error("Error saving parliamentdata to DB", dateToCheck, "=>", e));
     }
@@ -79,7 +79,7 @@ async function saveToDb(day: string) {
     const analysisArr = await aiPromiseAnalizer(proposalData);
 
     try {
-      analysisArr.forEach(async (analysis) => await setPromiseAnalysis(analysis));
+      if (analysisArr.length) analysisArr.forEach(async (analysis) => await setPromiseAnalysis(analysis));
 
       await saveProposalToDb(proposalData);
     } catch (error) {

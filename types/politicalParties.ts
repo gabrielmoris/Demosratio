@@ -67,6 +67,7 @@ export type FulfillmentStatus = "Supporting Evidence" | "Contradictory Evidence"
 export interface PromiseAnalysis {
   promise_id: number;
   subject_id: number;
+  proposal_id: number;
   promise_text: string;
   analysis_summary: string;
   fulfillment_status: FulfillmentStatus;
