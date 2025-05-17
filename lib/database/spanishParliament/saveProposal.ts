@@ -31,7 +31,7 @@ export async function saveProposalToDb(proposalData: VotingData) {
 
     if (checkResult && checkResult.length > 0) {
       log.warn(`Proposal with expedient_text "${expedient_text}" already exists. Skipping.`);
-      return checkResult[0].id;
+      return { id: checkResult[0].id, alreadySavedBefore: true };
     }
 
     // Then save the new proposal
@@ -63,7 +63,7 @@ export async function saveProposalToDb(proposalData: VotingData) {
 
     if (result) {
       log.info(`Proposal "${title}" saved with ID: ${result.id}`);
-      return result.id;
+      return { id: result.id, alreadySavedBefore: false };
     } else {
       log.warn(`Proposal "${title}" was not saved.`);
       return null;

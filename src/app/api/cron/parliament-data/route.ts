@@ -76,11 +76,15 @@ async function saveToDb(day: string) {
       assent: isAccepted,
     };
 
-    const analysisArr = await aiPromiseAnalizer(proposalData);
-
     try {
-      const proposalID = await saveProposalToDb(proposalData);
-      if (analysisArr.length) analysisArr.forEach(async (analysis) => await setPromiseAnalysis(analysis, proposalID));
+      const savedProposal = await saveProposalToDb(proposalData);
+
+      // ADD THIS IN PROD
+      // if (!savedProposal?.alreadySavedBefore) {
+      const analysisArr = await aiPromiseAnalizer(proposalData);
+      log.info("SAVING ", savedProposal?.id);
+      if (analysisArr.length) analysisArr.forEach(async (analysis) => await setPromiseAnalysis(analysis, savedProposal?.id));
+      // }
     } catch (error) {
       log.error(`Failed to save proposal "${title}":`, error);
     }
