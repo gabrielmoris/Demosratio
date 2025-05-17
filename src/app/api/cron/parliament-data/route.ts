@@ -79,9 +79,8 @@ async function saveToDb(day: string) {
     const analysisArr = await aiPromiseAnalizer(proposalData);
 
     try {
-      if (analysisArr.length) analysisArr.forEach(async (analysis) => await setPromiseAnalysis(analysis));
-
-      await saveProposalToDb(proposalData);
+      const proposalID = await saveProposalToDb(proposalData);
+      if (analysisArr.length) analysisArr.forEach(async (analysis) => await setPromiseAnalysis(analysis, proposalID));
     } catch (error) {
       log.error(`Failed to save proposal "${title}":`, error);
     }

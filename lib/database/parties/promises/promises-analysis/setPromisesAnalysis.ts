@@ -4,14 +4,14 @@ import { PartyAnalysisOutput } from "@/types/politicalParties";
 import { getPromiseAnalysis } from "./getPromiseAnalysis";
 const log = new Logger();
 
-export async function setPromiseAnalysis(promiseAnalysis: PartyAnalysisOutput) {
+export async function setPromiseAnalysis(promiseAnalysis: PartyAnalysisOutput, proposalID: number) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const ids: any[] = [];
   try {
     const { party_id, party_name, campaign_year, promise_analyses } = promiseAnalysis;
 
     promise_analyses.forEach(async (analysis) => {
-      const { promise_id, proposal_id, subject_id, promise_text, fulfillment_status, analysis_summary } = analysis;
+      const { promise_id, subject_id, promise_text, fulfillment_status, analysis_summary } = analysis;
 
       const { analysis: promiseAnalysis } = await getPromiseAnalysis(party_id, promise_id);
 
@@ -23,7 +23,7 @@ export async function setPromiseAnalysis(promiseAnalysis: PartyAnalysisOutput) {
           .insert([
             {
               promise_id,
-              proposal_id,
+              proposal_id: proposalID,
               subject_id,
               promise_text,
               fulfillment_status,

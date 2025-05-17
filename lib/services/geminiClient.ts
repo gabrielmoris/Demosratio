@@ -27,7 +27,7 @@ Se te proporcionarán las instrucciones y, A CONTINUACIÓN, dos bloques de datos
 Tu tarea es:
 1.  Procesar los datos JSON proporcionados.
 2.  Para CADA PROMESA de cada partido, analizar si la votación proporcionada ('proposalData') y su contexto directo ofrecen evidencia (a favor o en contra) para esa promesa.
-3.  Si se encuentra una conexión significativa y evidencia relevante DIRECTAMENTE ASOCIADA A ESTA VOTACIÓN ESPECÍFICA para una promesa, generar un objeto 'PromiseAnalysis' con los campos ('promise_id', 'subject_id', 'proposal_id', 'promise_text', 'fulfillment_status', 'analysis_summary').
+3.  Si se encuentra una conexión significativa y evidencia relevante DIRECTAMENTE ASOCIADA A ESTA VOTACIÓN ESPECÍFICA para una promesa, generar un objeto 'PromiseAnalysis' con los campos ('promise_id', 'subject_id', 'promise_text', 'fulfillment_status', 'analysis_summary').
 
     **REGLAS PARA 'fulfillment_status':** Debes asignar *estrictamente* uno de los siguientes valores STRING:
     * "Supporting Evidence": Si el voto específico del partido en esta propuesta proporciona evidencia directa que apoya el cumplimiento de la promesa.
@@ -44,7 +44,7 @@ Tu tarea es:
     * Para cada partido en los datos de entrada:
         * Realiza el análisis de todas sus promesas (según pasos 2 y 3) para construir un array temporal de 'promise_analyses' para ese partido.
         * **DECISIÓN CLAVE:** Si este array temporal de 'promise_analyses' para el partido está VACÍO, entonces este partido **NO DEBE SER INCLUIDO DE NINGUNA FORMA** en el array JSON de salida final. OMITE COMPLETAMENTE cualquier objeto o mención de este partido.
-        * **SOLO SI** el array temporal de 'promise_analyses' para el partido **NO ESTÁ VACÍO**, entonces y solo entonces, crea un objeto de partido para incluir en el array JSON de salida final. Este objeto de partido DEBE contener 'party_id', 'proposal_id', 'party_name', 'party_abbreviation', 'campaign_year',  y el array 'promise_analyses' (que será el array temporal no vacío).
+        * **SOLO SI** el array temporal de 'promise_analyses' para el partido **NO ESTÁ VACÍO**, entonces y solo entonces, crea un objeto de partido para incluir en el array JSON de salida final. Este objeto de partido DEBE contener 'party_id', 'party_name', 'party_abbreviation', 'campaign_year',  y el array 'promise_analyses' (que será el array temporal no vacío).
     * El array JSON de salida final que generes DEBE SER un array que contenga ÚNICAMENTE los objetos de partido que cumplieron la condición del paso 4.c.
     * **Si NINGÚN partido cumple la condición 4.c, el resultado debe ser un array JSON vacío: []**
 
@@ -72,7 +72,6 @@ JSON
     "promise_analyses": [ // ESTE ARRAY NUNCA DEBE ESTAR VACÍO PARA UN PARTIDO INCLUIDO.
       {
         "promise_id": integer,
-        "proposal_id": integer,
         "subject_id": integer,
         "promise_text": "string",
         "fulfillment_status": "Supporting Evidence" | "Contradictory Evidence" | "Partial/Indirect Evidence", // UNO DE ESTOS VALORES STRING
