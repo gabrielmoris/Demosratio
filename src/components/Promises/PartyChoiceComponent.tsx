@@ -63,8 +63,20 @@ export const PartyChoiceComponent = () => {
     }
   };
 
+  const { doRequest: getpromiseAnalysis } = useRequest({
+    url: `/api/parties/promises/analysis?party_id=${partyChoice?.id}&campaign_year=${campaignChoice?.year}`,
+    method: "get",
+    onSuccess: (data) => {
+      console.log("REQ =>", data);
+      // setPromiseAnalysis([data]);
+    },
+  });
+
   useEffect(() => {
-    if (campaignChoice) getPromiseReadiness();
+    if (campaignChoice) {
+      getPromiseReadiness();
+      getpromiseAnalysis();
+    }
   }, [campaignChoice]);
 
   if (loading) {

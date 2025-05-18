@@ -1,7 +1,7 @@
 import { Logger } from "tslog";
 import { supabaseAdmin } from "@/lib/supabaseClient";
 import { PartyAnalysisOutput } from "@/types/politicalParties";
-import { getPromiseAnalysis } from "./getPromiseAnalysis";
+import { getPromiseAnalysisByPromise } from "./getPromiseAnalysisByPromise";
 const log = new Logger();
 
 export async function setPromiseAnalysis(promiseAnalysis: PartyAnalysisOutput, proposalID: number) {
@@ -13,7 +13,7 @@ export async function setPromiseAnalysis(promiseAnalysis: PartyAnalysisOutput, p
     promise_analyses.forEach(async (analysis) => {
       const { promise_id, subject_id, promise_text, fulfillment_status, analysis_summary } = analysis;
 
-      const { analysis: promiseAnalysis } = await getPromiseAnalysis(party_id, promise_id);
+      const { analysis: promiseAnalysis } = await getPromiseAnalysisByPromise(party_id, promise_id);
 
       const isSaved = promiseAnalysis && promiseAnalysis.length > 0;
 
