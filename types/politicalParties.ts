@@ -65,9 +65,12 @@ export interface PartiesWithCampaigns {
 export type FulfillmentStatus = "Supporting Evidence" | "Contradictory Evidence" | "Partial/Indirect Evidence";
 
 export interface PromiseAnalysis {
+  id: number;
   promise_id: number;
+  party_name: string;
   subject_id: number;
   proposal_id: number;
+  campaign_year: number;
   promise_text: string;
   analysis_summary: string;
   fulfillment_status: FulfillmentStatus;

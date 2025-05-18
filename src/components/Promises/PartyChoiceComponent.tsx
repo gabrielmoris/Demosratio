@@ -15,7 +15,6 @@ import { useUiContext } from "@/src/context/uiContext";
 
 export const PartyChoiceComponent = () => {
   const [promiseReadiness, setPromiseReadiness] = useState<string>("50");
-  const [promiseAnalysis, setPromiseAnalysis] = useState([]);
 
   const t = useTranslations("parties");
   const { showToast } = useUiContext();
@@ -64,19 +63,8 @@ export const PartyChoiceComponent = () => {
     }
   };
 
-  const { doRequest: getpromiseAnalysis } = useRequest({
-    url: `/api/parties/promises/analysis?party_id=${partyChoice?.id}&campaign_year=${campaignChoice?.year}`,
-    method: "get",
-    onSuccess: (data) => {
-      setPromiseAnalysis([...data.analysis]);
-    },
-  });
-
   useEffect(() => {
-    if (campaignChoice) {
-      getPromiseReadiness();
-      getpromiseAnalysis();
-    }
+    if (campaignChoice) getPromiseReadiness();
   }, [campaignChoice]);
 
   if (loading) {
@@ -86,7 +74,7 @@ export const PartyChoiceComponent = () => {
   return (
     <div className="flex w-full flex-col justify-center align-center">
       {!partyChoice ? (
-        <section className="w-full flex flex-row flex-wrap justify-center align-center gap-10 p-5 md:p-36">
+        <section className="w-full flex flex-row flex-wrap justify-center align-center gap-10 p-0 md:p-10">
           <h1 className="font-bold text-contrast text-xl md:text-2xl">{t("choose-party")}</h1>
           <div className="w-full flex flex-row flex-wrap justify-center align-center gap-10 xl:gap-20">
             {parties.map((party) => {
