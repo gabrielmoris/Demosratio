@@ -15,6 +15,7 @@ import { useUiContext } from "@/src/context/uiContext";
 
 export const PartyChoiceComponent = () => {
   const [promiseReadiness, setPromiseReadiness] = useState<string>("50");
+  const [promiseAnalysis, setPromiseAnalysis] = useState([]);
 
   const t = useTranslations("parties");
   const { showToast } = useUiContext();
@@ -67,8 +68,7 @@ export const PartyChoiceComponent = () => {
     url: `/api/parties/promises/analysis?party_id=${partyChoice?.id}&campaign_year=${campaignChoice?.year}`,
     method: "get",
     onSuccess: (data) => {
-      console.log("REQ =>", data);
-      // setPromiseAnalysis([data]);
+      setPromiseAnalysis([...data.analysis]);
     },
   });
 
