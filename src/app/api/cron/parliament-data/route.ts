@@ -6,6 +6,8 @@ import { mergeVotesByParty } from "@/lib/helpers/spanishParliamentExtractor/vote
 import { VotingData } from "@/types/proposal.types";
 import { extractParliamentJson } from "@/lib/helpers/spanishParliamentExtractor/getParliamentData";
 import { saveProposalToDb } from "@/lib/database/spanishParliament/saveProposal";
+import { aiPromiseAnalizer } from "@/lib/services/ai/promisesAnaliseAI";
+import { setPromiseAnalysis } from "@/lib/database/parties/promises/promises-analysis/setPromisesAnalysis";
 
 const log = new Logger();
 
@@ -15,7 +17,7 @@ export async function GET() {
 
   try {
     // Save last X days in DB
-    const daysToCheck = parseInt(process.env.DAYS_TO_CHECK_VOTES || "5", 10);
+    const daysToCheck = parseInt(process.env.DAYS_TO_CHECK_VOTATIONS || "5", 10);
 
     for (let i = daysToCheck; i > 0; i--) {
       const dateToCheck = getDateString(i);
@@ -74,9 +76,15 @@ async function saveToDb(day: string) {
       assent: isAccepted,
     };
 
-    // Then save it in DB
     try {
-      await saveProposalToDb(proposalData);
+      const savedProposal = await saveProposalToDb(proposalData);
+
+      // ADD THIS IN PROD
+      // if (!savedProposal?.alreadySavedBefore) {
+      const analysisArr = await aiPromiseAnalizer(proposalData);
+      log.info("SAVING ", savedProposal?.id);
+      if (analysisArr.length) analysisArr.forEach(async (analysis) => await setPromiseAnalysis(analysis, savedProposal?.id));
+      // }
     } catch (error) {
       log.error(`Failed to save proposal "${title}":`, error);
     }

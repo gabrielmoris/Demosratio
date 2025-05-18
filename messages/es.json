@@ -124,5 +124,21 @@
     "save-promise-readiness-btn": "Enviar",
     "choose-party": "Escoge un Partido Político",
     "readiness-sent": "Acuerdo enviado."
+  },
+  "promises": {
+    "party_promises": "Promesas Electorales",
+    "party_analysis": "Analisis IA",
+    "promise-analysis-title": "Análisis con IA",
+    "no-analysis-available": "No hay ningún análisis disponible en este momento.",
+    "search-promises": "Buscar promesas",
+    "no-matching-analysis": "No se ha encontrado ningún análisis.",
+    "promise": "Promesa electoral",
+    "analysis": "Análisis IA",
+    "party": "Partido político",
+    "campaign": "Campaña",
+    "view-proposal": "Votación",
+    "supporting": "Cumplimiento Pleno",
+    "contradictory": "Oposición Propia",
+    "partial": "Vía Indirecta de Logro"
   }
 }

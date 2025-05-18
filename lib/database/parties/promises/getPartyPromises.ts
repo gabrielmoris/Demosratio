@@ -1,13 +1,11 @@
 import { Logger } from "tslog";
 
 import { supabaseAdmin } from "@/lib/supabaseClient";
+import { PartyPromise } from "@/types/politicalParties";
 
 const log = new Logger();
 
-export async function fetchPartyPromises(
-  party_id: number,
-  campaign_id: number
-) {
+export async function fetchPartyPromises(party_id: number, campaign_id: number): Promise<{ promises: PartyPromise[] }> {
   try {
     const { data: promises, error: promisesError } = await supabaseAdmin
       .from("promises")
@@ -22,7 +20,7 @@ export async function fetchPartyPromises(
 
     return { promises };
   } catch (error) {
-    log.error("Supabase error fetching subjects:", error);
-    return { error };
+    log.error("Supabase error fetching promises:", error);
+    throw new Error("Supabase error fetching promises");
   }
 }

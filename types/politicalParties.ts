@@ -1,9 +1,16 @@
 export interface Party {
   id: number;
-  created_at: Date;
+  created_at?: Date;
   year: string;
   name: string;
-  logo_url: string;
+  logo_url?: string;
+}
+
+export interface PartyWithPromises extends Party {
+  campaign_year?: number;
+  campaign_pdf_url?: string;
+  campaign_id?: number;
+  promises: PartyPromise[];
 }
 
 export interface Campaign {
@@ -45,4 +52,34 @@ export interface StructuredPromises {
       subjects: Subject;
     }
   ];
+}
+
+export interface PartiesWithCampaigns {
+  id: number;
+  name: string;
+  abbreviation: string;
+  campaign_year: number;
+  campaign_pdf_url: string;
+}
+
+export type FulfillmentStatus = "Supporting Evidence" | "Contradictory Evidence" | "Partial/Indirect Evidence";
+
+export interface PromiseAnalysis {
+  id: number;
+  promise_id: number;
+  party_name: string;
+  subject_id: number;
+  proposal_id: number;
+  campaign_year: number;
+  promise_text: string;
+  analysis_summary: string;
+  fulfillment_status: FulfillmentStatus;
+}
+
+export interface PartyAnalysisOutput {
+  party_id: number;
+  party_name: string;
+  party_abbreviation: string;
+  campaign_year: number;
+  promise_analyses: PromiseAnalysis[];
 }

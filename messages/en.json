@@ -83,5 +83,21 @@
     "save-promise-readiness-btn": "Send",
     "choose-party": "Choose a political party",
     "readiness-sent": "Agreement sent."
+  },
+  "promises": {
+    "party_promises": "Electoral promises",
+    "party_analysis": "IA Analysis",
+    "promise-analysis-title": "Analysis with AI",
+    "no-analysis-available": "There is no analysis available at this time.",
+    "search-promises": "Find promises",
+    "no-matching-analysis": "No analysis has been found.",
+    "promise": "Electoral promise",
+    "analysis": "AI Analysis",
+    "party": "Political party",
+    "campaign": "Bell",
+    "view-proposal": "Vote",
+    "supporting": "Full compliance",
+    "contradictory": "Own opposition",
+    "partial": "Indirect route"
   }
 }
