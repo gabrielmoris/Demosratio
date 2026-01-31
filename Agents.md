@@ -130,3 +130,37 @@ npm run lint       # ESLint
 - [`next.config.ts`](next.config.ts) - Turbopack enabled, output: "standalone"
 - [`lib/services/geminiClient.ts`](lib/services/geminiClient.ts) - AI analysis with Spanish prompts
 - [`lib/database/parties/promises/`](lib/database/parties/promises/) - Promise-related DB helpers
+
+## Tools & Versions (from package.json)
+
+### Core Dependencies:
+- **next**: ^15.1.9 - React framework with App Router
+- **next-intl**: ^3.26.3 - Internationalization (i18n) library
+- **react**: ^19.0.1 - UI library
+- **react-dom**: ^19.0.1 - React DOM renderer
+- **@supabase/supabase-js**: ^2.49.1 - Supabase client for database operations
+- **chart.js**: ^4.4.8 - Chart visualization library
+
+### Dev Dependencies:
+- **typescript**: ^5 - TypeScript compiler
+- **tailwindcss**: ^3.4.1 - CSS utility framework
+- **eslint**: ^9 - JavaScript/TypeScript linter
+- **eslint-config-next**: ^15.1.6 - Next.js ESLint configuration
+- **postcss**: ^8 - CSS processing tool
+
+### i18n Configuration:
+The project uses **next-intl** (v3.26.3) for internationalization:
+- Translation files: `messages/en.json`, `messages/es.json`
+- Locale middleware: `src/middleware.ts`
+- Locale provider: `src/locale.ts`
+- Usage: `useTranslations("namespace")` hook for accessing translations
+- Namespaces used: `promises`, `parties`, `login`, `register`, `profile`, `admin`, etc.
+
+## Recent Changes (2026-01-31)
+
+### Promises Page UI/UX Improvements:
+1. Simplified `promises/page.tsx` - removed dual-view navigation, uses unified PromisesView
+2. Improved PromisesView - consistent party selection, better voting slider, back navigation
+3. Enhanced PromiseWithAnalysisCard - better vote display with colored badges
+4. Deleted unused components: PartyChoiceComponent, PromiseAnalysusComponent, AnalysisCard
+5. Added all required translations to en.json and es.json
