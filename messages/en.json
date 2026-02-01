@@ -82,7 +82,8 @@
     "readiness-promise": "According to compliance",
     "save-promise-readiness-btn": "Send",
     "choose-party": "Choose a political party",
-    "readiness-sent": "Agreement sent."
+    "readiness-sent": "Agreement sent.",
+    "campaign": "Campaign"
   },
   "promises": {
     "party_promises": "Electoral promises",
@@ -98,6 +99,22 @@
     "view-proposal": "Vote",
     "supporting": "Full compliance",
     "contradictory": "Own opposition",
-    "partial": "Indirect route"
+    "partial": "Indirect route",
+    "promises-with-analysis": "Promises with Analysis",
+    "no-promises-available": "No promises available for this party",
+    "select-party-title": "Choose a Political Party",
+    "select-party-description": "Select a party to view their electoral promises and AI analysis",
+    "votes-in-favor": "in favor",
+    "votes-against": "against",
+    "votes-partial": "partial",
+    "votes-supporting-promise": "Votes supporting the promise",
+    "votes-contradicting-promise": "Votes contradicting the promise",
+    "votes-partial-promise": "Votes with partial evidence",
+    "no-analysis-yet": "No analysis available yet",
+    "back-to-parties": "Back to parties",
+    "show-less": "Show less",
+    "show-more": "Show more",
+    "show-all-parties": "Show all parties ({count} more)",
+    "show-less-parties": "Show less"
   }
 }

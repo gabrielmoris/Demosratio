@@ -123,7 +123,8 @@
     "readiness-promise": "Acuerdo con el Cumplimiento",
     "save-promise-readiness-btn": "Enviar",
     "choose-party": "Escoge un Partido Político",
-    "readiness-sent": "Acuerdo enviado."
+    "readiness-sent": "Acuerdo enviado.",
+    "campaign": "Campaña"
   },
   "promises": {
     "party_promises": "Promesas Electorales",
@@ -139,6 +140,22 @@
     "view-proposal": "Votación",
     "supporting": "Cumplimiento Pleno",
     "contradictory": "Oposición Propia",
-    "partial": "Vía Indirecta de Logro"
+    "partial": "Vía Indirecta de Logro",
+    "promises-with-analysis": "Promesas con Análisis",
+    "no-promises-available": "No hay promesas disponibles para este partido",
+    "select-party-title": "Elige un Partido Político",
+    "select-party-description": "Selecciona un partido para ver sus promesas electorales y análisis con IA",
+    "votes-in-favor": "a favor",
+    "votes-against": "en contra",
+    "votes-partial": "parcial",
+    "votes-supporting-promise": "Votos que apoyan la promesa",
+    "votes-contradicting-promise": "Votos que contradicen la promesa",
+    "votes-partial-promise": "Votos con evidencia parcial",
+    "no-analysis-yet": "Aún no hay análisis disponible",
+    "back-to-parties": "Volver a partidos",
+    "show-less": "Ver menos",
+    "show-more": "Ver más",
+    "show-all-parties": "Ver todos los partidos ({count} más)",
+    "show-less-parties": "Ver menos"
   }
 }
