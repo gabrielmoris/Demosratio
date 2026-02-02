@@ -12,10 +12,10 @@ import { PromisesWithAnalysisList } from "./PromiseWithAnalysisCard";
 import Button from "../Button";
 import { useUiContext } from "@/src/context/uiContext";
 import { useAuth } from "@/src/context/authContext";
+import { DashboardStats } from "./DashboardStats";
 
 export const PromisesView = () => {
   const t = useTranslations("promises");
-  const tp = useTranslations("parties");
   const { showToast } = useUiContext();
   const user = useAuth();
 
@@ -43,7 +43,7 @@ export const PromisesView = () => {
     method: "post",
     onSuccess: () => {
       showToast({
-        message: tp("readiness-sent"),
+        message: t("readiness-sent"),
         variant: "success",
         duration: 3000,
       });
@@ -88,11 +88,10 @@ export const PromisesView = () => {
 
   return (
     <div className="flex flex-col lg:flex-row gap-6">
-      {/* Party Sidebar - Always visible when no party selected or on desktop */}
       <aside className="lg:w-72 flex-shrink-0">
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sticky top-4">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="font-bold text-contrast text-lg">{tp("choose-party")}</h2>
+            <h2 className="font-bold text-contrast text-lg">{t("choose-party")}</h2>
             {parties.length > 8 && (
               <button
                 onClick={() => setShowAllParties(!showAllParties)}
@@ -133,11 +132,10 @@ export const PromisesView = () => {
         </div>
       </aside>
 
-      {/* Main Content */}
       <main className="flex-1 min-w-0">
         {partyChoice ? (
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            {/* Party Header with back navigation */}
+            <DashboardStats />
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-gray-200">
               <div className="flex items-center gap-4">
                 <button
@@ -163,13 +161,12 @@ export const PromisesView = () => {
                 <div>
                   <h1 className="text-2xl font-bold font-drserif text-drPurple">{partyChoice.name}</h1>
                   {campaignChoice && (
-                    <p className="text-sm text-gray-500">{tp("campaign")}: {campaignChoice.year}</p>
+                    <p className="text-sm text-gray-500">{t("campaign")}: {campaignChoice.year}</p>
                   )}
                 </div>
               </div>
             </div>
 
-            {/* Campaign Selector and Readiness Slider */}
             {campaigns.length > 0 && (
               <div className="py-4 border-b border-gray-200">
                 <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
@@ -182,7 +179,7 @@ export const PromisesView = () => {
                   </div>
                   <div className="w-full sm:w-auto flex gap-3 items-center mt-4 sm:mt-0">
                     <div className="flex-1 sm:flex-none min-w-[200px]">
-                      <label className="block text-sm font-medium text-gray-700 mb-1">{tp("readiness-promise")}</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">{t("readiness-promise")}</label>
                       <div className="flex items-center gap-3">
                         <div className="relative flex-1">
                           <input
@@ -202,13 +199,12 @@ export const PromisesView = () => {
                         <span className="text-sm font-bold text-drPurple w-12 text-right">{promiseReadiness}%</span>
                       </div>
                     </div>
-                    <Button onClick={sendReadyness} label={tp("save-promise-readiness-btn")} type="submit" />
+                    <Button onClick={sendReadyness} label={t("save-promise-readiness-btn")} type="submit" />
                   </div>
                 </div>
               </div>
             )}
 
-            {/* Promises with Analysis */}
             <div className="py-6">
               <h2 className="text-xl font-bold text-contrast mb-4">{t("promises-with-analysis")}</h2>
 
@@ -222,7 +218,6 @@ export const PromisesView = () => {
             </div>
           </div>
         ) : (
-          /* No Party Selected State - Party Grid */
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
             <div className="text-center mb-8">
               <h2 className="text-2xl font-bold font-drserif text-drPurple mb-2">{t("select-party-title")}</h2>
