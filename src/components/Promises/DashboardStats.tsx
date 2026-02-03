@@ -3,27 +3,33 @@ import React, { useEffect, useState, useCallback } from "react";
 import { StatCard } from "./StatCard";
 import { useTranslations } from "next-intl";
 
-interface DashboardStats {
+interface DashboardStatsData {
   totalPromises: number;
   supportingEvidence: number;
   contradictoryEvidence: number;
   partialEvidence: number;
 }
 
-export const DashboardStats = () => {
+interface DashboardStatsProps {
+  partyId: number;
+}
+
+export const DashboardStats = ({ partyId }: DashboardStatsProps) => {
   const t = useTranslations("promises");
-  const [stats, setStats] = useState<DashboardStats | null>(null);
+  const [stats, setStats] = useState<DashboardStatsData | null>(null);
 
   const fetchStats = useCallback(() => {
-    fetch("/api/parties/promises/dashboard")
+    fetch(`/api/parties/promises/dashboard?party_id=${partyId}`)
       .then((res) => res.json())
       .then((data) => setStats(data))
       .catch((err) => console.error("Error fetching dashboard stats:", err));
-  }, []);
+  }, [partyId]);
 
   useEffect(() => {
-    fetchStats();
-  }, [fetchStats]);
+    if (partyId) {
+      fetchStats();
+    }
+  }, [partyId, fetchStats]);
 
   if (!stats) {
     return (

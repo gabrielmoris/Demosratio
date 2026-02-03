@@ -135,7 +135,7 @@ export const PromisesView = () => {
       <main className="flex-1 min-w-0">
         {partyChoice ? (
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <DashboardStats />
+            <DashboardStats partyId={partyChoice?.id || 0} />
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-gray-200">
               <div className="flex items-center gap-4">
                 <button
