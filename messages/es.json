@@ -157,6 +157,7 @@
     "supporting-evidence": "Evidencia Positiva",
     "contradictory-evidence": "Evidencia Negativa",
     "partial-evidence": "Evidencia Parcial",
-    "show-all-parties": "Ver todos los partidos ({count} más)"
+    "show-all-parties": "Ver todos los partidos ({count} más)",
+    "not-tried": "No intentado"
   }
 }

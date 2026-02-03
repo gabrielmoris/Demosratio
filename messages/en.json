@@ -116,6 +116,7 @@
     "readiness-promise": "According to compliance",
     "save-promise-readiness-btn": "Send",
     "choose-party": "Choose a political party",
-    "readiness-sent": "Agreement sent."
+    "readiness-sent": "Agreement sent.",
+    "not-tried": "Not tried"
   }
 }

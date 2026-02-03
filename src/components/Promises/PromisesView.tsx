@@ -5,7 +5,7 @@ import { usePartiesContext } from "../Parties/PartyStateManager";
 import { useRequest } from "@/hooks/use-request";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
-import { Campaign, Party } from "@/types/politicalParties";
+import { Campaign, Party, PromiseAnalysis } from "@/types/politicalParties";
 import Dropdown from "../Dropdown";
 import Loading from "../Loading";
 import { PromisesWithAnalysisList } from "./PromiseWithAnalysisCard";
@@ -32,6 +32,8 @@ export const PromisesView = () => {
 
   const [promiseReadiness, setPromiseReadiness] = useState<string>("50");
   const [showAllParties, setShowAllParties] = useState(false);
+  const [analysesByPromise, setAnalysesByPromise] = useState<Record<number, PromiseAnalysis[]>>({});
+  const [isLoadingAnalyses, setIsLoadingAnalyses] = useState(false);
 
   const onInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const newValue = e.target.value;
@@ -62,6 +64,30 @@ export const PromisesView = () => {
     if (campaignChoice) getPromiseReadiness();
   }, [campaignChoice]);
 
+  // Fetch all analyses when party choice changes
+  useEffect(() => {
+    if (partyChoice?.id) {
+      setIsLoadingAnalyses(true);
+      fetch(`/api/parties/promises/all-analyses-by-party?party_id=${partyChoice.id}`)
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.analysis) {
+            // Group analyses by promise_id
+            const grouped: Record<number, PromiseAnalysis[]> = {};
+            data.analysis.forEach((analysis: PromiseAnalysis) => {
+              if (!grouped[analysis.promise_id]) {
+                grouped[analysis.promise_id] = [];
+              }
+              grouped[analysis.promise_id].push(analysis);
+            });
+            setAnalysesByPromise(grouped);
+          }
+        })
+        .catch((err) => console.error("Error fetching all analyses:", err))
+        .finally(() => setIsLoadingAnalyses(false));
+    }
+  }, [partyChoice]);
+
   const sendReadyness = () => {
     if (!campaignChoice || !user.currentUser) return;
     sendPromiseReadiness({
@@ -82,7 +108,7 @@ export const PromisesView = () => {
 
   const displayedParties = showAllParties ? parties : parties.slice(0, 8);
 
-  if (loading) {
+  if (loading || isLoadingAnalyses) {
     return <Loading />;
   }
 
@@ -209,7 +235,7 @@ export const PromisesView = () => {
               <h2 className="text-xl font-bold text-contrast mb-4">{t("promises-with-analysis")}</h2>
 
               {structuredPromises.length > 0 ? (
-                <PromisesWithAnalysisList structuredPromises={structuredPromises} partyId={partyChoice?.id || 0} />
+                <PromisesWithAnalysisList structuredPromises={structuredPromises} analysesByPromise={analysesByPromise} />
               ) : (
                 <div className="text-center py-12 bg-gray-50 rounded-lg">
                   <p className="text-gray-500">{t("no-promises-available")}</p>

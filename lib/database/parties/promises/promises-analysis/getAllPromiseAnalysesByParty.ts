@@ -1,13 +1,14 @@
 import { Logger } from "tslog";
 import { supabaseAdmin } from "@/lib/supabaseClient";
+import { PromiseAnalysis } from "@/types/politicalParties";
 
 const log = new Logger();
 
-export async function getAllPromiseAnalysesByPromise(party_id: number, promise_id: number) {
-  if (!party_id || !promise_id) throw new Error("you need to send the args!");
+export async function getAllPromiseAnalysesByParty(partyId: number): Promise<{ analysis: PromiseAnalysis[] | null; error?: Error }> {
+  if (!partyId) throw new Error("partyId is required");
 
   try {
-    const { data: analysis, error: analysisError } = await supabaseAdmin
+    const { data: analyses, error: analysisError } = await supabaseAdmin
       .from("promise_status")
       .select(
         `
@@ -31,18 +32,18 @@ export async function getAllPromiseAnalysesByPromise(party_id: number, promise_i
         )
       `,
       )
-      .eq("party_id", party_id)
-      .eq("promise_id", promise_id)
+      .eq("party_id", partyId)
+      .order("promise_id", { ascending: true })
       .order("created_at", { ascending: false });
 
     if (analysisError) {
-      log.error(`Error getting all promise analyses: `, analysisError);
+      log.error(`Error getting all promise analyses by party: `, analysisError);
       throw analysisError;
     }
 
-    return { analysis };
+    return { analysis: analyses as unknown as PromiseAnalysis[] };
   } catch (error) {
-    log.error("Supabase error fetching all promise analyses:", error);
-    return { error };
+    log.error("Supabase error fetching all promise analyses by party:", error);
+    return { analysis: null, error: error as Error };
   }
 }
