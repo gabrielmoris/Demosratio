@@ -114,6 +114,7 @@ export const PromisesView = () => {
 
   return (
     <div className="flex flex-col lg:flex-row gap-6">
+       {partyChoice && <DashboardStats partyId={partyChoice?.id || 0} className="flex md:hidden" />}
       <aside className="lg:w-72 flex-shrink-0 hidden md:inline">
         <div className="bg-white rounded-lg shadow-sm border md:border-gray-200 md:p-4 sticky top-4">
           <div className="flex items-center justify-between mb-4">

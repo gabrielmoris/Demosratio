@@ -44,7 +44,7 @@ export const StatCard = ({ title, value, icon, color }: StatCardProps) => {
 
   return (
     <div
-      className={`${styles.bg} ${styles.border} border rounded-lg p-4 flex items-center gap-4`}
+      className={`${styles.bg} ${styles.border} border rounded-lg p-2 md:p-4 flex items-center gap-4`}
     >
       <div className={`${styles.icon} flex-shrink-0`}>{icon}</div>
       <div>

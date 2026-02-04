@@ -34,7 +34,7 @@ export const DashboardStats = ({ partyId, className }: DashboardStatsProps) => {
 
   if (!stats) {
     return (
-      <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6`}>
+      <div className={`grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6 ${className}`}>
         {[1, 2, 3, 4].map((i) => (
           <div
             key={i}
@@ -49,7 +49,7 @@ export const DashboardStats = ({ partyId, className }: DashboardStatsProps) => {
   }
 
   return (
-    <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6 ${className}`}>
+    <div className={`grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6 ${className}`}>
       <StatCard
         title={t("total-promises")}
         value={stats.totalPromises}
