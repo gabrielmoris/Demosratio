@@ -114,8 +114,8 @@ export const PromisesView = () => {
 
   return (
     <div className="flex flex-col lg:flex-row gap-6">
-      <aside className="lg:w-72 flex-shrink-0">
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sticky top-4">
+      <aside className="lg:w-72 flex-shrink-0 hidden md:inline">
+        <div className="bg-white rounded-lg shadow-sm border md:border-gray-200 md:p-4 sticky top-4">
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-bold text-contrast text-lg">{t("choose-party")}</h2>
             {parties.length > 8 && (
@@ -127,12 +127,12 @@ export const PromisesView = () => {
               </button>
             )}
           </div>
-          <div className="space-y-2 max-h-[calc(100vh-150px)] overflow-y-auto">
+          <div className="space-y-2">
             {displayedParties.map((party) => (
               <button
                 key={party.id}
                 onClick={() => handlePartychoice(party)}
-                className={`w-full flex items-center gap-3 p-2 rounded-lg transition-all duration-200 ${
+                className={`w-full flex text-start md:text-center items-center gap-3 p-2 rounded-lg transition-all duration-200 ${
                   partyChoice?.id === party.id
                     ? "bg-drPurple/10 border-2 border-drPurple"
                     : "hover:bg-gray-50 border-2 border-transparent"
@@ -160,8 +160,8 @@ export const PromisesView = () => {
 
       <main className="flex-1 min-w-0">
         {partyChoice ? (
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <DashboardStats partyId={partyChoice?.id || 0} />
+          <div className="bg-white rounded-lg shadow-sm md:border md:border-gray-200 md:p-6">
+            <DashboardStats partyId={partyChoice?.id || 0} className="hidden md:flex" />
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-gray-200">
               <div className="flex items-center gap-4">
                 <button

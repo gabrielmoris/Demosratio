@@ -3,9 +3,10 @@ import { FulfillmentStatus } from "@/types/politicalParties";
 interface StatusBadgeProps {
   status: FulfillmentStatus;
   statusText: string;
+  className?:string;
 }
 
-export const StatusBadge = ({ status, statusText }: StatusBadgeProps) => {
+export const StatusBadge = ({ status, statusText,className }: StatusBadgeProps) => {
   const statusStyles = {
     "Supporting Evidence": "bg-green-100 text-green-800 border-green-300",
     "Contradictory Evidence": "bg-red-100 text-red-800 border-red-300",
@@ -39,7 +40,7 @@ export const StatusBadge = ({ status, statusText }: StatusBadgeProps) => {
   };
 
   return (
-    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${statusStyles[status]}`}>
+    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${statusStyles[status]} ${className}`}>
       {statusIcons[status]}
       {statusText}
     </span>

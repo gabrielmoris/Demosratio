@@ -57,17 +57,17 @@ export const PromiseWithAnalysisCard = ({ promise, analyses }: PromiseWithAnalys
 
   return (
     <div
-      className={`rounded-lg border transition-all duration-300 ${
-        isExpanded ? "border-drPurple shadow-md" : "border-gray-200 hover:border-drPurple/50"
+      className={`md:rounded-lg md:border transition-all duration-300 border-b pb-4 ${
+        isExpanded ? "border-drPurple md:shadow-md" : "border-gray-200 hover:border-drPurple/50"
       }`}
     >
-      <div className="p-4 cursor-pointer" onClick={toggleExpand}>
+      <div className="pb-4 md:p-4 cursor-pointer" onClick={toggleExpand}>
         <div className="flex justify-between items-start gap-3">
           <div className="flex-1">
             <p className="text-base font-medium text-gray-900 leading-relaxed">{promise.promise}</p>
           </div>
           <div className="flex items-center gap-2 flex-shrink-0">
-            {overallStatus && <StatusBadge status={overallStatus.type} statusText={overallStatus.text} />}
+            {overallStatus && <StatusBadge status={overallStatus.type} statusText={overallStatus.text} className="hidden md:flex" />}
             <svg
               className={`w-5 h-5 text-gray-400 transform transition-transform duration-300 flex-shrink-0 ${
                 isExpanded ? "rotate-180" : ""
@@ -144,7 +144,7 @@ export const PromiseWithAnalysisCard = ({ promise, analyses }: PromiseWithAnalys
           isExpanded ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0"
         }`}
       >
-        <div className="px-4 pb-4 overflow-y-auto max-h-screen">
+        <div className="md:px-4 pb-4 overflow-y-auto max-h-screen">
           {allAnalyses.length > 0 ? (
             <div className="space-y-4">
               {supportingVotes.length > 0 && (
@@ -220,7 +220,7 @@ export const PromiseWithAnalysisCard = ({ promise, analyses }: PromiseWithAnalys
 
 const AnalysisItem = ({ analysis, locale }: { analysis: ExtendedAnalysis; locale: string }) => {
   return (
-    <div className="bg-white rounded-lg p-4 shadow-sm border border-gray-100">
+    <div className="bg-white rounded-lg p-4 shadow-sm border border-gray-100 width-full overflow-clip">
       <p className="text-gray-700 text-sm mb-3 leading-relaxed">{analysis.analysis_summary}</p>
       {analysis.proposals && (
         <div className="flex items-center justify-between">
@@ -293,7 +293,7 @@ export const PromisesWithAnalysisList = ({ structuredPromises, analysesByPromise
               </svg>
             </div>
           </div>
-          <div className="space-y-3 ml-2 border-l-2 border-drPurple/20 pl-4">
+          <div className="space-y-3 md:ml-2 md:border-l-2 md:border-drPurple/20 md:pl-4">
             {subject.promises.map((promise) => (
               <PromiseWithAnalysisCard key={promise.id} promise={promise} analyses={analysesByPromise[promise.id] || []} />
             ))}

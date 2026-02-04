@@ -12,9 +12,10 @@ interface DashboardStatsData {
 
 interface DashboardStatsProps {
   partyId: number;
+  className?: string;
 }
 
-export const DashboardStats = ({ partyId }: DashboardStatsProps) => {
+export const DashboardStats = ({ partyId, className }: DashboardStatsProps) => {
   const t = useTranslations("promises");
   const [stats, setStats] = useState<DashboardStatsData | null>(null);
 
@@ -33,7 +34,7 @@ export const DashboardStats = ({ partyId }: DashboardStatsProps) => {
 
   if (!stats) {
     return (
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+      <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6`}>
         {[1, 2, 3, 4].map((i) => (
           <div
             key={i}
@@ -48,7 +49,7 @@ export const DashboardStats = ({ partyId }: DashboardStatsProps) => {
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+    <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6 ${className}`}>
       <StatCard
         title={t("total-promises")}
         value={stats.totalPromises}
