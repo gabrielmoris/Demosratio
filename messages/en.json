@@ -78,13 +78,6 @@
   "dropdown": {
     "delete-advice": "Sure you want to erase this element?"
   },
-  "parties": {
-    "readiness-promise": "According to compliance",
-    "save-promise-readiness-btn": "Send",
-    "choose-party": "Choose a political party",
-    "readiness-sent": "Agreement sent.",
-    "campaign": "Campaign"
-  },
   "promises": {
     "party_promises": "Electoral promises",
     "party_analysis": "IA Analysis",
@@ -115,6 +108,15 @@
     "show-less": "Show less",
     "show-more": "Show more",
     "show-all-parties": "Show all parties ({count} more)",
-    "show-less-parties": "Show less"
+    "show-less-parties": "Show less",
+    "total-promises": "Total Promises",
+    "supporting-evidence": "Supporting Evidence",
+    "contradictory-evidence": "Contradictory Evidence",
+    "partial-evidence": "Partial Evidence",
+    "readiness-promise": "According to compliance",
+    "save-promise-readiness-btn": "Send",
+    "choose-party": "Choose a political party",
+    "readiness-sent": "Agreement sent.",
+    "not-tried": "Not tried"
   }
 }

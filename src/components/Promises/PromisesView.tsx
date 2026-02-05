@@ -5,17 +5,17 @@ import { usePartiesContext } from "../Parties/PartyStateManager";
 import { useRequest } from "@/hooks/use-request";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
-import { Campaign, Party } from "@/types/politicalParties";
+import { Campaign, Party, PromiseAnalysis } from "@/types/politicalParties";
 import Dropdown from "../Dropdown";
 import Loading from "../Loading";
 import { PromisesWithAnalysisList } from "./PromiseWithAnalysisCard";
 import Button from "../Button";
 import { useUiContext } from "@/src/context/uiContext";
 import { useAuth } from "@/src/context/authContext";
+import { DashboardStats } from "./DashboardStats";
 
 export const PromisesView = () => {
   const t = useTranslations("promises");
-  const tp = useTranslations("parties");
   const { showToast } = useUiContext();
   const user = useAuth();
 
@@ -32,6 +32,8 @@ export const PromisesView = () => {
 
   const [promiseReadiness, setPromiseReadiness] = useState<string>("50");
   const [showAllParties, setShowAllParties] = useState(false);
+  const [analysesByPromise, setAnalysesByPromise] = useState<Record<number, PromiseAnalysis[]>>({});
+  const [isLoadingAnalyses, setIsLoadingAnalyses] = useState(false);
 
   const onInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const newValue = e.target.value;
@@ -43,7 +45,7 @@ export const PromisesView = () => {
     method: "post",
     onSuccess: () => {
       showToast({
-        message: tp("readiness-sent"),
+        message: t("readiness-sent"),
         variant: "success",
         duration: 3000,
       });
@@ -61,6 +63,30 @@ export const PromisesView = () => {
   useEffect(() => {
     if (campaignChoice) getPromiseReadiness();
   }, [campaignChoice]);
+
+  // Fetch all analyses when party choice changes
+  useEffect(() => {
+    if (partyChoice?.id) {
+      setIsLoadingAnalyses(true);
+      fetch(`/api/parties/promises/all-analyses-by-party?party_id=${partyChoice.id}`)
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.analysis) {
+            // Group analyses by promise_id
+            const grouped: Record<number, PromiseAnalysis[]> = {};
+            data.analysis.forEach((analysis: PromiseAnalysis) => {
+              if (!grouped[analysis.promise_id]) {
+                grouped[analysis.promise_id] = [];
+              }
+              grouped[analysis.promise_id].push(analysis);
+            });
+            setAnalysesByPromise(grouped);
+          }
+        })
+        .catch((err) => console.error("Error fetching all analyses:", err))
+        .finally(() => setIsLoadingAnalyses(false));
+    }
+  }, [partyChoice]);
 
   const sendReadyness = () => {
     if (!campaignChoice || !user.currentUser) return;
@@ -82,17 +108,17 @@ export const PromisesView = () => {
 
   const displayedParties = showAllParties ? parties : parties.slice(0, 8);
 
-  if (loading) {
+  if (loading || isLoadingAnalyses) {
     return <Loading />;
   }
 
   return (
     <div className="flex flex-col lg:flex-row gap-6">
-      {/* Party Sidebar - Always visible when no party selected or on desktop */}
-      <aside className="lg:w-72 flex-shrink-0">
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sticky top-4">
+       {partyChoice && <DashboardStats partyId={partyChoice?.id || 0} className="w-full flex md:hidden" />}
+      <aside className="lg:w-72 flex-shrink-0 hidden md:inline">
+        <div className="bg-white rounded-lg shadow-sm border md:border-gray-200 md:p-4 sticky top-4">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="font-bold text-contrast text-lg">{tp("choose-party")}</h2>
+            <h2 className="font-bold text-contrast text-lg">{t("choose-party")}</h2>
             {parties.length > 8 && (
               <button
                 onClick={() => setShowAllParties(!showAllParties)}
@@ -102,12 +128,12 @@ export const PromisesView = () => {
               </button>
             )}
           </div>
-          <div className="space-y-2 max-h-[calc(100vh-150px)] overflow-y-auto">
+          <div className="space-y-2">
             {displayedParties.map((party) => (
               <button
                 key={party.id}
                 onClick={() => handlePartychoice(party)}
-                className={`w-full flex items-center gap-3 p-2 rounded-lg transition-all duration-200 ${
+                className={`w-full flex text-start md:text-center items-center gap-3 p-2 rounded-lg transition-all duration-200 ${
                   partyChoice?.id === party.id
                     ? "bg-drPurple/10 border-2 border-drPurple"
                     : "hover:bg-gray-50 border-2 border-transparent"
@@ -133,11 +159,10 @@ export const PromisesView = () => {
         </div>
       </aside>
 
-      {/* Main Content */}
       <main className="flex-1 min-w-0">
         {partyChoice ? (
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            {/* Party Header with back navigation */}
+          <div className="bg-white rounded-lg shadow-sm md:border md:border-gray-200 md:p-6">
+            <DashboardStats partyId={partyChoice?.id || 0} className="w-full hidden md:flex" />
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-gray-200">
               <div className="flex items-center gap-4">
                 <button
@@ -163,13 +188,12 @@ export const PromisesView = () => {
                 <div>
                   <h1 className="text-2xl font-bold font-drserif text-drPurple">{partyChoice.name}</h1>
                   {campaignChoice && (
-                    <p className="text-sm text-gray-500">{tp("campaign")}: {campaignChoice.year}</p>
+                    <p className="text-sm text-gray-500">{t("campaign")}: {campaignChoice.year}</p>
                   )}
                 </div>
               </div>
             </div>
 
-            {/* Campaign Selector and Readiness Slider */}
             {campaigns.length > 0 && (
               <div className="py-4 border-b border-gray-200">
                 <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
@@ -182,7 +206,7 @@ export const PromisesView = () => {
                   </div>
                   <div className="w-full sm:w-auto flex gap-3 items-center mt-4 sm:mt-0">
                     <div className="flex-1 sm:flex-none min-w-[200px]">
-                      <label className="block text-sm font-medium text-gray-700 mb-1">{tp("readiness-promise")}</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">{t("readiness-promise")}</label>
                       <div className="flex items-center gap-3">
                         <div className="relative flex-1">
                           <input
@@ -202,18 +226,17 @@ export const PromisesView = () => {
                         <span className="text-sm font-bold text-drPurple w-12 text-right">{promiseReadiness}%</span>
                       </div>
                     </div>
-                    <Button onClick={sendReadyness} label={tp("save-promise-readiness-btn")} type="submit" />
+                    <Button onClick={sendReadyness} label={t("save-promise-readiness-btn")} type="submit" />
                   </div>
                 </div>
               </div>
             )}
 
-            {/* Promises with Analysis */}
             <div className="py-6">
               <h2 className="text-xl font-bold text-contrast mb-4">{t("promises-with-analysis")}</h2>
 
               {structuredPromises.length > 0 ? (
-                <PromisesWithAnalysisList structuredPromises={structuredPromises} partyId={partyChoice?.id || 0} />
+                <PromisesWithAnalysisList structuredPromises={structuredPromises} analysesByPromise={analysesByPromise} />
               ) : (
                 <div className="text-center py-12 bg-gray-50 rounded-lg">
                   <p className="text-gray-500">{t("no-promises-available")}</p>
@@ -222,7 +245,6 @@ export const PromisesView = () => {
             </div>
           </div>
         ) : (
-          /* No Party Selected State - Party Grid */
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
             <div className="text-center mb-8">
               <h2 className="text-2xl font-bold font-drserif text-drPurple mb-2">{t("select-party-title")}</h2>
