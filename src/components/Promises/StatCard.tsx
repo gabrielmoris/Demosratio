@@ -6,6 +6,7 @@ interface StatCardProps {
   value: number;
   icon: React.ReactNode;
   color: "gray" | "green" | "red" | "amber";
+  className?: string;
 }
 
 const colorStyles = {
@@ -39,12 +40,12 @@ const colorStyles = {
   },
 };
 
-export const StatCard = ({ title, value, icon, color }: StatCardProps) => {
+export const StatCard = ({ title, value, icon, color, className }: StatCardProps) => {
   const styles = colorStyles[color];
 
   return (
     <div
-      className={`${styles.bg} ${styles.border} border rounded-lg p-2 md:p-4 flex items-center gap-4`}
+      className={`${styles.bg} ${styles.border} border rounded-lg p-2 md:p-4 flex items-center gap-4 ${className}`}
     >
       <div className={`${styles.icon} flex-shrink-0`}>{icon}</div>
       <div>

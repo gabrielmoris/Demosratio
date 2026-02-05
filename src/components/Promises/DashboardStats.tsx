@@ -34,11 +34,11 @@ export const DashboardStats = ({ partyId, className }: DashboardStatsProps) => {
 
   if (!stats) {
     return (
-      <div className={`grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6 ${className}`}>
+      <div className={`flex gap-2 flex-wrap ${className}`}>
         {[1, 2, 3, 4].map((i) => (
           <div
             key={i}
-            className="bg-gray-50 border border-gray-200 rounded-lg p-4 animate-pulse"
+            className="bg-gray-50 border border-gray-200 rounded-lg p-4 animate-pulse w-full flex-1"
           >
             <div className="h-4 bg-gray-200 rounded w-1/2 mb-2"></div>
             <div className="h-8 bg-gray-200 rounded w-1/3"></div>
@@ -49,8 +49,9 @@ export const DashboardStats = ({ partyId, className }: DashboardStatsProps) => {
   }
 
   return (
-    <div className={`grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6 ${className}`}>
+    <div className={`flex gap-2 w-full flex-wrap ${className}`}>
       <StatCard
+      className="w-full flex-1"
         title={t("total-promises")}
         value={stats.totalPromises}
         color="gray"
@@ -71,6 +72,7 @@ export const DashboardStats = ({ partyId, className }: DashboardStatsProps) => {
         }
       />
       <StatCard
+      className="w-full flex-1"
         title={t("supporting-evidence")}
         value={stats.supportingEvidence}
         color="green"
@@ -91,6 +93,7 @@ export const DashboardStats = ({ partyId, className }: DashboardStatsProps) => {
         }
       />
       <StatCard
+      className="w-full flex-1"
         title={t("contradictory-evidence")}
         value={stats.contradictoryEvidence}
         color="red"
@@ -111,6 +114,7 @@ export const DashboardStats = ({ partyId, className }: DashboardStatsProps) => {
         }
       />
       <StatCard
+      className="w-full flex-1"
         title={t("partial-evidence")}
         value={stats.partialEvidence}
         color="amber"
