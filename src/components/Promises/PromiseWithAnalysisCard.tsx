@@ -41,15 +41,22 @@ export const PromiseWithAnalysisCard = ({ promise, analyses }: PromiseWithAnalys
   }, [allAnalyses]);
 
   const overallStatus = useMemo(() => {
+    if(allAnalyses.length === 0){
+      return { text: t("not-tried"), type: "Contradictory Evidence" as const };
+    }
+
+    if (supportingVotes.length > 0 && contradictingVotes.length > 0) {
+      return { text: t("partial"), type: "Partial/Indirect Evidence" as const };
+    }
+
     if (supportingVotes.length > 0 && contradictingVotes.length === 0) {
       return { text: t("supporting"), type: "Supporting Evidence" as const };
     }
-    if ((contradictingVotes.length > 0 && supportingVotes.length === 0) || allAnalyses.length === 0) {
+
+    if (contradictingVotes.length > 0) {
       return { text: t("contradictory"), type: "Contradictory Evidence" as const };
     }
-    if (supportingVotes.length > 0 || contradictingVotes.length > 0) {
-      return { text: t("partial"), type: "Partial/Indirect Evidence" as const };
-    }
+    
     return null;
   }, [supportingVotes, contradictingVotes, t, allAnalyses.length]);
 

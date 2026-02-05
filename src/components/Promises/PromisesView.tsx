@@ -114,7 +114,6 @@ export const PromisesView = () => {
 
   return (
     <div className="flex flex-col lg:flex-row gap-6">
-       {partyChoice && <DashboardStats partyId={partyChoice?.id || 0} className="w-full flex md:hidden" />}
       <aside className="lg:w-72 flex-shrink-0 hidden md:inline">
         <div className="bg-white rounded-lg shadow-sm border md:border-gray-200 md:p-4 sticky top-4">
           <div className="flex items-center justify-between mb-4">
@@ -162,8 +161,7 @@ export const PromisesView = () => {
       <main className="flex-1 min-w-0">
         {partyChoice ? (
           <div className="bg-white rounded-lg shadow-sm md:border md:border-gray-200 md:p-6">
-            <DashboardStats partyId={partyChoice?.id || 0} className="w-full hidden md:flex" />
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-gray-200">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b md:border-none border-gray-200">
               <div className="flex items-center gap-4">
                 <button
                   onClick={() => setPartyChoice(undefined)}
@@ -185,14 +183,16 @@ export const PromisesView = () => {
                     />
                   </div>
                 )}
-                <div>
+                <div>                   
                   <h1 className="text-2xl font-bold font-drserif text-drPurple">{partyChoice.name}</h1>
                   {campaignChoice && (
                     <p className="text-sm text-gray-500">{t("campaign")}: {campaignChoice.year}</p>
                   )}
                 </div>
               </div>
+              {partyChoice && <DashboardStats partyId={partyChoice?.id || 0} className="w-full flex md:hidden" />}
             </div>
+            <DashboardStats partyId={partyChoice?.id || 0} className="w-full hidden md:flex mb-4" />
 
             {campaigns.length > 0 && (
               <div className="py-4 border-b border-gray-200">
