@@ -37,7 +37,7 @@ export async function GET() {
         message: "Parliament data extraction failed",
         error: String(error),
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -82,7 +82,11 @@ async function saveToDb(day: string) {
       if (!savedProposal?.alreadySavedBefore) {
         const analysisArr = await aiPromiseAnalizer(proposalData);
         log.info("SAVING ", savedProposal?.id);
-        if (analysisArr.length) analysisArr.forEach(async (analysis) => await setPromiseAnalysis(analysis, savedProposal?.id));
+        if (analysisArr.length) {
+          for (const analysis of analysisArr) {
+            await setPromiseAnalysis(analysis, savedProposal?.id);
+          }
+        }
       }
     } catch (error) {
       log.error(`Failed to save proposal "${title}":`, error);
