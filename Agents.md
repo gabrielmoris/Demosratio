@@ -37,3 +37,6 @@ A Next.js 15 app that tracks Spanish political promises and compares them agains
 - [`middleware.ts`](src/middleware.ts) - i18n routing
 - [`next.config.ts`](next.config.ts) - Next.js configuration
 - [`lib/supabaseClient.ts`](lib/supabaseClient.ts) - Database clients
+
+## Important
+Whenever you implement new functionality, change existing behavior, refactor significant code, or remove features, you must keep both the /docs folder and Agents.md files up to date.
