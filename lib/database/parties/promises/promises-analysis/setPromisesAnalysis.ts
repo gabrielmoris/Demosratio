@@ -10,7 +10,7 @@ export async function setPromiseAnalysis(promiseAnalysis: PartyAnalysisOutput, p
   try {
     const { party_id, party_name, campaign_year, promise_analyses } = promiseAnalysis;
 
-    promise_analyses.forEach(async (analysis) => {
+    for (const analysis of promise_analyses) {
       const { promise_id, subject_id, promise_text, fulfillment_status, analysis_summary } = analysis;
 
       const { analysis: promiseAnalysis } = await getPromiseAnalysisByPromise(party_id, promise_id);
@@ -43,7 +43,7 @@ export async function setPromiseAnalysis(promiseAnalysis: PartyAnalysisOutput, p
 
         ids.push(data.id);
       }
-    });
+    }
 
     return ids;
   } catch (error) {
