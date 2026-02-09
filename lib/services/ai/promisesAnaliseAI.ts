@@ -1,16 +1,16 @@
 import { fetchAllCampaigns } from "@/lib/database/parties/campaigns/getAllCampagns";
 import { fetchAllParties } from "@/lib/database/parties/getAllParties";
 import { analyzePromisesWithGemini } from "@/lib/services/geminiClient";
-import { PartyWithPromises } from "@/types/politicalParties";
+import { PartyAnalysisOutput, PartyWithPromises } from "@/types/politicalParties";
 import { Logger } from "tslog";
 import { fetchPartyPromises } from "../../database/parties/promises/getPartyPromises";
 import { VotingData } from "@/types/proposal.types";
 
 const log = new Logger();
 
-export const aiPromiseAnalizer = async (proposal: VotingData) => {
+export const aiPromiseAnalizer = async (proposal: VotingData, retryCount = 2): Promise<PartyAnalysisOutput[]> => {
   try {
-    if (!proposal) throw new Error("Need to send PRoposa.");
+    if (!proposal) throw new Error("Need to send Propuesta.");
     const result = await fetchAllParties();
     if (!result.parties) throw new Error("Error fetching parties");
     const parties: PartyWithPromises[] = result.parties;
@@ -52,6 +52,11 @@ export const aiPromiseAnalizer = async (proposal: VotingData) => {
     return analysis;
   } catch (error) {
     log.error("Error analising promises:", error);
-    throw new Error("Error analising promises.");
+    if (retryCount > 0) {
+      log.info(`Retrying... (${retryCount} attempts remaining)`);
+      await new Promise((resolve) => setTimeout(resolve, 5000));
+      return aiPromiseAnalizer(proposal, retryCount - 1);
+    }
+    throw new Error("Error analising promises after retries.");
   }
 };

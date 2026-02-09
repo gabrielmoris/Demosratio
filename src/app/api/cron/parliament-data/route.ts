@@ -81,7 +81,8 @@ async function saveToDb(day: string) {
 
       if (!savedProposal?.alreadySavedBefore) {
         const analysisArr = await aiPromiseAnalizer(proposalData);
-        log.info("SAVING ", savedProposal?.id);
+        log.info("SAVING ", day, " ", savedProposal?.id);
+        log.info("gemini analyse => ", analysisArr.length);
         if (analysisArr.length) {
           for (const analysis of analysisArr) {
             await setPromiseAnalysis(analysis, savedProposal?.id);
@@ -89,7 +90,7 @@ async function saveToDb(day: string) {
         }
       }
     } catch (error) {
-      log.error(`Failed to save proposal "${title}":`, error);
+      log.error(`Failed to save proposal ${day} "${title}":`, error);
     }
   }
 }
