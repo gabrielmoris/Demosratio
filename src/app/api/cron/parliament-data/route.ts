@@ -8,6 +8,7 @@ import { extractParliamentJson } from "@/lib/helpers/spanishParliamentExtractor/
 import { saveProposalToDb } from "@/lib/database/spanishParliament/saveProposal";
 import { aiPromiseAnalizer } from "@/lib/services/ai/promisesAnaliseAI";
 import { setPromiseAnalysis } from "@/lib/database/parties/promises/promises-analysis/setPromisesAnalysis";
+import { deleteProposal } from "@/lib/database/spanishParliament/deleteProposal";
 
 const log = new Logger();
 
@@ -79,18 +80,32 @@ async function saveToDb(day: string) {
     try {
       const savedProposal = await saveProposalToDb(proposalData);
 
-      if (!savedProposal?.alreadySavedBefore) {
+      if (!savedProposal) {
+        throw new Error(`Failed to save proposal: ${title}`);
+      }
+
+      if (!savedProposal.alreadySavedBefore) {
         const analysisArr = await aiPromiseAnalizer(proposalData);
-        log.info("SAVING ", day, " ", savedProposal?.id);
-        log.info("gemini analyse => ", analysisArr.length);
-        if (analysisArr.length) {
+        log.info("SAVING ", day, " ", savedProposal.id);
+        log.info("gemini analyse => ", analysisArr.length, analysisArr[0]);
+
+        if (analysisArr.length > 0) {
           for (const analysis of analysisArr) {
-            await setPromiseAnalysis(analysis, savedProposal?.id);
+            const result = await setPromiseAnalysis(analysis, savedProposal.id);
+
+            if (result && "error" in result) {
+              log.error("Promise analysis failed, deleting proposal:", result.error);
+
+              await deleteProposal(savedProposal.id);
+
+              throw new Error(`Promise analysis failed: ${result.error}`);
+            }
           }
         }
       }
     } catch (error) {
       log.error(`Failed to save proposal ${day} "${title}":`, error);
+      throw new Error(`Failed to save proposal ${day} "${title}"`);
     }
   }
 }
