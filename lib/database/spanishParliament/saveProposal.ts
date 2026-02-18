@@ -4,6 +4,25 @@ import { supabaseAdmin } from "@/lib/supabaseClient";
 
 const log = new Logger();
 
+/**
+ * Check if a proposal with the given expedient_text already exists in the database.
+ * Returns the existing proposal ID if found, null otherwise.
+ */
+export async function checkProposalExists(expedient_text: string): Promise<{ id: number } | null> {
+  const { data: checkResult, error: checkError } = await supabaseAdmin.from("proposals").select("id").eq("expedient_text", expedient_text).limit(1);
+
+  if (checkError) {
+    log.error("Error checking for existing proposal:", checkError);
+    throw checkError;
+  }
+
+  if (checkResult && checkResult.length > 0) {
+    return { id: checkResult[0].id };
+  }
+
+  return null;
+}
+
 export async function saveProposalToDb(proposalData: VotingData) {
   try {
     const {
@@ -21,20 +40,7 @@ export async function saveProposalToDb(proposalData: VotingData) {
       votes_parties_json,
     } = proposalData;
 
-    // First check if the expedient_text is already saved
-    const { data: checkResult, error: checkError } = await supabaseAdmin.from("proposals").select("id").eq("expedient_text", expedient_text).limit(1);
-
-    if (checkError) {
-      log.error("Error checking for existing proposal:", checkError);
-      throw checkError;
-    }
-
-    if (checkResult && checkResult.length > 0) {
-      log.warn(`Proposal with expedient_text "${expedient_text}" already exists. Skipping.`);
-      return { id: checkResult[0].id, alreadySavedBefore: true };
-    }
-
-    // Then save the new proposal
+    // Save the new proposal (check should be done before calling this function)
     const { data: result, error: insertError } = await supabaseAdmin
       .from("proposals")
       .insert([

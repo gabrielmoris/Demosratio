@@ -13,11 +13,13 @@ export async function setPromiseAnalysis(promiseAnalysis: PartyAnalysisOutput, p
     for (const analysis of promise_analyses) {
       const { promise_id, subject_id, promise_text, fulfillment_status, analysis_summary } = analysis;
 
-      const { analysis: promiseAnalysis } = await getPromiseAnalysisByPromise(party_id, promise_id);
+      const { analysis: existingAnalysis } = await getPromiseAnalysisByPromise(party_id, promise_id, proposalID);
 
-      const isSaved = promiseAnalysis && promiseAnalysis.length > 0;
+      const isSaved = existingAnalysis && existingAnalysis.length > 0;
 
       if (!isSaved) {
+        log.info(`Saving new analysis for promise_id=${promise_id}, proposal_id=${proposalID}, party_id=${party_id}`);
+
         const { data, error: insertError } = await supabaseAdmin
           .from("promise_status")
           .insert([
@@ -41,7 +43,10 @@ export async function setPromiseAnalysis(promiseAnalysis: PartyAnalysisOutput, p
           throw insertError;
         }
 
+        log.info(`Successfully saved analysis with id=${data.id}`);
         ids.push(data.id);
+      } else {
+        log.info(`Analysis already exists for promise_id=${promise_id}, proposal_id=${proposalID}, party_id=${party_id} - skipping`);
       }
     }
 

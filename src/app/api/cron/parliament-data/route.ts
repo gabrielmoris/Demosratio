@@ -5,7 +5,7 @@ import { getDateString, getFormattedDateForDB } from "@/lib/helpers/dateFormatte
 import { mergeVotesByParty } from "@/lib/helpers/spanishParliamentExtractor/votesPerParty";
 import { VotingData } from "@/types/proposal.types";
 import { extractParliamentJson } from "@/lib/helpers/spanishParliamentExtractor/getParliamentData";
-import { saveProposalToDb } from "@/lib/database/spanishParliament/saveProposal";
+import { saveProposalToDb, checkProposalExists } from "@/lib/database/spanishParliament/saveProposal";
 import { aiPromiseAnalizer } from "@/lib/services/ai/promisesAnaliseAI";
 import { setPromiseAnalysis } from "@/lib/database/parties/promises/promises-analysis/setPromisesAnalysis";
 import { deleteProposal } from "@/lib/database/spanishParliament/deleteProposal";
@@ -47,8 +47,17 @@ async function saveToDb(day: string) {
   const extractedParliamentData = await extractParliamentJson(day);
 
   for (const votation of extractedParliamentData) {
+    const { textoExpediente: expedient_text } = votation.informacion;
+
+    const existingProposal = await checkProposalExists(expedient_text);
+
+    if (existingProposal) {
+      log.warn(`Proposal with expedient_text "${expedient_text}" already exists. Skipping.`);
+      continue;
+    }
+
     // Get the important information
-    const { sesion: session, fecha: date, titulo: title, textoExpediente: expedient_text } = votation.informacion;
+    const { sesion: session, fecha: date, titulo: title } = votation.informacion;
 
     const {
       presentes: parliament_presence,
@@ -84,22 +93,21 @@ async function saveToDb(day: string) {
         throw new Error(`Failed to save proposal: ${title}`);
       }
 
-      if (!savedProposal.alreadySavedBefore) {
-        const analysisArr = await aiPromiseAnalizer(proposalData);
-        log.info("SAVING ", day, " ", savedProposal.id);
-        log.info("gemini analyse => ", analysisArr.length, analysisArr[0]);
+      // Run AI analysis for new proposals
+      const analysisArr = await aiPromiseAnalizer(proposalData);
+      log.info("SAVING ", day, " ", savedProposal.id);
+      log.info("gemini analyse => ", analysisArr.length, analysisArr[0]);
 
-        if (analysisArr.length > 0) {
-          for (const analysis of analysisArr) {
-            const result = await setPromiseAnalysis(analysis, savedProposal.id);
+      if (analysisArr.length > 0) {
+        for (const analysis of analysisArr) {
+          const result = await setPromiseAnalysis(analysis, savedProposal.id);
 
-            if (result && "error" in result) {
-              log.error("Promise analysis failed, deleting proposal:", result.error);
+          if (result && "error" in result) {
+            log.error("Promise analysis failed, deleting proposal:", result.error);
 
-              await deleteProposal(savedProposal.id);
+            await deleteProposal(savedProposal.id);
 
-              throw new Error(`Promise analysis failed: ${result.error}`);
-            }
+            throw new Error(`Promise analysis failed: ${result.error}`);
           }
         }
       }
