@@ -9,7 +9,7 @@ export const mergeVotesByParty = (votes: Votacion[]) => {
   for (const vote of votes) {
     const { grupo: party, voto: votation } = vote;
 
-    if (!party || !vote) {
+    if (!party || !votation) {
       log.warn("Invalid vote Obj: ", vote);
       continue;
     }
