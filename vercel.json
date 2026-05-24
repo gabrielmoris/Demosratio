@@ -1,11 +1,11 @@
 {
- "crons": [
- {
- "path": "/api/cron/parliament-data",
- "schedule": "30 23 * * *",
- "headers": {
- "Authorization": "Bearer ${CRON_SECRET}"
- }
- }
- ]
+  "crons": [
+    {
+      "path": "/api/cron/parliament-data",
+      "schedule": "30 23 * * *",
+      "headers": {
+        "Authorization": "Bearer ${CRON_SECRET}"
+      }
+    }
+  ]
 }
