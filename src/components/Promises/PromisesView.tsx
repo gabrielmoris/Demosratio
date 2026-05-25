@@ -92,7 +92,7 @@ export const PromisesView = () => {
     if (!campaignChoice || !user.currentUser) return;
     sendPromiseReadiness({
       readiness_score: promiseReadiness,
-      user_id: user.currentUser.id,
+ // user_id is now extracted from JWT session server-side
       campaign_id: campaignChoice.id,
     });
   };

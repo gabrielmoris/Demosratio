@@ -39,13 +39,14 @@ describe("JWT Helpers", () => {
 
       createJWT(user);
 
-      expect(jwt.sign).toHaveBeenCalledWith(
-        {
-          id: user.id,
-          name: user.name,
-        },
-        "test-secret-key",
-      );
+ expect(jwt.sign).toHaveBeenCalledWith(
+ {
+ id: user.id,
+ name: user.name,
+ },
+ "test-secret-key",
+ { expiresIn: "24h", algorithm: "HS256" }
+ );
     });
   });
 
@@ -73,8 +74,9 @@ describe("JWT Helpers", () => {
       (jwt.verify as ReturnType<typeof vi.fn>).mockReturnValue({ id: "user123" } as jwt.JwtPayload);
 
       verifyJWT("some_token");
-
-      expect(jwt.verify).toHaveBeenCalledWith("some_token", "test-secret-key");
-    });
+ expect(jwt.verify).toHaveBeenCalledWith("some_token", "test-secret-key", {
+ algorithms: ["HS256"],
+ });
   });
+ });
 });

@@ -3,87 +3,83 @@ import { fetchPartyPromises } from "@/lib/database/parties/promises/getPartyProm
 import { fetchStructuredPartyPromises } from "@/lib/database/parties/promises/getStructuredPartyPromises";
 import { savePartyPromise } from "@/lib/database/parties/promises/savePartyPromise";
 import { NextRequest, NextResponse } from "next/server";
+import { isAuthorized } from "@/src/middleware/isAuthorized";
 import { Logger } from "tslog";
 
 const log = new Logger();
 
 export async function GET(request: NextRequest) {
-  try {
-    const { searchParams } = new URL(request.url); // Extract search params
-    const party_id = Number(searchParams.get("party_id"));
-    const campaign_id = Number(searchParams.get("campaign_id"));
-    const structured = searchParams.get("structured");
+ try {
+ const { searchParams } = new URL(request.url);
+ const party_id = Number(searchParams.get("party_id"));
+ const campaign_id = Number(searchParams.get("campaign_id"));
+ const structured = searchParams.get("structured");
 
-    if (!party_id || !campaign_id || isNaN(campaign_id) || isNaN(party_id)) {
-      return NextResponse.json({ error: "Bad Request" }, { status: 400 });
-    }
+ if (!party_id || !campaign_id || isNaN(campaign_id) || isNaN(party_id)) {
+ return NextResponse.json({ error: "Bad Request" }, { status: 400 });
+ }
 
-    const { promises } = structured
-      ? await fetchStructuredPartyPromises(party_id, campaign_id)
-      : await fetchPartyPromises(party_id, campaign_id);
+ const { promises } = structured
+ ? await fetchStructuredPartyPromises(party_id, campaign_id)
+ : await fetchPartyPromises(party_id, campaign_id);
 
-    return NextResponse.json(promises);
-  } catch (error) {
-    log.error("Error encoding data:", error);
-    return NextResponse.json(
-      {
-        success: false,
-        message: "Getting Parties data failed",
-        error: String(error),
-      },
-      { status: 200 }
-    );
-  }
+ return NextResponse.json(promises);
+ } catch (error) {
+ log.error("Error fetching promises:", error);
+ return NextResponse.json(
+ { success: false, message: "Getting Promises data failed" },
+ { status: 500 }
+ );
+ }
 }
 
 export async function POST(req: NextRequest) {
-  const { promise, subject_id, campaign_id, party_id } = await req.json();
+ if (!(await isAuthorized(req))) {
+ return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+ }
 
-  if (!promise || !subject_id || !campaign_id || !party_id) {
-    return NextResponse.json({ error: "Bad Request" }, { status: 400 });
-  }
+ const { promise, subject_id, campaign_id, party_id } = await req.json();
 
-  try {
-    const { id } = await savePartyPromise(
-      party_id,
-      campaign_id,
-      subject_id,
-      promise
-    );
-    return NextResponse.json({ id }, { status: 201 });
-  } catch (error) {
-    log.error("Error encoding data:", error);
-    return NextResponse.json(
-      {
-        success: false,
-        message: "Saving Parties data failed",
-        error: String(error),
-      },
-      { status: 200 }
-    );
-  }
+ if (!promise || !subject_id || !campaign_id || !party_id) {
+ return NextResponse.json({ error: "Bad Request" }, { status: 400 });
+ }
+
+ try {
+ const { id } = await savePartyPromise(
+ party_id,
+ campaign_id,
+ subject_id,
+ promise
+ );
+ return NextResponse.json({ id }, { status: 201 });
+ } catch (error) {
+ log.error("Error saving promise:", error);
+ return NextResponse.json(
+ { success: false, message: "Saving Promise data failed" },
+ { status: 500 }
+ );
+ }
 }
 
 export async function DELETE(req: NextRequest) {
-  const { promise_id } = await req.json();
+ if (!(await isAuthorized(req))) {
+ return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+ }
 
-  if (!promise_id) {
-    return NextResponse.json({ error: "Bad Request" }, { status: 400 });
-  }
+ const { promise_id } = await req.json();
 
-  try {
-    const { id } = await deletePromise(promise_id);
+ if (!promise_id) {
+ return NextResponse.json({ error: "Bad Request" }, { status: 400 });
+ }
 
-    return NextResponse.json({ id }, { status: 201 });
-  } catch (error) {
-    log.error("Error encoding data:", error);
-    return NextResponse.json(
-      {
-        success: false,
-        message: "Saving Parties data failed",
-        error: String(error),
-      },
-      { status: 200 }
-    );
-  }
+ try {
+ const { id } = await deletePromise(promise_id);
+ return NextResponse.json({ id }, { status: 200 });
+ } catch (error) {
+ log.error("Error deleting promise:", error);
+ return NextResponse.json(
+ { success: false, message: "Deleting Promise data failed" },
+ { status: 500 }
+ );
+ }
 }

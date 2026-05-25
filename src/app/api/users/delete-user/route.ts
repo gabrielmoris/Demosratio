@@ -7,28 +7,28 @@ import { Logger } from "tslog";
 
 const log = new Logger();
 
-export async function GET() {
-  try {
-    const session = (await cookies()).get("session");
+export async function DELETE() {
+ try {
+ const session = (await cookies()).get("session");
 
-    if (!session?.value) {
-      return NextResponse.json({ error: "No ha sido posible borrar el usuario." }, { status: 401 });
-    }
+ if (!session?.value) {
+ return NextResponse.json({ error: "No ha sido posible borrar el usuario." }, { status: 401 });
+ }
 
-    const currentUser = verifyJWT(session.value);
+ const currentUser = verifyJWT(session.value);
 
-    if (!currentUser) {
-      return NextResponse.json({ error: "No ha sido posible borrar el usuario." }, { status: 401 });
-    }
+ if (!currentUser) {
+ return NextResponse.json({ error: "No ha sido posible borrar el usuario." }, { status: 401 });
+ }
 
-    await deleteUser(currentUser.name);
+ await deleteUser(currentUser.name);
 
-    // Clear session
-    (await cookies()).delete("session");
+ // Clear session
+ (await cookies()).delete("session");
 
-    return NextResponse.json({}, { status: 200 });
-  } catch (error) {
-    log.error("Error deleting user:", error);
-    return NextResponse.json({ error: "No ha sido posible borrar el usuario." }, { status: 500 });
-  }
+ return NextResponse.json({}, { status: 200 });
+ } catch (error) {
+ log.error("Error deleting user:", error);
+ return NextResponse.json({ error: "No ha sido posible borrar el usuario." }, { status: 500 });
+ }
 }
