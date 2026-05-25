@@ -17,7 +17,7 @@ export default function Promises() {
 
   const { doRequest } = useRequest({
     url: "/api/users/delete-user",
-    method: "get",
+    method: "delete",
     onSuccess: () => {
       updateCurrentUser();
       router.push(`/${locale}`);

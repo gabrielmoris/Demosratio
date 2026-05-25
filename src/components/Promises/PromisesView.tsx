@@ -92,7 +92,6 @@ export const PromisesView = () => {
     if (!campaignChoice || !user.currentUser) return;
     sendPromiseReadiness({
       readiness_score: promiseReadiness,
-      user_id: user.currentUser.id,
       campaign_id: campaignChoice.id,
     });
   };
