@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { Logger } from "tslog";
 
 import { getDateString, getFormattedDateForDB } from "@/lib/helpers/dateFormatters";
@@ -9,15 +9,25 @@ import { saveProposalToDb, checkProposalExists } from "@/lib/database/spanishPar
 import { aiPromiseAnalizer } from "@/lib/services/ai/promisesAnaliseAI";
 import { setPromiseAnalysis } from "@/lib/database/parties/promises/promises-analysis/setPromisesAnalysis";
 import { deleteProposal } from "@/lib/database/spanishParliament/deleteProposal";
+import { isAuthorized } from "@/src/middleware/isAuthorized";
 
 const log = new Logger();
 
-// This is our main function that will be used by the Vercel cron job
-export async function GET() {
-  log.info("Running parliament data extractor...");
+export async function GET(req: NextRequest) {
+  if (!(await isAuthorized(req))) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  log.info(`
+██████╗ ███████╗███╗   ███╗ ██████╗ ███████╗██████╗  █████╗ ████████╗██╗ ██████╗ 
+██╔══██╗██╔════╝████╗ ████║██╔═══██╗██╔════╝██╔══██╗██╔══██╗╚══██╔══╝██║██╔═══██╗
+██║  ██║█████╗  ██╔████╔██║██║   ██║███████╗██████╔╝███████║   ██║   ██║██║   ██║
+██║  ██║██╔══╝  ██║╚██╔╝██║██║   ██║╚════██║██╔══██╗██╔══██║   ██║   ██║██║   ██║
+██████╔╝███████╗██║ ╚═╝ ██║╚██████╔╝███████║██║  ██║██║  ██║   ██║   ██║╚██████╔╝
+╚═════╝ ╚══════╝╚═╝     ╚═╝ ╚═════╝ ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   ╚═╝ ╚═════╝
+    Running parliament data extractor...`);
 
   try {
-    // Save last X days in DB
     const daysToCheck = parseInt(process.env.DAYS_TO_CHECK_VOTATIONS || "5", 10);
 
     for (let i = daysToCheck; i > 0; i--) {
@@ -36,7 +46,6 @@ export async function GET() {
       {
         success: false,
         message: "Parliament data extraction failed",
-        error: String(error),
       },
       { status: 500 },
     );
