@@ -7,7 +7,8 @@
     "form-title": "Log in your account",
     "btn-register": "Register",
     "btn-login": "Login",
-    "input-label-password": "Password"
+    "input-label-password": "Password",
+    "error-invalid-credentials": "Invalid credentials"
   },
   "profile": {
     "admin-title": "Administrator Panel",
@@ -118,5 +119,8 @@
     "choose-party": "Choose a political party",
     "readiness-sent": "Agreement sent.",
     "not-tried": "Not tried"
+  },
+  "register": {
+    "password-hint": "Minimum 8 characters"
   }
 }
