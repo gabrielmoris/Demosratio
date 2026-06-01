@@ -14,12 +14,14 @@
     "btn-google": "Inicia sesión con Google",
     "or-email": "O usa el Email",
     "input-label-name": "Nombre / Nick",
-    "input-label-password": "Contraseña"
+    "input-label-password": "Contraseña",
+    "error-invalid-credentials": "Credenciales inválidas"
   },
   "register": {
     "form-title": "Registra tu nueva cuenta",
     "btn-login": "Atrás",
-    "btn-register": "Regístrate"
+    "btn-register": "Regístrate",
+    "password-hint": "Mínimo 8 caracteres"
   },
   "profile": {
     "form-title": "Borra tu cuenta",

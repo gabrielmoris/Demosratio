@@ -1,29 +1,27 @@
-import { fetchAllLikesAndDislikes } from "@/lib/database/likes/getTotalLikesAndDislikes";
-import { addUserLike } from "@/lib/database/likes/user/addUserLike";
-import { deleteUserDislike } from "@/lib/database/likes/user/deleteUserDislike";
-import { deleteUserLike } from "@/lib/database/likes/user/deleteUserLike";
-import { getUserDislikes } from "@/lib/database/likes/user/getUserDislikes";
-import { getUserLikes } from "@/lib/database/likes/user/getUserLikes";
-import { verifyJWT } from "@/lib/helpers/users/jwt";
-import { cookies } from "next/headers";
-import { NextResponse } from "next/server";
-import { Logger } from "tslog";
+import { fetchAllLikesAndDislikes } from '@/lib/database/likes/getTotalLikesAndDislikes';
+import { addUserLike } from '@/lib/database/likes/user/addUserLike';
+import { deleteUserDislike } from '@/lib/database/likes/user/deleteUserDislike';
+import { deleteUserLike } from '@/lib/database/likes/user/deleteUserLike';
+import { getUserDislikes } from '@/lib/database/likes/user/getUserDislikes';
+import { getUserLikes } from '@/lib/database/likes/user/getUserLikes';
+import { verifyJWT } from '@/lib/helpers/users/jwt';
+import { cookies } from 'next/headers';
+import { NextResponse } from 'next/server';
+import { Logger } from 'tslog';
 
 const log = new Logger();
 
 export async function POST(request: Request) {
   const { proposal_id } = await request.json();
-  const session = (await cookies()).get("session")?.value;
-  if (!session)
-    return NextResponse.json({ error: "Invalid User" }, { status: 400 });
+  const session = (await cookies()).get('session')?.value;
+  if (!session) return NextResponse.json({ error: 'Invalid User' }, { status: 400 });
   const userPayload = verifyJWT(session);
-  if (!userPayload)
-    return NextResponse.json({ error: "Invalid token" }, { status: 400 });
+  if (!userPayload) return NextResponse.json({ error: 'Invalid token' }, { status: 400 });
   const { id: userId } = userPayload;
   const user_id = Number(userId);
 
   if (!proposal_id) {
-    return NextResponse.json({ error: "Invalid body" }, { status: 400 });
+    return NextResponse.json({ error: 'Invalid body' }, { status: 400 });
   }
 
   try {
@@ -47,19 +45,13 @@ export async function POST(request: Request) {
     const { result, error } = await fetchAllLikesAndDislikes(proposal_id);
 
     if (error) {
-      log.error("Supabase error fetching likes and dislikes:", error);
-      return NextResponse.json(
-        { error: "Error fetching dislikes" },
-        { status: 500 }
-      );
+      log.error('Supabase error fetching likes and dislikes:', error);
+      return NextResponse.json({ error: 'Error fetching dislikes' }, { status: 500 });
     }
 
     return NextResponse.json(result);
   } catch (error) {
-    log.error("Error: ", error);
-    return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 }
-    );
+    log.error('Error: ', error);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
