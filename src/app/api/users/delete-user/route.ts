@@ -1,4 +1,3 @@
-// src/app/api/users/delete-user/route.ts
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { verifyJWT } from '@/lib/helpers/users/jwt';
@@ -23,7 +22,6 @@ export async function DELETE() {
 
     await deleteUser(currentUser.name);
 
-    // Clear session
     (await cookies()).delete('session');
 
     return NextResponse.json({}, { status: 200 });

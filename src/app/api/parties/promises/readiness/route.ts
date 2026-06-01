@@ -30,7 +30,6 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  // Extract user_id from verified JWT session, not from request body
   const session = (await cookies()).get('session')?.value;
   if (!session) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -50,7 +49,6 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    // Check if user already submitted readiness
     const { readiness } = await getuserPromisesReadiness(campaign_id, user_id);
 
     if (readiness?.id) {
