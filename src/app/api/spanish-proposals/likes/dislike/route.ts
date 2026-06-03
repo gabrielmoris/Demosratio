@@ -4,29 +4,25 @@ import { deleteUserDislike } from '@/lib/database/likes/user/deleteUserDislike';
 import { deleteUserLike } from '@/lib/database/likes/user/deleteUserLike';
 import { getUserDislikes } from '@/lib/database/likes/user/getUserDislikes';
 import { getUserLikes } from '@/lib/database/likes/user/getUserLikes';
-import { verifyJWT } from '@/lib/helpers/users/jwt';
-import { cookies } from 'next/headers';
-import { NextResponse } from 'next/server';
+import { requireAuth } from '@/src/middleware/requireAuth';
+import { NextRequest, NextResponse } from 'next/server';
 import { Logger } from 'tslog';
 
 const log = new Logger();
 
-export async function POST(request: Request) {
-  const { proposal_id } = await request.json();
-  const session = (await cookies()).get('session')?.value;
-  if (!session) return NextResponse.json({ error: 'Invalid User' }, { status: 400 });
-  const userPayload = verifyJWT(session);
-  if (!userPayload) return NextResponse.json({ error: 'Invalid Request' }, { status: 400 });
-  const { id: userId } = userPayload;
+export async function POST(req: NextRequest) {
+  const authResult = await requireAuth();
+  if (authResult instanceof NextResponse) return authResult;
 
-  const user_id = Number(userId);
+  const { user_id } = authResult.user;
+  const { proposal_id } = await req.json();
 
   if (!proposal_id) {
     return NextResponse.json({ error: 'Invalid body' }, { status: 400 });
   }
 
   try {
-    // Count likes and delete them if it was already liked
+    // Count dislikes and delete them if it was already disliked
     const dislikesCount = await getUserDislikes(proposal_id, user_id);
 
     if (dislikesCount && dislikesCount > 0) {
@@ -35,8 +31,7 @@ export async function POST(request: Request) {
       await addUserDislike(proposal_id, user_id);
     }
 
-    // Count dislikes and delete them if it was already disliked
-
+    // Count likes and delete them if it was already liked
     const likesCount = await getUserLikes(proposal_id, user_id);
 
     if (likesCount && likesCount > 0) {
@@ -47,7 +42,7 @@ export async function POST(request: Request) {
 
     if (error) {
       log.error('Supabase error fetching likes and dislikes:', error);
-      return NextResponse.json({ error: 'Error fetching dislikes' }, { status: 500 });
+      return NextResponse.json({ error: 'Error fetching likes' }, { status: 500 });
     }
 
     return NextResponse.json(result);

@@ -3,8 +3,7 @@ import { getuserPromisesReadiness } from '@/lib/database/parties/promises/promis
 import { setPromisesReadiness } from '@/lib/database/parties/promises/promise-readiness/setPromisesReadiness';
 import { updatePromisesReadiness } from '@/lib/database/parties/promises/promise-readiness/updatePromisesReadiness';
 import { NextRequest, NextResponse } from 'next/server';
-import { cookies } from 'next/headers';
-import { verifyJWT } from '@/lib/helpers/users/jwt';
+import { requireAuth } from '@/src/middleware/requireAuth';
 import { Logger } from 'tslog';
 
 const log = new Logger();
@@ -30,18 +29,10 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  const session = (await cookies()).get('session')?.value;
-  if (!session) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
+  const authResult = await requireAuth();
+  if (authResult instanceof NextResponse) return authResult;
 
-  const payload = verifyJWT(session);
-  if (!payload?.id) {
-    return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
-  }
-
-  const user_id = Number(payload.id);
-
+  const { user_id } = authResult.user;
   const { readiness_score, campaign_id } = await req.json();
 
   if (!readiness_score || !campaign_id) {

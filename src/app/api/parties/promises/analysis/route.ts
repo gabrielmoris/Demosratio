@@ -25,15 +25,16 @@ export async function GET(request: NextRequest) {
       const analysis = await getPromiseAnalysisByCampaign(party_id, campaign_year);
       return NextResponse.json(analysis);
     }
-  } catch (error) {
-    log.error('Error encoding data:', error);
+
     return NextResponse.json(
-      {
-        success: false,
-        message: 'Getting PRomises Readiness data failed',
-        error: String(error),
-      },
-      { status: 200 }
+      { error: 'Provide either promise_id or campaign_year' },
+      { status: 400 }
+    );
+  } catch (error) {
+    log.error('Error fetching analysis data:', error);
+    return NextResponse.json(
+      { success: false, message: 'Failed to fetch analysis data' },
+      { status: 500 }
     );
   }
 }

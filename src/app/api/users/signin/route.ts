@@ -14,17 +14,28 @@ import { SIMILARITY_THRESHOLD } from '@/constants';
 
 const log = new Logger();
 
+const NAME_MAX_LENGTH = 50;
+const NAME_REGEX = /^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑüÜ_.-]+$/;
+
+function sanitizeName(name: string): string | null {
+  const trimmed = name.trim();
+  if (trimmed.length < 3 || trimmed.length > NAME_MAX_LENGTH) return null;
+  if (!NAME_REGEX.test(trimmed)) return null;
+  return trimmed;
+}
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { name, password, fingerprint } = body;
+    const { name: rawName, password, fingerprint } = body;
 
-    if (!name || name.length < 3) {
+    const name = sanitizeName(rawName ?? '');
+    if (!name) {
       return NextResponse.json({ error: 'Name must be valid' }, { status: 400 });
     }
 
-    if (!password) {
-      return NextResponse.json({ error: 'You must apply a password' }, { status: 400 });
+    if (!password || typeof password !== 'string' || password.length > 128) {
+      return NextResponse.json({ error: 'You must apply a valid password' }, { status: 400 });
     }
 
     const existingUser = await findUserByName(name);
@@ -69,8 +80,9 @@ export async function POST(req: NextRequest) {
       name: existingUser.name,
     });
 
+    // Align cookie expiry with JWT expiry (24h) plus a small buffer
     const cookieExpiryDate = new Date();
-    cookieExpiryDate.setDate(cookieExpiryDate.getDate() + 30);
+    cookieExpiryDate.setHours(cookieExpiryDate.getHours() + 25);
 
     (await cookies()).set('session', userJwt, {
       httpOnly: true,

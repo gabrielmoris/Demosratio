@@ -23,11 +23,7 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     log.error('Error getting all promise analyses by party:', error);
     return NextResponse.json(
-      {
-        success: false,
-        message: 'Getting all promise analyses by party failed',
-        error: String(error),
-      },
+      { success: false, message: 'Failed to fetch promise analyses' },
       { status: 500 }
     );
   }
