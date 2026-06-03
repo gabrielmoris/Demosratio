@@ -6,32 +6,35 @@ import { Logger } from 'tslog';
 const log = new Logger();
 
 export async function GET(request: NextRequest) {
- const { searchParams } = new URL(request.url);
- const party_id = Number(searchParams.get('party_id'));
- const promise_id = Number(searchParams.get('promise_id'));
- const campaign_year = Number(searchParams.get('campaign_year'));
+  const { searchParams } = new URL(request.url);
+  const party_id = Number(searchParams.get('party_id'));
+  const promise_id = Number(searchParams.get('promise_id'));
+  const campaign_year = Number(searchParams.get('campaign_year'));
 
- if (!party_id) {
- return NextResponse.json({ error: 'Bad Request' }, { status: 400 });
- }
+  if (!party_id) {
+    return NextResponse.json({ error: 'Bad Request' }, { status: 400 });
+  }
 
- try {
- if (promise_id) {
- const analysis = await getPromiseAnalysisByPromise(party_id, promise_id);
- return NextResponse.json(analysis);
- }
+  try {
+    if (promise_id) {
+      const analysis = await getPromiseAnalysisByPromise(party_id, promise_id);
+      return NextResponse.json(analysis);
+    }
 
- if (campaign_year) {
- const analysis = await getPromiseAnalysisByCampaign(party_id, campaign_year);
- return NextResponse.json(analysis);
- }
+    if (campaign_year) {
+      const analysis = await getPromiseAnalysisByCampaign(party_id, campaign_year);
+      return NextResponse.json(analysis);
+    }
 
- return NextResponse.json({ error: 'Provide either promise_id or campaign_year' }, { status: 400 });
- } catch (error) {
- log.error('Error fetching analysis data:', error);
- return NextResponse.json(
- { success: false, message: 'Failed to fetch analysis data' },
- { status: 500 }
- );
- }
+    return NextResponse.json(
+      { error: 'Provide either promise_id or campaign_year' },
+      { status: 400 }
+    );
+  } catch (error) {
+    log.error('Error fetching analysis data:', error);
+    return NextResponse.json(
+      { success: false, message: 'Failed to fetch analysis data' },
+      { status: 500 }
+    );
+  }
 }

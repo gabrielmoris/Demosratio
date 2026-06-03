@@ -6,25 +6,25 @@ import { Logger } from 'tslog';
 const log = new Logger();
 
 export async function POST(req: NextRequest) {
- try {
- const authResult = await requireAuth(req);
- if (authResult instanceof NextResponse) return authResult;
+  try {
+    const authResult = await requireAuth();
+    if (authResult instanceof NextResponse) return authResult;
 
- const { id: userId } = authResult.user;
- const { proposal_id } = await req.json();
+    const { id: userId } = authResult.user;
+    const { proposal_id } = await req.json();
 
- if (!proposal_id) return NextResponse.json({ error: 'Invalid body' }, { status: 400 });
+    if (!proposal_id) return NextResponse.json({ error: 'Invalid body' }, { status: 400 });
 
- const { result, error } = await fetchUserLikesAndDislikes(proposal_id, userId);
+    const { result, error } = await fetchUserLikesAndDislikes(proposal_id, userId);
 
- if (error) {
- log.error('Supabase error fetching likes and dislikes:', error);
- return NextResponse.json({ error: 'Error fetching likes and dislikes' }, { status: 500 });
- }
+    if (error) {
+      log.error('Supabase error fetching likes and dislikes:', error);
+      return NextResponse.json({ error: 'Error fetching likes and dislikes' }, { status: 500 });
+    }
 
- return NextResponse.json(result);
- } catch (error) {
- log.error('Error fetching likes and dislikes:', error);
- return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
- }
+    return NextResponse.json(result);
+  } catch (error) {
+    log.error('Error fetching likes and dislikes:', error);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+  }
 }
