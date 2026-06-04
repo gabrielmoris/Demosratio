@@ -46,12 +46,18 @@
     "show-more": "Ver más"
   },
   "votecard-component": {
-    "button-cta": "Detalles"
+    "button-cta": "Detalles",
+    "approved": "Aprobada",
+    "rejected": "Rechazada"
   },
   "votepage": {
     "parliament-link": "Más información en la Web del Congreso.",
     "your-opinion": "Tu opinión cuenta:",
-    "no-logged-in": "Necesitas una cuenta para dar tu opinión."
+    "no-logged-in": "Necesitas una cuenta para dar tu opinión.",
+    "approved": "Aprobada",
+    "rejected": "Rechazada",
+    "ai-summary-title": "Resumen de la propuesta",
+    "ai-summary-disclaimer": "Resumen generado por IA a partir del título. Puede no ser completamente preciso."
   },
   "parliament": {
     "search-input": "Búsqueda según texto de expediente",

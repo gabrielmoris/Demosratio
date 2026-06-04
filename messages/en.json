@@ -122,5 +122,19 @@
   },
   "register": {
     "password-hint": "Minimum 8 characters"
+  },
+  "votecard-component": {
+    "approved": "Approved",
+    "rejected": "Rejected",
+    "button-cta": "Details"
+  },
+  "votepage": {
+    "approved": "Approved",
+    "rejected": "Rejected",
+    "ai-summary-title": "Proposal summary",
+    "ai-summary-disclaimer": "AI-generated summary based on the title. May not be fully accurate.",
+    "parliament-link": "More information on the Congress website.",
+    "your-opinion": "Your opinion counts:",
+    "no-logged-in": "You need an account to give your opinion."
   }
 }

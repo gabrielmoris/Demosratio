@@ -17,203 +17,241 @@ import { Logger } from "tslog";
 const log = new Logger();
 
 export default function VotePage() {
-  const t = useTranslations("votepage");
-  const params = useParams();
-  const user = useAuth();
-  const { showToast } = useUiContext();
-  const id = params.id;
+ const t = useTranslations("votepage");
+ const params = useParams();
+ const user = useAuth();
+ const { showToast } = useUiContext();
+ const id = params.id;
 
-  const [rawVoteResults, setRawVoteResults] = useState<Proposal>();
-  const [isFetching, setIsFetching] = useState<boolean>();
-  const [rawLikesInfo, setRawLikesInfo] = useState<LiKesAndDislikes>({
-    likes: 0,
-    dislikes: 0,
-    proposal_id: Number(params.id),
-  });
+ const [rawVoteResults, setRawVoteResults] = useState<Proposal>();
+ const [isFetching, setIsFetching] = useState<boolean>();
+ const [rawLikesInfo, setRawLikesInfo] = useState<LiKesAndDislikes>({
+ likes: 0,
+ dislikes: 0,
+ proposal_id: Number(params.id),
+ });
 
-  const [rawUserLikes, setRawUserLikes] = useState<LiKesAndDislikes>({
-    likes: 0,
-    dislikes: 0,
-    proposal_id: Number(params.id),
-  });
+ const [rawUserLikes, setRawUserLikes] = useState<LiKesAndDislikes>({
+ likes: 0,
+ dislikes: 0,
+ proposal_id: Number(params.id),
+ });
 
-  const voteResults = useMemo(() => rawVoteResults, [rawVoteResults]);
-  const likesInfo = useMemo(() => rawLikesInfo, [rawLikesInfo]);
-  const userLikes = useMemo(() => rawUserLikes, [rawUserLikes]);
+ const voteResults = useMemo(() => rawVoteResults, [rawVoteResults]);
+ const likesInfo = useMemo(() => rawLikesInfo, [rawLikesInfo]);
+ const userLikes = useMemo(() => rawUserLikes, [rawUserLikes]);
 
-  const { doRequest } = useRequest({
-    url: "/api/spanish-proposals/" + id,
-    method: "get",
-    onSuccess(data) {
-      setRawVoteResults(data);
-    },
-  });
+ const { doRequest } = useRequest({
+ url: "/api/spanish-proposals/" + id,
+ method: "get",
+ onSuccess(data) {
+ setRawVoteResults(data);
+ },
+ });
 
-  const { doRequest: likesRequest } = useRequest({
-    url: "/api/spanish-proposals/likes",
-    method: "post",
-    body: { proposal_id: id },
-    onSuccess(data) {
-      setRawLikesInfo(data);
-    },
-  });
+ const { doRequest: likesRequest } = useRequest({
+ url: "/api/spanish-proposals/likes",
+ method: "post",
+ body: { proposal_id: id },
+ onSuccess(data) {
+ setRawLikesInfo(data);
+ },
+ });
 
-  const { doRequest: userLikeRequest } = useRequest({
-    url: "/api/spanish-proposals/likes/user",
-    method: "post",
-    body: { proposal_id: id },
-    onSuccess(data) {
-      setRawUserLikes(data);
-    },
-  });
+ const { doRequest: userLikeRequest } = useRequest({
+ url: "/api/spanish-proposals/likes/user",
+ method: "post",
+ body: { proposal_id: id },
+ onSuccess(data) {
+ setRawUserLikes(data);
+ },
+ });
 
-  const { doRequest: onLikeProposal } = useRequest({
-    url: "/api/spanish-proposals/likes/like",
-    method: "post",
-    body: { proposal_id: Number(id) },
-    onSuccess(data) {
-      setRawLikesInfo(data);
-      setRawUserLikes(data);
-    },
-  });
+ const { doRequest: onLikeProposal } = useRequest({
+ url: "/api/spanish-proposals/likes/like",
+ method: "post",
+ body: { proposal_id: Number(id) },
+ onSuccess(data) {
+ setRawLikesInfo(data);
+ setRawUserLikes(data);
+ },
+ });
 
-  const { doRequest: onDisLikeProposal } = useRequest({
-    url: "/api/spanish-proposals/likes/dislike",
-    method: "post",
-    body: { proposal_id: Number(id) },
-    onSuccess(data) {
-      setRawLikesInfo(data);
-      setRawUserLikes(data);
-    },
-  });
+ const { doRequest: onDisLikeProposal } = useRequest({
+ url: "/api/spanish-proposals/likes/dislike",
+ method: "post",
+ body: { proposal_id: Number(id) },
+ onSuccess(data) {
+ setRawLikesInfo(data);
+ setRawUserLikes(data);
+ },
+ });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setIsFetching(true);
-      try {
-        await doRequest();
-        await likesRequest();
+ useEffect(() => {
+ const fetchData = async () => {
+ setIsFetching(true);
+ try {
+ await doRequest();
+ await likesRequest();
 
-        if (user.currentUser) await userLikeRequest();
-      } catch (error) {
-        log.error("Error fetching data:", error);
-      } finally {
-        setIsFetching(false);
-      }
-    };
+ if (user.currentUser) await userLikeRequest();
+ } catch (error) {
+ log.error("Error fetching data:", error);
+ } finally {
+ setIsFetching(false);
+ }
+ };
 
-    if (!user.loading) fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
+ if (!user.loading) fetchData();
+ // eslint-disable-next-line react-hooks/exhaustive-deps
+ }, [user]);
 
-  const goBack = () => {
-    window.history.back();
-  };
+ const goBack = () => {
+ window.history.back();
+ };
 
-  const handleUserLikes = async (status: "like" | "dislike") => {
-    if (isFetching) return;
-    if (!user.currentUser) {
-      showToast({
-        message: t("no-logged-in"),
-        variant: "info",
-        duration: 3000,
-      });
-      return;
-    }
+ const handleUserLikes = async (status: "like" | "dislike") => {
+ if (isFetching) return;
+ if (!user.currentUser) {
+ showToast({
+ message: t("no-logged-in"),
+ variant: "info",
+ duration: 3000,
+ });
+ return;
+ }
 
-    setIsFetching(true);
-    try {
-      if (status === "like") {
-        await onLikeProposal();
-      } else if (status === "dislike") {
-        await onDisLikeProposal();
-      }
-    } catch (error) {
-      log.error("Error handling likes:", error);
-    } finally {
-      setIsFetching(false);
-    }
-  };
+ setIsFetching(true);
+ try {
+ if (status === "like") {
+ await onLikeProposal();
+ } else if (status === "dislike") {
+ await onDisLikeProposal();
+ }
+ } catch (error) {
+ log.error("Error handling likes:", error);
+ } finally {
+ setIsFetching(false);
+ }
+ };
 
-  const memoizedParties = useMemo(() => voteResults?.votes_parties_json || [], [voteResults?.votes_parties_json]);
+ const memoizedParties = useMemo(() => voteResults?.votes_parties_json || [], [voteResults?.votes_parties_json]);
 
-  const memoizedChartVotes = useMemo(() => {
-    if (!memoizedParties) return null;
+ const memoizedChartVotes = useMemo(() => {
+ if (!memoizedParties) return null;
 
-    return memoizedParties.map((party) => {
-      const proposals = {
-        votes_against: party.against,
-        votes_for: party.for,
-        abstentions: party.abstain,
-        no_vote: party.noVote,
-        id: party.party,
-      };
+ return memoizedParties.map((party) => {
+ const proposals = {
+ votes_against: party.against,
+ votes_for: party.for,
+ abstentions: party.abstain,
+ no_vote: party.noVote,
+ id: party.party,
+ };
 
-      return (
-        <div key={party.party} className="flex justify-center items-center">
-          <ChartVotes proposals={proposals} logo={`/parties/${proposals.id}.svg`} />
-        </div>
-      );
-    });
-  }, [memoizedParties]);
+ return (
+ <div key={party.party} className="flex justify-center items-center">
+ <ChartVotes proposals={proposals} logo={`/parties/${proposals.id}.svg`} />
+ </div>
+ );
+ });
+ }, [memoizedParties]);
 
-  if (voteResults) {
-    return (
-      <section className="flex flex-col items-center justify-center min-h-screen pb-20 gap-16 font-drsans">
-        <div className="w-full flex flex-row items-end justify-between">
-          <Image
-            onClick={goBack}
-            className="hidden md:inline left-5 md:left-20 top-5 cursor-pointer w-5 h-5"
-            src="/back-icn.svg"
-            alt="profile-icn"
-            width={30}
-            height={30}
-            priority
-          />
-          <p className="text-xs text-drgray">{formatDate(voteResults.date)}</p>
-        </div>
-        <h1 className="text-2xl font-bold font-drserif w-full">{voteResults.title}</h1>
-        <h2 className="text-justify font-drsans text-drgray">{voteResults.expedient_text}</h2>
-        <Link className="w-full text-drPurple hover:opacity-60 duration-500" href={voteResults.url} target="_blank">
-          {t("parliament-link")}
-        </Link>
+ if (voteResults) {
+ return (
+ <section className="flex flex-col items-center justify-center min-h-screen pb-20 gap-16 font-drsans">
+ <div className="w-full flex flex-row items-end justify-between">
+ <Image
+ onClick={goBack}
+ className="hidden md:inline left-5 md:left-20 top-5 cursor-pointer w-5 h-5"
+ src="/back-icn.svg"
+ alt="profile-icn"
+ width={30}
+ height={30}
+ priority
+ />
+ <p className="text-xs text-drgray">{formatDate(voteResults.date)}</p>
+ </div>
+ <h1 className="text-2xl font-bold font-drserif w-full">{voteResults.title}</h1>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 w-full">{memoizedChartVotes}</div>
+ {/* Approval Status Badge */}
+ <div className="w-full flex items-center gap-3">
+ <span
+ className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
+ voteResults.assent
+ ? "bg-green-100 text-green-800 border border-green-300"
+ : "bg-red-100 text-red-800 border border-red-300"
+ }`}
+ >
+ {voteResults.assent ? t("approved") : t("rejected")}
+ </span>
+ </div>
 
-        <div className="flex flex-row justify-start items-center w-full gap-5">
-          <p className="font-bold text-xl">{t("your-opinion")}</p>
-          <div className="flex flex-row justify-center items-cente gap-2">
-            <Image
-              onClick={() => handleUserLikes("like")}
-              className="w-6 h-6 cursor-pointer"
-              src={userLikes && userLikes?.likes > 0 ? "/like-filled-icn.svg" : "/like-icn.svg"}
-              alt="profile-icn"
-              width={25}
-              height={25}
-              priority
-            />
-            <span>{likesInfo?.likes}</span>
-          </div>
-          <div className="flex flex-row justify-center items-center gap-2">
-            <Image
-              onClick={() => handleUserLikes("dislike")}
-              className="w-6 h-6 cursor-pointer"
-              src={userLikes && userLikes?.dislikes > 0 ? "/dislike-filled-icn.svg" : "/dislike-icn.svg"}
-              alt="profile-icn"
-              width={25}
-              height={25}
-              priority
-            />
-            <span>{likesInfo?.dislikes}</span>
-          </div>
-        </div>
-      </section>
-    );
-  } else {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-screen">
-        <Loading />
-      </div>
-    );
-  }
+ <h2 className="text-justify font-drsans text-drgray">{voteResults.expedient_text}</h2>
+
+ {/* AI Summary Section */}
+ {voteResults.summary && voteResults.summary.bullet_points.length > 0 && (
+ <div className="w-full bg-drPurple/5 border border-drPurple/20 rounded-lg p-6">
+ <div className="flex items-center gap-2 mb-4">
+ <svg className="w-5 h-5 text-drPurple" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+ <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+ </svg>
+ <h3 className="font-bold font-drserif text-drPurple">{t("ai-summary-title")}</h3>
+ </div>
+ <ul className="space-y-2">
+ {voteResults.summary.bullet_points.map((point: string, index: number) => (
+ <li key={index} className="flex items-start gap-2 text-sm text-gray-700">
+ <span className="text-drPurple mt-1 flex-shrink-0">•</span>
+ <span>{point}</span>
+ </li>
+ ))}
+ </ul>
+ {voteResults.summary.summary_type === "title-based" && (
+ <p className="text-xs text-gray-400 mt-3 italic">{t("ai-summary-disclaimer")}</p>
+ )}
+ </div>
+ )}
+
+ <Link className="w-full text-drPurple hover:opacity-60 duration-500" href={voteResults.url} target="_blank">
+ {t("parliament-link")}
+ </Link>
+
+ <div className="grid grid-cols-1 md:grid-cols-3 gap-5 w-full">{memoizedChartVotes}</div>
+
+ <div className="flex flex-row justify-start items-center w-full gap-5">
+ <p className="font-bold text-xl">{t("your-opinion")}</p>
+ <div className="flex flex-row justify-center items-cente gap-2">
+ <Image
+ onClick={() => handleUserLikes("like")}
+ className="w-6 h-6 cursor-pointer"
+ src={userLikes && userLikes?.likes > 0 ? "/like-filled-icn.svg" : "/like-icn.svg"}
+ alt="profile-icn"
+ width={25}
+ height={25}
+ priority
+ />
+ <span>{likesInfo?.likes}</span>
+ </div>
+ <div className="flex flex-row justify-center items-center gap-2">
+ <Image
+ onClick={() => handleUserLikes("dislike")}
+ className="w-6 h-6 cursor-pointer"
+ src={userLikes && userLikes?.dislikes > 0 ? "/dislike-filled-icn.svg" : "/dislike-icn.svg"}
+ alt="profile-icn"
+ width={25}
+ height={25}
+ priority
+ />
+ <span>{likesInfo?.dislikes}</span>
+ </div>
+ </div>
+ </section>
+ );
+ } else {
+ return (
+ <div className="flex flex-col items-center justify-center min-h-screen">
+ <Loading />
+ </div>
+ );
+ }
 }

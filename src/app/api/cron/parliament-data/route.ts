@@ -7,122 +7,142 @@ import { VotingData } from "@/types/proposal.types";
 import { extractParliamentJson } from "@/lib/helpers/spanishParliamentExtractor/getParliamentData";
 import { saveProposalToDb, checkProposalExists } from "@/lib/database/spanishParliament/saveProposal";
 import { aiPromiseAnalizer } from "@/lib/services/ai/promisesAnaliseAI";
+import { summarizeProposalWithGemini } from "@/lib/services/ai/proposalSummarizerAI";
 import { setPromiseAnalysis } from "@/lib/database/parties/promises/promises-analysis/setPromisesAnalysis";
+import { saveProposalSummary } from "@/lib/database/spanishParliament/proposalSummaries/saveProposalSummary";
 import { deleteProposal } from "@/lib/database/spanishParliament/deleteProposal";
 import { isAuthorized } from "@/src/middleware/isAuthorized";
 
 const log = new Logger();
 
 export async function GET(req: NextRequest) {
-  if (!(await isAuthorized(req))) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+ if (!(await isAuthorized(req))) {
+ return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+ }
 
-  log.info(`
-██████╗ ███████╗███╗   ███╗ ██████╗ ███████╗██████╗  █████╗ ████████╗██╗ ██████╗ 
-██╔══██╗██╔════╝████╗ ████║██╔═══██╗██╔════╝██╔══██╗██╔══██╗╚══██╔══╝██║██╔═══██╗
-██║  ██║█████╗  ██╔████╔██║██║   ██║███████╗██████╔╝███████║   ██║   ██║██║   ██║
-██║  ██║██╔══╝  ██║╚██╔╝██║██║   ██║╚════██║██╔══██╗██╔══██║   ██║   ██║██║   ██║
-██████╔╝███████╗██║ ╚═╝ ██║╚██████╔╝███████║██║  ██║██║  ██║   ██║   ██║╚██████╔╝
-╚═════╝ ╚══════╝╚═╝     ╚═╝ ╚═════╝ ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   ╚═╝ ╚═════╝
-    Running parliament data extractor...`);
+ log.info(`
+██████® ████████▓██▓ ███ ██████® ████████▓██████® ███████▓██████®
+ Running parliament data extractor...`);
 
-  try {
-    const daysToCheck = parseInt(process.env.DAYS_TO_CHECK_VOTATIONS || "5", 10);
+ try {
+ const daysToCheck = parseInt(process.env.DAYS_TO_CHECK_VOTATIONS || "5", 10);
 
-    for (let i = daysToCheck; i > 0; i--) {
-      const dateToCheck = getDateString(i);
-      await saveToDb(dateToCheck).catch((e) => log.error("Error saving parliamentdata to DB", dateToCheck, "=>", e));
-    }
+ for (let i = daysToCheck; i > 0; i--) {
+ const dateToCheck = getDateString(i);
+ await saveToDb(dateToCheck).catch((e) => log.error("Error saving parliamentdata to DB", dateToCheck, "=>", e));
+ }
 
-    log.info("Parliament data extraction completed successfully");
-    return NextResponse.json({
-      success: true,
-      message: "Parliament data extraction completed",
-    });
-  } catch (error) {
-    log.error("Error in parliament data extraction:", error);
-    return NextResponse.json(
-      {
-        success: false,
-        message: "Parliament data extraction failed",
-      },
-      { status: 500 },
-    );
-  }
+ log.info("Parliament data extraction completed successfully");
+ return NextResponse.json({
+ success: true,
+ message: "Parliament data extraction completed",
+ });
+ } catch (error) {
+ log.error("Error in parliament data extraction:", error);
+ return NextResponse.json(
+ {
+ success: false,
+ message: "Parliament data extraction failed",
+ },
+ { status: 500 }
+ );
+ }
 }
 
 async function saveToDb(day: string) {
-  const extractedParliamentData = await extractParliamentJson(day);
+ const extractedParliamentData = await extractParliamentJson(day);
 
-  for (const votation of extractedParliamentData) {
-    const { textoExpediente: expedient_text } = votation.informacion;
+ for (const votation of extractedParliamentData) {
+ const { textoExpediente: expedient_text } = votation.informacion;
 
-    const existingProposal = await checkProposalExists(expedient_text);
+ const existingProposal = await checkProposalExists(expedient_text);
 
-    if (existingProposal) {
-      log.warn(`Proposal with expedient_text "${expedient_text}" already exists. Skipping.`);
-      continue;
-    }
+ if (existingProposal) {
+ log.warn(`Proposal with expedient_text "${expedient_text}" already exists. Skipping.`);
+ continue;
+ }
 
-    // Get the important information
-    const { sesion: session, fecha: date, titulo: title } = votation.informacion;
+ const { sesion: session, fecha: date, titulo: title } = votation.informacion;
 
-    const {
-      presentes: parliament_presence,
-      afavor: votes_for,
-      enContra: votes_against,
-      abstenciones: abstentions,
-      noVotan: no_vote,
-      asentimiento: assent,
-    } = votation.totales;
+ const {
+ presentes: parliament_presence,
+ afavor: votes_for,
+ enContra: votes_against,
+ abstenciones: abstentions,
+ noVotan: no_vote,
+ asentimiento: assent,
+ } = votation.totales;
 
-    const votes_parties_json = mergeVotesByParty(votation.votaciones);
-    const isAccepted = assent === "Sí" ? true : false;
+ const votes_parties_json = mergeVotesByParty(votation.votaciones);
+ const isAccepted = assent === "Sí" ? true : false;
 
-    const proposalData: VotingData = {
-      session,
-      date: getFormattedDateForDB(date),
-      title,
-      url: `https://www.congreso.es/es/opendata/votaciones?p_p_id=votaciones&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&targetLegislatura=XV&targetDate=${day}`,
-      expedient_text,
-      parliament_presence,
-      votes_for,
-      votes_against,
-      abstentions,
-      no_vote,
-      votes_parties_json,
-      assent: isAccepted,
-    };
+ const proposalData: VotingData = {
+ session,
+ date: getFormattedDateForDB(date),
+ title,
+ url: `https://www.congreso.es/es/opendata/votaciones?p_p_id=votaciones&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&targetLegislatura=XV&targetDate=${day}`,
+ expedient_text,
+ parliament_presence,
+ votes_for,
+ votes_against,
+ abstentions,
+ no_vote,
+ votes_parties_json,
+ assent: isAccepted,
+ };
 
-    try {
-      const savedProposal = await saveProposalToDb(proposalData);
+ try {
+ const savedProposal = await saveProposalToDb(proposalData);
 
-      if (!savedProposal) {
-        throw new Error(`Failed to save proposal: ${title}`);
-      }
+ if (!savedProposal) {
+ throw new Error(`Failed to save proposal: ${title}`);
+ }
 
-      // Run AI analysis for new proposals
-      const analysisArr = await aiPromiseAnalizer(proposalData);
-      log.info("SAVING ", day, " ", savedProposal.id);
-      log.info("gemini analyse => ", analysisArr.length, analysisArr[0]);
+ // Run AI analysis for new proposals
+ const analysisArr = await aiPromiseAnalizer(proposalData);
+ log.info("SAVING ", day, " ", savedProposal.id);
+ log.info("gemini analyse => ", analysisArr.length, analysisArr[0]);
 
-      if (analysisArr.length > 0) {
-        for (const analysis of analysisArr) {
-          const result = await setPromiseAnalysis(analysis, savedProposal.id);
+ if (analysisArr.length > 0) {
+ for (const analysis of analysisArr) {
+ const result = await setPromiseAnalysis(analysis, savedProposal.id);
 
-          if (result && "error" in result) {
-            log.error("Promise analysis failed, deleting proposal:", result.error);
+ if (result && "error" in result) {
+ log.error("Promise analysis failed, deleting proposal:", result.error);
+ await deleteProposal(savedProposal.id);
+ throw new Error(`Promise analysis failed: ${result.error}`);
+ }
+ }
+ }
 
-            await deleteProposal(savedProposal.id);
+ // Generate AI summary for the proposal
+ try {
+ const summary = await summarizeProposalWithGemini({
+ title,
+ expedient_text,
+ votes_for,
+ votes_against,
+ abstentions,
+ assent: isAccepted,
+ });
 
-            throw new Error(`Promise analysis failed: ${result.error}`);
-          }
-        }
-      }
-    } catch (error) {
-      log.error(`Failed to save proposal ${day} "${title}":`, error);
-      throw new Error(`Failed to save proposal ${day} "${title}"`);
-    }
-  }
+ if (summary) {
+ await saveProposalSummary(
+ savedProposal.id,
+ JSON.stringify(summary),
+ 'title-based'
+ );
+ log.info(`Summary generated for proposal ${savedProposal.id}`);
+ } else {
+ log.warn(`Failed to generate summary for proposal ${savedProposal.id}`);
+ }
+ } catch (summaryError) {
+ log.error(`Error generating summary for proposal ${savedProposal.id}:`, summaryError);
+ // Don't delete the proposal - summary is optional
+ }
+ } catch (error) {
+ log.error(`Failed to save proposal ${day} "${title}":`, error);
+ throw new Error(`Failed to save proposal ${day} "${title}"`);
+ }
+ }
 }
