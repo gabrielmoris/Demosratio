@@ -122,5 +122,23 @@
   },
   "register": {
     "password-hint": "Minimum 8 characters"
+  },
+  "votepage": {
+    "parliament-link": "More information on the Congress website.",
+    "your-opinion": "Your opinion matters:",
+    "no-logged-in": "You need an account to share your opinion.",
+    "approved": "Approved",
+    "rejected": "Rejected",
+    "vote-summary": "Vote breakdown",
+    "votes-for": "in favor",
+    "votes-against": "against",
+    "abstentions": "abstentions",
+    "no-vote": "did not vote",
+    "present": "MPs present",
+    "related-promises": "Related electoral promises",
+    "no-related-promises": "No electoral promises linked to this vote yet.",
+    "status-supporting": "Supports the promise",
+    "status-contradicting": "Contradicts the promise",
+    "status-partial": "Partial evidence"
   }
 }

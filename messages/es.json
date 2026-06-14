@@ -51,7 +51,20 @@
   "votepage": {
     "parliament-link": "Más información en la Web del Congreso.",
     "your-opinion": "Tu opinión cuenta:",
-    "no-logged-in": "Necesitas una cuenta para dar tu opinión."
+    "no-logged-in": "Necesitas una cuenta para dar tu opinión.",
+    "approved": "Aprobada",
+    "rejected": "Rechazada",
+    "vote-summary": "Resumen de la votación",
+    "votes-for": "a favor",
+    "votes-against": "en contra",
+    "abstentions": "abstenciones",
+    "no-vote": "no votan",
+    "present": "Diputados presentes",
+    "related-promises": "Promesas electorales relacionadas",
+    "no-related-promises": "Aún no hay promesas electorales vinculadas a esta votación.",
+    "status-supporting": "Apoya la promesa",
+    "status-contradicting": "Contradice la promesa",
+    "status-partial": "Evidencia parcial"
   },
   "parliament": {
     "search-input": "Búsqueda según texto de expediente",

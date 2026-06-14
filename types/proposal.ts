@@ -8,6 +8,15 @@ interface VotesParties {
   against: number;
 }
 
+export interface RelatedPromise {
+  promise_id: number;
+  promise_text: string;
+  fulfillment_status: "Supporting Evidence" | "Contradictory Evidence" | "Partial/Indirect Evidence";
+  analysis_summary: string;
+  party_name: string;
+  campaign_year: number;
+}
+
 export interface VotingData {
   id: number;
   title: string;
@@ -26,16 +35,20 @@ export interface VotingData {
 }
 
 export interface Proposal {
+  id: number;
   session: string;
   date: string;
   title: string;
   url: string;
   expedient_text: string;
-  parliament_presence: string;
+  parliament_presence: number;
   votes_for: number;
   votes_against: number;
   abstentions: number;
+  no_vote: number;
+  assent: boolean;
   votes_parties_json: VotesParties[];
   likes: number;
   dislikes: number;
+  relatedPromises: RelatedPromise[];
 }

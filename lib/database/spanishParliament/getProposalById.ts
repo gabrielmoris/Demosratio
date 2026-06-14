@@ -19,13 +19,21 @@ export const getProposalById = async (id: number) => {
     if (!proposal) {
       throw new Error("Proposal not found.");
     }
-    if (
-      proposal &&
-      proposal.votes_parties_json &&
-      proposal.votes_parties_json.votes
-    ) {
+
+    if (proposal?.votes_parties_json?.votes) {
       proposal.votes_parties_json = proposal.votes_parties_json.votes;
     }
+
+    const { data: relatedPromises, error: promisesError } = await supabaseAdmin
+      .from("promise_status")
+      .select("promise_id, promise_text, fulfillment_status, analysis_summary, party_name, campaign_year")
+      .eq("proposal_id", id);
+
+    if (promisesError) {
+      log.error("Error fetching related promises:", promisesError);
+    }
+
+    proposal.relatedPromises = relatedPromises ?? [];
 
     return proposal;
   } catch (e) {
