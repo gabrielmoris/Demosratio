@@ -206,6 +206,8 @@ export default function VotePage() {
   const proposalType = getProposalType(voteResults.expedient_text);
   const total = voteResults.parliament_presence || (voteResults.votes_for + voteResults.votes_against + voteResults.abstentions + voteResults.no_vote);
   const hasRelatedPromises = (voteResults.relatedPromises?.length ?? 0) > 0;
+  // assent=true means unanimous consent; otherwise check vote counts (fixes proposals stored before the ingestion bug was fixed)
+  const isApproved = voteResults.assent || voteResults.votes_for > voteResults.votes_against;
 
   return (
     <section className="flex flex-col items-start justify-start min-h-screen pb-20 gap-8 font-drsans w-full max-w-4xl mx-auto">
@@ -234,14 +236,14 @@ export default function VotePage() {
       {/* Result badge */}
       <div
         className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg border ${
-          voteResults.assent ? "bg-green-50 border-green-200" : "bg-red-50 border-red-200"
+          isApproved ? "bg-green-50 border-green-200" : "bg-red-50 border-red-200"
         }`}
       >
-        <span className={`text-2xl font-bold leading-none ${voteResults.assent ? "text-green-600" : "text-red-600"}`}>
-          {voteResults.assent ? "✓" : "✗"}
+        <span className={`text-2xl font-bold leading-none ${isApproved ? "text-green-600" : "text-red-600"}`}>
+          {isApproved ? "✓" : "✗"}
         </span>
-        <span className={`text-lg font-semibold ${voteResults.assent ? "text-green-700" : "text-red-700"}`}>
-          {voteResults.assent ? t("approved") : t("rejected")}
+        <span className={`text-lg font-semibold ${isApproved ? "text-green-700" : "text-red-700"}`}>
+          {isApproved ? t("approved") : t("rejected")}
         </span>
       </div>
 
