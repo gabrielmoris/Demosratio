@@ -206,8 +206,7 @@ export default function VotePage() {
   const proposalType = getProposalType(voteResults.expedient_text);
   const total = voteResults.parliament_presence || (voteResults.votes_for + voteResults.votes_against + voteResults.abstentions + voteResults.no_vote);
   const hasRelatedPromises = (voteResults.relatedPromises?.length ?? 0) > 0;
-  // assent=true means unanimous consent; otherwise check vote counts (fixes proposals stored before the ingestion bug was fixed)
-  const isApproved = voteResults.assent || voteResults.votes_for > voteResults.votes_against;
+
 
   return (
     <section className="flex flex-col items-start justify-start min-h-screen pb-20 gap-8 font-drsans w-full max-w-4xl mx-auto">
@@ -233,20 +232,6 @@ export default function VotePage() {
         </div>
       </div>
 
-      {/* Result badge */}
-      <div
-        className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg border ${
-          isApproved ? "bg-green-50 border-green-200" : "bg-red-50 border-red-200"
-        }`}
-      >
-        <span className={`text-2xl font-bold leading-none ${isApproved ? "text-green-600" : "text-red-600"}`}>
-          {isApproved ? "✓" : "✗"}
-        </span>
-        <span className={`text-lg font-semibold ${isApproved ? "text-green-700" : "text-red-700"}`}>
-          {isApproved ? t("approved") : t("rejected")}
-        </span>
-      </div>
-
       {/* Title + expedient text + congress link */}
       <div className="w-full flex flex-col gap-3">
         <h1 className="text-2xl font-bold font-drserif w-full">{voteResults.title}</h1>
@@ -263,7 +248,7 @@ export default function VotePage() {
           {total > 0 && (
             <>
               <div
-                className="bg-green-500 h-full"
+                className="bg-green-600 h-full"
                 style={{ width: `${(voteResults.votes_for / total) * 100}%` }}
               />
               <div
@@ -282,7 +267,7 @@ export default function VotePage() {
           )}
         </div>
         <div className="flex flex-wrap gap-x-5 gap-y-2 text-sm">
-          <VoteStat color="bg-green-500" textColor="text-green-700" count={voteResults.votes_for} label={t("votes-for")} />
+          <VoteStat color="bg-green-600" textColor="text-green-700" count={voteResults.votes_for} label={t("votes-for")} />
           <VoteStat color="bg-red-500" textColor="text-red-700" count={voteResults.votes_against} label={t("votes-against")} />
           <VoteStat color="bg-amber-400" textColor="text-amber-700" count={voteResults.abstentions} label={t("abstentions")} />
           <VoteStat color="bg-gray-300" textColor="text-gray-600" count={voteResults.no_vote} label={t("no-vote")} />
