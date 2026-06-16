@@ -78,7 +78,8 @@ async function saveToDb(day: string) {
     } = votation.totales;
 
     const votes_parties_json = mergeVotesByParty(votation.votaciones);
-    const isAccepted = assent === "Sí" ? true : false;
+    // asentimiento="Sí" means unanimous consent (no formal count); otherwise check afavor > enContra
+    const isAccepted = assent === "Sí" || votes_for > votes_against;
 
     const proposalData: VotingData = {
       session,

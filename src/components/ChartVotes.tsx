@@ -123,7 +123,7 @@ const ChartVotes = ({
               proposals.no_vote,
             ],
             borderWidth: 0,
-            backgroundColor: ["#22981D", "#737383", "#B21D20", "#262835"],
+            backgroundColor: ["#16a34a", "#fbbf24", "#ef4444", "#d1d5db"],
             hoverOffset: 4,
             borderAlign: "inner",
           },

@@ -27,6 +27,3 @@ showToast({ message: "Success!", variant: "success", duration: 3000 });
 - `"warning"`
 - `"info"`
 
-## External Data Sources
-
-Spanish Congress voting data is scraped from congreso.es via ZIP/JSON extraction. See [`extractParliamentJson()`](lib/helpers/spanishParliamentExtractor/getParliamentData.ts:8).
