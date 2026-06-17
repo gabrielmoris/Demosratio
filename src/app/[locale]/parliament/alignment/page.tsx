@@ -103,10 +103,10 @@ export default function AlignmentPage() {
         <p className="text-drgray text-sm">{t("no-data")}</p>
       ) : (
         <div className="w-full overflow-x-auto rounded-lg border border-drlight shadow-sm">
-          <table className="border-collapse text-xs" style={{ minWidth: `${120 + parties.length * 68}px` }}>
+          <table className="border-collapse text-xs min-w-[100%]" >
             <thead>
               <tr>
-                <th className="sticky left-0 bg-white z-10 p-3 border border-drlight/60 text-left font-medium text-drgray min-w-[120px]">
+                <th className="sticky left-0 bg-white z-10 p-3 border border-drlight/60 text-left font-medium text-drgray md:min-w-[120px]">
                   {t("party")}
                 </th>
                 {parties.map((p) => (
@@ -149,7 +149,7 @@ export default function AlignmentPage() {
                           (e.target as HTMLImageElement).style.display = "none";
                         }}
                       />
-                      <span className="truncate max-w-[80px]" title={rowParty}>
+                      <span className="hidden md:flex truncate max-w-[80px]" title={rowParty}>
                         {rowParty}
                       </span>
                     </div>
