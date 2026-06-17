@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import Loading from "@/src/components/Loading";
 import { Link } from "@/src/i18n/routing";
+import Image from "next/image";
 
 type CellData = { pct: number | null; coVotes: number };
 type AlignmentData = {
@@ -115,9 +116,11 @@ export default function AlignmentPage() {
                     style={{ minWidth: "68px" }}
                   >
                     <div className="flex flex-col items-center gap-1">
-                      <img
+                      <Image
                         src={`/parties/${p}.svg`}
                         alt={p}
+                        width={30}
+                        height={30}
                         className="w-5 h-5 object-contain"
                         onError={(e) => {
                           (e.target as HTMLImageElement).style.display = "none";
@@ -136,7 +139,9 @@ export default function AlignmentPage() {
                 <tr key={rowParty}>
                   <td className="sticky left-0 bg-white z-10 p-3 border border-drlight/60 font-medium">
                     <div className="flex items-center gap-2">
-                      <img
+                      <Image
+                        width={30}
+                        height={30}
                         src={`/parties/${rowParty}.svg`}
                         alt={rowParty}
                         className="w-5 h-5 object-contain flex-shrink-0"
