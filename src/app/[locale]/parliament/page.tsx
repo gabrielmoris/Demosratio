@@ -9,6 +9,7 @@ import { VotingData } from "@/types/proposal";
 import Input from "@/src/components/Input";
 import { useTranslations } from "next-intl";
 import SugestedSearch from "@/src/components/SugestedSearch";
+import { Link } from "@/src/i18n/routing";
 
 export default function Parliament() {
   const [votes, setVotes] = useState<VotingData[]>([]);
@@ -77,6 +78,16 @@ export default function Parliament() {
   return (
     <main className="flex flex-col items-center justify-items-center min-h-screen pb-20 gap-16 font-drsans w-full">
       <section className="flex flex-col w-full gap-8 justify-center items-center">
+        <Link
+          href="/parliament/alignment"
+          className="w-full flex items-center justify-between p-4 bg-drlight rounded-lg border border-drPurple border-opacity-20 hover:shadow-sm hover:shadow-drPurple duration-300"
+        >
+          <div className="flex flex-col gap-0.5">
+            <p className="font-bold text-sm text-contrast">{t("alignment-cta-title")}</p>
+            <p className="text-xs text-drgray">{t("alignment-cta-subtitle")}</p>
+          </div>
+          <span className="text-drPurple text-lg ml-4">→</span>
+        </Link>
         <Input inputLabel={t("search-input")} inputString={inputValue} type="text" inputKey="search" placeholder="" setInput={onInputChange} />
         {votes.length ? (
           votes.map((vote) => <VoteCard key={vote.id} vote={vote} />)
