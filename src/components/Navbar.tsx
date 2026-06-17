@@ -82,6 +82,13 @@ export default function Navbar() {
       >
         <Image src="/promis-icn.svg" alt="promises-icn" width={50} height={50} />
       </Link>
+       <Link
+        onClick={() => setOpenUser(false)}
+        className="w-7 h-7 lg:w-10 lg:h-10 rounded-full flex flex-col items-center justify-center hover:opacity-60 duration-500"
+        href="/parliament/alignment"
+      >
+        <Image src="/alignment-icn.svg" alt="alignment-icn" width={50} height={50} />
+      </Link>
       <Link
         onClick={() => setOpenUser(false)}
         className="w-7 h-7 lg:w-10 lg:h-10 rounded-full flex flex-col items-center justify-center hover:opacity-60 duration-500"

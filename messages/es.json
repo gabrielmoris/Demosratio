@@ -68,7 +68,9 @@
   },
   "parliament": {
     "search-input": "Búsqueda según texto de expediente",
-    "empty-search": "¿Necesitas ayuda para encontrar algo? Prueba nuestras búsquedas sugeridas"
+    "empty-search": "¿Necesitas ayuda para encontrar algo? Prueba nuestras búsquedas sugeridas",
+    "alignment-cta-title": "Alineamiento entre partidos",
+    "alignment-cta-subtitle": "¿Con quién vota cada partido? Descubre las alianzas reales en el Congreso."
   },
   "manifest": {
     "title": "Manifiesto de Demosratio",
@@ -133,6 +135,21 @@
   },
   "dropdown": {
     "delete-advice": "Seguro que quieres borrar este elemento?"
+  },
+  "alignment": {
+    "title": "Alineamiento entre Partidos",
+    "description": "Descubre con qué frecuencia cada partido vota igual que los demás en el Congreso. Cuanto mayor el porcentaje, más veces han coincidido en su posición (a favor, en contra o abstención).",
+    "loading": "Calculando alineamientos parlamentarios...",
+    "error": "No se pudo cargar la matriz de alineamiento.",
+    "no-data": "Sin datos suficientes para mostrar la matriz.",
+    "back": "Volver al Congreso",
+    "party": "Partido",
+    "total-proposals": "Basado en {count} votaciones parlamentarias",
+    "shared-votes-short": "votaciones en común",
+    "legend-title": "Escala de alineamiento",
+    "legend-low": "0% (siempre opuestos)",
+    "legend-high": "100% (siempre juntos)",
+    "explanation": "El porcentaje indica las veces que ambos partidos votaron en la misma dirección (a favor, en contra o abstención) sobre el total de votaciones en las que ambos participaron. Las celdas grises indican que los partidos no coincidieron en ninguna votación registrada."
   },
   "promises": {
     "party_promises": "Promesas Electorales",

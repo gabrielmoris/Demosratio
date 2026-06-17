@@ -79,6 +79,21 @@
   "dropdown": {
     "delete-advice": "Sure you want to erase this element?"
   },
+  "alignment": {
+    "title": "Party Voting Alignment Matrix",
+    "description": "Discover how often each party votes the same way as others in Congress. The higher the percentage, the more they have agreed on their position (in favour, against, or abstaining).",
+    "loading": "Computing parliamentary alignments...",
+    "error": "Could not load the alignment matrix.",
+    "no-data": "Not enough data to display the matrix.",
+    "back": "Back to Parliament",
+    "party": "Party",
+    "total-proposals": "Based on {count} parliamentary votes",
+    "shared-votes-short": "shared votes",
+    "legend-title": "Alignment scale",
+    "legend-low": "0% (always opposed)",
+    "legend-high": "100% (always together)",
+    "explanation": "The percentage shows how often both parties voted in the same direction (in favour, against, or abstaining) out of all votes in which both participated. Grey cells indicate that no shared voting records were found."
+  },
   "promises": {
     "party_promises": "Electoral promises",
     "party_analysis": "IA Analysis",
@@ -119,6 +134,12 @@
     "choose-party": "Choose a political party",
     "readiness-sent": "Agreement sent.",
     "not-tried": "Not tried"
+  },
+  "parliament": {
+    "search-input": "Search by expedient text",
+    "empty-search": "Need help finding something? Try our suggested searches",
+    "alignment-cta-title": "Party voting alignment",
+    "alignment-cta-subtitle": "Who votes with whom? Discover the real alliances in Congress."
   },
   "register": {
     "password-hint": "Minimum 8 characters"
