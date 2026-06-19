@@ -1,11 +1,10 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextRequest, NextResponse } from 'next/server';
 import { Logger } from 'tslog';
 import { getProposalById } from '@/lib/database/spanishParliament/getProposalById';
 
 const log = new Logger();
 
-export async function GET(request: NextRequest, { params }: { params: any }) {
+export async function GET(_request: NextRequest, { params }: { params: Promise<{ id: number }> }) {
   const readyParams = await params;
   const id = readyParams.id;
 
