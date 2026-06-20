@@ -112,8 +112,8 @@ export const PromisesView = () => {
   }
 
   return (
-    <div className="flex flex-col lg:flex-row gap-6">
-      <aside className="lg:w-72 flex-shrink-0 hidden md:inline">
+    <div className={`flex flex-col justify-center items-center${partyChoice && " gap-6"}`}>
+      <aside className="lg:w-full flex-shrink-0 hidden md:inline">
         <div className="bg-white rounded-lg shadow-sm border md:border-gray-200 md:p-4 sticky top-4">
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-bold text-contrast text-lg">{t("choose-party")}</h2>
@@ -126,19 +126,19 @@ export const PromisesView = () => {
               </button>
             )}
           </div>
-          <div className="space-y-2">
+          <div className="space-y-2 flex items-center justify-between">
             {displayedParties.map((party) => (
               <button
                 key={party.id}
                 onClick={() => handlePartychoice(party)}
-                className={`w-full flex text-start md:text-center items-center gap-3 p-2 rounded-lg transition-all duration-200 ${
+                className={`flex text-start md:text-center items-center gap-3 p-2 rounded-lg transition-all duration-200 ${
                   partyChoice?.id === party.id
                     ? "bg-drPurple/10 border-2 border-drPurple"
                     : "hover:bg-gray-50 border-2 border-transparent"
                 }`}
               >
                 {party.logo_url && (
-                  <div className="w-10 h-10 flex-shrink-0">
+                  <div className="w-10 h-10 flex-shrink-0" title={party.name}>
                     <Image
                       src={party.logo_url}
                       width={40}
@@ -148,9 +148,6 @@ export const PromisesView = () => {
                     />
                   </div>
                 )}
-                <span className={`text-sm font-medium ${partyChoice?.id === party.id ? "text-drPurple" : "text-gray-700"}`}>
-                  {party.name}
-                </span>
               </button>
             ))}
           </div>
@@ -158,7 +155,7 @@ export const PromisesView = () => {
       </aside>
 
       <main className="flex-1 min-w-0">
-        {partyChoice ? (
+        {partyChoice && (
           <div className="bg-white rounded-lg shadow-sm md:border md:border-gray-200 md:p-6">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b md:border-none border-gray-200">
               <div className="flex items-center gap-4">
@@ -243,60 +240,7 @@ export const PromisesView = () => {
               )}
             </div>
           </div>
-        ) : (
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <div className="text-center mb-8">
-              <h2 className="text-2xl font-bold font-drserif text-drPurple mb-2">{t("select-party-title")}</h2>
-              <p className="text-gray-500">{t("select-party-description")}</p>
-            </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-4">
-              {displayedParties.map((party) => (
-                <button
-                  key={party.id}
-                  onClick={() => handlePartychoice(party)}
-                  className="flex flex-col items-center p-4 bg-gray-50 hover:bg-drPurple/10 rounded-lg transition-all duration-200 border-2 border-transparent hover:border-drPurple"
-                >
-                  {party.logo_url && (
-                    <div className="w-16 h-16 mb-3">
-                      <Image
-                        src={party.logo_url}
-                        width={64}
-                        height={64}
-                        alt={party.name}
-                        className="w-full h-full object-contain"
-                      />
-                    </div>
-                  )}
-                  <span className="text-sm font-medium text-gray-700 text-center">{party.name}</span>
-                </button>
-              ))}
-            </div>
-            {parties.length > 8 && (
-              <div className="text-center mt-6">
-                <button
-                  onClick={() => setShowAllParties(!showAllParties)}
-                  className="inline-flex items-center gap-2 px-4 py-2 text-drPurple hover:bg-drPurple/10 rounded-lg transition-colors"
-                >
-                  {showAllParties ? (
-                    <>
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
-                      </svg>
-                      {t("show-less-parties")}
-                    </>
-                  ) : (
-                    <>
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                      </svg>
-                      {t("show-all-parties", { count: parties.length - 8 })}
-                    </>
-                  )}
-                </button>
-              </div>
-            )}
-          </div>
-        )}
+        ) }
       </main>
     </div>
   );
