@@ -8,6 +8,7 @@ import Image from "next/image";
 import { TemaPromiseCard } from "@/src/components/Temas/TemaPromiseCard";
 import { SubjectDeepDive, SubjectPartyData, SubjectProposal } from "@/types/temas";
 import { formatDate } from "@/lib/helpers/dateFormatters";
+import { Subject } from "@/types/politicalParties";
 
 export default function TemaDeepDivePage() {
   const t = useTranslations("temas");
@@ -150,7 +151,7 @@ export default function TemaDeepDivePage() {
         ) : (
           <div className="space-y-6">
             {parties.map((partyData) => (
-              <PartySection key={partyData.party_id} partyData={partyData} />
+              <PartySection key={partyData.party_id} partyData={partyData} subject={subject.name} />
             ))}
           </div>
         )}
@@ -162,7 +163,7 @@ export default function TemaDeepDivePage() {
           <h2 className="text-xl font-bold font-drserif text-contrast mb-4">{t("related-votes")}</h2>
           <div className="space-y-3">
             {relatedProposals.map((proposal) => (
-              <RelatedVoteCard key={proposal.id} proposal={proposal} t={t} />
+              <RelatedVoteCard key={proposal.id} proposal={proposal} />
             ))}
           </div>
         </section>
@@ -185,7 +186,7 @@ function StatBox({ value, label, color }: { value: number; label: string; color:
   );
 }
 
-function PartySection({ partyData }: { partyData: SubjectPartyData }) {
+function PartySection({ partyData, subject }: { partyData: SubjectPartyData , subject: Subject["name"] }) {
   const [collapsed, setCollapsed] = useState(false);
 
   return (
@@ -229,7 +230,7 @@ function PartySection({ partyData }: { partyData: SubjectPartyData }) {
       >
         <div className="px-4 pb-4 space-y-3 border-t border-gray-100 pt-3">
           {partyData.promises.map((promise) => (
-            <TemaPromiseCard key={promise.id} promise={promise} />
+            <TemaPromiseCard key={promise.id} promise={promise} party={partyData.party_id}  subject={subject} />
           ))}
         </div>
       </div>
@@ -237,7 +238,7 @@ function PartySection({ partyData }: { partyData: SubjectPartyData }) {
   );
 }
 
-function RelatedVoteCard({ proposal, t }: { proposal: SubjectProposal; t: (key: string) => string }) {
+function RelatedVoteCard({ proposal }: { proposal: SubjectProposal; }) {
   const total = proposal.votes_for + proposal.votes_against + proposal.abstentions + proposal.no_vote || 1;
 
   return (
@@ -249,13 +250,6 @@ function RelatedVoteCard({ proposal, t }: { proposal: SubjectProposal; t: (key: 
         <p className="text-sm font-semibold text-contrast group-hover:text-drPurple transition-colors line-clamp-2 flex-1">
           {proposal.title}
         </p>
-        <span
-          className={`text-xs font-medium px-2 py-0.5 rounded-full flex-shrink-0 ${
-            proposal.assent ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
-          }`}
-        >
-          {proposal.assent ? t("approved") : t("rejected")}
-        </span>
       </div>
 
       <div className="flex h-2 rounded-full overflow-hidden bg-gray-100">

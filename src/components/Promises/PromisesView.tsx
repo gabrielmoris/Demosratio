@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { usePartiesContext } from "../Parties/PartyStateManager";
 import { useRequest } from "@/hooks/use-request";
 import { useTranslations } from "next-intl";
@@ -13,11 +13,15 @@ import Button from "../Button";
 import { useUiContext } from "@/src/context/uiContext";
 import { useAuth } from "@/src/context/authContext";
 import { DashboardStats } from "./DashboardStats";
+import { useSearchParams } from "next/navigation";
 
 export const PromisesView = () => {
   const t = useTranslations("promises");
   const { showToast } = useUiContext();
   const user = useAuth();
+   const searchParams = useSearchParams();
+  const partyId = searchParams.get("party_id");
+  const subjectParam = searchParams.get("subject");
 
   const {
     parties,
@@ -34,6 +38,8 @@ export const PromisesView = () => {
   const [showAllParties, setShowAllParties] = useState(false);
   const [analysesByPromise, setAnalysesByPromise] = useState<Record<number, PromiseAnalysis[]>>({});
   const [isLoadingAnalyses, setIsLoadingAnalyses] = useState(false);
+
+  const shouldScrollRef = useRef(false)
 
   const onInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const newValue = e.target.value;
@@ -59,6 +65,29 @@ export const PromisesView = () => {
       setPromiseReadiness(data.readiness || "0");
     },
   });
+
+  useEffect(()=>{
+    if(partyId && parties.length >0){
+    const selectedParty = parties.find((party)=> party.id === Number(partyId))
+    console.log(selectedParty, parties, )
+      if(selectedParty){
+        handlePartychoice(selectedParty)
+        shouldScrollRef.current = true
+      }
+    }
+   
+  },[partyId, parties])
+
+useEffect(() => {
+  if (!partyChoice || !shouldScrollRef.current || isLoadingAnalyses || loading) return;
+  if (!subjectParam) return;
+
+  const el = document.getElementById(subjectParam); 
+  if (!el) return;
+
+  el.scrollIntoView({ behavior: "smooth", block: "start" });
+  shouldScrollRef.current = false;
+}, [partyChoice, isLoadingAnalyses, loading, structuredPromises, subjectParam]);
 
   useEffect(() => {
     if (campaignChoice) getPromiseReadiness();

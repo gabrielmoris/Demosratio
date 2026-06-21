@@ -3,13 +3,24 @@ import {  useMemo } from "react";
 import { useTranslations } from "next-intl";
 import { StatusBadge } from "@/src/components/Promises/StatusBadge";
 import { SubjectPromiseEntry } from "@/types/temas";
+import { Party, Subject } from "@/types/politicalParties";
+import { useRouter } from "@/src/i18n/routing";
 
 interface TemaPromiseCardProps {
   promise: SubjectPromiseEntry;
+  party: Party["id"];
+  subject: Subject["name"]
 }
 
-export const TemaPromiseCard = ({ promise }: TemaPromiseCardProps) => {
+export const TemaPromiseCard = ({ promise, party, subject }: TemaPromiseCardProps) => {
   const t = useTranslations("temas");
+    const route = useRouter()
+
+    const onclickCard = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    route.push(`/promises?party_id=${party}&subject=${encodeURIComponent(subject)}`);
+  };
+  
 
 
   const { supportingVotes, contradictingVotes, partialVotes } = useMemo(() => {
@@ -30,6 +41,7 @@ export const TemaPromiseCard = ({ promise }: TemaPromiseCardProps) => {
   return (
     <div
       className="rounded-lg border transition-all duration-300 border-gray-200 hover:border-drPurple/50"
+      onClick={onclickCard}
     >
       <div className="p-4 cursor-pointer" >
         <div className="flex justify-between items-start gap-3">

@@ -284,7 +284,7 @@ export const PromisesWithAnalysisList = ({ structuredPromises, analysesByPromise
       {structuredPromises.map((subject) => (
         <div key={subject.id} className="animate-fadeIn">
           <div className="flex items-center gap-2 mb-3">
-            <h3 className="text-lg font-bold font-drserif text-drPurple">{subject.name}</h3>
+            <h3 className="text-lg font-bold font-drserif text-drPurple" id={subject.name}>{subject.name}</h3>
             <div
               className="w-5 h-5 text-gray-400 cursor-help flex-shrink-0"
               title={subject.description}
