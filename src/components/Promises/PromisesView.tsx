@@ -66,17 +66,16 @@ export const PromisesView = () => {
     },
   });
 
-  useEffect(()=>{
-    if(partyId && parties.length >0){
-    const selectedParty = parties.find((party)=> party.id === Number(partyId))
-    console.log(selectedParty, parties, )
-      if(selectedParty){
-        handlePartychoice(selectedParty)
-        shouldScrollRef.current = true
-      }
-    }
-   
-  },[partyId, parties])
+  useEffect(() => {
+    if (!partyId || parties.length === 0) return;
+
+    const selected = parties.find((p) => p.id === Number(partyId));
+    if (!selected) return;
+    if (partyChoice?.id === selected.id) return;   // already open — don't toggle off
+
+    setPartyChoice(selected);
+    shouldScrollRef.current = true;
+  }, [partyId, parties, partyChoice]);
 
 useEffect(() => {
   if (!partyChoice || !shouldScrollRef.current || isLoadingAnalyses || loading) return;
