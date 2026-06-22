@@ -140,49 +140,39 @@ useEffect(() => {
   }
 
   return (
-    <div className={`flex flex-col justify-center items-center${partyChoice && " gap-6"}`}>
-      <aside className="lg:w-full flex-shrink-0 hidden md:inline">
-        <div className="bg-white rounded-lg shadow-sm border md:border-gray-200 md:p-4 sticky top-4">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="font-bold text-contrast text-lg">{t("choose-party")}</h2>
-            {parties.length > 8 && (
-              <button
-                onClick={() => setShowAllParties(!showAllParties)}
-                className="text-sm text-drPurple hover:underline"
-              >
-                {showAllParties ? t("show-less") : t("show-more")}
-              </button>
-            )}
-          </div>
-          <div className="space-y-2 flex items-center justify-between">
-            {displayedParties.map((party) => (
-              <button
-                key={party.id}
-                onClick={() => handlePartychoice(party)}
-                className={`flex text-start md:text-center items-center gap-3 p-2 rounded-lg transition-all duration-200 ${
-                  partyChoice?.id === party.id
-                    ? "bg-drPurple/10 border-2 border-drPurple"
-                    : "hover:bg-gray-50 border-2 border-transparent"
-                }`}
-              >
-                {party.logo_url && (
-                  <div className="w-10 h-10 flex-shrink-0" title={party.name}>
-                    <Image
-                      src={party.logo_url}
-                      width={40}
-                      height={40}
-                      alt={party.name}
-                      className="w-full h-full object-contain"
-                    />
-                  </div>
-                )}
-              </button>
-            ))}
-          </div>
+    <div className={`flex flex-col w-full justify-center items-center${partyChoice && " gap-6"}`}>
+      <div className="md:p-4 flex flex-col top-4 w-full">
+        <div className="flex flex-col items-center justify-between mb-4">
+          <h2 className="font-bold text-contrast text-lg">{t("choose-party")}</h2>
         </div>
-      </aside>
+        <div className="space-y-2 items-center justify-between w-full flex flex-wrap">
+          {displayedParties.map((party) => (
+            <button
+              key={party.id}
+              onClick={() => handlePartychoice(party)}
+              className={`flex text-start md:text-center items-center gap-3 p-2 rounded-lg transition-all duration-200 ${
+                partyChoice?.id === party.id
+                  ? "bg-drPurple/10 border-2 border-drPurple"
+                  : "hover:bg-gray-50 border-2 border-transparent"
+              }`}
+            >
+              {party.logo_url && (
+                <div className="w-10 h-10 flex-shrink-0" title={party.name}>
+                  <Image
+                    src={party.logo_url}
+                    width={40}
+                    height={40}
+                    alt={party.name}
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+              )}
+            </button>
+          ))}
+        </div>
+      </div>
 
-      <main className="flex-1 min-w-0">
+      <main className="flex-1 min-w-0 w-full">
         {partyChoice && (
           <div className="bg-white rounded-lg shadow-sm md:border md:border-gray-200 md:p-6">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b md:border-none border-gray-200">
