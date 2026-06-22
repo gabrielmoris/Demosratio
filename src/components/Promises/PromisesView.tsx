@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { usePartiesContext } from "../Parties/PartyStateManager";
 import { useRequest } from "@/hooks/use-request";
 import { useTranslations } from "next-intl";
@@ -13,11 +13,15 @@ import Button from "../Button";
 import { useUiContext } from "@/src/context/uiContext";
 import { useAuth } from "@/src/context/authContext";
 import { DashboardStats } from "./DashboardStats";
+import { useSearchParams } from "next/navigation";
 
 export const PromisesView = () => {
   const t = useTranslations("promises");
   const { showToast } = useUiContext();
   const user = useAuth();
+   const searchParams = useSearchParams();
+  const partyId = searchParams.get("party_id");
+  const subjectParam = searchParams.get("subject");
 
   const {
     parties,
@@ -34,6 +38,8 @@ export const PromisesView = () => {
   const [showAllParties, setShowAllParties] = useState(false);
   const [analysesByPromise, setAnalysesByPromise] = useState<Record<number, PromiseAnalysis[]>>({});
   const [isLoadingAnalyses, setIsLoadingAnalyses] = useState(false);
+
+  const shouldScrollRef = useRef(false)
 
   const onInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const newValue = e.target.value;
@@ -59,6 +65,28 @@ export const PromisesView = () => {
       setPromiseReadiness(data.readiness || "0");
     },
   });
+
+  useEffect(() => {
+    if (!partyId || parties.length === 0) return;
+
+    const selected = parties.find((p) => p.id === Number(partyId));
+    if (!selected) return;
+    if (partyChoice?.id === selected.id) return;   // already open — don't toggle off
+
+    setPartyChoice(selected);
+    shouldScrollRef.current = true;
+  }, [partyId, parties, partyChoice]);
+
+useEffect(() => {
+  if (!partyChoice || !shouldScrollRef.current || isLoadingAnalyses || loading) return;
+  if (!subjectParam) return;
+
+  const el = document.getElementById(subjectParam); 
+  if (!el) return;
+
+  el.scrollIntoView({ behavior: "smooth", block: "start" });
+  shouldScrollRef.current = false;
+}, [partyChoice, isLoadingAnalyses, loading, structuredPromises, subjectParam]);
 
   useEffect(() => {
     if (campaignChoice) getPromiseReadiness();
@@ -112,53 +140,40 @@ export const PromisesView = () => {
   }
 
   return (
-    <div className="flex flex-col lg:flex-row gap-6">
-      <aside className="lg:w-72 flex-shrink-0 hidden md:inline">
-        <div className="bg-white rounded-lg shadow-sm border md:border-gray-200 md:p-4 sticky top-4">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="font-bold text-contrast text-lg">{t("choose-party")}</h2>
-            {parties.length > 8 && (
-              <button
-                onClick={() => setShowAllParties(!showAllParties)}
-                className="text-sm text-drPurple hover:underline"
-              >
-                {showAllParties ? t("show-less") : t("show-more")}
-              </button>
-            )}
-          </div>
-          <div className="space-y-2">
-            {displayedParties.map((party) => (
-              <button
-                key={party.id}
-                onClick={() => handlePartychoice(party)}
-                className={`w-full flex text-start md:text-center items-center gap-3 p-2 rounded-lg transition-all duration-200 ${
-                  partyChoice?.id === party.id
-                    ? "bg-drPurple/10 border-2 border-drPurple"
-                    : "hover:bg-gray-50 border-2 border-transparent"
-                }`}
-              >
-                {party.logo_url && (
-                  <div className="w-10 h-10 flex-shrink-0">
-                    <Image
-                      src={party.logo_url}
-                      width={40}
-                      height={40}
-                      alt={party.name}
-                      className="w-full h-full object-contain"
-                    />
-                  </div>
-                )}
-                <span className={`text-sm font-medium ${partyChoice?.id === party.id ? "text-drPurple" : "text-gray-700"}`}>
-                  {party.name}
-                </span>
-              </button>
-            ))}
-          </div>
+    <div className={`flex flex-col w-full justify-center items-center${partyChoice && " gap-6"}`}>
+      <div className="md:p-4 flex flex-col top-4 w-full">
+        <div className="flex flex-col items-center justify-between mb-4">
+          <h2 className="font-bold text-contrast text-lg">{t("choose-party")}</h2>
         </div>
-      </aside>
+        <div className="space-y-2 items-center justify-between w-full flex flex-wrap">
+          {displayedParties.map((party) => (
+            <button
+              key={party.id}
+              onClick={() => handlePartychoice(party)}
+              className={`flex text-start md:text-center items-center gap-3 p-2 rounded-lg transition-all duration-200 ${
+                partyChoice?.id === party.id
+                  ? "bg-drPurple/10 border-2 border-drPurple"
+                  : "hover:bg-gray-50 border-2 border-transparent"
+              }`}
+            >
+              {party.logo_url && (
+                <div className="w-10 h-10 flex-shrink-0" title={party.name}>
+                  <Image
+                    src={party.logo_url}
+                    width={40}
+                    height={40}
+                    alt={party.name}
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+              )}
+            </button>
+          ))}
+        </div>
+      </div>
 
-      <main className="flex-1 min-w-0">
-        {partyChoice ? (
+      <main className="flex-1 min-w-0 w-full">
+        {partyChoice && (
           <div className="bg-white rounded-lg shadow-sm md:border md:border-gray-200 md:p-6">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b md:border-none border-gray-200">
               <div className="flex items-center gap-4">
@@ -243,60 +258,7 @@ export const PromisesView = () => {
               )}
             </div>
           </div>
-        ) : (
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <div className="text-center mb-8">
-              <h2 className="text-2xl font-bold font-drserif text-drPurple mb-2">{t("select-party-title")}</h2>
-              <p className="text-gray-500">{t("select-party-description")}</p>
-            </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-4">
-              {displayedParties.map((party) => (
-                <button
-                  key={party.id}
-                  onClick={() => handlePartychoice(party)}
-                  className="flex flex-col items-center p-4 bg-gray-50 hover:bg-drPurple/10 rounded-lg transition-all duration-200 border-2 border-transparent hover:border-drPurple"
-                >
-                  {party.logo_url && (
-                    <div className="w-16 h-16 mb-3">
-                      <Image
-                        src={party.logo_url}
-                        width={64}
-                        height={64}
-                        alt={party.name}
-                        className="w-full h-full object-contain"
-                      />
-                    </div>
-                  )}
-                  <span className="text-sm font-medium text-gray-700 text-center">{party.name}</span>
-                </button>
-              ))}
-            </div>
-            {parties.length > 8 && (
-              <div className="text-center mt-6">
-                <button
-                  onClick={() => setShowAllParties(!showAllParties)}
-                  className="inline-flex items-center gap-2 px-4 py-2 text-drPurple hover:bg-drPurple/10 rounded-lg transition-colors"
-                >
-                  {showAllParties ? (
-                    <>
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
-                      </svg>
-                      {t("show-less-parties")}
-                    </>
-                  ) : (
-                    <>
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                      </svg>
-                      {t("show-all-parties", { count: parties.length - 8 })}
-                    </>
-                  )}
-                </button>
-              </div>
-            )}
-          </div>
-        )}
+        ) }
       </main>
     </div>
   );
