@@ -4,7 +4,7 @@ import { Logger } from "tslog";
 import { getDateString, getFormattedDateForDB } from "@/lib/helpers/dateFormatters";
 import { mergeVotesByParty } from "@/lib/helpers/spanishParliamentExtractor/votesPerParty";
 import { VotingData } from "@/types/proposal.types";
-import { extractParliamentJson } from "@/lib/helpers/spanishParliamentExtractor/getParliamentData";
+import { buildVotacionesUrl, extractParliamentDataForDay } from "@/lib/helpers/spanishParliamentExtractor/getParliamentData";
 import { saveProposalToDb, checkProposalExists } from "@/lib/database/spanishParliament/saveProposal";
 import { aiPromiseAnalizer } from "@/lib/services/ai/promisesAnaliseAI";
 import { setPromiseAnalysis } from "@/lib/database/parties/promises/promises-analysis/setPromisesAnalysis";
@@ -53,7 +53,9 @@ export async function GET(req: NextRequest) {
 }
 
 async function saveToDb(day: string) {
-  const extractedParliamentData = await extractParliamentJson(day);
+  // Handles legislature transitions (e.g. XV -> XVI after the Nov 2026 election):
+  // if the configured legislature has no votes for this day, it retries with the next one.
+  const { legislatura, votations: extractedParliamentData } = await extractParliamentDataForDay(day);
 
   for (const votation of extractedParliamentData) {
     const { textoExpediente: expedient_text } = votation.informacion;
@@ -85,7 +87,7 @@ async function saveToDb(day: string) {
       session,
       date: getFormattedDateForDB(date),
       title,
-      url: `https://www.congreso.es/es/opendata/votaciones?p_p_id=votaciones&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&targetLegislatura=XV&targetDate=${day}`,
+      url: buildVotacionesUrl(legislatura, day),
       expedient_text,
       parliament_presence,
       votes_for,

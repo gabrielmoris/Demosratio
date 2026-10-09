@@ -5,13 +5,68 @@ import JSZip from "jszip";
 
 const log = new Logger();
 
-export const extractParliamentJson = async (date: string): Promise<ProposalData[]> => {
+/**
+ * Legislature scraped by default. Override with the TARGET_LEGISLATURA env var,
+ * e.g. set it to "XVI" once the new legislature starts after the Nov 2026 election.
+ */
+export const DEFAULT_LEGISLATURA = "XV";
+
+/** Legislature to scrape, configurable via environment (defaults to XV). */
+export const getTargetLegislatura = (): string => process.env.TARGET_LEGISLATURA || DEFAULT_LEGISLATURA;
+
+const ROMAN_VALUES: [string, number][] = [
+  ["M", 1000],
+  ["CM", 900],
+  ["D", 500],
+  ["CD", 400],
+  ["C", 100],
+  ["XC", 90],
+  ["L", 50],
+  ["XL", 40],
+  ["X", 10],
+  ["IX", 9],
+  ["V", 5],
+  ["IV", 4],
+  ["I", 1],
+];
+
+export const romanToInt = (roman: string): number => {
+  let value = 0;
+  let i = 0;
+  while (i < roman.length) {
+    for (const [symbol, num] of ROMAN_VALUES) {
+      if (roman.startsWith(symbol, i)) {
+        value += num;
+        i += symbol.length;
+        break;
+      }
+    }
+  }
+  return value;
+};
+
+export const intToRoman = (num: number): string => {
+  let out = "";
+  for (const [symbol, value] of ROMAN_VALUES) {
+    while (num >= value) {
+      out += symbol;
+      num -= value;
+    }
+  }
+  return out || "I";
+};
+
+/** Next legislature in Roman numerals (e.g. XV -> XVI, XLIX -> L). */
+export const nextLegislatura = (legislatura: string): string => intToRoman(romanToInt(legislatura) + 1);
+
+/** Builds the congreso.es open-data votations URL for a legislature and date. */
+export const buildVotacionesUrl = (legislatura: string, date: string): string =>
+  `https://www.congreso.es/es/opendata/votaciones?p_p_id=votaciones&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&targetLegislatura=${legislatura}&targetDate=${date}`;
+
+export const extractParliamentJson = async (date: string, legislatura: string = getTargetLegislatura()): Promise<ProposalData[]> => {
   return new Promise(async (resolve, reject) => {
     try {
-      const response = await fetch(
-        "https://www.congreso.es/es/opendata/votaciones?p_p_id=votaciones&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&targetLegislatura=XV&targetDate=" +
-          date,
-        {
+      const response = await fetch(buildVotacionesUrl(legislatura, date), {
           headers: {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
             Referer: "https://www.congreso.es/",
@@ -51,6 +106,27 @@ export const extractParliamentJson = async (date: string): Promise<ProposalData[
       reject(error);
     }
   });
+};
+
+/**
+ * Extracts the votations for a date, transparently handling legislature transitions.
+ * If the configured legislature has no votes that day (e.g. after a general election,
+ * when the new legislature starts), it retries with the next one (XV -> XVI).
+ * Returns which legislatura actually produced the data, so callers can build correct URLs.
+ */
+export const extractParliamentDataForDay = async (date: string): Promise<{ legislatura: string; votations: ProposalData[] }> => {
+  const legislatura = getTargetLegislatura();
+
+  const votations = await extractParliamentJson(date, legislatura);
+  if (votations.length > 0) {
+    return { legislatura, votations };
+  }
+
+  const next = nextLegislatura(legislatura);
+  log.info(`No votes for ${date} in Legislatura ${legislatura}; retrying with ${next}`);
+
+  const nextVotations = await extractParliamentJson(date, next);
+  return { legislatura: nextVotations.length > 0 ? next : legislatura, votations: nextVotations };
 };
 
 // EXTRACT DATA FROM ZIP
