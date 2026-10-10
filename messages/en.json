@@ -92,6 +92,20 @@
       "TOO_LARGE": "The PDF is bigger than 20 MB and can't be sent to the AI.",
       "DOWNLOAD_FAILED": "The PDF could not be downloaded. Check that the link is public and works.",
       "AI_FAILED": "The AI could not extract promises from this PDF. Try again later."
+    },
+    "subjects-label": "Subjects",
+    "subjects-hint": "The AI only classifies promises into these subjects. Add or adjust subjects before generating promises. A subject with promises can't be deleted.",
+    "subjects-name": "Name",
+    "subjects-description": "Description",
+    "subjects-save-btn": "Save",
+    "subjects-delete-btn": "Delete",
+    "subjects-add-btn": "Add subject",
+    "subjects-saved": "Subject saved.",
+    "subjects-deleted": "Subject deleted.",
+    "subjects-confirm-delete": "Delete the subject \"{name}\"?",
+    "subjects-errors": {
+      "DUPLICATE_NAME": "A subject with that name already exists.",
+      "SUBJECT_IN_USE": "This subject has promises. Move or delete them before deleting the subject."
     }
   },
   "dropdown": {

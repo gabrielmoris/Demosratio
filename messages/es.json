@@ -149,6 +149,20 @@
       "TOO_LARGE": "El PDF supera los 20 MB y no se puede enviar a la IA.",
       "DOWNLOAD_FAILED": "No se pudo descargar el PDF. Comprueba que el enlace es público y funciona.",
       "AI_FAILED": "La IA no pudo extraer promesas de este PDF. Inténtalo más tarde."
+    },
+    "subjects-label": "Temas",
+    "subjects-hint": "La IA clasifica las promesas solo en estos temas. Añade o ajusta los temas antes de generar promesas. Un tema con promesas no se puede borrar.",
+    "subjects-name": "Nombre",
+    "subjects-description": "Descripción",
+    "subjects-save-btn": "Guardar",
+    "subjects-delete-btn": "Borrar",
+    "subjects-add-btn": "Añadir tema",
+    "subjects-saved": "Tema guardado.",
+    "subjects-deleted": "Tema borrado.",
+    "subjects-confirm-delete": "¿Borrar el tema \"{name}\"?",
+    "subjects-errors": {
+      "DUPLICATE_NAME": "Ya existe un tema con ese nombre.",
+      "SUBJECT_IN_USE": "Este tema tiene promesas. Muévelas o bórralas antes de borrar el tema."
     }
   },
   "dropdown": {

@@ -54,3 +54,10 @@ The hook wraps axios with error handling and automatic toast display.
 - `POST /api/parties/promises/bulk` — admin only. Body `{ party_id, campaign_id, promises: [{ subject_id, promise }] }`. Inserts all promises in one request; returns `{ count }`.
 
 See [AI Integration](ai.md#promise-extraction-from-campaign-pdfs).
+
+## Subjects
+
+`/api/parties/subjects` — `GET` is public; `POST`, `PATCH` and `DELETE` are admin only and used by the `SubjectsManager` admin component.
+
+- `POST { name, description }` / `PATCH { subject_id, name, description }` — return `409 { code: "DUPLICATE_NAME" }` when the name already exists (`subjects.name` is unique).
+- `DELETE { subject_id }` — returns `409 { code: "SUBJECT_IN_USE" }` while promises still reference the subject (`promises.subject_id` has no cascade).

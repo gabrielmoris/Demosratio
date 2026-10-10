@@ -26,6 +26,7 @@ type PartiesContextType = {
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   getPartyCampaign: () => Promise<any>;
   getAllParties: () => Promise<any>;
+  getAllSubjects: () => Promise<any>;
   getPartyPromises: () => Promise<any>;
   subjects: Subject[];
   promises: PartyPromise[];
@@ -134,6 +135,7 @@ export function PartiesProvider({
     <PartiesContext.Provider
       value={{
         getAllParties,
+        getAllSubjects,
         getPartyCampaign,
         getPartyPromises,
         subjects,

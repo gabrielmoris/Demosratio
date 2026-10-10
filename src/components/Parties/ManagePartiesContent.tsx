@@ -7,6 +7,7 @@ import Loading from "@/src/components/Loading";
 import { Campaign, Party } from "@/types/politicalParties";
 import { PromiseForm } from "../admin/ManageParties/PromiseForm";
 import { AiPromisesExtractor } from "../admin/ManageParties/AiPromisesExtractor";
+import { SubjectsManager } from "../admin/ManageParties/SubjectsManager";
 import { useRequest } from "@/hooks/use-request";
 import { useTranslations } from "next-intl";
 
@@ -107,6 +108,10 @@ export default function ManagePartiesContent() {
           <AiPromisesExtractor />
         </div>
       )}
+
+      <div className="flex w-full">
+        <SubjectsManager />
+      </div>
     </main>
   );
 }
