@@ -6,6 +6,7 @@ import Dropdown from "@/src/components/Dropdown";
 import Loading from "@/src/components/Loading";
 import { Campaign, Party } from "@/types/politicalParties";
 import { PromiseForm } from "../admin/ManageParties/PromiseForm";
+import { AiPromisesExtractor } from "../admin/ManageParties/AiPromisesExtractor";
 import { useRequest } from "@/hooks/use-request";
 import { useTranslations } from "next-intl";
 
@@ -100,6 +101,12 @@ export default function ManagePartiesContent() {
         {!partyChoice && <PartyForm />}
         {partyChoice && <CampaignForm />}
       </div>
+
+      {partyChoice && campaignChoice && (
+        <div className="flex w-full">
+          <AiPromisesExtractor />
+        </div>
+      )}
     </main>
   );
 }
