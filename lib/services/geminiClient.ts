@@ -1,6 +1,7 @@
 import { PartyAnalysisOutput, PartyWithPromises } from "@/types/politicalParties";
 import { VotingData } from "@/types/proposal.types";
 import { Logger } from "tslog";
+import { fastThinkingConfig, getResponseText } from "@/lib/services/ai/geminiConfig";
 
 const log = new Logger();
 
@@ -73,11 +74,11 @@ export async function analyzePromisesWithGemini(partiesToAnalyze: PartyWithPromi
           parts: [{ text: prompt }, { text: JSON.stringify(partiesToAnalyze) }, { text: JSON.stringify(proposalData) }],
         },
       ],
+      // No temperature/topP/topK: Gemini 3 models work best with their defaults.
       generationConfig: {
-        temperature: 0.2,
-        topP: 0.8,
-        topK: 40,
         maxOutputTokens: 32000,
+        responseMimeType: "application/json",
+        thinkingConfig: fastThinkingConfig(apiUrl),
       },
     };
 
@@ -101,7 +102,7 @@ export async function analyzePromisesWithGemini(partiesToAnalyze: PartyWithPromi
     }
 
     const data = await response.json();
-    let generatedText = data.candidates?.[0]?.content?.parts?.[0]?.text;
+    let generatedText = getResponseText(data);
 
     if (!generatedText) {
       log.error("Gemini response does not contain expected text content:", data);

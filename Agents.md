@@ -16,7 +16,7 @@ A Next.js 15 app that tracks Spanish political promises and compares them agains
 
 - **Database**: Supabase (PostgreSQL with RLS — all queries must respect row-level security)
 - **i18n**: next-intl — locales: `es`, `ga`, `ca`, `eu`
-- **AI**: Gemini 1.5 Flash
+- **AI**: Gemini (model set by `GEMINI_MODEL_ENDPOINT`)
 
 ## Documentation
 

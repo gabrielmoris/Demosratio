@@ -1,6 +1,6 @@
 # AI Integration
 
-## Gemini 1.5 Flash API
+## Gemini API
 
 ### Entry Point
 
@@ -8,9 +8,10 @@
 
 ### Configuration
 
-- **Model**: Gemini 1.5 Flash
+- **Model**: set by `GEMINI_MODEL_ENDPOINT` (e.g. `.../models/gemini-3.8-flash:generateContent`)
 - **Language**: Spanish prompts
-- **Output**: Strict JSON format
+- **Output**: Strict JSON format (`responseMimeType: application/json`)
+- **Speed**: `fastThinkingConfig()` in `lib/services/ai/geminiConfig.ts` turns thinking off on Gemini 2.x (`thinkingBudget: 0`) and uses `thinkingLevel: "low"` on Gemini 3.x, where it can't be turned off. No temperature/topP/topK overrides, since Gemini 3 works best with defaults.
 - **Rate limiting**: 10s backoff on rate limit errors
 
 ## Analysis Flow

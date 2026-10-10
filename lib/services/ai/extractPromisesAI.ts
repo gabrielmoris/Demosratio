@@ -1,5 +1,6 @@
 import { ExtractedSubjectPromises, Subject } from "@/types/politicalParties";
 import { Logger } from "tslog";
+import { fastThinkingConfig, getResponseText } from "./geminiConfig";
 
 const log = new Logger();
 
@@ -67,8 +68,8 @@ export async function extractPromisesFromPdf(pdfBase64: string, subjects: Subjec
       },
     ],
     generationConfig: {
-      temperature: 0.2,
-      maxOutputTokens: 16000,
+      maxOutputTokens: 32000,
+      thinkingConfig: fastThinkingConfig(apiUrl),
       responseMimeType: "application/json",
       responseSchema: {
         type: "ARRAY",
@@ -98,7 +99,7 @@ export async function extractPromisesFromPdf(pdfBase64: string, subjects: Subjec
   }
 
   const data = await response.json();
-  const generatedText: string | undefined = data.candidates?.[0]?.content?.parts?.[0]?.text;
+  const generatedText = getResponseText(data);
   if (!generatedText) {
     log.error("Gemini response does not contain expected text content:", data);
     throw new Error("Gemini returned an empty response");
