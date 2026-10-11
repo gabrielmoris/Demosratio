@@ -15,7 +15,10 @@ const FOREIGN_KEY_VIOLATION = '23503';
 const pgCode = (error: unknown) => (error as { code?: string })?.code;
 
 const duplicateName = () =>
-  NextResponse.json({ error: 'A subject with this name already exists', code: 'DUPLICATE_NAME' }, { status: 409 });
+  NextResponse.json(
+    { error: 'A subject with this name already exists', code: 'DUPLICATE_NAME' },
+    { status: 409 }
+  );
 
 export async function GET() {
   try {
@@ -93,10 +96,12 @@ export async function DELETE(req: NextRequest) {
     const { id } = await deleteSubject(subject_id);
     return NextResponse.json({ id }, { status: 200 });
   } catch (error) {
-    // promises.subject_id references subjects(id) without cascade, so the DB blocks deleting a subject in use.
     if (pgCode(error) === FOREIGN_KEY_VIOLATION) {
       return NextResponse.json(
-        { error: 'This subject still has promises. Move or delete them first.', code: 'SUBJECT_IN_USE' },
+        {
+          error: 'This subject still has promises. Move or delete them first.',
+          code: 'SUBJECT_IN_USE',
+        },
         { status: 409 }
       );
     }

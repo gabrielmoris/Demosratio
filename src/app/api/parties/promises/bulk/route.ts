@@ -15,12 +15,21 @@ export async function POST(req: NextRequest) {
 
   const { party_id, campaign_id, promises } = await req.json();
 
-  if (!party_id || !campaign_id || !Array.isArray(promises) || promises.length === 0 || !promises.every(isValidPromise)) {
+  if (
+    !party_id ||
+    !campaign_id ||
+    !Array.isArray(promises) ||
+    promises.length === 0 ||
+    !promises.every(isValidPromise)
+  ) {
     return NextResponse.json({ error: 'Bad Request' }, { status: 400 });
   }
 
   try {
-    const cleaned = promises.map((p: NewPromise) => ({ subject_id: p.subject_id, promise: p.promise.trim() }));
+    const cleaned = promises.map((p: NewPromise) => ({
+      subject_id: p.subject_id,
+      promise: p.promise.trim(),
+    }));
     const saved = await savePartyPromises(party_id, campaign_id, cleaned);
     return NextResponse.json({ count: saved.length }, { status: 201 });
   } catch (error) {

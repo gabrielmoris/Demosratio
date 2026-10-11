@@ -29,15 +29,25 @@ describe('/api/parties/subjects', () => {
 
   it('PATCH updates a subject with trimmed values', async () => {
     vi.mocked(updateSubject).mockResolvedValue({ id: 3 });
-    const res = await PATCH(makeRequest('PATCH', { subject_id: 3, name: ' Vivienda ', description: ' Acceso a la vivienda ' }));
+    const res = await PATCH(
+      makeRequest('PATCH', {
+        subject_id: 3,
+        name: ' Vivienda ',
+        description: ' Acceso a la vivienda ',
+      })
+    );
     expect(res.status).toBe(200);
     expect(updateSubject).toHaveBeenCalledWith(3, 'Vivienda', 'Acceso a la vivienda');
   });
 
   it('PATCH rejects missing fields and non-admins', async () => {
-    expect((await PATCH(makeRequest('PATCH', { subject_id: 3, name: ' ', description: 'x' }))).status).toBe(400);
+    expect(
+      (await PATCH(makeRequest('PATCH', { subject_id: 3, name: ' ', description: 'x' }))).status
+    ).toBe(400);
     vi.mocked(isAuthorized).mockResolvedValue(false);
-    expect((await PATCH(makeRequest('PATCH', { subject_id: 3, name: 'a', description: 'b' }))).status).toBe(403);
+    expect(
+      (await PATCH(makeRequest('PATCH', { subject_id: 3, name: 'a', description: 'b' }))).status
+    ).toBe(403);
     expect(updateSubject).not.toHaveBeenCalled();
   });
 
@@ -45,7 +55,9 @@ describe('/api/parties/subjects', () => {
     vi.mocked(updateSubject).mockRejectedValue({ code: '23505' });
     vi.mocked(saveSubject).mockRejectedValue({ code: '23505' });
 
-    const patch = await PATCH(makeRequest('PATCH', { subject_id: 3, name: 'Salud', description: 'x' }));
+    const patch = await PATCH(
+      makeRequest('PATCH', { subject_id: 3, name: 'Salud', description: 'x' })
+    );
     const post = await POST(makeRequest('POST', { name: 'Salud', description: 'x' }));
 
     expect(patch.status).toBe(409);

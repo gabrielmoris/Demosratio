@@ -8,12 +8,15 @@ import { extractPromisesFromPdf } from '@/lib/services/ai/extractPromisesAI';
 
 const log = new Logger();
 
-// Downloading a long program and letting Gemini read it can take a while.
 export const maxDuration = 300;
 
-const PDF_ERROR_STATUS = { INVALID_URL: 400, NOT_PDF: 422, TOO_LARGE: 413, DOWNLOAD_FAILED: 502 } as const;
+const PDF_ERROR_STATUS = {
+  INVALID_URL: 400,
+  NOT_PDF: 422,
+  TOO_LARGE: 413,
+  DOWNLOAD_FAILED: 502,
+} as const;
 
-/** Reads the campaign's PDF link and returns AI-drafted promises (max 5 per subject). Nothing is saved. */
 export async function POST(req: NextRequest) {
   if (!(await isAuthorized(req))) {
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
@@ -32,7 +35,10 @@ export async function POST(req: NextRequest) {
 
     const { subjects } = await fetchAllsubjects();
     if (!subjects?.length) {
-      return NextResponse.json({ error: 'There are no subjects to classify promises into' }, { status: 500 });
+      return NextResponse.json(
+        { error: 'There are no subjects to classify promises into' },
+        { status: 500 }
+      );
     }
 
     const { base64 } = await fetchCampaignPdf(campaign.campaign_pdf_url);
@@ -42,11 +48,17 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     if (error instanceof PdfFetchError) {
       log.warn(`Campaign PDF rejected (${error.code}):`, error.message);
-      return NextResponse.json({ error: error.message, code: error.code }, { status: PDF_ERROR_STATUS[error.code] });
+      return NextResponse.json(
+        { error: error.message, code: error.code },
+        { status: PDF_ERROR_STATUS[error.code] }
+      );
     }
     log.error('Error extracting promises:', error);
     return NextResponse.json(
-      { error: 'The AI could not extract promises from this PDF. Try again later.', code: 'AI_FAILED' },
+      {
+        error: 'The AI could not extract promises from this PDF. Try again later.',
+        code: 'AI_FAILED',
+      },
       { status: 502 }
     );
   }
