@@ -3,19 +3,19 @@ import { Logger } from 'tslog';
 import { isAuthorized } from '@/src/middleware/isAuthorized';
 import { fetchCampaignById } from '@/lib/database/parties/campaigns/getCampaignById';
 import { fetchAllsubjects } from '@/lib/database/parties/subjects/getAllSubjects';
-import { fetchCampaignPdf, PdfFetchError } from '@/lib/services/ai/fetchCampaignPdf';
-import { extractPromisesFromPdf } from '@/lib/services/ai/extractPromisesAI';
+import { extractPromisesFromPdf, PdfNotReadError } from '@/lib/services/ai/extractPromisesAI';
 
 const log = new Logger();
 
 export const maxDuration = 300;
 
-const PDF_ERROR_STATUS = {
-  INVALID_URL: 400,
-  NOT_PDF: 422,
-  TOO_LARGE: 413,
-  DOWNLOAD_FAILED: 502,
-} as const;
+const isHttpUrl = (value: string) => {
+  try {
+    return ['http:', 'https:'].includes(new URL(value).protocol);
+  } catch {
+    return false;
+  }
+};
 
 export async function POST(req: NextRequest) {
   if (!(await isAuthorized(req))) {
@@ -33,6 +33,13 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Campaign not found' }, { status: 404 });
     }
 
+    if (!isHttpUrl(campaign.campaign_pdf_url)) {
+      return NextResponse.json(
+        { error: 'The campaign link is not a valid URL', code: 'INVALID_URL' },
+        { status: 400 }
+      );
+    }
+
     const { subjects } = await fetchAllsubjects();
     if (!subjects?.length) {
       return NextResponse.json(
@@ -41,17 +48,12 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const { base64 } = await fetchCampaignPdf(campaign.campaign_pdf_url);
-    const extraction = await extractPromisesFromPdf(base64, subjects);
+    const extraction = await extractPromisesFromPdf(campaign.campaign_pdf_url, subjects);
 
     return NextResponse.json(extraction, { status: 200 });
   } catch (error) {
-    if (error instanceof PdfFetchError) {
-      log.warn(`Campaign PDF rejected (${error.code}):`, error.message);
-      return NextResponse.json(
-        { error: error.message, code: error.code },
-        { status: PDF_ERROR_STATUS[error.code] }
-      );
+    if (error instanceof PdfNotReadError) {
+      return NextResponse.json({ error: error.message, code: 'PDF_NOT_READ' }, { status: 422 });
     }
     log.error('Error extracting promises:', error);
     return NextResponse.json(

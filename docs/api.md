@@ -50,7 +50,7 @@ The hook wraps axios with error handling and automatic toast display.
 
 ## AI Promise Extraction
 
-- `POST /api/parties/campaigns/extract-promises` — admin only. Body `{ campaign_id }`. Downloads the campaign PDF link and returns AI drafts `[{ subject_id, subject_name, promises[] }]` without saving. Errors return `{ error, code }` with `code` in `INVALID_URL` (400), `NOT_PDF` (422), `TOO_LARGE` (413), `DOWNLOAD_FAILED` (502), `AI_FAILED` (502). `maxDuration = 300`.
+- `POST /api/parties/campaigns/extract-promises` — admin only. Body `{ campaign_id }`. Gemini reads the campaign PDF link itself and the route returns AI drafts `[{ subject_id, subject_name, promises[] }]` without saving. Errors return `{ error, code }` with `code` in `INVALID_URL` (400), `PDF_NOT_READ` (422, Gemini could not open the link), `AI_FAILED` (502). `maxDuration = 300`.
 - `POST /api/parties/promises/bulk` — admin only. Body `{ party_id, campaign_id, promises: [{ subject_id, promise }] }`. Inserts all promises in one request; returns `{ count }`.
 
 See [AI Integration](ai.md#promise-extraction-from-campaign-pdfs).

@@ -77,7 +77,7 @@
     "choose-party": "Choose political party",
     "ai-label": "Generate promises with AI",
     "ai-pdf": "Campaign PDF",
-    "ai-hint": "The AI reads the linked PDF (max 20 MB) and proposes up to 5 promises per subject. Review and edit before saving.",
+    "ai-hint": "The AI reads the linked PDF (max 34 MB) and proposes up to 5 promises per subject. Review and edit before saving.",
     "ai-existing-warning": "This campaign already has {count} promises. Saving will add more.",
     "ai-extract-btn": "Generate promises",
     "ai-extracting": "Reading the PDF… this can take a couple of minutes",
@@ -88,9 +88,7 @@
     "ai-empty": "The AI found no promises in this PDF.",
     "ai-errors": {
       "INVALID_URL": "The campaign link is not a valid URL.",
-      "NOT_PDF": "The link does not point to a PDF file (it may be a web page). Use the direct link to the PDF.",
-      "TOO_LARGE": "The PDF is bigger than 20 MB and can't be sent to the AI.",
-      "DOWNLOAD_FAILED": "The PDF could not be downloaded. Check that the link is public and works.",
+      "PDF_NOT_READ": "The AI could not open the PDF. Check that the link is public, points directly to the PDF and is under 34 MB.",
       "AI_FAILED": "The AI could not extract promises from this PDF. Try again later."
     },
     "subjects-label": "Subjects",

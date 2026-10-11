@@ -134,7 +134,7 @@
     "choose-party": "Escoge Partido Político",
     "ai-label": "Generar promesas con IA",
     "ai-pdf": "PDF de la campaña",
-    "ai-hint": "La IA lee el PDF del enlace (máx. 20 MB) y propone hasta 5 promesas por tema. Revisa y edita antes de guardar.",
+    "ai-hint": "La IA lee el PDF del enlace (máx. 34 MB) y propone hasta 5 promesas por tema. Revisa y edita antes de guardar.",
     "ai-existing-warning": "Esta campaña ya tiene {count} promesas. Guardar añadirá más.",
     "ai-extract-btn": "Generar promesas",
     "ai-extracting": "Leyendo el PDF… puede tardar un par de minutos",
@@ -145,9 +145,7 @@
     "ai-empty": "La IA no encontró promesas en este PDF.",
     "ai-errors": {
       "INVALID_URL": "El enlace de la campaña no es una URL válida.",
-      "NOT_PDF": "El enlace no apunta a un archivo PDF (puede ser una página web). Usa el enlace directo al PDF.",
-      "TOO_LARGE": "El PDF supera los 20 MB y no se puede enviar a la IA.",
-      "DOWNLOAD_FAILED": "No se pudo descargar el PDF. Comprueba que el enlace es público y funciona.",
+      "PDF_NOT_READ": "La IA no pudo abrir el PDF. Comprueba que el enlace es público, apunta directamente al PDF y pesa menos de 34 MB.",
       "AI_FAILED": "La IA no pudo extraer promesas de este PDF. Inténtalo más tarde."
     },
     "subjects-label": "Temas",

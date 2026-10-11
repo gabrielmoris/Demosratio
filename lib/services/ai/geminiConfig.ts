@@ -1,6 +1,6 @@
-export function fastThinkingConfig(endpoint = process.env.GEMINI_MODEL_ENDPOINT ?? '') {
-  return /gemini-2\./.test(endpoint) ? { thinkingBudget: 0 } : { thinkingLevel: 'low' };
-}
+// INFO: Gemini 3 can't turn thinking off; "minimal" is the lowest level. Not every model accepts it
+// (gemini-3.6-flash does, gemini-3.8-flash starts at "low")
+export const MINIMAL_THINKING = { thinkingLevel: 'minimal' } as const;
 
 type GeminiPart = { text?: string; thought?: boolean };
 

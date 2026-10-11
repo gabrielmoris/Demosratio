@@ -1,7 +1,7 @@
 import { PartyAnalysisOutput, PartyWithPromises } from '@/types/politicalParties';
 import { VotingData } from '@/types/proposal.types';
 import { Logger } from 'tslog';
-import { fastThinkingConfig, getResponseText } from '@/lib/services/ai/geminiConfig';
+import { MINIMAL_THINKING, getResponseText } from '@/lib/services/ai/geminiConfig';
 
 const log = new Logger();
 
@@ -90,7 +90,7 @@ export async function analyzePromisesWithGemini(
       generationConfig: {
         maxOutputTokens: 32000,
         responseMimeType: 'application/json',
-        thinkingConfig: fastThinkingConfig(apiUrl),
+        thinkingConfig: MINIMAL_THINKING,
       },
     };
 

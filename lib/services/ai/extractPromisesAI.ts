@@ -1,12 +1,37 @@
 import { ExtractedSubjectPromises, Subject } from '@/types/politicalParties';
 import { Logger } from 'tslog';
-import { fastThinkingConfig, getResponseText } from './geminiConfig';
+import { MINIMAL_THINKING, getResponseText } from './geminiConfig';
 
 const log = new Logger();
 
 export const MAX_PROMISES_PER_SUBJECT = 5;
 
+const URL_RETRIEVAL_SUCCESS = 'URL_RETRIEVAL_STATUS_SUCCESS';
+
+export class PdfNotReadError extends Error {
+  constructor(public statuses: string[]) {
+    super(`Gemini could not read the campaign PDF (${statuses.join(', ') || 'link not fetched'})`);
+    this.name = 'PdfNotReadError';
+  }
+}
+
 type RawExtraction = { subject_id?: unknown; promises?: unknown }[];
+
+type UrlMetadata = { urlRetrievalStatus?: string; url_retrieval_status?: string };
+type UrlContextCandidate = {
+  urlContextMetadata?: { urlMetadata?: UrlMetadata[] };
+  url_context_metadata?: { url_metadata?: UrlMetadata[] };
+};
+
+/** Retrieval status of each link Gemini fetched with the url_context tool (accepts camelCase or snake_case). */
+export function getUrlRetrievalStatuses(data: { candidates?: UrlContextCandidate[] }): string[] {
+  const candidate = data.candidates?.[0];
+  const entries =
+    candidate?.urlContextMetadata?.urlMetadata ??
+    candidate?.url_context_metadata?.url_metadata ??
+    [];
+  return entries.map(e => e.urlRetrievalStatus ?? e.url_retrieval_status ?? 'UNKNOWN');
+}
 
 /**
  * Only known subjects, unique promises,
@@ -40,9 +65,8 @@ export function normalizeExtraction(
   }));
 }
 
-/** Sends the campaign PDF to Gemini and returns at most 5 key promises per subject. */
 export async function extractPromisesFromPdf(
-  pdfBase64: string,
+  pdfUrl: string,
   subjects: Subject[]
 ): Promise<ExtractedSubjectPromises[]> {
   const apiKey = process.env.GEMINI_API_KEY;
@@ -55,10 +79,11 @@ export async function extractPromisesFromPdf(
     .join('\n');
 
   const prompt = `
-    Eres un analista político neutral. El PDF adjunto es el programa electoral de un partido político español.
+    Eres un analista político neutral. Este enlace es el PDF del programa electoral de un partido político español:
+    ${pdfUrl}
 
     TAREA:
-    Para CADA uno de estos temas, extrae como MÁXIMO ${MAX_PROMISES_PER_SUBJECT} promesas, las más importantes del programa:
+    Lee el PDF del enlace. Para CADA uno de estos temas, extrae como MÁXIMO ${MAX_PROMISES_PER_SUBJECT} promesas, las más importantes del programa:
     ${subjectList}
 
     REGLAS ESTRICTAS:
@@ -70,14 +95,11 @@ export async function extractPromisesFromPdf(
   `;
 
   const requestBody = {
-    contents: [
-      {
-        parts: [{ inlineData: { mimeType: 'application/pdf', data: pdfBase64 } }, { text: prompt }],
-      },
-    ],
+    contents: [{ parts: [{ text: prompt }] }],
+    tools: [{ url_context: {} }],
     generationConfig: {
       maxOutputTokens: 32000,
-      thinkingConfig: fastThinkingConfig(apiUrl),
+      thinkingConfig: MINIMAL_THINKING,
       responseMimeType: 'application/json',
       responseSchema: {
         type: 'ARRAY',
@@ -107,11 +129,21 @@ export async function extractPromisesFromPdf(
   }
 
   const data = await response.json();
+
+  const statuses = getUrlRetrievalStatuses(data);
+  if (!statuses.includes(URL_RETRIEVAL_SUCCESS)) {
+    log.error('Gemini could not read the campaign PDF:', pdfUrl, statuses);
+    throw new PdfNotReadError(statuses);
+  }
+
   const generatedText = getResponseText(data);
   if (!generatedText) {
     log.error('Gemini response does not contain expected text content:', data);
     throw new Error('Gemini returned an empty response');
   }
+
+  // Raw answer, before normalizeExtraction drops unknown subjects and trims to 5 per subject.
+  log.info('Gemini raw extraction:', generatedText, 'usage:', data.usageMetadata);
 
   let parsed: unknown;
   try {

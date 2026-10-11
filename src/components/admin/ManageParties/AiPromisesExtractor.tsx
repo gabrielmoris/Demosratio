@@ -8,7 +8,7 @@ import { useUiContext } from '@/src/context/uiContext';
 import { usePartiesContext } from '../../Parties/PartyStateManager';
 import { ExtractedSubjectPromises } from '@/types/politicalParties';
 
-const KNOWN_ERROR_CODES = ['INVALID_URL', 'NOT_PDF', 'TOO_LARGE', 'DOWNLOAD_FAILED', 'AI_FAILED'];
+const KNOWN_ERROR_CODES = ['INVALID_URL', 'PDF_NOT_READ', 'AI_FAILED'];
 
 export function AiPromisesExtractor() {
   const { partyChoice, campaignChoice, promises, getPartyPromises } = usePartiesContext();
