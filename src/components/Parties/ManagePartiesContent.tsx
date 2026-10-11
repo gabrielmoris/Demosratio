@@ -1,13 +1,15 @@
-"use client";
-import { CampaignForm } from "@/src/components/admin/ManageParties/CampaignForm";
-import { PartyForm } from "@/src/components/admin/ManageParties/PartyForm";
-import { usePartiesContext } from "@/src/components/Parties/PartyStateManager";
-import Dropdown from "@/src/components/Dropdown";
-import Loading from "@/src/components/Loading";
-import { Campaign, Party } from "@/types/politicalParties";
-import { PromiseForm } from "../admin/ManageParties/PromiseForm";
-import { useRequest } from "@/hooks/use-request";
-import { useTranslations } from "next-intl";
+'use client';
+import { CampaignForm } from '@/src/components/admin/ManageParties/CampaignForm';
+import { PartyForm } from '@/src/components/admin/ManageParties/PartyForm';
+import { usePartiesContext } from '@/src/components/Parties/PartyStateManager';
+import Dropdown from '@/src/components/Dropdown';
+import Loading from '@/src/components/Loading';
+import { Campaign, Party } from '@/types/politicalParties';
+import { PromiseForm } from '../admin/ManageParties/PromiseForm';
+import { AiPromisesExtractor } from '../admin/ManageParties/AiPromisesExtractor';
+import { SubjectsManager } from '../admin/ManageParties/SubjectsManager';
+import { useRequest } from '@/hooks/use-request';
+import { useTranslations } from 'next-intl';
 
 export default function ManagePartiesContent() {
   const {
@@ -24,27 +26,27 @@ export default function ManagePartiesContent() {
     getPartyPromises,
   } = usePartiesContext();
 
-  const t = useTranslations("manage-parties");
+  const t = useTranslations('manage-parties');
 
   const { doRequest: deletePartyReq } = useRequest({
-    url: "/api/parties",
-    method: "delete",
+    url: '/api/parties',
+    method: 'delete',
     onSuccess() {
       getAllParties();
     },
   });
 
   const { doRequest: deleteCampaignReq } = useRequest({
-    url: "/api/parties/campaigns",
-    method: "delete",
+    url: '/api/parties/campaigns',
+    method: 'delete',
     onSuccess() {
       getPartyCampaign();
     },
   });
 
   const { doRequest: deletePromiseReq } = useRequest({
-    url: "/api/parties/promises",
-    method: "delete",
+    url: '/api/parties/promises',
+    method: 'delete',
     onSuccess() {
       getPartyPromises();
     },
@@ -73,15 +75,15 @@ export default function ManagePartiesContent() {
         <Dropdown
           items={parties}
           deleteItem={deleteParty}
-          choose={(item) => setPartyChoice(item as Party)}
-          choice={partyChoice || t("choose-party")}
+          choose={item => setPartyChoice(item as Party)}
+          choice={partyChoice || t('choose-party')}
         />
       )}
       {campaigns[0] && (
         <Dropdown
           items={campaigns}
           deleteItem={deleteCampaign}
-          choose={(item) => setCampaignChoice(item as Campaign)}
+          choose={item => setCampaignChoice(item as Campaign)}
           choice={campaignChoice || campaigns[0]}
         />
       )}
@@ -91,7 +93,7 @@ export default function ManagePartiesContent() {
           items={promises}
           deleteItem={deletePromise}
           choose={() => null}
-          choice={t("delete-promise")}
+          choice={t('delete-promise')}
         />
       )}
 
@@ -99,6 +101,16 @@ export default function ManagePartiesContent() {
         {campaigns[0] && <PromiseForm />}
         {!partyChoice && <PartyForm />}
         {partyChoice && <CampaignForm />}
+      </div>
+
+      {partyChoice && campaignChoice && (
+        <div className="flex w-full">
+          <AiPromisesExtractor />
+        </div>
+      )}
+
+      <div className="flex w-full">
+        <SubjectsManager />
       </div>
     </main>
   );

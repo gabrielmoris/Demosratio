@@ -83,3 +83,9 @@ export interface PartyAnalysisOutput {
   campaign_year: number;
   promise_analyses: PromiseAnalysis[];
 }
+
+export interface ExtractedSubjectPromises {
+  subject_id: number;
+  subject_name: string;
+  promises: string[];
+}

@@ -1,24 +1,33 @@
-import { PartyAnalysisOutput, PartyWithPromises } from "@/types/politicalParties";
-import { VotingData } from "@/types/proposal.types";
-import { Logger } from "tslog";
+import { PartyAnalysisOutput, PartyWithPromises } from '@/types/politicalParties';
+import { VotingData } from '@/types/proposal.types';
+import { Logger } from 'tslog';
+import { fastThinkingConfig, getResponseText } from '@/lib/services/ai/geminiConfig';
 
 const log = new Logger();
 
-export async function analyzePromisesWithGemini(partiesToAnalyze: PartyWithPromises[], proposalData: VotingData): Promise<PartyAnalysisOutput[]> {
+export async function analyzePromisesWithGemini(
+  partiesToAnalyze: PartyWithPromises[],
+  proposalData: VotingData
+): Promise<PartyAnalysisOutput[]> {
   try {
-    if (!proposalData) throw new Error("You need to send Proposal Data");
+    if (!proposalData) throw new Error('You need to send Proposal Data');
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
-      throw new Error("GEMINI_API_KEY is not defined in environment variables");
+      throw new Error('GEMINI_API_KEY is not defined in environment variables');
     }
 
     const apiUrl = process.env.GEMINI_MODEL_ENDPOINT;
 
     // Derive the campaign year from the parties actually being analyzed (the analyzer
     // only passes campaigns of the latest election), so the prompt follows new elections.
-    const campaignYear = partiesToAnalyze.reduce((max, party) => Math.max(max, party.campaign_year ?? 0), 0);
+    const campaignYear = partiesToAnalyze.reduce(
+      (max, party) => Math.max(max, party.campaign_year ?? 0),
+      0
+    );
     if (campaignYear === 0) {
-      throw new Error("No campaign year available for any party. Add a campaign with promises first.");
+      throw new Error(
+        'No campaign year available for any party. Add a campaign with promises first.'
+      );
     }
 
     const prompt = `
@@ -70,21 +79,25 @@ export async function analyzePromisesWithGemini(partiesToAnalyze: PartyWithPromi
     const requestBody = {
       contents: [
         {
-          parts: [{ text: prompt }, { text: JSON.stringify(partiesToAnalyze) }, { text: JSON.stringify(proposalData) }],
+          parts: [
+            { text: prompt },
+            { text: JSON.stringify(partiesToAnalyze) },
+            { text: JSON.stringify(proposalData) },
+          ],
         },
       ],
+      // No temperature/topP/topK: Gemini 3 models work best with their defaults.
       generationConfig: {
-        temperature: 0.2,
-        topP: 0.8,
-        topK: 40,
         maxOutputTokens: 32000,
+        responseMimeType: 'application/json',
+        thinkingConfig: fastThinkingConfig(apiUrl),
       },
     };
 
     const response = await fetch(`${apiUrl}?key=${apiKey}`, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(requestBody),
     });
@@ -94,52 +107,63 @@ export async function analyzePromisesWithGemini(partiesToAnalyze: PartyWithPromi
       log.error(`Gemini API error: ${response.status} ${response.statusText}`, errorText);
       if (response.status === 429) {
         log.warn(`Rate limit hit, waiting 10 seconds before recommending retry...`);
-        await new Promise((resolve) => setTimeout(resolve, 10000));
+        await new Promise(resolve => setTimeout(resolve, 10000));
         throw new Error(`Rate limit hit. Please wait and try again.`);
       }
       throw new Error(`Gemini API error: ${response.status} ${response.statusText} - ${errorText}`);
     }
 
     const data = await response.json();
-    let generatedText = data.candidates?.[0]?.content?.parts?.[0]?.text;
+    let generatedText = getResponseText(data);
 
     if (!generatedText) {
-      log.error("Gemini response does not contain expected text content:", data);
-      throw new Error("Gemini response does not contain expected text content or is empty");
+      log.error('Gemini response does not contain expected text content:', data);
+      throw new Error('Gemini response does not contain expected text content or is empty');
     }
 
     generatedText = generatedText.trim();
-    const jsonPrefix = "```json\n";
+    const jsonPrefix = '```json\n';
     if (generatedText.startsWith(jsonPrefix)) {
       generatedText = generatedText.substring(jsonPrefix.length);
     }
-    const jsonSuffix = "\n```";
+    const jsonSuffix = '\n```';
     if (generatedText.endsWith(jsonSuffix) && generatedText.length >= jsonSuffix.length) {
       generatedText = generatedText.substring(0, generatedText.length - jsonSuffix.length);
     }
 
-    log.info("Attempting to parse CLEANED text as JSON");
+    log.info('Attempting to parse CLEANED text as JSON');
     let analysisResult: PartyAnalysisOutput[];
     try {
       analysisResult = JSON.parse(generatedText);
     } catch (parseError) {
-      log.error("Failed to parse Gemini response as JSON after cleaning:", parseError, "Cleaned text causing error:", generatedText);
-      throw new Error("Failed to parse Gemini response as JSON after cleaning");
+      log.error(
+        'Failed to parse Gemini response as JSON after cleaning:',
+        parseError,
+        'Cleaned text causing error:',
+        generatedText
+      );
+      throw new Error('Failed to parse Gemini response as JSON after cleaning');
     }
 
     // **CLIENT-SIDE FILTERING ADDED HERE**
-    const filteredResult = analysisResult.filter((partyAnalysis) => partyAnalysis.promise_analyses && partyAnalysis.promise_analyses.length > 0);
+    const filteredResult = analysisResult.filter(
+      partyAnalysis => partyAnalysis.promise_analyses && partyAnalysis.promise_analyses.length > 0
+    );
 
     if (analysisResult.length > 0 && filteredResult.length === 0) {
-      log.info("All parties were filtered out because their promise_analyses were empty. Returning empty array.");
+      log.info(
+        'All parties were filtered out because their promise_analyses were empty. Returning empty array.'
+      );
     } else if (analysisResult.length !== filteredResult.length) {
-      log.info(`Filtered out ${analysisResult.length - filteredResult.length} parties with empty promise_analyses.`);
+      log.info(
+        `Filtered out ${analysisResult.length - filteredResult.length} parties with empty promise_analyses.`
+      );
     }
 
     return filteredResult; // Return the filtered result
   } catch (error) {
-    log.error("Error analyzing promises with Gemini:", error);
-    if (error instanceof Error && error.message.includes("Rate limit hit")) {
+    log.error('Error analyzing promises with Gemini:', error);
+    if (error instanceof Error && error.message.includes('Rate limit hit')) {
       throw error;
     }
     throw new Error(`Error general al analizar promesas: ${error}`);

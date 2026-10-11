@@ -1,4 +1,5 @@
 {
+  "fluid": true,
   "crons": [
     {
       "path": "/api/cron/parliament-data",

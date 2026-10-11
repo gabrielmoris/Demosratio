@@ -74,7 +74,39 @@
     "save-promise-btn": "Save promise",
     "saved-promise": "The electoral promise has been saved correctly.",
     "delete-promise": "Delete promises",
-    "choose-party": "Choose political party"
+    "choose-party": "Choose political party",
+    "ai-label": "Generate promises with AI",
+    "ai-pdf": "Campaign PDF",
+    "ai-hint": "The AI reads the linked PDF (max 20 MB) and proposes up to 5 promises per subject. Review and edit before saving.",
+    "ai-existing-warning": "This campaign already has {count} promises. Saving will add more.",
+    "ai-extract-btn": "Generate promises",
+    "ai-extracting": "Reading the PDF… this can take a couple of minutes",
+    "ai-no-promises": "No promises for this subject.",
+    "ai-remove": "Remove promise",
+    "ai-save-btn": "Save {count} promises",
+    "ai-saved": "{count} promises saved.",
+    "ai-empty": "The AI found no promises in this PDF.",
+    "ai-errors": {
+      "INVALID_URL": "The campaign link is not a valid URL.",
+      "NOT_PDF": "The link does not point to a PDF file (it may be a web page). Use the direct link to the PDF.",
+      "TOO_LARGE": "The PDF is bigger than 20 MB and can't be sent to the AI.",
+      "DOWNLOAD_FAILED": "The PDF could not be downloaded. Check that the link is public and works.",
+      "AI_FAILED": "The AI could not extract promises from this PDF. Try again later."
+    },
+    "subjects-label": "Subjects",
+    "subjects-hint": "The AI only classifies promises into these subjects. Add or adjust subjects before generating promises. A subject with promises can't be deleted.",
+    "subjects-name": "Name",
+    "subjects-description": "Description",
+    "subjects-save-btn": "Save",
+    "subjects-delete-btn": "Delete",
+    "subjects-add-btn": "Add subject",
+    "subjects-saved": "Subject saved.",
+    "subjects-deleted": "Subject deleted.",
+    "subjects-confirm-delete": "Delete the subject \"{name}\"?",
+    "subjects-errors": {
+      "DUPLICATE_NAME": "A subject with that name already exists.",
+      "SUBJECT_IN_USE": "This subject has promises. Move or delete them before deleting the subject."
+    }
   },
   "dropdown": {
     "delete-advice": "Sure you want to erase this element?"
