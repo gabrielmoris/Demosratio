@@ -14,11 +14,18 @@ export async function analyzePromisesWithGemini(partiesToAnalyze: PartyWithPromi
 
     const apiUrl = process.env.GEMINI_MODEL_ENDPOINT;
 
+    // Derive the campaign year from the parties actually being analyzed (the analyzer
+    // only passes campaigns of the latest election), so the prompt follows new elections.
+    const campaignYear = partiesToAnalyze.reduce((max, party) => Math.max(max, party.campaign_year ?? 0), 0);
+    if (campaignYear === 0) {
+      throw new Error("No campaign year available for any party. Add a campaign with promises first.");
+    }
+
     const prompt = `
-      Analiza si las votaciones del Congreso español cumplen promesas electorales de 2023.
+      Analiza si las votaciones del Congreso español cumplen promesas electorales de ${campaignYear}.
       
       INPUT:
-      1. Partidos políticos con sus promesas de campaña 2023
+      1. Partidos políticos con sus promesas de campaña ${campaignYear}
       2. Una votación específica con: título, expediente y votos de cada partido
       
       TAREA:
@@ -41,7 +48,7 @@ export async function analyzePromisesWithGemini(partiesToAnalyze: PartyWithPromi
           "party_id": integer,
           "party_name": "string",
           "party_abbreviation": "string",
-          "campaign_year": 2023,
+          "campaign_year": ${campaignYear},
           "promise_analyses": [
             {
               "promise_id": integer,

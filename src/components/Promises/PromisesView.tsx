@@ -1,27 +1,27 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-"use client";
-import React, { useState, useEffect, useCallback, useRef } from "react";
-import { usePartiesContext } from "../Parties/PartyStateManager";
-import { useRequest } from "@/hooks/use-request";
-import { useTranslations } from "next-intl";
-import Image from "next/image";
-import { Campaign, Party, PromiseAnalysis } from "@/types/politicalParties";
-import Dropdown from "../Dropdown";
-import Loading from "../Loading";
-import { PromisesWithAnalysisList } from "./PromiseWithAnalysisCard";
-import Button from "../Button";
-import { useUiContext } from "@/src/context/uiContext";
-import { useAuth } from "@/src/context/authContext";
-import { DashboardStats } from "./DashboardStats";
-import { useSearchParams } from "next/navigation";
+'use client';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { usePartiesContext } from '../Parties/PartyStateManager';
+import { useRequest } from '@/hooks/use-request';
+import { useTranslations } from 'next-intl';
+import Image from 'next/image';
+import { Campaign, Party, PromiseAnalysis } from '@/types/politicalParties';
+import Dropdown from '../Dropdown';
+import Loading from '../Loading';
+import { PromisesWithAnalysisList } from './PromiseWithAnalysisCard';
+import Button from '../Button';
+import { useUiContext } from '@/src/context/uiContext';
+import { useAuth } from '@/src/context/authContext';
+import { DashboardStats } from './DashboardStats';
+import { useSearchParams } from 'next/navigation';
 
 export const PromisesView = () => {
-  const t = useTranslations("promises");
+  const t = useTranslations('promises');
   const { showToast } = useUiContext();
   const user = useAuth();
-   const searchParams = useSearchParams();
-  const partyId = searchParams.get("party_id");
-  const subjectParam = searchParams.get("subject");
+  const searchParams = useSearchParams();
+  const partyId = searchParams.get('party_id');
+  const subjectParam = searchParams.get('subject');
 
   const {
     parties,
@@ -34,25 +34,27 @@ export const PromisesView = () => {
     structuredPromises,
   } = usePartiesContext();
 
-  const [promiseReadiness, setPromiseReadiness] = useState<string>("50");
-  const [showAllParties, setShowAllParties] = useState(false);
+  const [promiseReadiness, setPromiseReadiness] = useState<string>('50');
   const [analysesByPromise, setAnalysesByPromise] = useState<Record<number, PromiseAnalysis[]>>({});
   const [isLoadingAnalyses, setIsLoadingAnalyses] = useState(false);
 
-  const shouldScrollRef = useRef(false)
+  const shouldScrollRef = useRef(false);
 
-  const onInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const newValue = e.target.value;
-    setPromiseReadiness(newValue);
-  }, []);
+  const onInputChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      const newValue = e.target.value;
+      setPromiseReadiness(newValue);
+    },
+    []
+  );
 
   const { doRequest: sendPromiseReadiness } = useRequest({
     url: `/api/parties/promises/readiness`,
-    method: "post",
+    method: 'post',
     onSuccess: () => {
       showToast({
-        message: t("readiness-sent"),
-        variant: "success",
+        message: t('readiness-sent'),
+        variant: 'success',
         duration: 3000,
       });
     },
@@ -60,33 +62,33 @@ export const PromisesView = () => {
 
   const { doRequest: getPromiseReadiness } = useRequest({
     url: `/api/parties/promises/readiness?campaign_id=${campaignChoice?.id}`,
-    method: "get",
-    onSuccess: (data) => {
-      setPromiseReadiness(data.readiness || "0");
+    method: 'get',
+    onSuccess: data => {
+      setPromiseReadiness(data.readiness || '0');
     },
   });
 
   useEffect(() => {
     if (!partyId || parties.length === 0) return;
 
-    const selected = parties.find((p) => p.id === Number(partyId));
+    const selected = parties.find(p => p.id === Number(partyId));
     if (!selected) return;
-    if (partyChoice?.id === selected.id) return;   // already open — don't toggle off
+    if (partyChoice?.id === selected.id) return; // already open — don't toggle off
 
     setPartyChoice(selected);
     shouldScrollRef.current = true;
   }, [partyId, parties, partyChoice]);
 
-useEffect(() => {
-  if (!partyChoice || !shouldScrollRef.current || isLoadingAnalyses || loading) return;
-  if (!subjectParam) return;
+  useEffect(() => {
+    if (!partyChoice || !shouldScrollRef.current || isLoadingAnalyses || loading) return;
+    if (!subjectParam) return;
 
-  const el = document.getElementById(subjectParam); 
-  if (!el) return;
+    const el = document.getElementById(subjectParam);
+    if (!el) return;
 
-  el.scrollIntoView({ behavior: "smooth", block: "start" });
-  shouldScrollRef.current = false;
-}, [partyChoice, isLoadingAnalyses, loading, structuredPromises, subjectParam]);
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    shouldScrollRef.current = false;
+  }, [partyChoice, isLoadingAnalyses, loading, structuredPromises, subjectParam]);
 
   useEffect(() => {
     if (campaignChoice) getPromiseReadiness();
@@ -97,8 +99,8 @@ useEffect(() => {
     if (partyChoice?.id) {
       setIsLoadingAnalyses(true);
       fetch(`/api/parties/promises/all-analyses-by-party?party_id=${partyChoice.id}`)
-        .then((res) => res.json())
-        .then((data) => {
+        .then(res => res.json())
+        .then(data => {
           if (data.analysis) {
             // Group analyses by promise_id
             const grouped: Record<number, PromiseAnalysis[]> = {};
@@ -111,7 +113,7 @@ useEffect(() => {
             setAnalysesByPromise(grouped);
           }
         })
-        .catch((err) => console.error("Error fetching all analyses:", err))
+        .catch(err => console.error('Error fetching all analyses:', err))
         .finally(() => setIsLoadingAnalyses(false));
     }
   }, [partyChoice]);
@@ -125,35 +127,37 @@ useEffect(() => {
   };
 
   const handlePartychoice = (party: Party) => {
-    if (party.id === partyChoice?.id) {
-      setPartyChoice(undefined);
-    } else {
-      setPartyChoice(party);
-      setShowAllParties(false);
-    }
-  };
+    setPartyChoice(prev => {
+      if (prev && prev.id !== party.id && (partyId || subjectParam)) {
+        const url = new URL(window.location.href);
+        url.searchParams.delete('party_id');
+        url.searchParams.delete('subject');
+        window.history.replaceState(null, '', url.toString());
+      }
 
-  const displayedParties = showAllParties ? parties : parties.slice(0, 8);
+      return party;
+    });
+  };
 
   if (loading || isLoadingAnalyses) {
     return <Loading />;
   }
 
   return (
-    <div className={`flex flex-col w-full justify-center items-center${partyChoice && " gap-6"}`}>
+    <div className={`flex flex-col w-full justify-center items-center${partyChoice && ' gap-6'}`}>
       <div className="md:p-4 flex flex-col top-4 w-full">
         <div className="flex flex-col items-center justify-between mb-4">
-          <h2 className="font-bold text-contrast text-lg">{t("choose-party")}</h2>
+          <h2 className="font-bold text-contrast text-lg">{t('choose-party')}</h2>
         </div>
         <div className="space-y-2 items-center justify-between w-full flex flex-wrap">
-          {displayedParties.map((party) => (
+          {parties.map(party => (
             <button
               key={party.id}
               onClick={() => handlePartychoice(party)}
               className={`flex text-start md:text-center items-center gap-3 p-2 rounded-lg transition-all duration-200 ${
                 partyChoice?.id === party.id
-                  ? "bg-drPurple/10 border-2 border-drPurple"
-                  : "hover:bg-gray-50 border-2 border-transparent"
+                  ? 'bg-drPurple/10 border-2 border-drPurple'
+                  : 'hover:bg-gray-50 border-2 border-transparent'
               }`}
             >
               {party.logo_url && (
@@ -180,10 +184,20 @@ useEffect(() => {
                 <button
                   onClick={() => setPartyChoice(undefined)}
                   className="p-2 hover:bg-gray-100 rounded-full transition-colors"
-                  title={t("back-to-parties")}
+                  title={t('back-to-parties')}
                 >
-                  <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                  <svg
+                    className="w-5 h-5 text-gray-500"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M15 19l-7-7 7-7"
+                    />
                   </svg>
                 </button>
                 {partyChoice.logo_url && (
@@ -197,14 +211,20 @@ useEffect(() => {
                     />
                   </div>
                 )}
-                <div>                   
-                  <h1 className="text-2xl font-bold font-drserif text-drPurple">{partyChoice.name}</h1>
+                <div>
+                  <h1 className="text-2xl font-bold font-drserif text-drPurple">
+                    {partyChoice.name}
+                  </h1>
                   {campaignChoice && (
-                    <p className="text-sm text-gray-500">{t("campaign")}: {campaignChoice.year}</p>
+                    <p className="text-sm text-gray-500">
+                      {t('campaign')}: {campaignChoice.year}
+                    </p>
                   )}
                 </div>
               </div>
-              {partyChoice && <DashboardStats partyId={partyChoice?.id || 0} className="w-full flex md:hidden" />}
+              {partyChoice && (
+                <DashboardStats partyId={partyChoice?.id || 0} className="w-full flex md:hidden" />
+              )}
             </div>
             <DashboardStats partyId={partyChoice?.id || 0} className="w-full hidden md:flex mb-4" />
 
@@ -214,13 +234,15 @@ useEffect(() => {
                   <div className="w-full sm:w-auto">
                     <Dropdown
                       items={campaigns}
-                      choose={(item) => setCampaignChoice(item as Campaign)}
+                      choose={item => setCampaignChoice(item as Campaign)}
                       choice={campaignChoice || campaigns[0]}
                     />
                   </div>
                   <div className="w-full sm:w-auto flex gap-3 items-center mt-4 sm:mt-0">
                     <div className="flex-1 sm:flex-none min-w-[200px]">
-                      <label className="block text-sm font-medium text-gray-700 mb-1">{t("readiness-promise")}</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        {t('readiness-promise')}
+                      </label>
                       <div className="flex items-center gap-3">
                         <div className="relative flex-1">
                           <input
@@ -237,28 +259,39 @@ useEffect(() => {
                             <span>100%</span>
                           </div>
                         </div>
-                        <span className="text-sm font-bold text-drPurple w-12 text-right">{promiseReadiness}%</span>
+                        <span className="text-sm font-bold text-drPurple w-12 text-right">
+                          {promiseReadiness}%
+                        </span>
                       </div>
                     </div>
-                    <Button onClick={sendReadyness} label={t("save-promise-readiness-btn")} type="submit" />
+                    <Button
+                      onClick={sendReadyness}
+                      label={t('save-promise-readiness-btn')}
+                      type="submit"
+                    />
                   </div>
                 </div>
               </div>
             )}
 
             <div className="py-6">
-              <h2 className="text-xl font-bold text-contrast mb-4">{t("promises-with-analysis")}</h2>
+              <h2 className="text-xl font-bold text-contrast mb-4">
+                {t('promises-with-analysis')}
+              </h2>
 
               {structuredPromises.length > 0 ? (
-                <PromisesWithAnalysisList structuredPromises={structuredPromises} analysesByPromise={analysesByPromise} />
+                <PromisesWithAnalysisList
+                  structuredPromises={structuredPromises}
+                  analysesByPromise={analysesByPromise}
+                />
               ) : (
                 <div className="text-center py-12 bg-gray-50 rounded-lg">
-                  <p className="text-gray-500">{t("no-promises-available")}</p>
+                  <p className="text-gray-500">{t('no-promises-available')}</p>
                 </div>
               )}
             </div>
           </div>
-        ) }
+        )}
       </main>
     </div>
   );

@@ -3,13 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "dev:infisical": "infisical run --env=dev -- npm run dev",
     "dev": "next dev --turbo",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "test": "vitest run",
     "coverage:open": "vitest --coverage --run && npx http-server coverage -p 8080 -o",
-    "prepare": "husky"
+    "prepare": "husky",
+    "graph:update": "graphify update .",
+    "graph:watch": "node graphify-runner.js"
   },
   "dependencies": {
     "@js-temporal/polyfill": "^0.4.4",

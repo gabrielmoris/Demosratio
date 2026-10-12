@@ -1,3 +1,4 @@
+// @vitest-environment node
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { encodeFingerprint, decodeFingerprint } from "@/lib/helpers/users/fingerprintEncoding";
 import { Fingerprint } from "@/types/fingerprint";
