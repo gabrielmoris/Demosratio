@@ -1,32 +1,36 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-"use client";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { useInView } from "react-intersection-observer";
-import { useRequest } from "@/hooks/use-request";
-import Loading from "@/src/components/Loading";
-import { VoteCard } from "@/src/components/VoteCard";
-import { VotingData } from "@/types/proposal";
-import Input from "@/src/components/Input";
-import { useTranslations } from "next-intl";
-import SugestedSearch from "@/src/components/SugestedSearch";
-import { Link } from "@/src/i18n/routing";
+'use client';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { useInView } from 'react-intersection-observer';
+import { useRequest } from '@/hooks/use-request';
+import Loading from '@/src/components/Loading';
+import { VoteCard } from '@/src/components/VoteCard';
+import { VotingData } from '@/types/proposal';
+import Input from '@/src/components/Input';
+import { useTranslations } from 'next-intl';
+import SugestedSearch from '@/src/components/SugestedSearch';
+import { Link } from '@/src/i18n/routing';
+import { useSearchParams } from 'next/navigation';
 
 export default function Parliament() {
+  const searchParams = useSearchParams();
+  const searchQuery = searchParams.get('search') ?? '';
+
   const [votes, setVotes] = useState<VotingData[]>([]);
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [noMoreVotes, setNoMoreVotes] = useState(false);
-  const [search, setSearch] = useState("");
-  const [inputValue, setInputValue] = useState("");
+  const [search, setSearch] = useState(searchQuery);
+  const [inputValue, setInputValue] = useState(searchQuery);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  const t = useTranslations("parliament");
+  const t = useTranslations('parliament');
 
   const { doRequest } = useRequest({
-    url: `/api/spanish-proposals${search ? "/search" : ""}?page=${page}${search ? "&expedient_text=" + encodeURIComponent(search) : ""}`,
-    method: "get",
+    url: `/api/spanish-proposals${search ? '/search' : ''}?page=${page}${search ? '&expedient_text=' + encodeURIComponent(search) : ''}`,
+    method: 'get',
     onSuccess(data) {
-      setVotes((prevVotes) => (page === 1 ? data.proposals : [...prevVotes, ...data.proposals]));
+      setVotes(prevVotes => (page === 1 ? data.proposals : [...prevVotes, ...data.proposals]));
       setNoMoreVotes(data.proposals.length === 0 || data.pagination.totalPages === page);
       setIsLoading(false);
     },
@@ -44,7 +48,7 @@ export default function Parliament() {
 
   useEffect(() => {
     if (inView && !isLoading && !noMoreVotes) {
-      setPage((prevPage) => prevPage + 1);
+      setPage(prevPage => prevPage + 1);
     }
   }, [inView, isLoading, noMoreVotes]);
 
@@ -52,21 +56,25 @@ export default function Parliament() {
     loadVotes();
   }, [page, search]);
 
-  const onInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const newValue = e.target.value;
-    setInputValue(newValue);
+  const onInputChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      const newValue = e.target.value;
+      setInputValue(newValue);
 
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
 
-    timeoutRef.current = setTimeout(() => {
-      setSearch(newValue);
-      setPage(1);
-      setVotes([]);
-      setNoMoreVotes(false);
-    }, 500);
-  }, []);
+      timeoutRef.current = setTimeout(() => {
+        window.history.pushState(null, '', `?search=${encodeURIComponent(newValue)}`);
+        setSearch(newValue);
+        setPage(1);
+        setVotes([]);
+        setNoMoreVotes(false);
+      }, 500);
+    },
+    []
+  );
 
   const sugestedSearch = (sugestedSearch: string) => {
     const event = {
@@ -83,17 +91,24 @@ export default function Parliament() {
           className="w-full flex items-center justify-between p-4 bg-drlight rounded-lg border border-drPurple border-opacity-20 hover:shadow-sm hover:shadow-drPurple duration-300"
         >
           <div className="flex flex-col gap-0.5">
-            <p className="font-bold text-sm text-contrast">{t("alignment-cta-title")}</p>
-            <p className="text-xs text-drgray">{t("alignment-cta-subtitle")}</p>
+            <p className="font-bold text-sm text-contrast">{t('alignment-cta-title')}</p>
+            <p className="text-xs text-drgray">{t('alignment-cta-subtitle')}</p>
           </div>
           <span className="text-drPurple text-lg ml-4">→</span>
         </Link>
-        <Input inputLabel={t("search-input")} inputString={inputValue} type="text" inputKey="search" placeholder="" setInput={onInputChange} />
+        <Input
+          inputLabel={t('search-input')}
+          inputString={inputValue}
+          type="text"
+          inputKey="search"
+          placeholder=""
+          setInput={onInputChange}
+        />
         {votes.length ? (
-          votes.map((vote) => <VoteCard key={vote.id} vote={vote} />)
+          votes.map(vote => <VoteCard key={vote.id} vote={vote} />)
         ) : (
           <div className="flex flex-col items-center gap-10 justify-center w-full">
-            {t("empty-search")}
+            {t('empty-search')}
             <SugestedSearch onClickFunction={sugestedSearch} />
           </div>
         )}
