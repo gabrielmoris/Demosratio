@@ -1,15 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-"use client";
-import { createContext, useContext, useEffect, useState } from "react";
+'use client';
+import { createContext, useContext, useEffect, useState } from 'react';
 import {
   Campaign,
   Party,
   PartyPromise,
   StructuredPromises,
   Subject,
-} from "@/types/politicalParties";
-import { useRequest } from "@/hooks/use-request";
+} from '@/types/politicalParties';
+import { useRequest } from '@/hooks/use-request';
 
 type PartiesContextType = {
   parties: Party[];
@@ -24,9 +23,10 @@ type PartiesContextType = {
   setSubjectChoice: React.Dispatch<React.SetStateAction<Subject | undefined>>;
   loading: boolean;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
-  getPartyCampaign: () => Promise<any>;
-  getAllParties: () => Promise<any>;
-  getPartyPromises: () => Promise<any>;
+  getPartyCampaign: () => Promise<Campaign>;
+  getAllParties: () => Promise<Party[]>;
+  getAllSubjects: () => Promise<Subject[]>;
+  getPartyPromises: () => Promise<PartyPromise[]>;
   subjects: Subject[];
   promises: PartyPromise[];
   structuredPromises: StructuredPromises[];
@@ -48,25 +48,23 @@ export function PartiesProvider({
   const [subjects, setSubjects] = useState<Subject[]>([]);
   const [subjectChoice, setSubjectChoice] = useState<Subject>();
   const [promises, setPromises] = useState<PartyPromise[]>([]);
-  const [structuredPromises, setStructuredPromises] = useState<
-    StructuredPromises[]
-  >([]);
+  const [structuredPromises, setStructuredPromises] = useState<StructuredPromises[]>([]);
 
   const [loading, setLoading] = useState(true);
 
   const { doRequest: getAllParties } = useRequest({
-    url: "/api/parties",
-    method: "get",
+    url: '/api/parties',
+    method: 'get',
     onSuccess: (data: Party[]) => {
       setParties(data);
-      // setPartyChoice(data[0]); // I Could nitialize the first party. (Still in decission)
+      // setPartyChoice(data[0]); // I Could initialize the first party. (Still in decission)
       setLoading(false);
     },
   });
 
   const { doRequest: getAllSubjects } = useRequest({
-    url: "/api/parties/subjects",
-    method: "get",
+    url: '/api/parties/subjects',
+    method: 'get',
     onSuccess: (data: Subject[]) => {
       setSubjects(data);
       setSubjectChoice(data[0]);
@@ -75,7 +73,7 @@ export function PartiesProvider({
 
   const { doRequest: getPartyPromises } = useRequest({
     url: `/api/parties/promises?party_id=${partyChoice?.id}&campaign_id=${campaignChoice?.id}`,
-    method: "get",
+    method: 'get',
     onSuccess: (data: PartyPromise[]) => {
       setPromises(data);
     },
@@ -83,7 +81,7 @@ export function PartiesProvider({
 
   const { doRequest: getPartyPromisesStructured } = useRequest({
     url: `/api/parties/promises?party_id=${partyChoice?.id}&campaign_id=${campaignChoice?.id}&structured=true`,
-    method: "get",
+    method: 'get',
     onSuccess: (data: StructuredPromises[]) => {
       setStructuredPromises(data);
     },
@@ -91,7 +89,7 @@ export function PartiesProvider({
 
   const { doRequest: getPartyCampaign } = useRequest({
     url: `/api/parties/campaigns?party_id=${partyChoice?.id}`,
-    method: "get",
+    method: 'get',
     onSuccess: (data: Campaign[]) => {
       setCampaigns(data);
       if (data.length > 0) {
@@ -134,6 +132,7 @@ export function PartiesProvider({
     <PartiesContext.Provider
       value={{
         getAllParties,
+        getAllSubjects,
         getPartyCampaign,
         getPartyPromises,
         subjects,
@@ -160,6 +159,6 @@ export function PartiesProvider({
 
 export function usePartiesContext() {
   const context = useContext(PartiesContext);
-  if (!context) throw new Error("Used outside PartiesProvider");
+  if (!context) throw new Error('Used outside PartiesProvider');
   return context;
 }

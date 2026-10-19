@@ -1,12 +1,17 @@
-import { Logger } from "tslog";
-import { supabaseAdmin } from "@/lib/supabaseClient";
+import { Logger } from 'tslog';
+import { supabaseAdmin } from '@/lib/supabaseClient';
 
 const log = new Logger();
 
-export async function savePartyPromise(party_id: number, campaign_id: number, subject_id: number, promise: string) {
+export async function savePartyPromise(
+  party_id: number,
+  campaign_id: number,
+  subject_id: number,
+  promise: string
+) {
   try {
     const { data: id, error: insertError } = await supabaseAdmin
-      .from("promises")
+      .from('promises')
       .insert([
         {
           promise,
@@ -15,7 +20,7 @@ export async function savePartyPromise(party_id: number, campaign_id: number, su
           campaign_id,
         },
       ])
-      .select("id")
+      .select('id')
       .single();
 
     if (insertError) {
@@ -25,7 +30,7 @@ export async function savePartyPromise(party_id: number, campaign_id: number, su
 
     return { id };
   } catch (error) {
-    log.error("Supabase error fetching subjects:", error);
+    log.error('Supabase error fetching subjects:', error);
     return { error };
   }
 }

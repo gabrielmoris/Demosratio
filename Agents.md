@@ -16,7 +16,7 @@ A Next.js 15 app that tracks Spanish political promises and compares them agains
 
 - **Database**: Supabase (PostgreSQL with RLS — all queries must respect row-level security)
 - **i18n**: next-intl — locales: `es`, `ga`, `ca`, `eu`
-- **AI**: Gemini 1.5 Flash
+- **AI**: Gemini (model set by `GEMINI_MODEL_ENDPOINT`)
 
 ## Documentation
 
@@ -28,7 +28,7 @@ A Next.js 15 app that tracks Spanish political promises and compares them agains
 ### Features
 - [Authentication](docs/auth.md) — JWT auth with device fingerprinting
 - [Components & UI](docs/components.md) — State management, toast notifications
-- [AI Integration](docs/ai.md) — Gemini prompts and analysis flow
+- [AI Integration](docs/ai.md) — Gemini prompts, analysis flow and AI promise extraction from campaign PDFs
 - [Internationalization](docs/i18n.md) — Locale setup and translation workflow
 - [Testing](docs/testing.md) — Vitest setup, mocking patterns, coverage
 

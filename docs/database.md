@@ -8,7 +8,7 @@ parties (id, name, logo_url)
        └── promises (campaign_id, party_id)
             └── promises_analysis (promise_id)
        └── promises_readiness_index (campaign_id)
-subjects (id, name)
+subjects (id, name UNIQUE, description)   ← fixed taxonomy, edited in admin; AI extraction only uses these
 users (id, name, password, is_admin)
   └── user_devices (user_id)
   └── proposal_likes/dislikes (user_id)

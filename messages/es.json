@@ -131,7 +131,37 @@
     "save-promise-btn": "Guardar Promesa",
     "saved-promise": "La promesa electoral se ha guardado correctamente.",
     "delete-promise": "Borrar Promesas",
-    "choose-party": "Escoge Partido Político"
+    "choose-party": "Escoge Partido Político",
+    "ai-label": "Generar promesas con IA",
+    "ai-pdf": "PDF de la campaña",
+    "ai-hint": "La IA lee el PDF del enlace (máx. 34 MB) y propone hasta 5 promesas por tema. Revisa y edita antes de guardar.",
+    "ai-existing-warning": "Esta campaña ya tiene {count} promesas. Guardar añadirá más.",
+    "ai-extract-btn": "Generar promesas",
+    "ai-extracting": "Leyendo el PDF… puede tardar un par de minutos",
+    "ai-no-promises": "Sin promesas para este tema.",
+    "ai-remove": "Quitar promesa",
+    "ai-save-btn": "Guardar {count} promesas",
+    "ai-saved": "Se han guardado {count} promesas.",
+    "ai-empty": "La IA no encontró promesas en este PDF.",
+    "ai-errors": {
+      "INVALID_URL": "El enlace de la campaña no es una URL válida.",
+      "PDF_NOT_READ": "La IA no pudo abrir el PDF. Comprueba que el enlace es público, apunta directamente al PDF y pesa menos de 34 MB.",
+      "AI_FAILED": "La IA no pudo extraer promesas de este PDF. Inténtalo más tarde."
+    },
+    "subjects-label": "Temas",
+    "subjects-hint": "La IA clasifica las promesas solo en estos temas. Añade o ajusta los temas antes de generar promesas. Un tema con promesas no se puede borrar.",
+    "subjects-name": "Nombre",
+    "subjects-description": "Descripción",
+    "subjects-save-btn": "Guardar",
+    "subjects-delete-btn": "Borrar",
+    "subjects-add-btn": "Añadir tema",
+    "subjects-saved": "Tema guardado.",
+    "subjects-deleted": "Tema borrado.",
+    "subjects-confirm-delete": "¿Borrar el tema \"{name}\"?",
+    "subjects-errors": {
+      "DUPLICATE_NAME": "Ya existe un tema con ese nombre.",
+      "SUBJECT_IN_USE": "Este tema tiene promesas. Muévelas o bórralas antes de borrar el tema."
+    }
   },
   "dropdown": {
     "delete-advice": "Seguro que quieres borrar este elemento?"
