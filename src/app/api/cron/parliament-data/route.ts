@@ -11,7 +11,9 @@ import {
 import {
   saveProposalToDb,
   checkProposalExists,
+  checkLegacySubGroupProposalExists,
 } from '@/lib/database/spanishParliament/saveProposal';
+import { buildExpedientText, hasSubGroup } from '@/lib/helpers/spanishParliamentExtractor/expedientText';
 import { aiPromiseAnalizer } from '@/lib/services/ai/promisesAnaliseAI';
 import { setPromiseAnalysis } from '@/lib/database/parties/promises/promises-analysis/setPromisesAnalysis';
 import { deleteProposal } from '@/lib/database/spanishParliament/deleteProposal';
@@ -67,16 +69,6 @@ async function saveToDb(day: string) {
     await extractParliamentDataForDay(day);
 
   for (const votation of extractedParliamentData) {
-    const { textoExpediente: expedient_text } = votation.informacion;
-
-    const existingProposal = await checkProposalExists(expedient_text);
-
-    if (existingProposal) {
-      log.warn(`Proposal with expedient_text "${expedient_text}" already exists. Skipping.`);
-      continue;
-    }
-
-    // Get the important information
     const { sesion: session, fecha: date, titulo: title } = votation.informacion;
 
     const {
@@ -87,6 +79,26 @@ async function saveToDb(day: string) {
       noVotan: no_vote,
       asentimiento: assent,
     } = votation.totales;
+
+    // Points of a motion voted separately share textoExpediente, so the point label is added to it
+    const expedient_text = buildExpedientText(votation.informacion);
+
+    const existingProposal =
+      (await checkProposalExists(expedient_text)) ??
+      (hasSubGroup(votation.informacion)
+        ? await checkLegacySubGroupProposalExists(votation.informacion.textoExpediente, {
+            session,
+            date: getFormattedDateForDB(date),
+            votes_for,
+            votes_against,
+            abstentions,
+          })
+        : null);
+
+    if (existingProposal) {
+      log.warn(`Proposal with expedient_text "${expedient_text}" already exists. Skipping.`);
+      continue;
+    }
 
     const votes_parties_json = mergeVotesByParty(votation.votaciones);
     // asentimiento="Sí" means unanimous consent (no formal count); otherwise check afavor > enContra

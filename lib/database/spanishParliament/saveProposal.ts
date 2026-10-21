@@ -23,6 +23,34 @@ export async function checkProposalExists(expedient_text: string): Promise<{ id:
   return null;
 }
 
+/**
+ * Before point-by-point votes were stored separately, the first point was saved under the
+ * plain textoExpediente (later points were skipped). This finds such a row by matching the
+ * plain text plus the exact session, date and vote counts, so that point isn't saved twice.
+ */
+export async function checkLegacySubGroupProposalExists(
+  plainExpedientText: string,
+  votation: Pick<VotingData, "session" | "date" | "votes_for" | "votes_against" | "abstentions">
+): Promise<{ id: number } | null> {
+  const { data, error } = await supabaseAdmin
+    .from("proposals")
+    .select("id")
+    .eq("expedient_text", plainExpedientText)
+    .eq("session", votation.session)
+    .eq("date", votation.date)
+    .eq("votes_for", votation.votes_for)
+    .eq("votes_against", votation.votes_against)
+    .eq("abstentions", votation.abstentions)
+    .limit(1);
+
+  if (error) {
+    log.error("Error checking for legacy point-by-point proposal:", error);
+    throw error;
+  }
+
+  return data && data.length > 0 ? { id: data[0].id } : null;
+}
+
 export async function saveProposalToDb(proposalData: VotingData) {
   try {
     const {

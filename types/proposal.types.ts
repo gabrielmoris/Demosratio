@@ -9,6 +9,10 @@ export interface ProposalInfo {
   fecha: string;
   titulo: string;
   textoExpediente: string;
+  /** e.g. "Votación separada por puntos." when a motion is voted point by point */
+  tituloSubGrupo?: string;
+  /** e.g. "Punto 2." */
+  textoSubGrupo?: string;
 }
 
 export interface ProposalTotals {
