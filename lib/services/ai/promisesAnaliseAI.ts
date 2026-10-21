@@ -52,11 +52,17 @@ export const aiPromiseAnalizer = async (proposal: VotingData, retryCount = 2): P
     return analysis;
   } catch (error) {
     log.error("Error analising promises:", error);
-    if (retryCount > 0) {
+    // geminiFetch already waited for the quota; retrying now would only hit it again
+    const rateLimited = error instanceof Error && error.message.includes("Rate limit hit");
+    // Gemini errors were already retried by geminiFetch; retry only other failures (DB, bad JSON)
+    const geminiFailed = error instanceof Error && error.message.includes("Gemini API error");
+    if (retryCount > 0 && !rateLimited && !geminiFailed) {
       log.info(`Retrying... (${retryCount} attempts remaining)`);
       await new Promise((resolve) => setTimeout(resolve, 5000));
       return aiPromiseAnalizer(proposal, retryCount - 1);
     }
+    // Keep the rate-limit message so the importer can tell "quota used up" from other failures
+    if (rateLimited) throw error;
     throw new Error("Error analising promises after retries.");
   }
 };

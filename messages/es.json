@@ -46,7 +46,12 @@
     "show-more": "Ver más"
   },
   "votecard-component": {
-    "button-cta": "Detalles"
+    "button-cta": "Detalles",
+    "summary-title": "En pocas palabras",
+    "yes-means": "Votar Sí:",
+    "no-means": "Votar No:",
+    "ai-disclaimer": "Resumen generado con IA a partir del texto oficial. Puede contener errores.",
+    "official-text": "Ver texto oficial"
   },
   "votepage": {
     "parliament-link": "Más información en la Web del Congreso.",

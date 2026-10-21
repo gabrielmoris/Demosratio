@@ -2,6 +2,10 @@ import { PartyAnalysisOutput, PartyWithPromises } from '@/types/politicalParties
 import { VotingData } from '@/types/proposal.types';
 import { Logger } from 'tslog';
 import { MINIMAL_THINKING, getResponseText } from '@/lib/services/ai/geminiConfig';
+import { geminiFetch } from '@/lib/services/ai/geminiRequest';
+
+/** Max time for one vote's analysis, waits included, so the importer cron stays under its limit. */
+export const PROMISE_ANALYSIS_DEADLINE_MS = 120_000;
 
 const log = new Logger();
 
@@ -94,22 +98,24 @@ export async function analyzePromisesWithGemini(
       },
     };
 
-    const response = await fetch(`${apiUrl}?key=${apiKey}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
+    // Spaced and retried by geminiFetch (free tier: 5 requests per minute)
+    const response = await geminiFetch(
+      `${apiUrl}?key=${apiKey}`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
       },
-      body: JSON.stringify(requestBody),
-    });
+      { deadlineMs: PROMISE_ANALYSIS_DEADLINE_MS }
+    );
 
     if (!response.ok) {
       const errorText = await response.text();
       log.error(`Gemini API error: ${response.status} ${response.statusText}`, errorText);
-      if (response.status === 429) {
-        log.warn(`Rate limit hit, waiting 10 seconds before recommending retry...`);
-        await new Promise(resolve => setTimeout(resolve, 10000));
-        throw new Error(`Rate limit hit. Please wait and try again.`);
-      }
+      // geminiFetch already waited and retried; still limited means the quota is used up
+      if (response.status === 429) throw new Error(`Rate limit hit. Please wait and try again.`);
       throw new Error(`Gemini API error: ${response.status} ${response.statusText} - ${errorText}`);
     }
 

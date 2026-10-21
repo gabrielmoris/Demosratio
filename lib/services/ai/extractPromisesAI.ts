@@ -1,6 +1,10 @@
 import { ExtractedSubjectPromises, Subject } from '@/types/politicalParties';
 import { Logger } from 'tslog';
 import { MINIMAL_THINKING, getResponseText } from './geminiConfig';
+import { geminiFetch } from './geminiRequest';
+
+// The extraction route has maxDuration 300s; stop a bit before that
+const EXTRACTION_DEADLINE_MS = 280_000;
 
 const log = new Logger();
 
@@ -115,11 +119,15 @@ export async function extractPromisesFromPdf(
     },
   };
 
-  const response = await fetch(`${apiUrl}?key=${apiKey}`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(requestBody),
-  });
+  const response = await geminiFetch(
+    `${apiUrl}?key=${apiKey}`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(requestBody),
+    },
+    { deadlineMs: EXTRACTION_DEADLINE_MS }
+  );
 
   if (!response.ok) {
     const errorText = await response.text();

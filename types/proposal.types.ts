@@ -52,3 +52,27 @@ export interface VotingData {
   };
   assent: boolean;
 }
+
+/** One language version of a vote's plain-language summary. */
+export interface PlainSummaryText {
+  /** What was voted, in simple words */
+  summary: string;
+  /** What a "yes" vote means in practice */
+  yes_means: string;
+  /** What a "no" vote means in practice */
+  no_means: string;
+}
+
+/** Keyed by locale, e.g. "es". */
+export type PlainSummary = Record<string, PlainSummaryText>;
+
+/**
+ * Result of trying to summarise a vote. null in the DB means "not tried yet".
+ * - done: summary saved
+ * - not_applicable: procedural vote (deadline extension, Statute ruling...) with no initiative text
+ * - no_match: Congreso search gave no single clear match
+ * - no_pdf: initiative found but it has no BOCG publication yet
+ * - not_in_pdf: Gemini couldn't find the initiative inside the PDF
+ * - error: something failed (network, Gemini); retried on the next run
+ */
+export type ProposalSummaryStatus = "done" | "not_applicable" | "no_match" | "no_pdf" | "not_in_pdf" | "error";

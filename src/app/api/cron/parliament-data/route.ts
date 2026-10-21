@@ -21,6 +21,16 @@ import { isAuthorized } from '@/src/middleware/isAuthorized';
 
 const log = new Logger();
 
+// Gemini calls are spaced ~12s apart (free tier: 5 per minute), so a busy day takes a few minutes.
+export const maxDuration = 300;
+
+// Don't start another vote after this. One vote's analysis takes at most
+// PROMISE_ANALYSIS_DEADLINE_MS (120s), so starting before 160s stays under maxDuration.
+const TIME_BUDGET_MS = 160_000;
+
+/** Thrown when the run should end early; votes not processed are picked up by the next run. */
+class StopRunError extends Error {}
+
 export async function GET(req: NextRequest) {
   if (!(await isAuthorized(req))) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -37,12 +47,19 @@ export async function GET(req: NextRequest) {
 
   try {
     const daysToCheck = parseInt(process.env.DAYS_TO_CHECK_VOTATIONS || '5', 10);
+    const deadline = Date.now() + TIME_BUDGET_MS;
 
     for (let i = daysToCheck; i > 0; i--) {
       const dateToCheck = getDateString(i);
-      await saveToDb(dateToCheck).catch(e =>
-        log.error('Error saving parliamentdata to DB', dateToCheck, '=>', e)
-      );
+      try {
+        await saveToDb(dateToCheck, deadline);
+      } catch (e) {
+        if (e instanceof StopRunError) {
+          log.warn(`Stopping early: ${e.message}. The next run continues from here.`);
+          break;
+        }
+        log.error('Error saving parliamentdata to DB', dateToCheck, '=>', e);
+      }
     }
 
     log.info('Parliament data extraction completed successfully');
@@ -62,13 +79,15 @@ export async function GET(req: NextRequest) {
   }
 }
 
-async function saveToDb(day: string) {
+async function saveToDb(day: string, deadline: number) {
   // Handles legislature transitions (e.g. XV -> XVI after the Nov 2026 election):
   // if the configured legislature has no votes for this day, it retries with the next one.
   const { legislatura, votations: extractedParliamentData } =
     await extractParliamentDataForDay(day);
 
   for (const votation of extractedParliamentData) {
+    if (Date.now() > deadline) throw new StopRunError('time budget reached');
+
     const { sesion: session, fecha: date, titulo: title } = votation.informacion;
 
     const {
@@ -119,6 +138,19 @@ async function saveToDb(day: string) {
       assent: isAccepted,
     };
 
+    // Analyse BEFORE saving: if Gemini fails, nothing is saved and the next run retries this vote.
+    // (Saving first left votes without analysis forever, since they then counted as existing.)
+    let analysisArr: Awaited<ReturnType<typeof aiPromiseAnalizer>>;
+    try {
+      analysisArr = await aiPromiseAnalizer(proposalData);
+    } catch (error) {
+      const rateLimited = error instanceof Error && error.message.includes('Rate limit hit');
+      log.error(`Promise analysis failed for ${day} "${title}", not saving it this run:`, error);
+      // Gemini is out of quota: the remaining votes would fail the same way
+      if (rateLimited) throw new StopRunError('Gemini rate limit');
+      throw error;
+    }
+
     try {
       const savedProposal = await saveProposalToDb(proposalData);
 
@@ -128,8 +160,6 @@ async function saveToDb(day: string) {
         throw new Error(`Failed to save proposal: ${title}`);
       }
 
-      // Run AI analysis for new proposals
-      const analysisArr = await aiPromiseAnalizer(proposalData);
       log.info('SAVING ', day, ' ', savedProposal.id);
       log.info(`${modelName} analyse => `, analysisArr.length, analysisArr[0]);
 
