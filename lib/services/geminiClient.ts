@@ -1,13 +1,22 @@
 import { PartyAnalysisOutput, PartyWithPromises } from '@/types/politicalParties';
 import { VotingData } from '@/types/proposal.types';
 import { Logger } from 'tslog';
-import { MINIMAL_THINKING, getResponseText } from '@/lib/services/ai/geminiConfig';
+import { getResponseText, noThinkingConfig } from '@/lib/services/ai/geminiConfig';
 import { geminiFetch } from '@/lib/services/ai/geminiRequest';
 
 /** Max time for one vote's analysis, waits included, so the importer cron stays under its limit. */
 export const PROMISE_ANALYSIS_DEADLINE_MS = 120_000;
 
 const log = new Logger();
+
+/**
+ * The promise analysis sends no tools, so it can run on Gemini 2.5 (thinking fully off).
+ * The PDF calls can't: they combine url_context with a JSON schema, which only Gemini 3 supports.
+ * GEMINI_ANALYSIS_MODEL_ENDPOINT is optional and falls back to GEMINI_MODEL_ENDPOINT.
+ */
+export function getPromiseAnalysisEndpoint(): string | undefined {
+  return process.env.GEMINI_ANALYSIS_MODEL_ENDPOINT?.trim() || process.env.GEMINI_MODEL_ENDPOINT;
+}
 
 export async function analyzePromisesWithGemini(
   partiesToAnalyze: PartyWithPromises[],
@@ -20,7 +29,8 @@ export async function analyzePromisesWithGemini(
       throw new Error('GEMINI_API_KEY is not defined in environment variables');
     }
 
-    const apiUrl = process.env.GEMINI_MODEL_ENDPOINT;
+    const apiUrl = getPromiseAnalysisEndpoint();
+    if (!apiUrl) throw new Error('GEMINI_MODEL_ENDPOINT is not defined in environment variables');
 
     // Derive the campaign year from the parties actually being analyzed (the analyzer
     // only passes campaigns of the latest election), so the prompt follows new elections.
@@ -94,7 +104,7 @@ export async function analyzePromisesWithGemini(
       generationConfig: {
         maxOutputTokens: 32000,
         responseMimeType: 'application/json',
-        thinkingConfig: MINIMAL_THINKING,
+        thinkingConfig: noThinkingConfig(apiUrl),
       },
     };
 
@@ -120,6 +130,8 @@ export async function analyzePromisesWithGemini(
     }
 
     const data = await response.json();
+
+    console.log(data);
     let generatedText = getResponseText(data);
 
     if (!generatedText) {

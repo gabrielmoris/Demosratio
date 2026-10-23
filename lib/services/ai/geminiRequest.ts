@@ -62,16 +62,24 @@ export interface GeminiFetchOptions {
  * asks after a 429, and retries 500/503. Returns the last response when it can't retry anymore,
  * so callers keep handling !response.ok as before.
  */
-export async function geminiFetch(url: string, init: RequestInit, options: GeminiFetchOptions = {}): Promise<Response> {
+export async function geminiFetch(
+  url: string,
+  init: RequestInit,
+  options: GeminiFetchOptions = {}
+): Promise<Response> {
   const deadline = options.deadlineMs ? Date.now() + options.deadlineMs : Infinity;
   const timeLeft = () => deadline - Date.now();
 
   for (let attempt = 0; ; attempt++) {
     await waitForSlot();
 
-    const signal = Number.isFinite(deadline) ? AbortSignal.timeout(Math.max(1, timeLeft())) : undefined;
+    const signal = Number.isFinite(deadline)
+      ? AbortSignal.timeout(Math.max(1, timeLeft()))
+      : undefined;
     const response = await fetch(url, signal ? { ...init, signal } : init);
     if (response.ok) return response;
+
+    console.log(response);
 
     const isRateLimit = response.status === 429;
     const isServerError = response.status === 500 || response.status === 503;
@@ -80,13 +88,21 @@ export async function geminiFetch(url: string, init: RequestInit, options: Gemin
     // Read the body to find the wait time, then hand back an equivalent response
     const body = await response.text();
     const giveUp = () =>
-      new Response(body, { status: response.status, statusText: response.statusText, headers: response.headers });
+      new Response(body, {
+        status: response.status,
+        statusText: response.statusText,
+        headers: response.headers,
+      });
 
     const wait = isRateLimit
       ? (parseRetryDelayMs(body) ?? DEFAULT_RATE_LIMIT_WAIT_MS)
       : SERVER_ERROR_DELAYS_MS[Math.min(attempt, SERVER_ERROR_DELAYS_MS.length - 1)];
 
-    if (attempt >= MAX_RETRIES || (isRateLimit && wait > MAX_RATE_LIMIT_WAIT_MS) || wait >= timeLeft()) {
+    if (
+      attempt >= MAX_RETRIES ||
+      (isRateLimit && wait > MAX_RATE_LIMIT_WAIT_MS) ||
+      wait >= timeLeft()
+    ) {
       return giveUp();
     }
 

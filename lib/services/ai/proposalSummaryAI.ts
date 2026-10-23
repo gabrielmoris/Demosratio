@@ -1,6 +1,6 @@
 import { Logger } from 'tslog';
 import { PlainSummary, PlainSummaryText } from '@/types/proposal.types';
-import { MINIMAL_THINKING, getResponseText } from './geminiConfig';
+import { getResponseText, noThinkingConfig } from './geminiConfig';
 import { PdfNotReadError, getUrlRetrievalStatuses } from './extractPromisesAI';
 import { geminiFetch } from './geminiRequest';
 
@@ -118,7 +118,7 @@ export async function summarizeProposalFromPdf(input: SummaryInput): Promise<Sum
     tools: [{ url_context: {} }],
     generationConfig: {
       maxOutputTokens: 4000,
-      thinkingConfig: MINIMAL_THINKING,
+      thinkingConfig: noThinkingConfig(apiUrl),
       responseMimeType: 'application/json',
       responseSchema: {
         type: 'OBJECT',

@@ -1,6 +1,6 @@
 import { ExtractedSubjectPromises, Subject } from '@/types/politicalParties';
 import { Logger } from 'tslog';
-import { MINIMAL_THINKING, getResponseText } from './geminiConfig';
+import { getResponseText, noThinkingConfig } from './geminiConfig';
 import { geminiFetch } from './geminiRequest';
 
 // The extraction route has maxDuration 300s; stop a bit before that
@@ -103,7 +103,7 @@ export async function extractPromisesFromPdf(
     tools: [{ url_context: {} }],
     generationConfig: {
       maxOutputTokens: 32000,
-      thinkingConfig: MINIMAL_THINKING,
+      thinkingConfig: noThinkingConfig(apiUrl),
       responseMimeType: 'application/json',
       responseSchema: {
         type: 'ARRAY',

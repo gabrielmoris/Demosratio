@@ -15,6 +15,8 @@ import {
 } from '@/lib/database/spanishParliament/saveProposal';
 import { buildExpedientText, hasSubGroup } from '@/lib/helpers/spanishParliamentExtractor/expedientText';
 import { aiPromiseAnalizer } from '@/lib/services/ai/promisesAnaliseAI';
+import { getPromiseAnalysisEndpoint } from '@/lib/services/geminiClient';
+import { getModelName } from '@/lib/services/ai/geminiConfig';
 import { setPromiseAnalysis } from '@/lib/database/parties/promises/promises-analysis/setPromisesAnalysis';
 import { deleteProposal } from '@/lib/database/spanishParliament/deleteProposal';
 import { isAuthorized } from '@/src/middleware/isAuthorized';
@@ -154,7 +156,7 @@ async function saveToDb(day: string, deadline: number) {
     try {
       const savedProposal = await saveProposalToDb(proposalData);
 
-      const modelName = process.env.GEMINI_MODEL_ENDPOINT?.split('/models/')[1].split(':')[0];
+      const modelName = getModelName(getPromiseAnalysisEndpoint() ?? '');
 
       if (!savedProposal) {
         throw new Error(`Failed to save proposal: ${title}`);
