@@ -4,6 +4,12 @@ vi.mock('@/lib/database/spanishParliament/getAllProposalsByExpedient', () => ({
   getAllProposalsByExpedient: vi.fn(),
 }));
 
+vi.mock('@/lib/database/legislaturas/getLegislaturas', () => ({
+  resolveLegislaturaId: vi.fn(async (request: Request) =>
+    Number(new URL(request.url).searchParams.get('legislatura')) || 15
+  ),
+}));
+
 vi.mock('tslog', () => ({
   Logger: class {
     error = vi.fn();
@@ -54,7 +60,7 @@ describe('GET /api/spanish-proposals/search', () => {
 
     await GET(makeRequest({ expedient_text: 'sanidad', page: '2', pageSize: '5' }));
 
-    expect(mockSearch).toHaveBeenCalledWith('sanidad', 2, 5);
+    expect(mockSearch).toHaveBeenCalledWith('sanidad', 2, 5, 15);
   });
 
   it('should return 500 when database throws', async () => {

@@ -7,7 +7,8 @@ const log = new Logger();
 export const getAllProposalsByExpedient = async (
   expedient_text: string,
   page: number,
-  pageSize: number
+  pageSize: number,
+  legislaturaId: number
 ) => {
   try {
     const from = (page - 1) * pageSize;
@@ -20,6 +21,7 @@ export const getAllProposalsByExpedient = async (
     } = await supabaseAdmin
       .from("proposals")
       .select("*", { count: "exact" })
+      .eq("legislatura_id", legislaturaId)
       .ilike("expedient_text", `%${expedient_text}%`)
       .order("date", { ascending: false })
       .order("id", { ascending: false })

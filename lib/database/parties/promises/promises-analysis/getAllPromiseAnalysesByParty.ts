@@ -4,11 +4,15 @@ import { PromiseAnalysis } from "@/types/politicalParties";
 
 const log = new Logger();
 
-export async function getAllPromiseAnalysesByParty(partyId: number): Promise<{ analysis: PromiseAnalysis[] | null; error?: Error }> {
+/** Analyses of a party's promises; only those of `campaignId` (its campaign in a legislatura) when given. */
+export async function getAllPromiseAnalysesByParty(
+  partyId: number,
+  campaignId?: number
+): Promise<{ analysis: PromiseAnalysis[] | null; error?: Error }> {
   if (!partyId) throw new Error("partyId is required");
 
   try {
-    const { data: analyses, error: analysisError } = await supabaseAdmin
+    let query = supabaseAdmin
       .from("promise_status")
       .select(
         `
@@ -29,10 +33,14 @@ export async function getAllPromiseAnalysesByParty(partyId: number): Promise<{ a
           votes_against,
           expedient_text,
           url
-        )
+        )${campaignId ? ",\n        promises!inner (campaign_id)" : ""}
       `,
       )
-      .eq("party_id", partyId)
+      .eq("party_id", partyId);
+
+    if (campaignId) query = query.eq("promises.campaign_id", campaignId);
+
+    const { data: analyses, error: analysisError } = await query
       .order("promise_id", { ascending: true })
       .order("created_at", { ascending: false });
 

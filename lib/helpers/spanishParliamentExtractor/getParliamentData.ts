@@ -1,60 +1,22 @@
 import { Logger } from "tslog";
 import { ProposalData } from "@/types/proposal.types";
+import { intToRoman, romanToInt } from "@/lib/helpers/romanNumerals";
 
 import JSZip from "jszip";
+
+export { intToRoman, romanToInt };
 
 const log = new Logger();
 
 /**
- * Legislature scraped by default. Override with the TARGET_LEGISLATURA env var,
- * e.g. set it to "XVI" once the new legislature starts after the Nov 2026 election.
+ * Fallback legislature to scrape. The cron normally scrapes the current legislatura from the
+ * `legislaturas` table (set in /admin/manage-parties); TARGET_LEGISLATURA is only used when the
+ * table has no current row.
  */
 export const DEFAULT_LEGISLATURA = "XV";
 
-/** Legislature to scrape, configurable via environment (defaults to XV). */
+/** Fallback legislature to scrape, configurable via environment (defaults to XV). */
 export const getTargetLegislatura = (): string => process.env.TARGET_LEGISLATURA || DEFAULT_LEGISLATURA;
-
-const ROMAN_VALUES: [string, number][] = [
-  ["M", 1000],
-  ["CM", 900],
-  ["D", 500],
-  ["CD", 400],
-  ["C", 100],
-  ["XC", 90],
-  ["L", 50],
-  ["XL", 40],
-  ["X", 10],
-  ["IX", 9],
-  ["V", 5],
-  ["IV", 4],
-  ["I", 1],
-];
-
-export const romanToInt = (roman: string): number => {
-  let value = 0;
-  let i = 0;
-  while (i < roman.length) {
-    for (const [symbol, num] of ROMAN_VALUES) {
-      if (roman.startsWith(symbol, i)) {
-        value += num;
-        i += symbol.length;
-        break;
-      }
-    }
-  }
-  return value;
-};
-
-export const intToRoman = (num: number): string => {
-  let out = "";
-  for (const [symbol, value] of ROMAN_VALUES) {
-    while (num >= value) {
-      out += symbol;
-      num -= value;
-    }
-  }
-  return out || "I";
-};
 
 /** Next legislature in Roman numerals (e.g. XV -> XVI, XLIX -> L). */
 export const nextLegislatura = (legislatura: string): string => intToRoman(romanToInt(legislatura) + 1);
@@ -112,11 +74,13 @@ export const extractParliamentJson = async (date: string, legislatura: string = 
  * Extracts the votations for a date, transparently handling legislature transitions.
  * If the configured legislature has no votes that day (e.g. after a general election,
  * when the new legislature starts), it retries with the next one (XV -> XVI).
- * Returns which legislatura actually produced the data, so callers can build correct URLs.
+ * Returns which legislatura actually produced the data, so callers can build correct URLs
+ * and store the votes under the right legislatura.
  */
-export const extractParliamentDataForDay = async (date: string): Promise<{ legislatura: string; votations: ProposalData[] }> => {
-  const legislatura = getTargetLegislatura();
-
+export const extractParliamentDataForDay = async (
+  date: string,
+  legislatura: string = getTargetLegislatura()
+): Promise<{ legislatura: string; votations: ProposalData[] }> => {
   const votations = await extractParliamentJson(date, legislatura);
   if (votations.length > 0) {
     return { legislatura, votations };

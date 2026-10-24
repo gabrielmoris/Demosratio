@@ -8,6 +8,9 @@ import {
   buildVotacionesUrl,
   extractParliamentDataForDay,
 } from '@/lib/helpers/spanishParliamentExtractor/getParliamentData';
+import { intToRoman, romanToInt } from '@/lib/helpers/romanNumerals';
+import { fetchCurrentLegislaturaId } from '@/lib/database/legislaturas/getLegislaturas';
+import { ensureLegislaturaExists } from '@/lib/database/legislaturas/manageLegislaturas';
 import {
   saveProposalToDb,
   checkProposalExists,
@@ -17,7 +20,7 @@ import {
   buildExpedientText,
   hasSubGroup,
 } from '@/lib/helpers/spanishParliamentExtractor/expedientText';
-import { aiPromiseAnalizer } from '@/lib/services/ai/promisesAnaliseAI';
+import { aiPromiseAnalizer, NoPromisesToAnalyseError } from '@/lib/services/ai/promisesAnaliseAI';
 import { getPromiseAnalysisEndpoint } from '@/lib/services/geminiClient';
 import { getModelName } from '@/lib/services/ai/geminiConfig';
 import { setPromiseAnalysis } from '@/lib/database/parties/promises/promises-analysis/setPromisesAnalysis';
@@ -48,11 +51,13 @@ export async function GET(req: NextRequest) {
   try {
     const daysToCheck = parseInt(process.env.DAYS_TO_CHECK_VOTATIONS || '5', 10);
     const deadline = Date.now() + TIME_BUDGET_MS;
+    // Set in /admin/manage-parties; falls back to TARGET_LEGISLATURA
+    const currentLegislaturaId = await fetchCurrentLegislaturaId();
 
     for (let i = daysToCheck; i > 0; i--) {
       const dateToCheck = getDateString(i);
       try {
-        await saveToDb(dateToCheck, deadline);
+        await saveToDb(dateToCheck, deadline, currentLegislaturaId);
       } catch (e) {
         if (e instanceof StopRunError) {
           log.warn(`Stopping early: ${e.message}. The next run continues from here.`);
@@ -79,11 +84,26 @@ export async function GET(req: NextRequest) {
   }
 }
 
-async function saveToDb(day: string, deadline: number) {
+async function saveToDb(day: string, deadline: number, currentLegislaturaId: number) {
   // Handles legislature transitions (e.g. XV -> XVI after the Nov 2026 election):
-  // if the configured legislature has no votes for this day, it retries with the next one.
-  const { legislatura, votations: extractedParliamentData } =
-    await extractParliamentDataForDay(day);
+  // if the current legislature has no votes for this day, it retries with the next one.
+  const { legislatura, votations: extractedParliamentData } = await extractParliamentDataForDay(
+    day,
+    intToRoman(currentLegislaturaId)
+  );
+
+  const legislaturaId = romanToInt(legislatura);
+  // Votes of a legislatura that is not the current one yet (XVI before you switch to it in the
+  // admin) are saved as 'pending' and analysed by /api/cron/promise-analysis once it is current,
+  // so they are checked against that legislatura's promises and not the previous ones.
+  const isCurrentLegislatura = legislaturaId === currentLegislaturaId;
+  if (!isCurrentLegislatura && extractedParliamentData.length > 0) {
+    log.warn(
+      `Votes of Legislatura ${legislatura} found while ${intToRoman(currentLegislaturaId)} is the current one. ` +
+        `Saving them as pending; make ${legislatura} current in /admin/manage-parties to analyse them.`
+    );
+    await ensureLegislaturaExists(legislaturaId);
+  }
 
   for (const votation of extractedParliamentData) {
     if (Date.now() > deadline) throw new StopRunError('time budget reached');
@@ -136,19 +156,26 @@ async function saveToDb(day: string, deadline: number) {
       no_vote,
       votes_parties_json,
       assent: isAccepted,
+      legislatura_id: legislaturaId,
+      promise_analysis_status: isCurrentLegislatura ? 'done' : 'pending',
     };
 
     // Analyse BEFORE saving: if Gemini fails, nothing is saved and the next run retries this vote.
     // (Saving first left votes without analysis forever, since they then counted as existing.)
-    let analysisArr: Awaited<ReturnType<typeof aiPromiseAnalizer>>;
+    let analysisArr: Awaited<ReturnType<typeof aiPromiseAnalizer>> = [];
     try {
-      analysisArr = await aiPromiseAnalizer(proposalData);
+      if (isCurrentLegislatura) analysisArr = await aiPromiseAnalizer(proposalData);
     } catch (error) {
-      const rateLimited = error instanceof Error && error.message.includes('Rate limit hit');
-      log.error(`Promise analysis failed for ${day} "${title}", not saving it this run:`, error);
-      // Gemini is out of quota: the remaining votes would fail the same way
-      if (rateLimited) throw new StopRunError('Gemini rate limit');
-      throw error;
+      if (!(error instanceof NoPromisesToAnalyseError)) {
+        const rateLimited = error instanceof Error && error.message.includes('Rate limit hit');
+        log.error(`Promise analysis failed for ${day} "${title}", not saving it this run:`, error);
+        // Gemini is out of quota: the remaining votes would fail the same way
+        if (rateLimited) throw new StopRunError('Gemini rate limit');
+        throw error;
+      }
+      // The current legislatura has no promises yet: keep the vote for /api/cron/promise-analysis
+      log.warn(`${error.message}; saving ${day} "${title}" as pending`);
+      proposalData.promise_analysis_status = 'pending';
     }
 
     try {

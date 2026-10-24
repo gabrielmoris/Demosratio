@@ -4,7 +4,10 @@ import { SubjectWithStats } from "@/types/temas";
 
 const log = new Logger();
 
-export async function getSubjectsWithStats(): Promise<{ subjects: SubjectWithStats[] | null; error?: Error }> {
+/** Subjects with promise and party counts of one legislatura (subjects themselves are shared). */
+export async function getSubjectsWithStats(
+  legislaturaId: number
+): Promise<{ subjects: SubjectWithStats[] | null; error?: Error }> {
   try {
     const { data: subjects, error: subjectsError } = await supabaseAdmin
       .from("subjects")
@@ -16,7 +19,8 @@ export async function getSubjectsWithStats(): Promise<{ subjects: SubjectWithSta
 
     const { data: promises, error: promisesError } = await supabaseAdmin
       .from("promises")
-      .select("id, subject_id, party_id");
+      .select("id, subject_id, party_id, campaigns!inner(legislatura_id)")
+      .eq("campaigns.legislatura_id", legislaturaId);
 
     if (promisesError) throw promisesError;
 

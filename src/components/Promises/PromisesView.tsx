@@ -17,6 +17,7 @@ import { useSearchParams } from 'next/navigation';
 
 export const PromisesView = () => {
   const t = useTranslations('promises');
+  const tLegislatura = useTranslations('legislatura');
   const { showToast } = useUiContext();
   const user = useAuth();
   const searchParams = useSearchParams();
@@ -94,11 +95,17 @@ export const PromisesView = () => {
     if (campaignChoice) getPromiseReadiness();
   }, [campaignChoice]);
 
-  // Fetch all analyses when party choice changes
+  // The party's campaign in this legislatura (wait until it belongs to the chosen party)
+  const partyCampaign =
+    partyChoice && campaignChoice?.party_id === partyChoice.id ? campaignChoice : undefined;
+
+  // Fetch the analyses of the party's promises in this legislatura
   useEffect(() => {
-    if (partyChoice?.id) {
+    if (partyChoice?.id && partyCampaign?.id) {
       setIsLoadingAnalyses(true);
-      fetch(`/api/parties/promises/all-analyses-by-party?party_id=${partyChoice.id}`)
+      fetch(
+        `/api/parties/promises/all-analyses-by-party?party_id=${partyChoice.id}&campaign_id=${partyCampaign.id}`
+      )
         .then(res => res.json())
         .then(data => {
           if (data.analysis) {
@@ -116,7 +123,7 @@ export const PromisesView = () => {
         .catch(err => console.error('Error fetching all analyses:', err))
         .finally(() => setIsLoadingAnalyses(false));
     }
-  }, [partyChoice]);
+  }, [partyChoice, partyCampaign]);
 
   const sendReadyness = () => {
     if (!campaignChoice || !user.currentUser) return;
@@ -149,6 +156,9 @@ export const PromisesView = () => {
         <div className="flex flex-col items-center justify-between mb-4">
           <h2 className="font-bold text-contrast text-lg">{t('choose-party')}</h2>
         </div>
+        {parties.length === 0 && (
+          <p className="text-center text-sm text-drgray">{tLegislatura('no-parties')}</p>
+        )}
         <div className="space-y-2 items-center justify-between w-full flex flex-wrap">
           {parties.map(party => (
             <button
@@ -222,22 +232,34 @@ export const PromisesView = () => {
                   )}
                 </div>
               </div>
-              {partyChoice && (
-                <DashboardStats partyId={partyChoice?.id || 0} className="w-full flex md:hidden" />
+              {partyCampaign && (
+                <DashboardStats
+                  partyId={partyChoice.id}
+                  campaignId={partyCampaign.id}
+                  className="w-full flex md:hidden"
+                />
               )}
             </div>
-            <DashboardStats partyId={partyChoice?.id || 0} className="w-full hidden md:flex mb-4" />
+            {partyCampaign && (
+              <DashboardStats
+                partyId={partyChoice.id}
+                campaignId={partyCampaign.id}
+                className="w-full hidden md:flex mb-4"
+              />
+            )}
 
             {campaigns.length > 0 && (
               <div className="py-4 border-b border-gray-200">
                 <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
-                  <div className="w-full sm:w-auto">
-                    <Dropdown
-                      items={campaigns}
-                      choose={item => setCampaignChoice(item as Campaign)}
-                      choice={campaignChoice || campaigns[0]}
-                    />
-                  </div>
+                  {campaigns.length > 1 && (
+                    <div className="w-full sm:w-auto">
+                      <Dropdown
+                        items={campaigns}
+                        choose={item => setCampaignChoice(item as Campaign)}
+                        choice={campaignChoice || campaigns[0]}
+                      />
+                    </div>
+                  )}
                   <div className="w-full sm:w-auto flex gap-3 items-center mt-4 sm:mt-0">
                     <div className="flex-1 sm:flex-none min-w-[200px]">
                       <label className="block text-sm font-medium text-gray-700 mb-1">

@@ -12,19 +12,22 @@ interface DashboardStatsData {
 
 interface DashboardStatsProps {
   partyId: number;
+  /** The party's campaign in the selected legislatura: only its promises are counted */
+  campaignId?: number;
   className?: string;
 }
 
-export const DashboardStats = ({ partyId, className }: DashboardStatsProps) => {
+export const DashboardStats = ({ partyId, campaignId, className }: DashboardStatsProps) => {
   const t = useTranslations("promises");
   const [stats, setStats] = useState<DashboardStatsData | null>(null);
 
   const fetchStats = useCallback(() => {
-    fetch(`/api/parties/promises/dashboard?party_id=${partyId}`)
+    const campaignParam = campaignId ? `&campaign_id=${campaignId}` : "";
+    fetch(`/api/parties/promises/dashboard?party_id=${partyId}${campaignParam}`)
       .then((res) => res.json())
       .then((data) => setStats(data))
       .catch((err) => console.error("Error fetching dashboard stats:", err));
-  }, [partyId]);
+  }, [partyId, campaignId]);
 
   useEffect(() => {
     if (partyId) {

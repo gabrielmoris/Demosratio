@@ -9,8 +9,20 @@ import { TemaPromiseCard } from "@/src/components/Temas/TemaPromiseCard";
 import { SubjectDeepDive, SubjectPartyData, SubjectProposal } from "@/types/temas";
 import { formatDate } from "@/lib/helpers/dateFormatters";
 import { Subject } from "@/types/politicalParties";
+import { LegislaturaScoped } from "@/src/components/LegislaturaScoped";
+import { useLegislatura } from "@/src/context/legislaturaContext";
+import { withLegislatura } from "@/lib/helpers/legislatura";
 
 export default function TemaDeepDivePage() {
+  return (
+    <LegislaturaScoped>
+      <TemaDeepDive />
+    </LegislaturaScoped>
+  );
+}
+
+function TemaDeepDive() {
+  const { selectedId } = useLegislatura();
   const t = useTranslations("temas");
   const { id } = useParams();
   const [data, setData] = useState<SubjectDeepDive | null>(null);
@@ -19,7 +31,7 @@ export default function TemaDeepDivePage() {
 
   useEffect(() => {
     if (!id) return;
-    fetch(`/api/temas/${id}`)
+    fetch(withLegislatura(`/api/temas/${id}`, selectedId))
       .then((res) => {
         if (!res.ok) throw new Error("Not found");
         return res.json();
@@ -32,7 +44,7 @@ export default function TemaDeepDivePage() {
         setFetchError(true);
         setLoading(false);
       });
-  }, [id]);
+  }, [id, selectedId]);
 
   if (loading) {
     return (

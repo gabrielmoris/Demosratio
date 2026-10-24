@@ -8,6 +8,10 @@
     {
       "path": "/api/cron/proposal-summaries",
       "schedule": "0 1 * * *"
+    },
+    {
+      "path": "/api/cron/promise-analysis",
+      "schedule": "30 1 * * *"
     }
   ]
 }

@@ -4,6 +4,9 @@ import { useTranslations } from "next-intl";
 import Loading from "@/src/components/Loading";
 import { Link } from "@/src/i18n/routing";
 import Image from "next/image";
+import { LegislaturaScoped } from "@/src/components/LegislaturaScoped";
+import { useLegislatura } from "@/src/context/legislaturaContext";
+import { withLegislatura } from "@/lib/helpers/legislatura";
 
 type CellData = { pct: number | null; coVotes: number };
 type AlignmentData = {
@@ -43,13 +46,22 @@ function LegendGradient() {
 }
 
 export default function AlignmentPage() {
+  return (
+    <LegislaturaScoped>
+      <AlignmentMatrix />
+    </LegislaturaScoped>
+  );
+}
+
+function AlignmentMatrix() {
+  const { selectedId } = useLegislatura();
   const t = useTranslations("alignment");
   const [data, setData] = useState<AlignmentData | null>(null);
   const [loading, setLoading] = useState(true);
   const [fetchError, setFetchError] = useState(false);
 
   useEffect(() => {
-    fetch("/api/spanish-proposals/alignment")
+    fetch(withLegislatura("/api/spanish-proposals/alignment", selectedId))
       .then((res) => res.json())
       .then((d: AlignmentData) => {
         setData(d);
@@ -59,7 +71,7 @@ export default function AlignmentPage() {
         setFetchError(true);
         setLoading(false);
       });
-  }, []);
+  }, [selectedId]);
 
   if (loading) {
     return (

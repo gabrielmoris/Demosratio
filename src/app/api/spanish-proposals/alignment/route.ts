@@ -1,5 +1,6 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { getProposalsForAlignment } from "@/lib/database/spanishParliament/getProposalsForAlignment";
+import { resolveLegislaturaId } from "@/lib/database/legislaturas/getLegislaturas";
 
 type VoteEntry = {
   party: string;
@@ -24,9 +25,9 @@ function getPosition(entry: VoteEntry): "for" | "against" | "abstain" | null {
   return null;
 }
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
-    const proposals = await getProposalsForAlignment();
+    const proposals = await getProposalsForAlignment(await resolveLegislaturaId(request));
 
     const alignCounts: Record<string, Record<string, number>> = {};
     const coVoteCounts: Record<string, Record<string, number>> = {};

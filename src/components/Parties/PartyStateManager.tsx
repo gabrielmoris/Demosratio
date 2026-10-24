@@ -9,6 +9,8 @@ import {
   Subject,
 } from '@/types/politicalParties';
 import { useRequest } from '@/hooks/use-request';
+import { useLegislatura } from '@/src/context/legislaturaContext';
+import { withLegislatura } from '@/lib/helpers/legislatura';
 
 type PartiesContextType = {
   parties: Party[];
@@ -52,8 +54,11 @@ export function PartiesProvider({
 
   const [loading, setLoading] = useState(true);
 
+  // Pages using this provider are wrapped in LegislaturaScoped, so it mounts again when this changes
+  const { selectedId } = useLegislatura();
+
   const { doRequest: getAllParties } = useRequest({
-    url: '/api/parties',
+    url: withLegislatura('/api/parties', selectedId),
     method: 'get',
     onSuccess: (data: Party[]) => {
       setParties(data);
@@ -88,7 +93,7 @@ export function PartiesProvider({
   });
 
   const { doRequest: getPartyCampaign } = useRequest({
-    url: `/api/parties/campaigns?party_id=${partyChoice?.id}`,
+    url: withLegislatura(`/api/parties/campaigns?party_id=${partyChoice?.id}`, selectedId),
     method: 'get',
     onSuccess: (data: Campaign[]) => {
       setCampaigns(data);

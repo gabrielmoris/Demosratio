@@ -7,16 +7,23 @@ export interface DashboardStats {
   partialEvidence: number;
 }
 
-export async function getDashboardStats(partyId: number): Promise<DashboardStats> {
+/** Stats of a party's promises; only those of `campaignId` (its campaign in a legislatura) when given. */
+export async function getDashboardStats(partyId: number, campaignId?: number): Promise<DashboardStats> {
   try {
-    const { count: totalPromises, error: totalError } = await supabaseAdmin
+    let totalQuery = supabaseAdmin
       .from("promises")
       .select("*", { count: "exact", head: true })
       .eq("party_id", partyId);
+    if (campaignId) totalQuery = totalQuery.eq("campaign_id", campaignId);
+
+    const { count: totalPromises, error: totalError } = await totalQuery;
 
     if (totalError) throw totalError;
 
-    const { data: promises, error: promisesError } = await supabaseAdmin.from("promises").select("id").eq("party_id", partyId);
+    let promisesQuery = supabaseAdmin.from("promises").select("id").eq("party_id", partyId);
+    if (campaignId) promisesQuery = promisesQuery.eq("campaign_id", campaignId);
+
+    const { data: promises, error: promisesError } = await promisesQuery;
 
     if (promisesError) throw promisesError;
 

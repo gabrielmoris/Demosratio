@@ -18,11 +18,16 @@
 ## Analysis Flow
 
 ```
-aiPromiseAnalizer()
-  → fetch parties/campaigns
+aiPromiseAnalizer(vote)
+  → fetchPartiesToAnalyse(vote.legislatura_id)   parties with a campaign in the vote's legislatura, with its promises
+      parties without promises are left out; none at all → NoPromisesToAnalyseError (Gemini not called)
   → call Gemini
   → return analysis
 ```
+
+- A vote is only checked against the promises of **its own legislatura**, never against the previous election's.
+- `/api/cron/parliament-data` analyses only votes of the **current** legislatura. Votes of another one (e.g. the first XVI votes before XVI is made current) and votes found while the current legislatura has no promises are saved with `promise_analysis_status = 'pending'`.
+- `/api/cron/promise-analysis` analyses those pending votes once their legislatura is current. Making a legislatura current means "its promises are loaded": a party added later is not checked against votes analysed before.
 
 ## Key File
 

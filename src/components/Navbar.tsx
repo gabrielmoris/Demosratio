@@ -4,6 +4,7 @@ import { Link } from "../i18n/routing";
 import { useAuth } from "../context/authContext";
 import { useState } from "react";
 import { useRequest } from "@/hooks/use-request";
+import { LegislaturaSwitcher } from "./LegislaturaSwitcher";
 
 export default function Navbar() {
   const { currentUser, updateCurrentUser } = useAuth();
@@ -103,6 +104,7 @@ export default function Navbar() {
       >
         <Image src="/what-icn.svg" alt="what-icn" width={50} height={50} />
       </Link>
+      <LegislaturaSwitcher onSelect={() => setOpenUser(false)} />
     </nav>
   );
 }

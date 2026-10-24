@@ -4,12 +4,20 @@ import { supabaseAdmin } from "@/lib/supabaseClient";
 
 const log = new Logger();
 
-export async function fetchAllParties() {
+/**
+ * Without a legislatura: every party. With one: only the parties that have a campaign in it,
+ * each with that campaign in `campaigns`.
+ */
+export async function fetchAllParties(legislaturaId?: number) {
   try {
-    // Count likes
-    const { data: parties, error: partiesError } = await supabaseAdmin
-      .from("parties")
-      .select("*");
+    const query = legislaturaId
+      ? supabaseAdmin
+          .from("parties")
+          .select("*, campaigns!inner(id, created_at, year, party_id, campaign_pdf_url, legislatura_id)")
+          .eq("campaigns.legislatura_id", legislaturaId)
+      : supabaseAdmin.from("parties").select("*");
+
+    const { data: parties, error: partiesError } = await query;
 
     if (partiesError) {
       throw new Error("Error fetching parties");

@@ -3,11 +3,13 @@ import { Logger } from "tslog";
 
 const log = new Logger();
 
-export const getProposalsForAlignment = async () => {
+/** Votes of one legislatura only: parliamentary groups change from one legislatura to the next. */
+export const getProposalsForAlignment = async (legislaturaId: number) => {
   try {
     const { data, error } = await supabaseAdmin
       .from("proposals")
       .select("id, votes_parties_json")
+      .eq("legislatura_id", legislaturaId)
       .limit(10000);
 
     if (error) {

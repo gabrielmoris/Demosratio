@@ -4,6 +4,9 @@ export interface Party {
   year: string;
   name: string;
   logo_url?: string;
+  abbreviation?: string | null;
+  /** Present when parties are fetched for a legislatura: the party's campaign in it */
+  campaigns?: Campaign[];
 }
 
 export interface PartyWithPromises extends Party {
@@ -19,6 +22,8 @@ export interface Campaign {
   year: number;
   party_id: number;
   campaign_pdf_url: string;
+  /** Legislatura the campaign (and so the party) belongs to: 15 = XV */
+  legislatura_id: number;
 }
 
 export interface Subject {

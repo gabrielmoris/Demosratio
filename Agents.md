@@ -29,6 +29,7 @@ A Next.js 15 app that tracks Spanish political promises and compares them agains
 - [Authentication](docs/auth.md) — JWT auth with device fingerprinting
 - [Components & UI](docs/components.md) — State management, toast notifications
 - [AI Integration](docs/ai.md) — Gemini prompts, analysis flow and AI promise extraction from campaign PDFs
+- [Legislaturas](docs/database.md#legislaturas) — Data scoped per legislatura, current legislatura, starting a new one
 - [Internationalization](docs/i18n.md) — Locale setup and translation workflow
 - [Testing](docs/testing.md) — Vitest setup, mocking patterns, coverage
 
@@ -41,3 +42,5 @@ A Next.js 15 app that tracks Spanish political promises and compares them agains
 ## Important
 
 Whenever you implement new functionality, change existing behavior, refactor significant code, or remove features, keep both the `/docs` folder and this file up to date.
+
+Every new database table must be manageable from the admin manager pages (`/admin/...`): admins must be able to add, edit and remove its rows in the UI, not only with SQL.

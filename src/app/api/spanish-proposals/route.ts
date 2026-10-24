@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Logger } from "tslog";
 import { getAllProposals } from "@/lib/database/spanishParliament/getAllProposals";
+import { resolveLegislaturaId } from "@/lib/database/legislaturas/getLegislaturas";
 
 const log = new Logger();
 
@@ -19,7 +20,8 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const { proposals, count } = await getAllProposals(page, pageSize);
+    const legislaturaId = await resolveLegislaturaId(request);
+    const { proposals, count } = await getAllProposals(page, pageSize, legislaturaId);
 
     return NextResponse.json(
       {
