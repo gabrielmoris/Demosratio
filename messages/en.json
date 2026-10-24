@@ -26,7 +26,10 @@
     "manage-parties": "Manage Parties",
     "syncronize-parmialent": "Synchronize with Parliament",
     "add-promises": "Add electoral programs",
-    "change-user-rights": "User administration"
+    "change-user-rights": "User administration",
+    "generate-summaries": "Generate vote summaries",
+    "summaries-processed": "{count, plural, one {# vote processed} other {# votes processed}} ({done} with a summary). Click again to continue.",
+    "summaries-up-to-date": "No votes left to summarise."
   },
   "fingerprint": {
     "error": "Error generating the fingerprint."

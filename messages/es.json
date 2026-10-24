@@ -117,7 +117,10 @@
     "manage-parties": "Gestionar partidos políticos",
     "syncronize-parmialent": "Sincronizar con Parlamento",
     "add-promises": "Añadir programas electorales",
-    "change-user-rights": "Administración de Usuarios"
+    "change-user-rights": "Administración de Usuarios",
+    "generate-summaries": "Generar resúmenes de votaciones",
+    "summaries-processed": "{count, plural, one {# votación procesada} other {# votaciones procesadas}} ({done} con resumen). Pulsa de nuevo para continuar.",
+    "summaries-up-to-date": "No quedan votaciones por resumir."
   },
   "fingerprint": {
     "error": "Error al generar la huella digital."

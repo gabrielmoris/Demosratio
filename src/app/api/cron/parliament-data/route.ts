@@ -13,7 +13,10 @@ import {
   checkProposalExists,
   checkLegacySubGroupProposalExists,
 } from '@/lib/database/spanishParliament/saveProposal';
-import { buildExpedientText, hasSubGroup } from '@/lib/helpers/spanishParliamentExtractor/expedientText';
+import {
+  buildExpedientText,
+  hasSubGroup,
+} from '@/lib/helpers/spanishParliamentExtractor/expedientText';
 import { aiPromiseAnalizer } from '@/lib/services/ai/promisesAnaliseAI';
 import { getPromiseAnalysisEndpoint } from '@/lib/services/geminiClient';
 import { getModelName } from '@/lib/services/ai/geminiConfig';
@@ -23,12 +26,7 @@ import { isAuthorized } from '@/src/middleware/isAuthorized';
 
 const log = new Logger();
 
-// Gemini calls are spaced ~12s apart (free tier: 5 per minute), so a busy day takes a few minutes.
-export const maxDuration = 300;
-
-// Don't start another vote after this. One vote's analysis takes at most
-// PROMISE_ANALYSIS_DEADLINE_MS (120s), so starting before 160s stays under maxDuration.
-const TIME_BUDGET_MS = 160_000;
+const TIME_BUDGET_MS = 320_000;
 
 /** Thrown when the run should end early; votes not processed are picked up by the next run. */
 class StopRunError extends Error {}

@@ -98,10 +98,9 @@ export function buildSummaryPrompt(input: SummaryInput): string {
 }
 
 /**
- * Total time for one summary, waits and retries included. Gemini can take ~100s to read a PDF
- * under load, or hang for minutes; past this we give up and the vote is retried on the next run.
+ * Total time for one summary, waits and retries included.
  */
-export const GEMINI_DEADLINE_MS = 150_000;
+export const GEMINI_DEADLINE_MS = 320_000;
 
 /**
  * Writes a plain-language summary of a vote from the official text of its initiative.
