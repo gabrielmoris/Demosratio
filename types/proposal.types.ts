@@ -51,7 +51,16 @@ export interface VotingData {
     }[];
   };
   assent: boolean;
+  /** Legislatura that published the vote: 15 = XV */
+  legislatura_id?: number;
+  promise_analysis_status?: PromiseAnalysisStatus;
 }
+
+/**
+ * - done: promises analysed against this vote
+ * - pending: saved while its legislatura was not the current one; /api/cron/promise-analysis analyses it
+ */
+export type PromiseAnalysisStatus = "done" | "pending";
 
 /** One language version of a vote's plain-language summary. */
 export interface PlainSummaryText {

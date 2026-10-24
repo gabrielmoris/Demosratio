@@ -120,7 +120,11 @@
     "change-user-rights": "Administración de Usuarios",
     "generate-summaries": "Generar resúmenes de votaciones",
     "summaries-processed": "{count, plural, one {# votación procesada} other {# votaciones procesadas}} ({done} con resumen). Pulsa de nuevo para continuar.",
-    "summaries-up-to-date": "No quedan votaciones por resumir."
+    "summaries-up-to-date": "No quedan votaciones por resumir.",
+    "analyse-pending": "Analizar votaciones pendientes",
+    "analyses-processed": "{count, plural, one {# votación analizada} other {# votaciones analizadas}}. Quedan {remaining}: pulsa de nuevo para continuar.",
+    "analyses-up-to-date": "No quedan votaciones pendientes de análisis.",
+    "analyses-no-promises": "La legislatura actual aún no tiene promesas. Añade sus partidos y promesas antes de analizar."
   },
   "fingerprint": {
     "error": "Error al generar la huella digital."
@@ -169,6 +173,48 @@
     "subjects-errors": {
       "DUPLICATE_NAME": "Ya existe un tema con ese nombre.",
       "SUBJECT_IN_USE": "Este tema tiene promesas. Muévelas o bórralas antes de borrar el tema."
+    },
+    "legislatura-select-label": "Legislatura que estás editando",
+    "legislatura-select-hint": "Los partidos, campañas y promesas de esta página pertenecen a esta legislatura. Puedes preparar una legislatura nueva antes de hacerla actual.",
+    "legislatura-option": "Legislatura {roman}",
+    "legislatura-option-current": "Legislatura {roman} (actual)",
+    "legislaturas-label": "Legislaturas",
+    "legislaturas-hint": "La legislatura actual es la que la web muestra por defecto y la que el importador descarga y analiza. Prepara los partidos y promesas de una legislatura nueva y hazla actual cuando estén listos: entonces se analizan sus votaciones pendientes. Una legislatura con partidos o votaciones no se puede borrar.",
+    "legislaturas-number": "Número",
+    "legislaturas-election_date": "Elecciones",
+    "legislaturas-start_date": "Inicio",
+    "legislaturas-end_date": "Fin",
+    "legislaturas-current": "Actual",
+    "legislaturas-make-current": "Hacer actual",
+    "legislaturas-save-btn": "Guardar",
+    "legislaturas-delete-btn": "Borrar",
+    "legislaturas-add-btn": "Añadir legislatura",
+    "legislaturas-saved": "Legislatura guardada.",
+    "legislaturas-deleted": "Legislatura borrada.",
+    "legislaturas-now-current": "La Legislatura {roman} es ahora la actual.",
+    "legislaturas-confirm-delete": "¿Borrar la Legislatura {roman}?",
+    "legislaturas-confirm-current": "¿Hacer actual la Legislatura {roman}? La web la mostrará por defecto y el importador empezará a analizar sus votaciones con las promesas que tenga ahora.",
+    "add-party-label": "Añadir partido a la Legislatura {roman}",
+    "add-party-existing": "Partido existente",
+    "add-party-new": "Partido nuevo",
+    "add-party-choose": "Escoge un partido",
+    "add-party-delete-hint": "Un partido sin campañas en ninguna legislatura se puede borrar desde esta lista.",
+    "add-party-btn": "Añadir a la legislatura",
+    "add-party-saved": "{name} añadido a la Legislatura {roman}.",
+    "add-another-party": "+ Añadir otro partido",
+    "party-deleted": "Partido borrado.",
+    "edit-campaign-label": "Campaña en la Legislatura {roman}",
+    "campaign-saved": "Campaña guardada.",
+    "campaign-removed": "Partido quitado de esta legislatura.",
+    "remove-from-legislatura-hint": "Borrar la campaña quita al partido de esta legislatura (solo si ya no tiene promesas).",
+    "errors": {
+      "DUPLICATE_LEGISLATURA": "Esa legislatura ya existe.",
+      "LEGISLATURA_IN_USE": "Esta legislatura tiene partidos o votaciones. Quítalos antes de borrarla.",
+      "LEGISLATURA_IS_CURRENT": "No puedes borrar la legislatura actual. Haz actual otra antes.",
+      "DUPLICATE_PARTY": "Ya existe un partido con ese nombre: añádelo como partido existente.",
+      "PARTY_ALREADY_IN_LEGISLATURA": "Este partido ya está en esta legislatura.",
+      "PARTY_IN_USE": "Este partido tiene campañas en alguna legislatura. Quítalo de ellas antes de borrarlo.",
+      "CAMPAIGN_IN_USE": "Esta campaña tiene promesas o valoraciones de usuarios. Borra sus promesas antes."
     }
   },
   "dropdown": {
@@ -256,5 +302,13 @@
     "partial-evidence": "Mixtas",
     "show-all-parties": "Ver todos los partidos ({count} más)",
     "not-tried": "No intentado"
+  },
+  "legislatura": {
+    "title": "Legislatura",
+    "aria-label": "Legislatura {roman}. Cambiar de legislatura",
+    "current": "actual",
+    "viewing-other": "Estás viendo los datos de la Legislatura {roman}, no los de la actual.",
+    "back-to-current": "Ver la Legislatura {roman}",
+    "no-parties": "Todavía no hay partidos en esta legislatura."
   }
 }

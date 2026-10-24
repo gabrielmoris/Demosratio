@@ -20,6 +20,12 @@ export default function Admin() {
       api: '/api/cron/proposal-summaries?limit=20',
     },
     {
+      id: 4,
+      name: t('analyse-pending'),
+      icon: '/auto-icn.svg',
+      api: '/api/cron/promise-analysis?limit=20',
+    },
+    {
       id: 3,
       name: t('manage-parties'),
       icon: '/add-party-icn.svg',
@@ -34,7 +40,7 @@ export default function Admin() {
   ];
 
   return (
-    <main className="flex flex-col items-center justify-center md:grid-cols-3 gap-10 w-full h-[80vh]">
+    <main className="flex flex-col items-center justify-center md:grid-cols-3 gap-5 w-full">
       <AdminProtectedRoute>
         {ADMIN_PANELS &&
           ADMIN_PANELS.map(panel => (

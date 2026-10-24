@@ -4,15 +4,27 @@ import { useTranslations } from "next-intl";
 import Loading from "@/src/components/Loading";
 import { SubjectCard } from "@/src/components/Temas/SubjectCard";
 import { SubjectWithStats } from "@/types/temas";
+import { LegislaturaScoped } from "@/src/components/LegislaturaScoped";
+import { useLegislatura } from "@/src/context/legislaturaContext";
+import { withLegislatura } from "@/lib/helpers/legislatura";
 
 export default function TemasPage() {
+  return (
+    <LegislaturaScoped>
+      <TemasList />
+    </LegislaturaScoped>
+  );
+}
+
+function TemasList() {
+  const { selectedId } = useLegislatura();
   const t = useTranslations("temas");
   const [subjects, setSubjects] = useState<SubjectWithStats[]>([]);
   const [loading, setLoading] = useState(true);
   const [fetchError, setFetchError] = useState(false);
 
   useEffect(() => {
-    fetch("/api/temas")
+    fetch(withLegislatura("/api/temas", selectedId))
       .then((res) => res.json())
       .then((data) => {
         setSubjects(data.subjects || []);
@@ -22,7 +34,7 @@ export default function TemasPage() {
         setFetchError(true);
         setLoading(false);
       });
-  }, []);
+  }, [selectedId]);
 
   if (loading) {
     return (

@@ -61,6 +61,8 @@ export async function saveProposalToDb(proposalData: VotingData) {
       assent,
       abstentions,
       votes_parties_json,
+      legislatura_id,
+      promise_analysis_status = "done",
     } = proposalData;
 
     // Save the new proposal (check should be done before calling this function)
@@ -80,6 +82,8 @@ export async function saveProposalToDb(proposalData: VotingData) {
           assent,
           date,
           votes_parties_json,
+          legislatura_id,
+          promise_analysis_status,
         },
       ])
       .select('id')

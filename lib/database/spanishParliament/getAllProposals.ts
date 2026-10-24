@@ -4,7 +4,7 @@ import { fetchAllLikesAndDislikes } from "../likes/getTotalLikesAndDislikes";
 
 const log = new Logger();
 
-export const getAllProposals = async (page: number, pageSize: number) => {
+export const getAllProposals = async (page: number, pageSize: number, legislaturaId: number) => {
   try {
     // Calculate pagination values
     const from = (page - 1) * pageSize;
@@ -18,6 +18,7 @@ export const getAllProposals = async (page: number, pageSize: number) => {
     } = await supabaseAdmin
       .from("proposals")
       .select("*", { count: "exact" })
+      .eq("legislatura_id", legislaturaId)
       .order("date", { ascending: false })
       .order("id", { ascending: false })
       .range(from, to);

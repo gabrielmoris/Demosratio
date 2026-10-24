@@ -13,7 +13,8 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const { analysis, error } = await getAllPromiseAnalysesByParty(partyId);
+    const campaignId = Number(searchParams.get('campaign_id')) || undefined;
+    const { analysis, error } = await getAllPromiseAnalysesByParty(partyId, campaignId);
 
     if (error) {
       throw error;

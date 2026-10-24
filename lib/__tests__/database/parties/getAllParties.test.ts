@@ -58,6 +58,17 @@ describe("fetchAllParties", () => {
     expect(mockFrom).toHaveBeenCalledWith("parties");
   });
 
+  it("should return only the parties with a campaign in the given legislatura", async () => {
+    const mockEq = vi.fn(() => Promise.resolve({ data: [mockParties[0]], error: null }));
+    mockSelect.mockReturnValueOnce({ eq: mockEq } as never);
+
+    const result = await fetchAllParties(16);
+
+    expect(mockSelect).toHaveBeenCalledWith(expect.stringContaining("campaigns!inner"));
+    expect(mockEq).toHaveBeenCalledWith("campaigns.legislatura_id", 16);
+    expect(result.parties).toEqual([mockParties[0]]);
+  });
+
   it("should handle errors when fetch fails", async () => {
     mockSelect.mockResolvedValue({
       data: null,

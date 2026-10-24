@@ -48,6 +48,31 @@ const data = await doRequest({ party_id: 1 });
 
 The hook wraps axios with error handling and automatic toast display.
 
+## Legislatura scoping
+
+Public data routes return the data of one legislatura: `?legislatura=16` (or `XVI`), defaulting to the current one. This applies to `/api/spanish-proposals`, `/search`, `/alignment`, `/api/temas`, `/api/temas/[id]` and `/api/parties`. Components build the url with `withLegislatura(url, selectedId)` from `lib/helpers/legislatura.ts`.
+
+- `GET /api/parties?legislatura=16` — parties with a campaign in that legislatura, each with it in `campaigns`. `?all=true` returns every party (admin: add an existing party to a legislatura).
+- `GET /api/parties/campaigns?party_id=1&legislatura=16` — the party's campaign in that legislatura.
+- `GET /api/parties/promises/dashboard` and `/all-analyses-by-party` take `campaign_id` to count only that campaign's promises.
+
+## Legislaturas
+
+- `GET /api/legislaturas` — public, newest first.
+- `POST` / `PATCH /api/legislaturas` — admin only. Body `{ id, election_date, start_date, end_date }` (`id` as number or Roman numeral, dates `YYYY-MM-DD` or empty). `409 DUPLICATE_LEGISLATURA` when it exists.
+- `DELETE /api/legislaturas { id }` — admin only. `409 LEGISLATURA_IS_CURRENT` for the current one, `409 LEGISLATURA_IN_USE` while campaigns or votes belong to it.
+- `POST /api/legislaturas/current { id }` — admin only. Makes it the current legislatura.
+
+## Parties and campaigns (admin)
+
+- `POST /api/parties { name, logo_url }` — `409 DUPLICATE_PARTY`. `DELETE { party_id }` — `409 PARTY_IN_USE` while it has campaigns.
+- `POST /api/parties/campaigns { year, party_id, campaign_pdf_url, legislatura_id }` adds a party to a legislatura — `409 PARTY_ALREADY_IN_LEGISLATURA`.
+- `PATCH /api/parties/campaigns { campaign_id, year, campaign_pdf_url }` edits it. `DELETE { campaign_id }` removes the party from the legislatura — `409 CAMPAIGN_IN_USE` while it has promises or user ratings.
+
+## Pending promise analysis
+
+`GET /api/cron/promise-analysis[?limit=N]` (cron 01:30 daily, or admin / `CRON_SECRET`) analyses the current legislatura's votes with `promise_analysis_status = 'pending'`. Returns `{ kind: 'promise-analysis', processed, remaining, stoppedBecause? }`; `stoppedBecause` is `no_promises`, `rate_limit` or `time_budget`. `PROMISE_ANALYSES_PER_RUN` sets the default batch (5).
+
 ## AI Promise Extraction
 
 - `POST /api/parties/campaigns/extract-promises` — admin only. Body `{ campaign_id }`. Gemini reads the campaign PDF link itself and the route returns AI drafts `[{ subject_id, subject_name, promises[] }]` without saving. Errors return `{ error, code }` with `code` in `INVALID_URL` (400), `PDF_NOT_READ` (422, Gemini could not open the link), `AI_FAILED` (502). `maxDuration = 300`.

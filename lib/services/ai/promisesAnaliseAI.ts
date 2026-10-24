@@ -1,59 +1,75 @@
-import { fetchAllCampaigns } from '@/lib/database/parties/campaigns/getAllCampagns';
 import { fetchAllParties } from '@/lib/database/parties/getAllParties';
+import { fetchCurrentLegislaturaId } from '@/lib/database/legislaturas/getLegislaturas';
 import { analyzePromisesWithGemini } from '@/lib/services/geminiClient';
-import { PartyAnalysisOutput, PartyWithPromises } from '@/types/politicalParties';
+import { Party, PartyAnalysisOutput, PartyWithPromises } from '@/types/politicalParties';
 import { Logger } from 'tslog';
 import { fetchPartyPromises } from '../../database/parties/promises/getPartyPromises';
 import { VotingData } from '@/types/proposal.types';
 
 const log = new Logger();
 
+/** The vote's legislatura has no party with promises yet: nothing to analyse it against. */
+export class NoPromisesToAnalyseError extends Error {
+  constructor(public legislaturaId: number) {
+    super(`No party has promises in legislatura ${legislaturaId} yet`);
+    this.name = 'NoPromisesToAnalyseError';
+  }
+}
+
+/** Parties of a legislatura with the promises of their campaign in it. Parties without promises are left out. */
+export const fetchPartiesToAnalyse = async (legislaturaId: number): Promise<PartyWithPromises[]> => {
+  const { parties, error } = await fetchAllParties(legislaturaId);
+  if (error || !parties) throw new Error('Error fetching parties');
+
+  const partiesToAnalyse: PartyWithPromises[] = [];
+
+  for (const party of parties as Party[]) {
+    const campaign = party.campaigns?.[0];
+    if (!campaign) continue;
+
+    const { promises } = await fetchPartyPromises(party.id, campaign.id);
+    if (!promises?.length) {
+      log.warn(`No promises for ${party.name} in legislatura ${legislaturaId}, skipping it`);
+      continue;
+    }
+
+    partiesToAnalyse.push({
+      id: party.id,
+      name: party.name,
+      year: party.year,
+      abbreviation: party.abbreviation,
+      campaign_year: campaign.year,
+      campaign_pdf_url: campaign.campaign_pdf_url,
+      campaign_id: campaign.id,
+      promises,
+    });
+  }
+
+  return partiesToAnalyse;
+};
+
+/**
+ * Checks the vote against the promises of the parties of the vote's legislatura
+ * (the current one when the vote has no legislatura_id).
+ * Throws NoPromisesToAnalyseError when that legislatura has no promises yet.
+ */
 export const aiPromiseAnalizer = async (
   proposal: VotingData,
   retryCount = 2
 ): Promise<PartyAnalysisOutput[]> => {
   try {
     if (!proposal) throw new Error('Need to send Propuesta.');
-    const result = await fetchAllParties();
-    if (!result.parties) throw new Error('Error fetching parties');
-    const parties: PartyWithPromises[] = result.parties;
-    const { campaigns } = await fetchAllCampaigns();
-    if (!campaigns || !parties) throw new Error('Error fetching campaigns');
 
-    let latestcampaign = 2018;
-
-    campaigns.forEach(campaign => {
-      if (campaign.year > latestcampaign) latestcampaign = campaign.year;
-    });
-
-    const mappedCampaigns = campaigns.filter(campaign => campaign.year === latestcampaign);
-
-    for (const party of parties) {
-      for (const campaign of mappedCampaigns) {
-        if (party.id === campaign.party_id) {
-          const { promises } = await fetchPartyPromises(party.id, campaign.id);
-          if (!promises) {
-            log.error('No Promises for this party: ', party.name);
-            break;
-          }
-
-          party.campaign_year = campaign.year;
-          party.campaign_pdf_url = campaign.campaign_pdf_url;
-          party.campaign_id = campaign.id;
-          party.promises = promises;
-
-          delete party.logo_url;
-          delete party.created_at;
-
-          break;
-        }
-      }
-    }
+    const legislaturaId = proposal.legislatura_id ?? (await fetchCurrentLegislaturaId());
+    const parties = await fetchPartiesToAnalyse(legislaturaId);
+    if (parties.length === 0) throw new NoPromisesToAnalyseError(legislaturaId);
 
     const analysis = await analyzePromisesWithGemini(parties, proposal);
 
     return analysis;
   } catch (error) {
+    if (error instanceof NoPromisesToAnalyseError) throw error;
+
     log.error('Error analising promises:', error);
 
     const rateLimited = error instanceof Error && error.message.includes('Rate limit hit');

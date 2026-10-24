@@ -10,7 +10,8 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: 'party_id is required' }, { status: 400 });
     }
 
-    const stats = await getDashboardStats(Number(partyId));
+    const campaignId = Number(searchParams.get('campaign_id')) || undefined;
+    const stats = await getDashboardStats(Number(partyId), campaignId);
     return NextResponse.json(stats);
   } catch (error) {
     console.error('Error fetching dashboard stats:', error);

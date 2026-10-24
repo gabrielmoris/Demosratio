@@ -29,7 +29,11 @@
     "change-user-rights": "User administration",
     "generate-summaries": "Generate vote summaries",
     "summaries-processed": "{count, plural, one {# vote processed} other {# votes processed}} ({done} with a summary). Click again to continue.",
-    "summaries-up-to-date": "No votes left to summarise."
+    "summaries-up-to-date": "No votes left to summarise.",
+    "analyse-pending": "Analyse pending votes",
+    "analyses-processed": "{count, plural, one {# vote analysed} other {# votes analysed}}. {remaining} left: click again to continue.",
+    "analyses-up-to-date": "No votes left to analyse.",
+    "analyses-no-promises": "The current legislature has no promises yet. Add its parties and promises before analysing."
   },
   "fingerprint": {
     "error": "Error generating the fingerprint."
@@ -107,6 +111,48 @@
     "subjects-errors": {
       "DUPLICATE_NAME": "A subject with that name already exists.",
       "SUBJECT_IN_USE": "This subject has promises. Move or delete them before deleting the subject."
+    },
+    "legislatura-select-label": "Legislature you are editing",
+    "legislatura-select-hint": "The parties, campaigns and promises on this page belong to this legislature. You can prepare a new legislature before making it current.",
+    "legislatura-option": "Legislature {roman}",
+    "legislatura-option-current": "Legislature {roman} (current)",
+    "legislaturas-label": "Legislatures",
+    "legislaturas-hint": "The current legislature is the one the website shows by default and the one the importer scrapes and analyses. Prepare the parties and promises of a new legislature and make it current when they are ready: its pending votes are analysed then. A legislature with parties or votes cannot be deleted.",
+    "legislaturas-number": "Number",
+    "legislaturas-election_date": "Election",
+    "legislaturas-start_date": "Start",
+    "legislaturas-end_date": "End",
+    "legislaturas-current": "Current",
+    "legislaturas-make-current": "Make current",
+    "legislaturas-save-btn": "Save",
+    "legislaturas-delete-btn": "Delete",
+    "legislaturas-add-btn": "Add legislature",
+    "legislaturas-saved": "Legislature saved.",
+    "legislaturas-deleted": "Legislature deleted.",
+    "legislaturas-now-current": "Legislature {roman} is now the current one.",
+    "legislaturas-confirm-delete": "Delete Legislature {roman}?",
+    "legislaturas-confirm-current": "Make Legislature {roman} current? The website will show it by default and the importer will start analysing its votes with the promises it has now.",
+    "add-party-label": "Add a party to Legislature {roman}",
+    "add-party-existing": "Existing party",
+    "add-party-new": "New party",
+    "add-party-choose": "Choose a party",
+    "add-party-delete-hint": "A party without campaigns in any legislature can be deleted from this list.",
+    "add-party-btn": "Add to the legislature",
+    "add-party-saved": "{name} added to Legislature {roman}.",
+    "add-another-party": "+ Add another party",
+    "party-deleted": "Party deleted.",
+    "edit-campaign-label": "Campaign in Legislature {roman}",
+    "campaign-saved": "Campaign saved.",
+    "campaign-removed": "Party removed from this legislature.",
+    "remove-from-legislatura-hint": "Deleting the campaign removes the party from this legislature (only once it has no promises).",
+    "errors": {
+      "DUPLICATE_LEGISLATURA": "That legislature already exists.",
+      "LEGISLATURA_IN_USE": "This legislature has parties or votes. Remove them before deleting it.",
+      "LEGISLATURA_IS_CURRENT": "You cannot delete the current legislature. Make another one current first.",
+      "DUPLICATE_PARTY": "A party with that name already exists: add it as an existing party.",
+      "PARTY_ALREADY_IN_LEGISLATURA": "This party is already in this legislature.",
+      "PARTY_IN_USE": "This party has campaigns in some legislature. Remove it from them before deleting it.",
+      "CAMPAIGN_IN_USE": "This campaign has promises or user ratings. Delete its promises first."
     }
   },
   "dropdown": {
@@ -194,5 +240,13 @@
     "status-supporting": "Supports the promise",
     "status-contradicting": "Contradicts the promise",
     "status-partial": "Partial evidence"
+  },
+  "legislatura": {
+    "title": "Legislature",
+    "aria-label": "Legislature {roman}. Change legislature",
+    "current": "current",
+    "viewing-other": "You are looking at the data of Legislature {roman}, not the current one.",
+    "back-to-current": "See Legislature {roman}",
+    "no-parties": "There are no parties in this legislature yet."
   }
 }

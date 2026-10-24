@@ -37,6 +37,8 @@ export interface VotingData {
   initiative_pdf_url?: string | null;
   plain_summary?: PlainSummary | null;
   plain_summary_status?: ProposalSummaryStatus | null;
+  /** 15 = XV */
+  legislatura_id?: number;
 }
 
 export interface Proposal {
@@ -56,4 +58,6 @@ export interface Proposal {
   likes: number;
   dislikes: number;
   relatedPromises: RelatedPromise[];
+  /** 15 = XV */
+  legislatura_id?: number;
 }

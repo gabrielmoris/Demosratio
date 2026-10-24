@@ -10,14 +10,15 @@ vi.mock('tslog', () => ({
   },
 }));
 
-const { mockRange, mockFrom } = vi.hoisted(() => {
+const { mockRange, mockEq, mockFrom } = vi.hoisted(() => {
   const mockRange = vi.fn();
   const mockOrder2 = vi.fn(() => ({ range: mockRange }));
   const mockOrder1 = vi.fn(() => ({ order: mockOrder2 }));
   const mockIlike = vi.fn(() => ({ order: mockOrder1 }));
-  const mockSelect = vi.fn(() => ({ ilike: mockIlike }));
+  const mockEq = vi.fn(() => ({ ilike: mockIlike }));
+  const mockSelect = vi.fn(() => ({ eq: mockEq }));
   const mockFrom = vi.fn(() => ({ select: mockSelect }));
-  return { mockRange, mockFrom };
+  return { mockRange, mockEq, mockFrom };
 });
 
 vi.mock('@/lib/supabaseClient', () => ({
@@ -39,7 +40,7 @@ describe('getAllProposalsByExpedient', () => {
     const proposals = [{ id: 1, expedient_text: '141/000001' }];
     mockRange.mockResolvedValue({ data: proposals, count: 1, error: null });
 
-    const result = await getAllProposalsByExpedient('141', 1, 10);
+    const result = await getAllProposalsByExpedient('141', 1, 10, 15);
 
     expect(result.proposals).toHaveLength(1);
     expect(result.count).toBe(1);
@@ -50,7 +51,7 @@ describe('getAllProposalsByExpedient', () => {
     mockRange.mockResolvedValue({ data: proposals, count: 1, error: null });
     mockFetch.mockResolvedValue({ result: { likes: 2, dislikes: 0, proposal_id: 7 } });
 
-    const result = await getAllProposalsByExpedient('some', 1, 10);
+    const result = await getAllProposalsByExpedient('some', 1, 10, 15);
 
     expect(result.proposals[0].likesAndDislikes).toEqual({ likes: 2, dislikes: 0, proposal_id: 7 });
   });
@@ -58,14 +59,22 @@ describe('getAllProposalsByExpedient', () => {
   it('should throw when supabase returns an error', async () => {
     mockRange.mockResolvedValue({ data: null, count: null, error: new Error('DB error') });
 
-    await expect(getAllProposalsByExpedient('text', 1, 10)).rejects.toThrow();
+    await expect(getAllProposalsByExpedient('text', 1, 10, 15)).rejects.toThrow();
   });
 
   it('should use correct pagination range for page 3', async () => {
     mockRange.mockResolvedValue({ data: [], count: 0, error: null });
 
-    await getAllProposalsByExpedient('text', 3, 5);
+    await getAllProposalsByExpedient('text', 3, 5, 15);
 
     expect(mockRange).toHaveBeenCalledWith(10, 14);
+  });
+
+  it('should only search votes of the given legislatura', async () => {
+    mockRange.mockResolvedValue({ data: [], count: 0, error: null });
+
+    await getAllProposalsByExpedient('text', 1, 10, 16);
+
+    expect(mockEq).toHaveBeenCalledWith('legislatura_id', 16);
   });
 });

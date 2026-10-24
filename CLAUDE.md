@@ -1,3 +1,8 @@
+## Project rules
+
+- Every new database table must be manageable from the admin manager pages (`/admin/...`): admins must be able to add, edit and remove its rows in the UI, not only with SQL.
+- Follow `Agents.md` (docs to keep up to date, stack, commands).
+
 ## graphify
 
 This project has a knowledge graph at graphify-out/ with god nodes, community structure, and cross-file relationships.

@@ -5,7 +5,11 @@ import { SubjectDeepDive, SubjectPartyData, SubjectProposal } from "@/types/tema
 
 const log = new Logger();
 
-export async function getSubjectDeepDive(subjectId: number): Promise<{ data: SubjectDeepDive | null; error?: Error }> {
+/** Promises, analyses and votes of a subject within one legislatura. */
+export async function getSubjectDeepDive(
+  subjectId: number,
+  legislaturaId: number
+): Promise<{ data: SubjectDeepDive | null; error?: Error }> {
   try {
     const { data: subject, error: subjectError } = await supabaseAdmin
       .from("subjects")
@@ -24,9 +28,10 @@ export async function getSubjectDeepDive(subjectId: number): Promise<{ data: Sub
         party_id,
         campaign_id,
         parties (id, name, logo_url),
-        campaigns (id, year)
+        campaigns!inner (id, year, legislatura_id)
       `)
-      .eq("subject_id", subjectId);
+      .eq("subject_id", subjectId)
+      .eq("campaigns.legislatura_id", legislaturaId);
 
     if (promisesError) throw promisesError;
 

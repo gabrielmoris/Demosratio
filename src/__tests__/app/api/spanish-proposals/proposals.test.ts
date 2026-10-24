@@ -4,6 +4,12 @@ vi.mock('@/lib/database/spanishParliament/getAllProposals', () => ({
   getAllProposals: vi.fn(),
 }));
 
+vi.mock('@/lib/database/legislaturas/getLegislaturas', () => ({
+  resolveLegislaturaId: vi.fn(async (request: Request) =>
+    Number(new URL(request.url).searchParams.get('legislatura')) || 15
+  ),
+}));
+
 vi.mock('tslog', () => ({
   Logger: class {
     error = vi.fn();
@@ -45,7 +51,7 @@ describe('GET /api/spanish-proposals', () => {
 
     await GET(makeRequest());
 
-    expect(mockGetAllProposals).toHaveBeenCalledWith(1, 10);
+    expect(mockGetAllProposals).toHaveBeenCalledWith(1, 10, 15);
   });
 
   it('should return 400 for invalid page parameter', async () => {
@@ -58,6 +64,14 @@ describe('GET /api/spanish-proposals', () => {
     const res = await GET(makeRequest({ page: 'abc' }));
 
     expect(res.status).toBe(400);
+  });
+
+  it('should pass the requested legislatura to the database function', async () => {
+    mockGetAllProposals.mockResolvedValue({ proposals: [], count: 0 });
+
+    await GET(makeRequest({ legislatura: '16' }));
+
+    expect(mockGetAllProposals).toHaveBeenCalledWith(1, 10, 16);
   });
 
   it('should return 500 when database throws', async () => {

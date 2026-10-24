@@ -12,6 +12,7 @@ import { LiKesAndDislikes } from "@/types/likesAndDislikes";
 import { useAuth } from "@/src/context/authContext";
 import { useUiContext } from "@/src/context/uiContext";
 import { formatDate } from "@/lib/helpers/dateFormatters";
+import { legislaturaLabel } from "@/lib/helpers/legislatura";
 import { Logger } from "tslog";
 
 const log = new Logger();
@@ -226,6 +227,11 @@ export default function VotePage() {
           {proposalType && (
             <span className="text-xs font-medium bg-drPurple/10 text-drPurple px-2 py-1 rounded-full">
               {proposalType}
+            </span>
+          )}
+          {voteResults.legislatura_id && (
+            <span className="text-xs font-drserif font-bold text-drgray" title="Legislatura">
+              {legislaturaLabel(voteResults.legislatura_id)}
             </span>
           )}
           <p className="text-xs text-drgray">{formatDate(voteResults.date)}</p>

@@ -11,8 +11,20 @@ import { useTranslations } from 'next-intl';
 import SugestedSearch from '@/src/components/SugestedSearch';
 import { Link } from '@/src/i18n/routing';
 import { useSearchParams } from 'next/navigation';
+import { LegislaturaScoped } from '@/src/components/LegislaturaScoped';
+import { useLegislatura } from '@/src/context/legislaturaContext';
+import { withLegislatura } from '@/lib/helpers/legislatura';
 
 export default function Parliament() {
+  return (
+    <LegislaturaScoped>
+      <ParliamentVotes />
+    </LegislaturaScoped>
+  );
+}
+
+function ParliamentVotes() {
+  const { selectedId } = useLegislatura();
   const searchParams = useSearchParams();
   const searchQuery = searchParams.get('search') ?? '';
 
@@ -27,7 +39,10 @@ export default function Parliament() {
   const t = useTranslations('parliament');
 
   const { doRequest } = useRequest({
-    url: `/api/spanish-proposals${search ? '/search' : ''}?page=${page}${search ? '&expedient_text=' + encodeURIComponent(search) : ''}`,
+    url: withLegislatura(
+      `/api/spanish-proposals${search ? '/search' : ''}?page=${page}${search ? '&expedient_text=' + encodeURIComponent(search) : ''}`,
+      selectedId
+    ),
     method: 'get',
     onSuccess(data) {
       setVotes(prevVotes => (page === 1 ? data.proposals : [...prevVotes, ...data.proposals]));
