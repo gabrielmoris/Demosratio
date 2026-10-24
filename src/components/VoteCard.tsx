@@ -1,6 +1,7 @@
 import { memo, useMemo } from "react";
 import { VotingData } from "../../types/proposal";
 import { ExpandableText } from "./ExpandableText";
+import { PlainSummary } from "./PlainSummary";
 
 import Image from "next/image";
 import ChartVotes from "./ChartVotes";
@@ -34,6 +35,7 @@ const VoteCardComponent = ({ vote }: { vote: VotingData }) => {
     <div className="flex flex-col gap-5 border bg-white border-drPurple border-opacity-30 p-8 md:px-20 rounded-md w-full hover:shadow-drPurple hover:shadow-sm">
       <p className="font-drserif text-sm font-bold">{vote.title}</p>
       <ExpandableText className="font-drsans text-sm" key={vote.id} maxLines={2} text={vote.expedient_text}></ExpandableText>
+      <PlainSummary summary={vote.plain_summary} sourceUrl={vote.initiative_pdf_url} />
       <div className="w-full flex fllex-row items-center justify-start py-2 md:px-28 md:py-5 bg-drlight rounded-md">
         <ChartVotes proposals={memoizedProposals} />
       </div>

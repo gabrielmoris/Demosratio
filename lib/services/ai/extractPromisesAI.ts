@@ -1,6 +1,9 @@
 import { ExtractedSubjectPromises, Subject } from '@/types/politicalParties';
 import { Logger } from 'tslog';
-import { MINIMAL_THINKING, getResponseText } from './geminiConfig';
+import { getResponseText, noThinkingConfig } from './geminiConfig';
+import { geminiFetch } from './geminiRequest';
+
+const EXTRACTION_DEADLINE_MS = 340_000;
 
 const log = new Logger();
 
@@ -99,7 +102,7 @@ export async function extractPromisesFromPdf(
     tools: [{ url_context: {} }],
     generationConfig: {
       maxOutputTokens: 32000,
-      thinkingConfig: MINIMAL_THINKING,
+      thinkingConfig: noThinkingConfig(apiUrl),
       responseMimeType: 'application/json',
       responseSchema: {
         type: 'ARRAY',
@@ -115,11 +118,15 @@ export async function extractPromisesFromPdf(
     },
   };
 
-  const response = await fetch(`${apiUrl}?key=${apiKey}`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(requestBody),
-  });
+  const response = await geminiFetch(
+    `${apiUrl}?key=${apiKey}`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(requestBody),
+    },
+    { deadlineMs: EXTRACTION_DEADLINE_MS }
+  );
 
   if (!response.ok) {
     const errorText = await response.text();

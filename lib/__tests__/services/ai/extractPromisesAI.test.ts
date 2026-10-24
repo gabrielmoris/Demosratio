@@ -11,6 +11,7 @@ vi.mock('tslog', () => ({
   Logger: class {
     error = vi.fn();
     info = vi.fn();
+    warn = vi.fn();
   },
 }));
 
@@ -114,7 +115,8 @@ describe('extractPromisesFromPdf', () => {
   });
 
   it('throws on Gemini errors', async () => {
-    vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response('boom', { status: 500 }));
+    // 400 isn't retried (500/503/429 are, see geminiRequest.test.ts)
+    vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response('boom', { status: 400 }));
     await expect(extractPromisesFromPdf(PDF_URL, subjects)).rejects.toThrow('Gemini API error');
   });
 });

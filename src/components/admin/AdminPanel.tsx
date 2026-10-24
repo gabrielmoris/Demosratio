@@ -1,9 +1,10 @@
-"use client";
-import { useRequest } from "@/hooks/use-request";
-import { useLocale } from "next-intl";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+'use client';
+import { useRequest } from '@/hooks/use-request';
+import { useUiContext } from '@/src/context/uiContext';
+import { useLocale, useTranslations } from 'next-intl';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import React, { useState } from 'react';
 
 interface Props {
   id?: number;
@@ -13,28 +14,44 @@ interface Props {
   api?: string;
 }
 
-export const AdminPanel = ({ name, icon, link }: Props) => {
+export const AdminPanel = ({ name, icon, link, api }: Props) => {
   const [isRunning, setIsRunning] = useState<boolean>(false);
 
   const router = useRouter();
   const locale = useLocale();
-
-  const runRequest = () => {
-    if (!link) {
-      setIsRunning(true);
-      doRequest();
-    } else {
-      router.push(`/${locale}/${link}`);
-    }
-  };
+  const t = useTranslations('admin');
+  const { showToast } = useUiContext();
 
   const { doRequest } = useRequest({
-    url: "/api/cron/parliament-data",
-    method: "get",
-    onSuccess: () => {
-      setIsRunning(false);
+    url: api ?? '',
+    method: 'get',
+    onSuccess: data => {
+      if (typeof data?.processed === 'number') {
+        showToast({
+          message:
+            data.processed > 0
+              ? t('summaries-processed', { count: data.processed, done: data.counts?.done ?? 0 })
+              : t('summaries-up-to-date'),
+          variant: 'success',
+          duration: 6000,
+        });
+      }
     },
   });
+
+  const runRequest = async () => {
+    if (link) {
+      router.push(`/${locale}/${link}`);
+      return;
+    }
+
+    if (!api || isRunning) return;
+
+    setIsRunning(true);
+
+    await doRequest();
+    setIsRunning(false);
+  };
 
   return (
     <div
@@ -46,7 +63,7 @@ export const AdminPanel = ({ name, icon, link }: Props) => {
         src={icon}
         width={50}
         height={50}
-        className={`${isRunning ? "animate-spin" : ""}`}
+        className={`${isRunning ? 'animate-spin' : ''}`}
       />
       <p className="font-bold text-xl md:text-2xl">{name}</p>
     </div>

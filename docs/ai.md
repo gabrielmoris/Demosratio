@@ -12,7 +12,8 @@
 - **Language**: Spanish prompts
 - **Output**: Strict JSON format (`responseMimeType: application/json`)
 - **Speed**: `MINIMAL_THINKING` in `lib/services/ai/geminiConfig.ts` (`thinkingLevel: "minimal"`) is used by both Gemini calls. Gemini 3 can't turn thinking off; this is the lowest level. No temperature/topP/topK overrides, since Gemini 3 works best with defaults.
-- **Rate limiting**: 10s backoff on rate limit errors
+- **Rate limiting**: every Gemini call goes through `geminiFetch()` (`lib/services/ai/geminiRequest.ts`). It keeps calls at least 12s apart (free tier: 5 requests per minute per model; set `GEMINI_MIN_INTERVAL_MS=0` on a paid plan), waits the `retryDelay` Gemini sends with a 429, and retries 500/503 after 5s/15s/30s. A 429 asking for more than 90s means the daily quota is used up, so it gives up.
+- **Importer**: `/api/cron/parliament-data` analyses promises *before* saving a vote, so a failed analysis leaves nothing saved and the next run retries it. It stops starting new votes after 160s (route `maxDuration` is 300s) and stops the whole run on a rate limit; unprocessed votes are picked up by the next run.
 
 ## Analysis Flow
 
@@ -47,3 +48,26 @@ POST /api/parties/promises/bulk { party_id, campaign_id, promises[] }  → singl
 - **Subjects**: the AI only classifies into the existing `subjects` rows; unknown ids are dropped and each subject is capped at 5 promises in code (`normalizeExtraction`).
 - **Duration**: the extraction route sets `maxDuration = 300`. This needs Fluid compute (`"fluid": true` in `vercel.json`); without it Hobby functions are capped at 60s and the build fails.
 - **Output**: Gemini JSON mode (`responseMimeType` + `responseSchema`), using `GEMINI_MODEL_ENDPOINT`.
+
+## Plain-language vote summaries
+
+Each vote card can show "En pocas palabras": what was voted, what a Yes means and what a No means.
+The summary is written **only from the official text** of the initiative, never from the one-line vote description.
+
+```
+GET /api/cron/proposal-summaries[?limit=N]   (cron 01:00 daily, or admin / CRON_SECRET)
+  → getProposalsMissingSummary(limit)          status null or "error", newest first
+  → lookupInitiative(expedient_text, url)      lib/helpers/spanishParliamentExtractor/initiativeLookup.ts
+      congreso.es initiative search (JSON) → pick the one clear match → detail page → first BOCG PDF
+  → summarizeProposalFromPdf(...)              lib/services/ai/proposalSummaryAI.ts
+      Gemini reads the PDF with url_context; result discarded if the PDF wasn't read
+  → saveProposalSummary(id, update)            columns initiative_id, initiative_pdf_url, plain_summary, plain_summary_status
+```
+
+- **Matching**: the vote text is cleaned (type, author, point label removed) and its first 8 meaningful words are searched. Words like "y", "o", "no" are never sent: they are operators in Congreso's search. A result is accepted only if it has the expected initiative type (e.g. `173/` for mociones) and is clearly the most similar title. Otherwise the vote gets `no_match` and no summary: better nothing than the wrong initiative.
+- **Procedural votes** (deadline extensions, Statute rulings...) are `not_applicable`.
+- **Statuses** are listed in `ProposalSummaryStatus` (`types/proposal.types.ts`). Only `null` and `error` are retried.
+- **Languages**: `SUMMARY_LOCALES` in `proposalSummaryAI.ts`, kept in sync with `routing.locales` (only `es` today).
+- **Backfill**: call the route repeatedly (e.g. `?limit=20`) until `processed` is 0. `SUMMARIES_PER_RUN` sets the default batch (8).
+- **Fragility**: the search endpoint is undocumented. Empty answers are retried once; Gemini 429/5xx are retried twice.
+- **Migration**: `supabase/migrations/20261021120000_proposal_plain_summary.sql`.

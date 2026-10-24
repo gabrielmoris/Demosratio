@@ -7,8 +7,6 @@ import { extractPromisesFromPdf, PdfNotReadError } from '@/lib/services/ai/extra
 
 const log = new Logger();
 
-export const maxDuration = 300;
-
 const isHttpUrl = (value: string) => {
   try {
     return ['http:', 'https:'].includes(new URL(value).protocol);

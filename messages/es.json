@@ -46,7 +46,12 @@
     "show-more": "Ver más"
   },
   "votecard-component": {
-    "button-cta": "Detalles"
+    "button-cta": "Detalles",
+    "summary-title": "En pocas palabras",
+    "yes-means": "Votar Sí:",
+    "no-means": "Votar No:",
+    "ai-disclaimer": "Resumen generado con IA a partir del texto oficial. Puede contener errores.",
+    "official-text": "Ver texto oficial"
   },
   "votepage": {
     "parliament-link": "Más información en la Web del Congreso.",
@@ -112,7 +117,10 @@
     "manage-parties": "Gestionar partidos políticos",
     "syncronize-parmialent": "Sincronizar con Parlamento",
     "add-promises": "Añadir programas electorales",
-    "change-user-rights": "Administración de Usuarios"
+    "change-user-rights": "Administración de Usuarios",
+    "generate-summaries": "Generar resúmenes de votaciones",
+    "summaries-processed": "{count, plural, one {# votación procesada} other {# votaciones procesadas}} ({done} con resumen). Pulsa de nuevo para continuar.",
+    "summaries-up-to-date": "No quedan votaciones por resumir."
   },
   "fingerprint": {
     "error": "Error al generar la huella digital."

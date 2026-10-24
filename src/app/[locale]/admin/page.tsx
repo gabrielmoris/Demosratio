@@ -1,26 +1,32 @@
-import { AdminPanel } from "@/src/components/admin/AdminPanel";
-import AdminProtectedRoute from "@/src/components/admin/ProtectedRoute";
+import { AdminPanel } from '@/src/components/admin/AdminPanel';
+import AdminProtectedRoute from '@/src/components/admin/ProtectedRoute';
 
-import { useTranslations } from "next-intl";
+import { useTranslations } from 'next-intl';
 
 export default function Admin() {
-  const t = useTranslations("admin");
+  const t = useTranslations('admin');
 
   const ADMIN_PANELS = [
     {
       id: 1,
-      name: t("syncronize-parmialent"),
-      icon: "/auto-icn.svg",
-      api: "/api/cron/parliament-data",
+      name: t('syncronize-parmialent'),
+      icon: '/auto-icn.svg',
+      api: '/api/cron/parliament-data',
     },
     {
       id: 2,
-      name: t("manage-parties"),
-      icon: "/add-party-icn.svg",
-      link: "/admin/manage-parties",
+      name: t('generate-summaries'),
+      icon: '/auto-icn.svg',
+      api: '/api/cron/proposal-summaries?limit=20',
+    },
+    {
+      id: 3,
+      name: t('manage-parties'),
+      icon: '/add-party-icn.svg',
+      link: '/admin/manage-parties',
     },
     // {
-    //   id: 3,
+    //   id: 4,
     //   name: t("change-user-rights"),
     //   icon: "/usr-admin-icn.svg",
     //   link: "/admin/user-admin",
@@ -31,7 +37,15 @@ export default function Admin() {
     <main className="flex flex-col items-center justify-center md:grid-cols-3 gap-10 w-full h-[80vh]">
       <AdminProtectedRoute>
         {ADMIN_PANELS &&
-          ADMIN_PANELS.map((panel) => <AdminPanel key={panel.id} name={panel.name} icon={panel.icon} link={panel.link} api={panel.api} />)}
+          ADMIN_PANELS.map(panel => (
+            <AdminPanel
+              key={panel.id}
+              name={panel.name}
+              icon={panel.icon}
+              link={panel.link}
+              api={panel.api}
+            />
+          ))}
       </AdminProtectedRoute>
     </main>
   );

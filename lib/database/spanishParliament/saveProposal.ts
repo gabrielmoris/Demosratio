@@ -1,18 +1,18 @@
-import { Logger } from "tslog";
-import { VotingData } from "@/types/proposal.types";
-import { supabaseAdmin } from "@/lib/supabaseClient";
+import { Logger } from 'tslog';
+import { VotingData } from '@/types/proposal.types';
+import { supabaseAdmin } from '@/lib/supabaseClient';
 
 const log = new Logger();
 
-/**
- * Check if a proposal with the given expedient_text already exists in the database.
- * Returns the existing proposal ID if found, null otherwise.
- */
 export async function checkProposalExists(expedient_text: string): Promise<{ id: number } | null> {
-  const { data: checkResult, error: checkError } = await supabaseAdmin.from("proposals").select("id").eq("expedient_text", expedient_text).limit(1);
+  const { data: checkResult, error: checkError } = await supabaseAdmin
+    .from('proposals')
+    .select('id')
+    .eq('expedient_text', expedient_text)
+    .limit(1);
 
   if (checkError) {
-    log.error("Error checking for existing proposal:", checkError);
+    log.error('Error checking for existing proposal:', checkError);
     throw checkError;
   }
 
@@ -21,6 +21,29 @@ export async function checkProposalExists(expedient_text: string): Promise<{ id:
   }
 
   return null;
+}
+
+export async function checkLegacySubGroupProposalExists(
+  plainExpedientText: string,
+  votation: Pick<VotingData, 'session' | 'date' | 'votes_for' | 'votes_against' | 'abstentions'>
+): Promise<{ id: number } | null> {
+  const { data, error } = await supabaseAdmin
+    .from('proposals')
+    .select('id')
+    .eq('expedient_text', plainExpedientText)
+    .eq('session', votation.session)
+    .eq('date', votation.date)
+    .eq('votes_for', votation.votes_for)
+    .eq('votes_against', votation.votes_against)
+    .eq('abstentions', votation.abstentions)
+    .limit(1);
+
+  if (error) {
+    log.error('Error checking for legacy point-by-point proposal:', error);
+    throw error;
+  }
+
+  return data && data.length > 0 ? { id: data[0].id } : null;
 }
 
 export async function saveProposalToDb(proposalData: VotingData) {
@@ -42,7 +65,7 @@ export async function saveProposalToDb(proposalData: VotingData) {
 
     // Save the new proposal (check should be done before calling this function)
     const { data: result, error: insertError } = await supabaseAdmin
-      .from("proposals")
+      .from('proposals')
       .insert([
         {
           title,
@@ -59,7 +82,7 @@ export async function saveProposalToDb(proposalData: VotingData) {
           votes_parties_json,
         },
       ])
-      .select("id")
+      .select('id')
       .single();
 
     if (insertError) {

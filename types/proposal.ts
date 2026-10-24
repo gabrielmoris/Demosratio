@@ -1,4 +1,5 @@
 import { LiKesAndDislikes } from "./likesAndDislikes";
+import { PlainSummary, ProposalSummaryStatus } from "./proposal.types";
 
 interface VotesParties {
   for: number;
@@ -32,6 +33,10 @@ export interface VotingData {
   assent: boolean;
   date: string;
   likesAndDislikes?: LiKesAndDislikes;
+  initiative_id?: string | null;
+  initiative_pdf_url?: string | null;
+  plain_summary?: PlainSummary | null;
+  plain_summary_status?: ProposalSummaryStatus | null;
 }
 
 export interface Proposal {

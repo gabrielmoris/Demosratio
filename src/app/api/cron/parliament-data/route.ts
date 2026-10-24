@@ -11,13 +11,25 @@ import {
 import {
   saveProposalToDb,
   checkProposalExists,
+  checkLegacySubGroupProposalExists,
 } from '@/lib/database/spanishParliament/saveProposal';
+import {
+  buildExpedientText,
+  hasSubGroup,
+} from '@/lib/helpers/spanishParliamentExtractor/expedientText';
 import { aiPromiseAnalizer } from '@/lib/services/ai/promisesAnaliseAI';
+import { getPromiseAnalysisEndpoint } from '@/lib/services/geminiClient';
+import { getModelName } from '@/lib/services/ai/geminiConfig';
 import { setPromiseAnalysis } from '@/lib/database/parties/promises/promises-analysis/setPromisesAnalysis';
 import { deleteProposal } from '@/lib/database/spanishParliament/deleteProposal';
 import { isAuthorized } from '@/src/middleware/isAuthorized';
 
 const log = new Logger();
+
+const TIME_BUDGET_MS = 320_000;
+
+/** Thrown when the run should end early; votes not processed are picked up by the next run. */
+class StopRunError extends Error {}
 
 export async function GET(req: NextRequest) {
   if (!(await isAuthorized(req))) {
@@ -35,12 +47,19 @@ export async function GET(req: NextRequest) {
 
   try {
     const daysToCheck = parseInt(process.env.DAYS_TO_CHECK_VOTATIONS || '5', 10);
+    const deadline = Date.now() + TIME_BUDGET_MS;
 
     for (let i = daysToCheck; i > 0; i--) {
       const dateToCheck = getDateString(i);
-      await saveToDb(dateToCheck).catch(e =>
-        log.error('Error saving parliamentdata to DB', dateToCheck, '=>', e)
-      );
+      try {
+        await saveToDb(dateToCheck, deadline);
+      } catch (e) {
+        if (e instanceof StopRunError) {
+          log.warn(`Stopping early: ${e.message}. The next run continues from here.`);
+          break;
+        }
+        log.error('Error saving parliamentdata to DB', dateToCheck, '=>', e);
+      }
     }
 
     log.info('Parliament data extraction completed successfully');
@@ -60,23 +79,15 @@ export async function GET(req: NextRequest) {
   }
 }
 
-async function saveToDb(day: string) {
+async function saveToDb(day: string, deadline: number) {
   // Handles legislature transitions (e.g. XV -> XVI after the Nov 2026 election):
   // if the configured legislature has no votes for this day, it retries with the next one.
   const { legislatura, votations: extractedParliamentData } =
     await extractParliamentDataForDay(day);
 
   for (const votation of extractedParliamentData) {
-    const { textoExpediente: expedient_text } = votation.informacion;
+    if (Date.now() > deadline) throw new StopRunError('time budget reached');
 
-    const existingProposal = await checkProposalExists(expedient_text);
-
-    if (existingProposal) {
-      log.warn(`Proposal with expedient_text "${expedient_text}" already exists. Skipping.`);
-      continue;
-    }
-
-    // Get the important information
     const { sesion: session, fecha: date, titulo: title } = votation.informacion;
 
     const {
@@ -87,6 +98,26 @@ async function saveToDb(day: string) {
       noVotan: no_vote,
       asentimiento: assent,
     } = votation.totales;
+
+    // Points of a motion voted separately share textoExpediente, so the point label is added to it
+    const expedient_text = buildExpedientText(votation.informacion);
+
+    const existingProposal =
+      (await checkProposalExists(expedient_text)) ??
+      (hasSubGroup(votation.informacion)
+        ? await checkLegacySubGroupProposalExists(votation.informacion.textoExpediente, {
+            session,
+            date: getFormattedDateForDB(date),
+            votes_for,
+            votes_against,
+            abstentions,
+          })
+        : null);
+
+    if (existingProposal) {
+      log.warn(`Proposal with expedient_text "${expedient_text}" already exists. Skipping.`);
+      continue;
+    }
 
     const votes_parties_json = mergeVotesByParty(votation.votaciones);
     // asentimiento="Sí" means unanimous consent (no formal count); otherwise check afavor > enContra
@@ -107,17 +138,28 @@ async function saveToDb(day: string) {
       assent: isAccepted,
     };
 
+    // Analyse BEFORE saving: if Gemini fails, nothing is saved and the next run retries this vote.
+    // (Saving first left votes without analysis forever, since they then counted as existing.)
+    let analysisArr: Awaited<ReturnType<typeof aiPromiseAnalizer>>;
+    try {
+      analysisArr = await aiPromiseAnalizer(proposalData);
+    } catch (error) {
+      const rateLimited = error instanceof Error && error.message.includes('Rate limit hit');
+      log.error(`Promise analysis failed for ${day} "${title}", not saving it this run:`, error);
+      // Gemini is out of quota: the remaining votes would fail the same way
+      if (rateLimited) throw new StopRunError('Gemini rate limit');
+      throw error;
+    }
+
     try {
       const savedProposal = await saveProposalToDb(proposalData);
 
-      const modelName = process.env.GEMINI_MODEL_ENDPOINT?.split('/models/')[1].split(':')[0];
+      const modelName = getModelName(getPromiseAnalysisEndpoint() ?? '');
 
       if (!savedProposal) {
         throw new Error(`Failed to save proposal: ${title}`);
       }
 
-      // Run AI analysis for new proposals
-      const analysisArr = await aiPromiseAnalizer(proposalData);
       log.info('SAVING ', day, ' ', savedProposal.id);
       log.info(`${modelName} analyse => `, analysisArr.length, analysisArr[0]);
 
