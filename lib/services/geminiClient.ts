@@ -5,15 +5,11 @@ import { getResponseText, noThinkingConfig } from '@/lib/services/ai/geminiConfi
 import { geminiFetch } from '@/lib/services/ai/geminiRequest';
 
 /** Max time for one vote's analysis, waits included, so the importer cron stays under its limit. */
-export const PROMISE_ANALYSIS_DEADLINE_MS = 120_000;
+export const PROMISE_ANALYSIS_DEADLINE_MS = 340_000;
 
 const log = new Logger();
 
-/**
- * The promise analysis sends no tools, so it can run on Gemini 2.5 (thinking fully off).
- * The PDF calls can't: they combine url_context with a JSON schema, which only Gemini 3 supports.
- * GEMINI_ANALYSIS_MODEL_ENDPOINT is optional and falls back to GEMINI_MODEL_ENDPOINT.
- */
+
 export function getPromiseAnalysisEndpoint(): string | undefined {
   return process.env.GEMINI_ANALYSIS_MODEL_ENDPOINT?.trim() || process.env.GEMINI_MODEL_ENDPOINT;
 }
