@@ -3,8 +3,7 @@ import { Logger } from 'tslog';
 import { getResponseText, noThinkingConfig } from './geminiConfig';
 import { geminiFetch } from './geminiRequest';
 
-// The extraction route has maxDuration 300s; stop a bit before that
-const EXTRACTION_DEADLINE_MS = 280_000;
+const EXTRACTION_DEADLINE_MS = 340_000;
 
 const log = new Logger();
 

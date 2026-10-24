@@ -22,7 +22,6 @@ const MAX_RETRIES = 3;
 // Start time reserved for the next call. Shared by every Gemini caller in this server instance.
 let nextSlotAt = 0;
 
-/** Test helper: forget previous calls. */
 export function resetGeminiPacing(): void {
   nextSlotAt = 0;
 }
@@ -57,11 +56,6 @@ export interface GeminiFetchOptions {
   deadlineMs?: number;
 }
 
-/**
- * fetch() for Gemini: spaces calls to stay under the per-minute limit, waits as long as Gemini
- * asks after a 429, and retries 500/503. Returns the last response when it can't retry anymore,
- * so callers keep handling !response.ok as before.
- */
 export async function geminiFetch(
   url: string,
   init: RequestInit,
@@ -85,7 +79,7 @@ export async function geminiFetch(
     const isServerError = response.status === 500 || response.status === 503;
     if (!isRateLimit && !isServerError) return response;
 
-    // Read the body to find the wait time, then hand back an equivalent response
+    // Read the body to find the wait time
     const body = await response.text();
     const giveUp = () =>
       new Response(body, {
@@ -107,7 +101,7 @@ export async function geminiFetch(
     }
 
     log.warn(`Gemini answered ${response.status}; retrying in ${Math.round(wait / 1000)}s`);
-    // Nobody else should call Gemini while we wait for the quota to free up
+
     nextSlotAt = Math.max(nextSlotAt, Date.now() + wait);
     await sleep(wait);
   }
