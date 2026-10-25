@@ -1,5 +1,5 @@
-import { LiKesAndDislikes } from "./likesAndDislikes";
-import { PlainSummary, ProposalSummaryStatus } from "./proposal.types";
+import { LiKesAndDislikes } from './likesAndDislikes';
+import { PlainSummary, ProposalSummaryStatus } from './proposal.types';
 
 interface VotesParties {
   for: number;
@@ -12,7 +12,10 @@ interface VotesParties {
 export interface RelatedPromise {
   promise_id: number;
   promise_text: string;
-  fulfillment_status: "Supporting Evidence" | "Contradictory Evidence" | "Partial/Indirect Evidence";
+  fulfillment_status:
+    | 'Supporting Evidence'
+    | 'Contradictory Evidence'
+    | 'Partial/Indirect Evidence';
   analysis_summary: string;
   party_name: string;
   campaign_year: number;
@@ -58,6 +61,9 @@ export interface Proposal {
   likes: number;
   dislikes: number;
   relatedPromises: RelatedPromise[];
+  initiative_pdf_url?: string | null;
+  plain_summary?: PlainSummary | null;
+  plain_summary_status?: ProposalSummaryStatus | null;
   /** 15 = XV */
   legislatura_id?: number;
 }
