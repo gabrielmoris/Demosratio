@@ -262,8 +262,10 @@ export default function VotePage() {
         </Link>
       </div>
 
-      {/* // TODO: check if I can get the voting data here */}
-      <PlainSummary summary={voteResults.plain_summary} sourceUrl={voteResults.initiative_pdf_url} />
+      <PlainSummary
+        summary={voteResults.plain_summary}
+        sourceUrl={voteResults.initiative_pdf_url}
+      />
 
       {/* Aggregate vote bar */}
       <div className="w-full flex flex-col gap-3">
