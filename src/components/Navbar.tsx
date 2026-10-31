@@ -1,6 +1,6 @@
 'use client';
 import Image from 'next/image';
-import { Link } from '../i18n/routing';
+import { Link, usePathname } from '../i18n/routing';
 import { useAuth } from '../context/authContext';
 import { useState } from 'react';
 import { useRequest } from '@/hooks/use-request';
@@ -10,6 +10,8 @@ import { LanguageSwitcher } from './LanguageSwitcher';
 export default function Navbar() {
   const { currentUser, updateCurrentUser } = useAuth();
   const [openUser, setOpenUser] = useState(false);
+  const path = usePathname();
+  const isHome = path === '/';
 
   const { doRequest } = useRequest({
     url: '/api/users/signout',
@@ -104,13 +106,23 @@ export default function Navbar() {
         >
           <Image src="/temas-icn.svg" alt="temas-icn" width={50} height={50} />
         </Link>
-        <Link
-          onClick={() => setOpenUser(false)}
-          className="w-7 h-7 lg:w-10 lg:h-10 rounded-full flex flex-col items-center justify-center hover:opacity-60 duration-500"
-          href="/manifest"
-        >
-          <Image src="/what-icn.svg" alt="what-icn" width={50} height={50} />
-        </Link>
+        {isHome ? (
+          <Link
+            onClick={() => setOpenUser(false)}
+            className="w-7 h-7 lg:w-10 lg:h-10 rounded-full flex flex-col items-center justify-center hover:opacity-60 duration-500"
+            href="/manifest"
+          >
+            <Image src="/what-icn.svg" alt="what-icn" width={50} height={50} />
+          </Link>
+        ) : (
+          <Link
+            onClick={() => setOpenUser(false)}
+            className="w-7 h-7 lg:w-10 lg:h-10 rounded-full flex flex-col items-center justify-center hover:opacity-60 duration-500"
+            href="/"
+          >
+            <Image src="/home.svg" alt="home" width={50} height={50} />
+          </Link>
+        )}
       </div>
       <div className="flex flex-row md:flex-col gap-2 items-end justify-end">
         <LegislaturaSwitcher onSelect={() => setOpenUser(false)} />
