@@ -45,11 +45,23 @@ export function getFormattedDateForDB(dateString: string): string {
   return temporalDate.toString();
 }
 
+/**
+ * The locale to format dates and numbers with. Browsers without data for a language
+ * (some lack Basque or Galician) would fall back to English, so they get Spanish instead.
+ */
+export function intlLocale(locale: string): string {
+  try {
+    return Intl.DateTimeFormat.supportedLocalesOf([locale]).length > 0 ? locale : "es-ES";
+  } catch {
+    return "es-ES";
+  }
+}
+
 export function formatDate(date: string, locale: string = "es-ES"): string {
   const dateToFormat = new Date(date);
   const dateTemporal = Temporal.PlainDate.from(dateToFormat.toISOString().slice(0, 10)); // Extract YYYY-MM-DD
 
-  return dateTemporal.toLocaleString(locale, {
+  return dateTemporal.toLocaleString(intlLocale(locale), {
     year: "numeric",
     month: "long",
     day: "numeric",

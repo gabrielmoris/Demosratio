@@ -5,12 +5,13 @@ import { ExpandableText } from './ExpandableText';
 import Image from 'next/image';
 import ChartVotes from './ChartVotes';
 import Button from './Button';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { useRouter } from '../i18n/routing';
 import { formatDate } from '@/lib/helpers/dateFormatters';
 
 const VoteCardComponent = ({ vote }: { vote: VotingData }) => {
   const t = useTranslations('votecard-component');
+  const locale = useLocale();
   const route = useRouter();
 
   const onclickCTA = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -71,7 +72,7 @@ const VoteCardComponent = ({ vote }: { vote: VotingData }) => {
             {vote.likesAndDislikes?.dislikes}
           </div>
         </div>
-        <p className="text-drgray text-xs">{formatDate(vote.date)}</p>
+        <p className="text-drgray text-xs">{formatDate(vote.date, locale)}</p>
       </div>
     </div>
   );

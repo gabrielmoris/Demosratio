@@ -1,6 +1,7 @@
 'use client';
 import { useLocale, useTranslations } from 'next-intl';
 import type { HomeOverview } from '@/types/home';
+import { intlLocale } from '@/lib/helpers/dateFormatters';
 
 interface Props {
   counters: HomeOverview['counters'];
@@ -10,7 +11,7 @@ interface Props {
 export function HomeCounters({ counters, legislatura }: Props) {
   const t = useTranslations('home');
   const locale = useLocale();
-  const format = (n: number) => n.toLocaleString(locale);
+  const format = (n: number) => n.toLocaleString(intlLocale(locale));
 
   return (
     <>

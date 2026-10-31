@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { getDateString, normalizeWrongSpanishDate, getFormattedDateForDB, formatDate } from "@/lib/helpers/dateFormatters";
+import { getDateString, normalizeWrongSpanishDate, getFormattedDateForDB, formatDate, intlLocale } from "@/lib/helpers/dateFormatters";
+import { vi } from "vitest";
 
 describe("dateFormatters", () => {
   describe("getDateString", () => {
@@ -60,5 +61,17 @@ describe("dateFormatters", () => {
       expect(result).toContain("January");
       expect(result).toContain("2024");
     });
+  });
+});
+
+describe("intlLocale", () => {
+  it("keeps a locale the runtime can format", () => {
+    expect(intlLocale("ca")).toBe("ca");
+  });
+
+  it("falls back to Spanish when the runtime has no data for the locale", () => {
+    const spy = vi.spyOn(Intl.DateTimeFormat, "supportedLocalesOf").mockReturnValue([]);
+    expect(intlLocale("eu")).toBe("es-ES");
+    spy.mockRestore();
   });
 });

@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
 import Loading from "@/src/components/Loading";
 import { Link } from "@/src/i18n/routing";
@@ -251,6 +251,7 @@ function PartySection({ partyData, subject }: { partyData: SubjectPartyData , su
 }
 
 function RelatedVoteCard({ proposal }: { proposal: SubjectProposal; }) {
+  const locale = useLocale();
   const total = proposal.votes_for + proposal.votes_against + proposal.abstentions + proposal.no_vote || 1;
 
   return (
@@ -276,7 +277,7 @@ function RelatedVoteCard({ proposal }: { proposal: SubjectProposal; }) {
           <span className="text-red-600 font-medium">{proposal.votes_against} ✗</span>
           <span className="text-amber-600">{proposal.abstentions} abs</span>
         </span>
-        <span>{formatDate(proposal.date)}</span>
+        <span>{formatDate(proposal.date, locale)}</span>
       </div>
     </Link>
   );

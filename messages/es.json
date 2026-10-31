@@ -320,5 +320,9 @@
     "viewing-other": "Estás viendo los datos de la Legislatura {roman}, no los de la actual.",
     "back-to-current": "Ver la Legislatura {roman}",
     "no-parties": "Todavía no hay partidos en esta legislatura."
+  },
+  "language": {
+    "title": "Idioma",
+    "aria-label": "Idioma: {language}. Cambiar de idioma"
   }
 }
