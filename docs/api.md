@@ -86,3 +86,12 @@ See [AI Integration](ai.md#promise-extraction-from-campaign-pdfs).
 
 - `POST { name, description }` / `PATCH { subject_id, name, description }` — return `409 { code: "DUPLICATE_NAME" }` when the name already exists (`subjects.name` is unique).
 - `DELETE { subject_id }` — returns `409 { code: "SUBJECT_IN_USE" }` while promises still reference the subject (`promises.subject_id` has no cascade).
+
+## Home page
+
+`GET /api/home?legislatura=16` (defaults to the current legislatura) returns everything the home page shows, built by `getHomeOverview()` in `lib/database/home/getHomeOverview.ts` (types in `types/home.ts`):
+
+- `counters`: `totalVotes`, `analysedVotes` (all votes minus those with `promise_analysis_status = 'pending'`) and `promiseChecks` (rows in `promise_status` for votes of that legislatura).
+- `latestVotes`: the 3 newest votes, with likes, as `/api/spanish-proposals` returns them.
+- `period`: the 30 days ending on the **last day the legislatura voted** (not today), so the block isn't empty when Congress doesn't sit. A single week is too short: contradictions are rare (about 1 analysis in 6), and most weeks have none. Filtered on the vote date (`proposals.date`), not on when the analysis was saved: pending votes are analysed days later.
+- `contradicted`: the 5 promises contradicted by the most votes of that period ("Contradictory Evidence" in `promise_status`), each with up to 3 of those votes.

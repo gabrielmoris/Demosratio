@@ -5,7 +5,7 @@ import Loading from '@/src/components/Loading';
 import { Proposal, RelatedPromise } from '@/types/proposal';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 import { LiKesAndDislikes } from '@/types/likesAndDislikes';
@@ -61,6 +61,7 @@ const STATUS_LABEL_KEYS = {
 
 export default function VotePage() {
   const t = useTranslations('votepage');
+  const locale = useLocale();
   const params = useParams();
   const user = useAuth();
   const { showToast } = useUiContext();
@@ -245,7 +246,7 @@ export default function VotePage() {
               {legislaturaLabel(voteResults.legislatura_id)}
             </span>
           )}
-          <p className="text-xs text-drgray">{formatDate(voteResults.date)}</p>
+          <p className="text-xs text-drgray">{formatDate(voteResults.date, locale)}</p>
         </div>
       </div>
 
