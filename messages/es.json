@@ -1,11 +1,21 @@
 {
-  "landingpage": {
-    "title": "Demos Ratio. Tu Voz, Tus Decisiones: Seguimiento Imparcial de la Política.",
-    "subtitle": "¿Cumplen lo que prometen? Descubre la verdad detrás de las promesas y decisiones políticas. Únete a una comunidad de ciudadanos comprometidos con la transparencia."
-  },
   "landingpage-card": {
     "promises": "Promesas electorales.",
     "parliament": "Últimos votos del congreso."
+  },
+  "home": {
+    "counter-votes": "votaciones revisadas por la IA, de {total} en la legislatura {legislatura}.",
+    "counter-checks": "comparaciones entre una promesa electoral y una votación.",
+    "contradicted-title": "Promesas más contradichas",
+    "contradicted-period": "Votaciones del {from} al {to}",
+    "contradicted-count": "{count, plural, one {Contradicha en # votación} other {Contradicha en # votaciones}}",
+    "contradicted-empty": "Ninguna votación de esas fechas contradice una promesa electoral.",
+    "see-theme": "Ver el tema",
+    "latest-title": "Últimas votaciones",
+    "see-all": "Ver todas las votaciones",
+    "error": "No se pudo cargar el resumen. Inténtalo más tarde.",
+    "title": "Demos Ratio. Tu Voz, Tus Decisiones: Seguimiento Imparcial de la Política.",
+    "subtitle": "¿Cumplen lo que prometen? Descubre la verdad detrás de las promesas y decisiones políticas. La IA (Gemini) compara cada votación del Congreso con los programas electorales de los partidos de la legislatura."
   },
   "login": {
     "form-title": "Inicia sesión en tu cuenta",

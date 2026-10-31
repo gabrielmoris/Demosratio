@@ -248,5 +248,18 @@
     "viewing-other": "You are looking at the data of Legislature {roman}, not the current one.",
     "back-to-current": "See Legislature {roman}",
     "no-parties": "There are no parties in this legislature yet."
+  },
+  "home": {
+    "counter-votes": "votes reviewed by the AI, out of {total} in legislatura {legislatura}.",
+    "counter-checks": "comparisons between a campaign promise and a vote.",
+    "counter-note": "The AI (Gemini) compares every vote in Congress with the programmes of the parties of the legislatura.",
+    "contradicted-title": "Most contradicted promises",
+    "contradicted-period": "Votes from {from} to {to}",
+    "contradicted-count": "{count, plural, one {Contradicted in # vote} other {Contradicted in # votes}}",
+    "contradicted-empty": "No vote in those dates contradicts a campaign promise.",
+    "see-theme": "See the theme",
+    "latest-title": "Latest votes",
+    "see-all": "See all votes",
+    "error": "The overview couldn't be loaded. Try again later."
   }
 }
